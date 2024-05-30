@@ -1,6 +1,7 @@
 import React from "react";
 import {LoginForm} from "./LoginForm";
 import {LoginFooter} from "./LoginFooter";
+import LanguageSwitcher from "../locales/LanguageSwitcher";
 
 export const LoginPage = () => {
     return (

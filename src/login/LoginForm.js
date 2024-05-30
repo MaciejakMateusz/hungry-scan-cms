@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react";
+import {useTranslation} from "react-i18next";
 import {Link} from "react-router-dom";
 import {apiHost} from "../apiData";
 import {urlParamValue} from "../utils";
@@ -7,6 +8,7 @@ export const LoginForm = () => {
     const [form, setForm] = useState({username: "", password: ""});
     const [notAuthorized, setNotAuthorized] = useState(false);
     const [isLoggedOut, setIsLoggedOut] = useState(false);
+    const {t} = useTranslation();
 
     useEffect(() => {
         setIsLoggedOut(Boolean(urlParamValue("logout")))
@@ -55,13 +57,13 @@ export const LoginForm = () => {
         if (notAuthorized) {
             return (
                 <p style={{fontSize: '0.8rem', color: 'tomato'}}>
-                    Niepoprawny email lub hasło, spróbuj ponownie
+                    {t('invalidCredentials')}
                 </p>
             );
         } else if (isLoggedOut) {
             return (
                 <p style={{fontSize: '0.8rem', color: 'green'}}>
-                    Wylogowano pomyślnie
+                    {t('logoutSuccess')}
                 </p>
             );
         } else {
@@ -72,13 +74,13 @@ export const LoginForm = () => {
     return (
         <>
             <div className="text-center">
-                <h1 className="h4 text-gray-900 mb-4">Logowanie do systemu CMS</h1>
+                <h1 className="h4 text-gray-900 mb-4">{t('cmsLogin')}</h1>
             </div>
             <form className="user" onSubmit={submitForm}>
                 <div className="form-group">
                     <input type="text"
                            className="form-control form-control-user"
-                           placeholder="Wpisz login..."
+                           placeholder={t('typeLogin')}
                            name="username"
                            value={form.username}
                            onChange={setFormFields}/>
@@ -87,19 +89,19 @@ export const LoginForm = () => {
                 <div className="form-group">
                     <input type="password"
                            className="form-control form-control-user"
-                           placeholder="Podaj hasło..."
+                           placeholder={t('typePassword')}
                            value={form.password}
                            name="password"
                            onChange={setFormFields}/>
                 </div>
-                <button className="btn btn-primary btn-user btn-block" style={{fontSize: '1.1rem'}}>Zaloguj się
+                <button className="btn btn-primary btn-user btn-block" style={{fontSize: '1.1rem'}}>{t('logIn')}
                 </button>
             </form>
             {renderValidationMsg()}
             <hr/>
             <div className="text-center">
-                    <span className="small">Problemy z logowaniem?
-                        <Link to="/#"> Odzyskaj hasło</Link>
+                    <span className="small">{t('loginProblems')}
+                        <Link to="/#"> {t('recoverPassword')}</Link>
                     </span>
             </div>
         </>
