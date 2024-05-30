@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import {Outlet, useLocation, Navigate} from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {Navigate, Outlet, useLocation} from 'react-router-dom';
 import {apiHost} from "../apiData";
 import {getDecodedJwt} from "../utils";
-import {ErrorPage} from "../app/error/ErrorPage";
 
 export const PrivateRoutes = () => {
     const location = useLocation();
@@ -18,7 +17,7 @@ export const PrivateRoutes = () => {
                 'Authorization': `Bearer ${getDecodedJwt()}`
             }
         }).then(response => {
-            if(response.ok) {
+            if (response.ok) {
                 setIsLoading(false);
                 setIsAuthorized(true);
             } else {
@@ -31,20 +30,9 @@ export const PrivateRoutes = () => {
         return <div>Loading...</div>;
     }
 
-    if(isAuthorized) {
-        return <Outlet />
+    if (isAuthorized) {
+        return <Outlet/>
     } else {
-        switch (location.pathname) {
-            case "/restaurant":
-                return <Navigate to={"/login"} />
-            case "/cms":
-                return <ErrorPage title={"Brak uprawnień"}
-                                  message={"Nie masz wymaganych uprawnień do wyświetlenia zawartości strony."}/>
-            case "/admin":
-                return <ErrorPage title={"Brak uprawnień"}
-                                  message={"Nie masz wymaganych uprawnień do wyświetlenia zawartości strony."}/>
-            default:
-                return <Navigate to={"/login"} />
-        }
+        return <Navigate to={"/login"}/>
     }
 };
