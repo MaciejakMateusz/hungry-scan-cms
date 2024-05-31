@@ -1,9 +1,13 @@
 import React from "react";
+import {deleteCookie} from "../../utils";
+import {useNavigate} from "react-router-dom";
 
 export const BottomButtons = () => {
+    const navigate = useNavigate();
 
     const handleClick = () => {
-        window.location.href = "http://localhost:3000/restaurant"
+        deleteCookie('jwt')
+        navigate("/login")
     }
 
     return (
@@ -16,7 +20,7 @@ export const BottomButtons = () => {
             </div>
             <div className="back-to-main-view-area">
                 <div className="back-button" id="back-button" onClick={handleClick}>
-                    <span>Powrót do panelu restauracji</span>
+                    <span>Wyloguj się</span>
                     <span className="back-icon"></span>
                 </div>
             </div>
