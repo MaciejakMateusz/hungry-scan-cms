@@ -7,6 +7,11 @@ const getCookie = cookieName => {
     return cookie[cookieName];
 }
 
+export const cookieExists = (cookieName) => {
+    let cookies = document.cookie;
+    return new RegExp('(^|;\\s*)' + encodeURIComponent(cookieName) + '=').test(cookies);
+}
+
 export function deleteCookie(name) {
     document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }

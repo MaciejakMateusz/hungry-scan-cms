@@ -27,6 +27,7 @@ export const PrivateRoutes = () => {
     }, [location.pathname]);
 
     if (isLoading) {
+        //todo dodać spinner
         return <div>Loading...</div>;
     }
 
