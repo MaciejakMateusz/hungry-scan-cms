@@ -1,0 +1,10 @@
+{
+  "cmsLogin": "Zaloguj się do CMS",
+  "typeLogin": "Podaj login...",
+  "typePassword": "Podaj hasło...",
+  "logIn": "Zaloguj się",
+  "invalidCredentials": "Niepoprawny email lub hasło, spróbuj ponownie",
+  "logoutSuccess": "Wylogowano pomyślnie",
+  "loginProblems": "Problemy z logowaniem?",
+  "recoverPassword": "Odzyskaj hasło"
+}

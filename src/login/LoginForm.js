@@ -2,11 +2,13 @@ import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {apiHost} from "../apiData";
 import {urlParamValue} from "../utils";
+import {useTranslation} from "react-i18next";
 
 export const LoginForm = () => {
     const [form, setForm] = useState({username: "", password: ""});
     const [notAuthorized, setNotAuthorized] = useState(false);
     const [isLoggedOut, setIsLoggedOut] = useState(false);
+    const {t} = useTranslation();
 
     useEffect(() => {
         setIsLoggedOut(Boolean(urlParamValue("logout")))
@@ -64,7 +66,7 @@ export const LoginForm = () => {
     const validationFail = () => {
         return (
             <p className="login-validation-msg">
-                Niepoprawny email lub hasło, spróbuj ponownie
+                {t('invalidCredentials')}
             </p>
         );
     }
@@ -72,7 +74,7 @@ export const LoginForm = () => {
     const logoutSuccess = () => {
         return (
             <p className="logout-success-msg">
-                Wylogowano pomyślnie
+                {t('logoutSuccess')}
             </p>
         );
     }
@@ -80,13 +82,13 @@ export const LoginForm = () => {
     return (
         <>
             <div className="login-form-header">
-                <h1 className="">Logowanie</h1>
+                <h1 className="">{t('cmsLogin')}</h1>
             </div>
             <form className="login-form" onSubmit={submitForm}>
                 <div className="login-input-container username-grid">
                     <input type="text"
                            className="login-input"
-                           placeholder="Wpisz login..."
+                           placeholder={t('typeLogin')}
                            name="username"
                            value={form.username}
                            onChange={setFormFields}/>
@@ -95,7 +97,7 @@ export const LoginForm = () => {
                 <div className="login-input-container password-grid">
                     <input type="password"
                            className="login-input"
-                           placeholder="Podaj hasło..."
+                           placeholder={t('typePassword')}
                            value={form.password}
                            name="password"
                            onChange={setFormFields}/>
@@ -103,13 +105,13 @@ export const LoginForm = () => {
                 </div>
                 <div className="login-btn-container">
                     <button className="login-btn"
-                            style={{fontSize: '1.1rem'}}>Zaloguj się
+                            style={{fontSize: '1.1rem'}}>{t('logIn')}
                     </button>
                 </div>
             </form>
             <div className="login-form-footer">
-                    <span className="">Problemy z logowaniem?
-                        <Link to="/#"> Odzyskaj hasło</Link>
+                    <span className="">{t('loginProblems')}
+                        <Link to="/#"> {t('recoverPassword')}</Link>
                     </span>
             </div>
         </>
