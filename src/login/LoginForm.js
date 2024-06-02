@@ -51,54 +51,64 @@ export const LoginForm = () => {
             .catch(() => setNotAuthorized(true))
     }
 
-    const renderValidationMsg = () => {
-        if (notAuthorized) {
-            return (
-                <p style={{fontSize: '0.8rem', color: 'tomato'}}>
-                    Niepoprawny email lub hasło, spróbuj ponownie
-                </p>
-            );
-        } else if (isLoggedOut) {
-            return (
-                <p style={{fontSize: '0.8rem', color: 'green'}}>
-                    Wylogowano pomyślnie
-                </p>
-            );
+    const renderMessage = () => {
+        if(notAuthorized) {
+            return validationFail();
+        } else if(isLoggedOut) {
+            return logoutSuccess();
         } else {
             return <></>
         }
     }
 
+    const validationFail = () => {
+        return (
+            <p className="login-validation-msg">
+                Niepoprawny email lub hasło, spróbuj ponownie
+            </p>
+        );
+    }
+
+    const logoutSuccess = () => {
+        return (
+            <p className="logout-success-msg">
+                Wylogowano pomyślnie
+            </p>
+        );
+    }
+
     return (
         <>
-            <div className="text-center">
-                <h1 className="h4 text-gray-900 mb-4">Logowanie do systemu CMS</h1>
+            <div className="login-form-header">
+                <h1 className="">Logowanie</h1>
             </div>
-            <form className="user" onSubmit={submitForm}>
-                <div className="form-group">
+            <form className="login-form" onSubmit={submitForm}>
+                <div className="login-input-container username-grid">
                     <input type="text"
-                           className="form-control form-control-user"
+                           className="login-input"
                            placeholder="Wpisz login..."
                            name="username"
                            value={form.username}
                            onChange={setFormFields}/>
 
                 </div>
-                <div className="form-group">
+                <div className="login-input-container password-grid">
                     <input type="password"
-                           className="form-control form-control-user"
+                           className="login-input"
                            placeholder="Podaj hasło..."
                            value={form.password}
                            name="password"
                            onChange={setFormFields}/>
+                    {renderMessage()}
                 </div>
-                <button className="btn btn-primary btn-user btn-block" style={{fontSize: '1.1rem'}}>Zaloguj się
-                </button>
+                <div className="login-btn-container">
+                    <button className="login-btn"
+                            style={{fontSize: '1.1rem'}}>Zaloguj się
+                    </button>
+                </div>
             </form>
-            {renderValidationMsg()}
-            <hr/>
-            <div className="text-center">
-                    <span className="small">Problemy z logowaniem?
+            <div className="login-form-footer">
+                    <span className="">Problemy z logowaniem?
                         <Link to="/#"> Odzyskaj hasło</Link>
                     </span>
             </div>
