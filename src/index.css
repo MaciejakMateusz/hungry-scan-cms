@@ -1,172 +1,426 @@
 body {
-  margin: 0;
-  padding: 0;
-  font-family: scandia-web, sans-serif;
-  font-style: normal;
+    margin: 0;
+    padding: 0;
+    font-family: "Lexend", sans-serif;
+    font-style: normal;
+}
+
+button, input, select, textarea {
+    font-family: "Lexend", sans-serif;
+    font-style: normal;
 }
 
 a {
-  color: #6EC191;
-  text-decoration: none;
+    color: #6EC191;
+    text-decoration: none;
 }
 
 a:visited {
-  color: #6EC191;
+    color: #6EC191;
 }
 
 a:hover {
-  color: #6EC191;
+    color: #6EC191;
 }
 
 a:active {
-  color: #6EC191;
+    color: #6EC191;
 }
 
 /* Login Styles */
 
 .login-grid {
-  display: grid;
-  grid-template-rows: 96% 4%;
-  height: 100%;
-  background-color: #3E424C;
+    display: grid;
+    grid-template-rows: 96% 4%;
+    height: 100%;
+    background-color: #3E424C;
 }
 
 .login-footer {
-  display: flex;
-  grid-row: 2;
-  justify-content: center;
-  align-items: center;
-  font-size: 0.8rem;
-  color: #93939E;
+    display: flex;
+    grid-row: 2;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8rem;
+    color: #93939E;
 }
 
 .login-container {
-  display: flex;
-  grid-row: 1;
-  align-items: center;
-  justify-content: center;
+    display: flex;
+    grid-row: 1;
+    align-items: center;
+    justify-content: center;
 }
 
 .login-box {
-  display: grid;
-  grid-template-rows: 30% 60% 10%;
-  width: 50%;
-  height: 50%;
-  background-color: #33353E;
-  border-radius: 15px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: grid;
+    grid-template-rows: 30% 60% 10%;
+    width: 27rem;
+    height: 18rem;
+    background-color: #33353E;
+    border-radius: 15px;
+    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .login-form-header {
-  grid-row: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 0.8rem;
-  color: #FFF;
+    grid-row: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8rem;
+    color: #FFF;
 }
 
 .login-form {
-  grid-row: 2;
-  display: grid;
-  grid-template-rows: 25% 35% 40%;
+    grid-row: 2;
+    display: grid;
+    grid-template-rows: 25% 35% 40%;
 }
 
 .login-input-container {
-  margin-left: 3rem;
-  margin-right: 3rem;
+    margin-left: 3rem;
+    margin-right: 3rem;
 }
 
-.username-grid{
-  grid-row: 1;
+.username-grid {
+    grid-row: 1;
 }
 
-.password-grid{
-  grid-row: 2;
+.password-grid {
+    grid-row: 2;
 }
 
 .login-input {
-  width: 100%;
-  height: 2rem;
-  border-radius: 8px;
-  border: none;
-  padding-left: 1rem;
+    width: 100%;
+    height: 2rem;
+    border-radius: 8px;
+    border: none;
+    padding-left: 1rem;
 }
 
 input[type="text"], input[type="password"] {
-  border: none;
-  outline: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
+    border: none;
+    outline: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
 }
 
 input[type="text"]:focus,
 input[type="text"]:active,
 input[type="password"]:focus,
 input[type="password"]:active {
-  outline: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  border: none;
+    outline: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: none;
 }
 
 .login-btn-container {
-  grid-row: 3;
-  display: flex;
-  justify-content: center;
-  align-self: center;
+    grid-row: 3;
+    display: flex;
+    justify-content: center;
+    align-self: center;
 }
 
 .login-btn {
-  width: 30%;
-  height: 2rem;
-  border: none;
-  border-radius: 100px;
-  font-family: scandia-web, sans-serif;
-  font-style: normal;
-  background: #6EC191;
-  transition: transform 0.3s ease;
+    width: 30%;
+    height: 2rem;
+    border: none;
+    border-radius: 100px;
+    font-weight: 500;
+    background: #6EC191;
+    transition: transform 0.3s ease;
 }
 
 .login-btn:hover {
-  cursor: pointer;
-  background: #6EC181;
-  transform: scale(1.05);
+    cursor: pointer;
+    background: #6EC181;
+    transform: scale(1.05);
 }
 
 .login-form-footer {
-  grid-row: 3;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 0.8rem;
-  color: #93939E;
-  padding-bottom: 0.5rem;
+    grid-row: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8rem;
+    color: #93939E;
+    padding-bottom: 0.5rem;
 }
 
 .login-validation-msg {
-  font-size: 0.7rem;
-  color: #ff4500;
+    font-size: 0.7rem;
+    color: #ff4500;
 }
 
 .logout-success-msg {
-  font-size: 0.7rem;
-  color: #6EC191;
+    font-size: 0.7rem;
+    color: #6EC191;
 }
 
 /* CMS Styles */
 
 .cms-grid {
-  display:grid;
-  grid-template-columns: 15% 85%;
+    display: grid;
+    grid-template-columns: 15rem 1fr;
+    grid-template-rows: 100%;
+    height: 100%;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.cms-nav-ul {
+    margin-top: 4rem;
 }
 
 .cms-nav-panel {
-  grid-column: 1;
+    grid-column: 1;
+    display: grid;
+    grid-template-rows: 10% 83% 7%;
+    background-color: #3E424C;
+}
+
+.cms-nav-header {
+    grid-row: 1;
+}
+
+.cms-accordion-button {
+    width: 40px;
+    height: 40px;
+    background-color: #33353E;
+    border: 0;
+    border-radius: 16px;
+    margin-top: 20px;
+    margin-left: 40px;
+}
+
+.cms-accordion-button:hover {
+    cursor: pointer;
+}
+
+.cms-nav-menu {
+    grid-row: 2;
+}
+
+.cms-nav-li {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.cms-nav-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 40px;
+    border: none;
+    border-radius: 100px;
+    background-color: inherit;
+    color: #93939E;
+    font-weight: 450;
+    font-size: 0.9rem;
+    width: 80%;
+    padding-left: 20px;
+}
+
+.cms-nav-btn:hover {
+    cursor: pointer;
+    color: #FFF;
+    background-color: #33353E;
+}
+
+.nav-active {
+    color: #FFF;
+    background-color: #33353E;
+}
+
+.cms-nav-footer {
+    grid-row: 3;
+    font-size: 0.8rem;
+    color: #93939E;
+    align-self: center;
+    text-align: center;
+    font-weight: 450;
+}
+
+.cms-main-grid {
+    grid-column: 2;
+    display: grid;
+    grid-template-rows: 10% 1fr;
+}
+
+.cms-date-time {
+    grid-row: 1;
+}
+
+.cms-date-time-container {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    height: 40px;
+    border: 0;
+    border-radius: 10px;
+    box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.1);
+    margin-left: 40px;
+    margin-right: 40px;
+    margin-top: 20px;
+    align-items: center;
+    font-size: 0.9rem;
+    font-weight: 450;
+}
+
+.cms-calendar-icon-container {
+    grid-column: 1;
+    grid-row: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.cms-calendar-icon {
+    width: 30px;
+    height: 30px;
+}
+
+.cms-date-time-wrapper {
+    display: flex;
+    grid-row: 1;
+    grid-column: 2;
+    justify-content: space-between;
+}
+
+.cms-date {
+    display: flex;
+    align-items: center;
+    column-gap: 9px;
+}
+
+.cms-day {
+    color: #93939E;
+    font-weight: 400;
+}
+
+.bullet {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    border: 0;
+    background: #93939E;
+    display: inline-block;
+}
+
+.cms-time {
+    grid-row: 1;
+    grid-column: 2;
+    margin-right: 30px;
 }
 
 .cms-main {
-  grid-column: 2;
+    grid-row: 2;
+}
+
+/* Dishes and Categories */
+
+.dishes-categories-grid {
+    display: grid;
+    grid-template-rows: 178px 1fr;
+    grid-template-columns: 1fr;
+    margin-left: 96px;
+}
+
+.new-buttons-container {
+    grid-row: 1;
+    display: flex;
+    align-items: center;
+}
+
+.add-new-button {
+    height: 40px;
+    border: 0;
+    border-radius: 100px;
+    background: #3E424C;
+    color: #FFF;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+.new-category {
+    width: 173px;
+}
+
+.new-dish {
+    width: 143px;
+}
+
+.search-initial-circle {
+    background: #3E424C;
+    border: 0;
+    border-radius: 100px;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    position: absolute;
+}
+
+.search-initial-circle:hover, .add-new-button:hover, .circle-active {
+    background: #33353E;
+}
+
+.search-button {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 40px;
+    height: 40px;
+    border: 0;
+    border-radius: 100px;
+    background: #3E424C;
+    transition: width 0.5s ease;
+}
+
+.search-active {
+    background: #33353E;
+    width: 220px;
+}
+
+.search-button:hover {
+    background: #33353E;
+}
+
+.search-icon {
+    margin-left: 7px;
+}
+
+.search-button-form {
+    display: contents;
+}
+
+.search-button-input {
+    margin-left: 40px;
+    margin-bottom: 3px;
+    font-size: 1rem;
+    color: #FFF;
+    width: 170px;
+    height: 30px;
+    border-radius: 100px;
+    background: #33353E;
+    opacity: 0;
+    animation: appear 0.3s linear 0.3s forwards;
+}
+
+.search-button-input::placeholder {
+    color: #FFF;
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }

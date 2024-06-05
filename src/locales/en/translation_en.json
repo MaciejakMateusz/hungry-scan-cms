@@ -6,5 +6,12 @@
   "invalidCredentials": "Invalid email or password, try again",
   "logoutSuccess": "Logged out successfully",
   "loginProblems": "Having login issues?",
-  "recoverPassword": "Recover password"
+  "recoverPassword": "Recover password",
+  "dishesCategories": "Dishes and categories",
+  "variants": "Variants",
+  "additions": "Additions",
+  "translations": "Translations",
+  "adPopUps": "Ad pop-ups",
+  "interface": "Interface",
+  "search": "Search"
 }

@@ -4,7 +4,7 @@ export const LoginFooter = () => {
     return (
         <>
             <footer className="login-footer">
-                <span>&copy;HungryScan | Powered by &copy;HackyBear 2024</span>
+                <span>HungryScan<sup>&copy;</sup> | Powered by 2024 &copy; HackyBear</span>
             </footer>
         </>
     );
