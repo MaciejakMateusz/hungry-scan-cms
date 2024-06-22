@@ -1,4 +1,4 @@
-const getCookie = cookieName => {
+export const getCookie = cookieName => {
     let cookie = {};
     document.cookie.split(';').forEach(function(el) {
         let [key,value] = el.split('=');
@@ -7,10 +7,12 @@ const getCookie = cookieName => {
     return cookie[cookieName];
 }
 
-export const cookieExists = (cookieName) => {
-    let cookies = document.cookie;
-    return new RegExp('(^|;\\s*)' + encodeURIComponent(cookieName) + '=').test(cookies);
-}
+export const formatCurrency = (value) => {
+    if (!value) return '';
+    const parts = value.split('.');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return parts.join('.');
+};
 
 export function deleteCookie(name) {
     document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
@@ -24,7 +26,6 @@ const decodeToken = urlEncodedString => {
 export const getDecodedJwt = () => {
     const jwtCookie = getCookie("jwt");
     if(jwtCookie === undefined || "" === jwtCookie) {
-        console.log("Could not get jwt cookie. Please log in and try again.")
         return ""
     }
     return decodeToken(jwtCookie);

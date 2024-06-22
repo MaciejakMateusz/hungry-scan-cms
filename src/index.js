@@ -10,9 +10,7 @@ const App = () => <Router />
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <I18nextProvider i18n={i18n}>
-        <React.StrictMode>
             <App/>
-        </React.StrictMode>
     </I18nextProvider>
 );
 

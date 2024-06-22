@@ -22,6 +22,7 @@ export const PrivateRoutes = () => {
                 setIsAuthorized(true);
             } else {
                 setIsLoading(false)
+                setIsAuthorized(false)
             }
         });
     }, [location.pathname]);
