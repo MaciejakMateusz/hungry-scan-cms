@@ -459,25 +459,31 @@ ul {
     font-size: 0.9rem;
     font-weight: 400;
     cursor: pointer;
-    margin-right: 20px;
-}
-
-.add-new-button.cancel {
-    background: #FFF;
-    color: #33353E;
-}
-
-.add-new-button.submit {
     padding-left: 20px;
     padding-right: 20px;
 }
 
+.add-new-button.cancel {
+    background: rgb(255, 255, 255, 0);
+    color: #33353E;
+}
+
+.add-new-button.submit {
+    margin-right: 20px;
+}
+
+.add-new-button.submit-additions {
+    margin-right: 0;
+}
+
 .new-category {
     width: 173px;
+    margin-right: 8px;
 }
 
 .new-dish {
     width: 143px;
+    margin-right: 9px;
 }
 
 .search-initial-circle {
@@ -495,7 +501,7 @@ ul {
 }
 
 .add-new-button.cancel:hover {
-    background: #FFF;
+    background: rgb(255, 255, 255, 0);
 }
 
 .search-button {
@@ -508,6 +514,10 @@ ul {
     border-radius: 100px;
     background: #3E424C;
     transition: width 0.5s ease;
+}
+
+.search-button.ingredients {
+    margin-right: 10px;
 }
 
 .search-active {
@@ -820,6 +830,17 @@ ul {
     align-items: center;
 }
 
+.form-field.advanced-view {
+    height: 40px;
+    text-align: center;
+    background-color: #FFF;
+    cursor: pointer;
+}
+
+.form-field.advanced-view:hover {
+    background-color: #F8F8F8;
+}
+
 .form-field::placeholder {
     color: #222;
 }
@@ -932,6 +953,150 @@ ul {
     z-index: 9999;
 }
 
+.dish-additions-container {
+    padding: 77px 115px 30px 60px;
+    height: 85.5vh;
+}
+
+.dish-additions-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 100%;
+}
+
+.dish-additions-left-panel {
+    border-radius: 10px;
+    background-color: #989FC008;
+    grid-column: 1;
+    margin-right: 10px;
+}
+
+.ingredients-list {
+    overflow-y: scroll;
+    height: 67vh;
+    margin-bottom: 0;
+}
+
+.dish-additions-right-panel {
+    border-radius: 10px;
+    background-color: #33353E08;
+    grid-column: 2;
+    margin-left: 10px;
+}
+
+.ingredients-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 20px 14px;
+}
+
+.ingredients-label {
+    width: 100%;
+    height: 35px;
+    border-radius: 100px;
+    background: #3E424C;
+    color: #FFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.chosen-additions-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 20px 14px;
+}
+
+.chosen-additions-label {
+    width: 249px;
+    height: 35px;
+    border-radius: 100px;
+    background: #3E424C;
+    color: #FFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ingredient-wrapper {
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.ingredient-container {
+    border-radius: 100px;
+    background-color: #FFF;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-right: 10px;
+}
+
+.move-ingredient-btn {
+    cursor: pointer;
+    width: 35px;
+    height: 35px;
+    border-radius: 100%;
+    border: 0;
+    background-color: #FFF;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.move-ingredient-btn:hover {
+    background-color: #3E424C;
+    color: #FFF;
+}
+
+.ingredient-name {
+    margin-left: 15px;
+}
+
+.ingredient-price {
+    margin-right: 15px;
+}
+
+.text-center {
+    padding-top: 10px;
+    text-align: center;
+}
+
+.pagination-footer {
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pagination-button {
+    cursor: pointer;
+    border: 0;
+    background-color: rgba(152, 159, 192, 0.00);
+    margin-right: 4px;
+    border-radius: 5px;
+}
+
+.pagination-button:hover, .pagination-button.active {
+    border: 0;
+    background-color: #3E424C;
+    color: #FFF;
+    margin-right: 4px;
+    border-radius: 5px;
+}
+
+.pagination-total {
+    font-size: 0.8rem;
+}
+
 @media (max-width: 1240px) {
     .dishes-wrapper {
         grid-template-columns: 1fr;
@@ -943,5 +1108,13 @@ ul {
 
     .form {
         grid-template-columns: 1fr;
+    }
+
+    .dish-additions-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dish-additions-right-panel {
+        grid-column: 1;
     }
 }

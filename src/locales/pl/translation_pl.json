@@ -47,5 +47,8 @@
   "noDishes": "Brak dodanych dań",
   "errorOccurred": "Wystąpił błąd",
   "close": "Zamknij",
-  "errorSummary": "Szczegóły"
+  "errorSummary": "Szczegóły",
+  "noChosenIngr": "Brak wybranych dodatków",
+  "chosen": "Wybrane",
+  "allIngredients": "Wszystkie dodatki"
 }

@@ -46,5 +46,8 @@
   "noDishes": "There is no added dishes",
   "errorOccurred": "An error occurred",
   "close": "Close",
-  "errorSummary": "Details"
+  "errorSummary": "Details",
+  "noChosenIngr": "No chosen ingredients",
+  "chosen": "Chosen",
+  "allIngredients": "All ingredients"
 }
