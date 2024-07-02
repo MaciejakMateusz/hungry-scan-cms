@@ -11,16 +11,18 @@ export const NewDishForm = ({setMenuItemFormActive, setIsSubmittedSuccessfully, 
     const [errorData, setErrorData] = useState({})
     const [chosenCategory, setChosenCategory] = useState(null);
     const [chosenAdditions, setChosenAdditions] = useState([]);
+    const [chosenLabels, setChosenLabels] = useState([]);
+    const [chosenAllergens, setChosenAllergens] = useState([]);
     const [labels, setLabels] = useState([]);
     const [allergens, setAllergens] = useState([]);
     const [file, setFile] = useState(null);
+    const [fileName, setFileName] = useState('Nie wybrano pliku')
     const [isAdditionsViewActive, setIsAdditionsViewActive] = useState(false);
     const [form, setForm] = useState({
             'category': t('choose'),
             'displayOrder': 0,
             'banner': '',
             'name': '',
-            'labels': [],
             'description': '',
             'allergens': [],
             'variants': [],
@@ -85,7 +87,7 @@ export const NewDishForm = ({setMenuItemFormActive, setIsSubmittedSuccessfully, 
     }, [displayOrders]);
 
     const handleInputChange = (e) => {
-        const { name, value, options } = e.target;
+        const {name, value, options} = e.target;
         if (name === "labels" || name === "allergens" || name === "additionalIngredients") {
             const selectedIds = Array.from(options)
                 .filter(option => option.selected)
@@ -112,8 +114,16 @@ export const NewDishForm = ({setMenuItemFormActive, setIsSubmittedSuccessfully, 
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
+        if (file) {
+            setFileName(file.name);
+        }
         setFile(file);
     };
+
+    const removeFile = () => {
+        setFile(null);
+        setFileName('Nie wybrano pliku');
+    }
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
@@ -122,7 +132,6 @@ export const NewDishForm = ({setMenuItemFormActive, setIsSubmittedSuccessfully, 
             if (!file) {
                 return;
             }
-            console.log(file)
 
             const formData = new FormData();
             formData.append("file", file);
@@ -152,7 +161,7 @@ export const NewDishForm = ({setMenuItemFormActive, setIsSubmittedSuccessfully, 
                     defaultTranslation: form.name,
                     translationEn: ''
                 },
-                labels: form.labels,
+                labels: chosenLabels,
                 description: {
                     defaultTranslation: form.description,
                     translationEn: ''
@@ -207,217 +216,250 @@ export const NewDishForm = ({setMenuItemFormActive, setIsSubmittedSuccessfully, 
         setDisplayOrders(selectedCategory.menuItems.map(menuItem => menuItem.displayOrder));
     }
 
+    const handleLabelsChange = label => {
+        const chosenLabelsIds = chosenLabels.map(l => l.id)
+        if (chosenLabelsIds.includes(label.id)) {
+            setChosenLabels(chosenLabels.filter(l => l.id !== label.id))
+            return;
+        }
+        setChosenLabels(prevState => [...prevState, label])
+    }
+
+    const handleAllergensChange = allergen => {
+        const chosenAllergensId = chosenAllergens.map(a => a.id)
+        if (chosenAllergensId.includes(allergen.id)) {
+            setChosenAllergens(chosenAllergens.filter(a => a.id !== allergen.id))
+            return;
+        }
+        setChosenAllergens(prevState => [...prevState, allergen])
+    }
+
+    const getIconPath = (obj, type) => {
+        let isChosen;
+        if (type === 'label') {
+            isChosen = chosenLabels.some(l => l.id === obj.id);
+        } else if (type === 'allergen') {
+            isChosen = chosenAllergens.some(a => a.id === obj.id);
+        }
+        return `${process.env.PUBLIC_URL}/theme/icons/${isChosen ? '' : 'inactive-'}${obj.iconName}`;
+    };
+
     return (
         isAdditionsViewActive ? <DishAdditionsView
-                    setAdditions={setChosenAdditions}
-                    chosenAdditions={chosenAdditions}
-                    isActive={setIsAdditionsViewActive}/> :
-                <form onSubmit={handleFormSubmit}
-                      className="form-container">
-                    <div className="form-grid">
-                        <div className="form-header">
-                            <div className="category-form-title">{t('createNewDish')}</div>
-                            <div className="category-form-top-buttons">
-                                <button className="add-new-button cancel"
-                                        onClick={() => setMenuItemFormActive(false)}>
-                                    {t('cancel')}
-                                </button>
-                                <button className="add-new-button submit"
-                                        onClick={handleFormSubmit}>
-                                    {t('save')}
-                                </button>
-                            </div>
-                        </div>
-                        <div className="form-wrapper">
-                            <div className="form">
-                                <div className="form-field-container">
-                                    <label htmlFor="category" className="form-label">
-                                        {t('category')}:
-                                    </label>
-                                    <select id="dish-category"
-                                            name="category"
-                                            className="form-field select"
-                                            value={form.category}
-                                            onChange={(e) => {
-                                                handleInputChange(e);
-                                                handleReadOnlyFields(e)
-                                            }}>
-                                        <option className="form-select-option" value={0}>
-                                            {t('choose')}
-                                        </option>
-                                        {categories.map(category => (
-                                            <option className="form-select-option"
-                                                    key={category.id}
-                                                    value={category.id}>
-                                                {getTranslation(category.name)}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div className="form-field-container">
-                                    <label htmlFor="dish-price" className="form-label">
-                                        {t('price')}:
-                                    </label>
-                                    <input type="number"
-                                           id="dish-price"
-                                           min="0.00"
-                                           step="0.01"
-                                           placeholder="0.00"
-                                           name="price"
-                                           className="form-field select"
-                                           value={form.price}
-                                           onChange={handleInputChange}/>
-                                </div>
-                                <div className="form-field-container">
-                                    <label htmlFor="category-display-order" className="form-label">
-                                        {t('displayOrder')}:
-                                    </label>
-                                    <select id="category-display-order"
-                                            name="displayOrder"
-                                            className="form-field select"
-                                            disabled={!chosenCategory}
-                                            value={form.displayOrder}
-                                            onChange={handleInputChange}>
-                                        {displayOrders.map(displayOrder => (
-                                            <option className="form-select-option"
-                                                    key={displayOrder}
-                                                    value={displayOrder}>
-                                                {displayOrder}
-                                            </option>
-                                        ))}
-                                        <option value={displayOrders.length + 1}>
-                                            {displayOrders.length + 1}
-                                        </option>
-                                    </select>
-                                </div>
-                                <div className="form-field-container">
-                                    <label htmlFor="dish-image" className="form-label">
-                                        {t('image')}:
-                                    </label>
-                                    <div className="form-field file">
-                                        <input type="file"
-                                               id="dish-image"
-                                               name="imageName"
-                                               onChange={handleFileChange}
-                                               accept=".png"/>
-                                    </div>
-                                </div>
-                                <div className="form-field-container">
-                                    <label htmlFor="banner" className="form-label">
-                                        {t('banner')} <span className="form-optional">{t('optional')}:</span>
-                                    </label>
-                                    <select id="banner"
-                                            name="banner"
-                                            className="form-field select"
-                                            value={form.banner}
-                                            onChange={handleInputChange}>
-                                        <option value={t('choose')}>
-                                            {t('choose')}
-                                        </option>
-                                        <option value={t('isNew')}>
-                                            {t('isNew')}
-                                        </option>
-                                        <option value={t('isBestseller')}>
-                                            {t('isBestseller')}
-                                        </option>
-                                    </select>
-                                </div>
-                                <div className="form-field-container">
-                                    <label htmlFor="category-available" className="form-label">
-                                        {t('availability')}:
-                                    </label>
-                                    <select id="category-available"
-                                            className="form-field select"
-                                            name="available"
-                                            value={form.available}
-                                            onChange={handleInputChange}>
-                                        <option value={true}>
-                                            {t('availableDish')}
-                                        </option>
-                                        <option value={false}>
-                                            {t('unavailableDish')}
-                                        </option>
-                                    </select>
-                                </div>
-                                <div className="form-field-container">
-                                    <label htmlFor="dish-name" className="form-label">
-                                        {t('name')}:
-                                    </label>
-                                    <textarea
-                                        className="form-field name"
-                                        id="dish-name"
-                                        name="name"
-                                        value={form.name}
-                                        onChange={handleInputChange}
-                                        placeholder={`${t('name')}...`}/>
-                                </div>
-                                <div className="form-field-container">
-                                    <label htmlFor="dish-label" className="form-label">
-                                        {t('labels')} <span className="form-optional">{t('optional')}:</span>
-                                    </label>
-                                    <select id="dish-label"
-                                            name="labels"
-                                            className="form-field select"
-                                            multiple={true}
-                                            value={form.labels.map(label => label.id)}
-                                            onChange={handleInputChange}>
-                                        {labels.map(label => (
-                                            <option className="form-select-option"
-                                                    key={label.id}
-                                                    value={label.id}>
-                                                {getTranslation(label.name)}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div className="form-field-container">
-                                    <label htmlFor="dish-description" className="form-label">
-                                        {t('description')}:
-                                    </label>
-                                    <textarea
-                                        className="form-field description"
-                                        id="dish-description"
-                                        name="description"
-                                        value={form.description}
-                                        onChange={handleInputChange}
-                                        placeholder={`${t('type')}`}/>
-                                </div>
-                                <div className="form-field-container">
-                                    <label htmlFor="dish-allergen" className="form-label">
-                                        {t('allergens')} <span className="form-optional">{t('optional')}:</span>
-                                    </label>
-                                    <select id="dish-allergen"
-                                            name="allergens"
-                                            className="form-field multiple-select"
-                                            multiple={true}
-                                            value={form.allergens.map(allergen => allergen.id)}
-                                            onChange={handleInputChange}>
-                                        {allergens.map(allergen => (
-                                            <option className="form-select-option"
-                                                    key={allergen.id}
-                                                    value={allergen.id}>
-                                                {getTranslation(allergen.name)}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div className="form-field-container">
-                                    <label htmlFor="dish-allergen" className="form-label">
-                                        {t('additions')} <span className="form-optional">{t('optional')}:</span>
-                                    </label>
-                                    <button id="dish-addition"
-                                            className="form-field advanced-view"
-                                            onClick={() => setIsAdditionsViewActive(true)}>
-                                        {chosenAdditions.length === 0 ?
-                                            <span>{t('choose')}</span> :
-                                            <span>Wybrano ({chosenAdditions.length})</span>}
-                                        {}
-                                    </button>
-                                </div>
-                                {errorData.name && <span className="validation-msg">{errorData.name}</span>}
-                            </div>
+                setAdditions={setChosenAdditions}
+                chosenAdditions={chosenAdditions}
+                isActive={setIsAdditionsViewActive}/> :
+            <form onSubmit={handleFormSubmit}
+                  className="form-container">
+                <div className="form-grid">
+                    <div className="form-header">
+                        <div className="category-form-title">{t('createNewDish')}</div>
+                        <div className="category-form-top-buttons">
+                            <button className="add-new-button cancel"
+                                    onClick={() => setMenuItemFormActive(false)}>
+                                {t('cancel')}
+                            </button>
+                            <button className="add-new-button submit"
+                                    onClick={handleFormSubmit}>
+                                {t('save')}
+                            </button>
                         </div>
                     </div>
-                </form>
+                    <div className="form-wrapper">
+                        <div className="form">
+                            <div className="form-field-container">
+                                <label htmlFor="category" className="form-label">
+                                    {t('category')}:
+                                </label>
+                                <select id="dish-category"
+                                        name="category"
+                                        className="form-field select"
+                                        value={form.category}
+                                        onChange={(e) => {
+                                            handleInputChange(e);
+                                            handleReadOnlyFields(e)
+                                        }}>
+                                    <option className="form-select-option" value={0}>
+                                        {t('choose')}
+                                    </option>
+                                    {categories.map(category => (
+                                        <option className="form-select-option"
+                                                key={category.id}
+                                                value={category.id}>
+                                            {getTranslation(category.name)}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="form-field-container">
+                                <label htmlFor="dish-price" className="form-label">
+                                    {t('price')}:
+                                </label>
+                                <input type="number"
+                                       id="dish-price"
+                                       min="0.00"
+                                       step="0.01"
+                                       placeholder="0.00"
+                                       name="price"
+                                       className="form-field select"
+                                       value={form.price}
+                                       onChange={handleInputChange}/>
+                            </div>
+                            <div className="form-field-container">
+                                <label htmlFor="category-display-order" className="form-label">
+                                    {t('displayOrder')}:
+                                </label>
+                                <select id="category-display-order"
+                                        name="displayOrder"
+                                        className="form-field select"
+                                        disabled={!chosenCategory}
+                                        value={form.displayOrder}
+                                        onChange={handleInputChange}>
+                                    {displayOrders.map(displayOrder => (
+                                        <option className="form-select-option"
+                                                key={displayOrder}
+                                                value={displayOrder}>
+                                            {displayOrder}
+                                        </option>
+                                    ))}
+                                    <option value={displayOrders.length + 1}>
+                                        {displayOrders.length + 1}
+                                    </option>
+                                </select>
+                            </div>
+                            <div className="form-field-container">
+                                <label htmlFor="dish-image" className="form-label">
+                                    {t('image')}:
+                                </label>
+                                <div className="custom-file-upload">
+                                    {file === null ? (
+                                            <>
+                                                <label htmlFor="dish-image"
+                                                       className="custom-file-upload label">
+                                                    Wybierz plik
+                                                </label>
+                                                <input
+                                                    type="file"
+                                                    id="dish-image"
+                                                    name="imageName"
+                                                    onChange={handleFileChange}
+                                                    accept=".png"
+                                                    className="file-input"/>
+                                            </>
+                                        ) :
+                                        <label htmlFor="dish-image"
+                                               className="custom-file-upload label"
+                                               onClick={removeFile}>
+                                            Wyczyść
+                                        </label>}
+                                    <span className="file-name" id="file-name">{fileName}</span>
+                                </div>
+                            </div>
+                            <div className="form-field-container">
+                                <label htmlFor="banner" className="form-label">
+                                    {t('banner')} <span className="form-optional">{t('optional')}:</span>
+                                </label>
+                                <select id="banner"
+                                        name="banner"
+                                        className="form-field select"
+                                        value={form.banner}
+                                        onChange={handleInputChange}>
+                                    <option value={t('choose')}>
+                                        {t('choose')}
+                                    </option>
+                                    <option value={t('isNew')}>
+                                        {t('isNew')}
+                                    </option>
+                                    <option value={t('isBestseller')}>
+                                        {t('isBestseller')}
+                                    </option>
+                                </select>
+                            </div>
+                            <div className="form-field-container">
+                                <label htmlFor="category-available" className="form-label">
+                                    {t('availability')}:
+                                </label>
+                                <select id="category-available"
+                                        className="form-field select"
+                                        name="available"
+                                        value={form.available}
+                                        onChange={handleInputChange}>
+                                    <option value={true}>
+                                        {t('availableDish')}
+                                    </option>
+                                    <option value={false}>
+                                        {t('unavailableDish')}
+                                    </option>
+                                </select>
+                            </div>
+                            <div className="form-field-container">
+                                <label htmlFor="dish-name" className="form-label">
+                                    {t('name')}:
+                                </label>
+                                <textarea
+                                    className="form-field name"
+                                    id="dish-name"
+                                    name="name"
+                                    value={form.name}
+                                    onChange={handleInputChange}
+                                    placeholder={`${t('name')}...`}/>
+                            </div>
+                            <div className="form-field-container">
+                                <label htmlFor="dish-label" className="form-label">
+                                    {t('labels')} <span className="form-optional">{t('optional')}:</span>
+                                </label>
+                                <div className="form-field labels" id="dish-label">
+                                    {labels.map(label => (
+                                        <img key={label.id}
+                                             className="selectable-icon"
+                                             src={getIconPath(label, 'label')}
+                                             alt={label.iconName}
+                                             onClick={() => handleLabelsChange(label)}/>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="form-field-container">
+                                <label htmlFor="dish-description" className="form-label">
+                                    {t('description')}:
+                                </label>
+                                <textarea
+                                    className="form-field description"
+                                    id="dish-description"
+                                    name="description"
+                                    value={form.description}
+                                    onChange={handleInputChange}
+                                    placeholder={`${t('type')}`}/>
+                            </div>
+                            <div className="form-field-container">
+                                <label htmlFor="dish-allergen" className="form-label">
+                                    {t('allergens')} <span className="form-optional">{t('optional')}:</span>
+                                </label>
+                                <div className="form-field allergens" id="dish-allergen">
+                                    {allergens.map(allergen => (
+                                        <img key={allergen.id}
+                                             className="selectable-icon allergen"
+                                             src={getIconPath(allergen, 'allergen')}
+                                             alt={allergen.iconName}
+                                             onClick={() => handleAllergensChange(allergen)}/>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="form-field-container">
+                                <label htmlFor="dish-allergen" className="form-label">
+                                    {t('additions')} <span className="form-optional">{t('optional')}:</span>
+                                </label>
+                                <button id="dish-addition"
+                                        className="form-field advanced-view"
+                                        onClick={() => setIsAdditionsViewActive(true)}>
+                                    {chosenAdditions.length === 0 ?
+                                        <span>{t('choose')}</span> :
+                                        <span>Wybrano ({chosenAdditions.length})</span>}
+                                </button>
+                            </div>
+                            {errorData.name && <span className="validation-msg">{errorData.name}</span>}
+                        </div>
+                    </div>
+                </div>
+            </form>
     );
 }
