@@ -50,5 +50,7 @@
   "errorSummary": "Szczegóły",
   "noChosenIngr": "Brak wybranych dodatków",
   "chosen": "Wybrane",
-  "allIngredients": "Wszystkie dodatki"
+  "allIngredients": "Wszystkie dodatki",
+  "noCategoryChosen": "Brak wybranej kategorii",
+  "noFileChosen": "Nie wybrano pliku"
 }

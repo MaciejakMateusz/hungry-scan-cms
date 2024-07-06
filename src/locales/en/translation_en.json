@@ -49,5 +49,7 @@
   "errorSummary": "Details",
   "noChosenIngr": "No chosen ingredients",
   "chosen": "Chosen",
-  "allIngredients": "All ingredients"
+  "allIngredients": "All ingredients",
+  "noCategoryChosen": "No category is chosen",
+  "noFileChosen": "No file chosen"
 }

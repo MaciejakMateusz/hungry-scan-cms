@@ -34,7 +34,6 @@ export const DishAdditionsView = ({setAdditions, chosenAdditions, isActive}) => 
                 throw new Error("There was an error while communicating with a server.");
             }
         }).then(pageData => {
-            console.log(pageData)
             const chosenIds = chosenAdditions.map(ingredient => ingredient.id);
             const filteredIngredients = pageData.content.filter(ingredient => !chosenIds.includes(ingredient.id));
             setIngredients(filteredIngredients);

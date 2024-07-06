@@ -814,9 +814,9 @@ ul {
     padding: 10px;
 }
 
-.form-field.select {
+.form-field.price {
     height: 40px;
-    text-align: center;
+    padding-left: 10px;
 }
 
 .form-field.multiple-select {
@@ -867,9 +867,10 @@ ul {
 
 .form-field.advanced-view {
     height: 40px;
-    text-align: center;
+    text-align: left;
     background-color: #FFF;
     cursor: pointer;
+    padding-left: 10px;
 }
 
 .form-field.advanced-view:hover {
@@ -903,7 +904,7 @@ ul {
 }
 
 .form-label {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     margin-right: 20px;
     margin-top: 9px;
 }
