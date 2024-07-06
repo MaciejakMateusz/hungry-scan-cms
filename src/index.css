@@ -782,7 +782,7 @@ ul {
 
 .form-field-wrapper {
     display: flex;
-    justify-content: center;
+    justify-content: right;
 }
 
 .form-field-container {
@@ -919,7 +919,7 @@ ul {
 
 .confirmation-dialog {
     position: absolute;
-    top: 4.5rem;
+    top: 17px;
     right: 17px;
     background-color: #93D38D;
     padding: 12px;

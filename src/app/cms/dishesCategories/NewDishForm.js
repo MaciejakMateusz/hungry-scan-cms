@@ -4,7 +4,15 @@ import {getDecodedJwt} from "../../../utils";
 import {useTranslation} from "react-i18next";
 import {getTranslation} from "../../../locales/langUtils";
 import {DishAdditionsView} from "./DishAdditionsView";
-import {CustomSelect} from "../../customForm/CustomSelect";
+import {CustomSelect} from "./formComponents/CustomSelect";
+import {NameField} from "./formComponents/NameField";
+import {FormHeader} from "./formComponents/FormHeader";
+import {PriceField} from "./formComponents/PriceField";
+import {FileUploadField} from "./formComponents/FileUploadField";
+import {LabelsMultiselect} from "./formComponents/LabelsMultiselect";
+import {DescriptionField} from "./formComponents/DescriptionField";
+import {AllergensMultiselect} from "./formComponents/AllergensMultiselect";
+import {AdditionalIngredientsMultiselect} from "./formComponents/AdditionalIngredientsMultiselect";
 
 export const NewDishForm = ({setMenuItemFormActive, setIsSubmittedSuccessfully, categories}) => {
     const {t} = useTranslation();
@@ -301,188 +309,77 @@ export const NewDishForm = ({setMenuItemFormActive, setIsSubmittedSuccessfully, 
             <form onSubmit={handleFormSubmit}
                   className="form-container">
                 <div className="form-grid">
-                    <div className="form-header">
-                        <div className="category-form-title">{t('createNewDish')}</div>
-                        <div className="category-form-top-buttons">
-                            <button className="add-new-button cancel"
-                                    onClick={() => setMenuItemFormActive(false)}>
-                                {t('cancel')}
-                            </button>
-                            <button className="add-new-button submit"
-                                    onClick={handleFormSubmit}>
-                                {t('save')}
-                            </button>
-                        </div>
-                    </div>
+                    <FormHeader headerTitle={t('createNewDish')}
+                                onAdd={() => setMenuItemFormActive(false)}
+                                onCancel={handleFormSubmit}/>
                     <div className="form-wrapper">
                         <div className="form">
-                            <div className="form-field-container">
-                                <label htmlFor="dish-category" className="form-label">
-                                    {t('category')}:
-                                </label>
-                                <CustomSelect id={"dish-category"}
-                                              name={"category"}
-                                              value={chosenCategory}
-                                              options={categories.map(category => {
-                                                  return {value: category, label: getTranslation(category.name)}
-                                              })}
-                                              placeholder={t('choose')}
-                                              onChange={(selectedOption) => handleCategoryChange(selectedOption)}
-                                />
-                            </div>
-                            <div className="form-field-container">
-                                <label htmlFor="dish-price" className="form-label">
-                                    {t('price')}:
-                                </label>
-                                <input type="number"
-                                       id="dish-price"
-                                       min="0.00"
-                                       step="0.01"
-                                       placeholder="0.00"
-                                       name="price"
-                                       className="form-field price"
-                                       value={form.price}
-                                       onChange={handleInputChange}/>
-                            </div>
-                            <div className="form-field-container">
-                                <label htmlFor="category-display-order" className="form-label">
-                                    {t('displayOrder')}:
-                                </label>
-                                <CustomSelect id={"category-display-order"}
-                                              name={"displayOrder"}
-                                              isDisabled={!chosenCategory}
-                                              value={form.displayOrder}
-                                              onChange={handleDisplayOrderChange}
-                                              placeholder={chosenCategory ? t('choose') : t('noCategoryChosen')}
-                                              options={displayOrders.map(displayOrder => {
-                                                  return {value: displayOrder, label: displayOrder}
-                                              })}
-                                />
-                            </div>
-                            <div className="form-field-container">
-                                <label htmlFor="dish-image" className="form-label">
-                                    {t('image')}:
-                                </label>
-                                <div className="custom-file-upload">
-                                    {file === null ? (
-                                            <>
-                                                <label htmlFor="dish-image"
-                                                       className="custom-file-upload label">
-                                                    Wybierz plik
-                                                </label>
-                                                <input
-                                                    type="file"
-                                                    id="dish-image"
-                                                    name="imageName"
-                                                    onChange={handleFileChange}
-                                                    accept=".png"
-                                                    className="file-input"/>
-                                            </>
-                                        ) :
-                                        <label htmlFor="dish-image"
-                                               className="custom-file-upload label"
-                                               onClick={removeFile}>
-                                            Wyczyść
-                                        </label>}
-                                    <span className="file-name" id="file-name">{fileName}</span>
-                                </div>
-                            </div>
-                            <div className="form-field-container">
-                                <label htmlFor="dish-banner" className="form-label">
-                                    {t('banner')} <span className="form-optional">{t('optional')}:</span>
-                                </label>
-                                <CustomSelect
-                                    id={"dish-banner"}
-                                    name={"banner"}
-                                    value={form.banner}
-                                    onChange={handleBannersChange}
-                                    placeholder={t('choose')}
-                                    isClearable={true}
-                                    options={[
-                                        {value: t('isNew'), label: t('isNew')},
-                                        {value: t('isBestseller'), label: t('isBestseller')}
-                                    ]}
-                                />
-                            </div>
-                            <div className="form-field-container">
-                                <label htmlFor="category-available" className="form-label">
-                                    {t('availability')}:
-                                </label>
-                                <CustomSelect
-                                    id={"category-available"}
-                                    name={"available"}
-                                    value={form.available}
-                                    onChange={handleAvailableChange}
-                                    options={[
-                                        {value: true, label: t('availableDish')},
-                                        {value: false, label: t('unavailableDish')}
-                                    ]}
-                                />
-                            </div>
-                            <div className="form-field-container">
-                                <label htmlFor="dish-name" className="form-label">
-                                    {t('name')}:
-                                </label>
-                                <textarea
-                                    className="form-field name"
-                                    id="dish-name"
-                                    name="name"
-                                    value={form.name}
-                                    onChange={handleInputChange}
-                                    placeholder={`${t('name')}...`}/>
-                            </div>
-                            <div className="form-field-container">
-                                <label htmlFor="dish-label" className="form-label">
-                                    {t('labels')} <span className="form-optional">{t('optional')}:</span>
-                                </label>
-                                <div className="form-field labels" id="dish-label">
-                                    {labels.map(label => (
-                                        <img key={label.id}
-                                             className="selectable-icon"
-                                             src={getIconPath(label, 'label')}
-                                             alt={label.iconName}
-                                             onClick={() => handleLabelsChange(label)}/>
-                                    ))}
-                                </div>
-                            </div>
-                            <div className="form-field-container">
-                                <label htmlFor="dish-description" className="form-label">
-                                    {t('description')}:
-                                </label>
-                                <textarea
-                                    className="form-field description"
-                                    id="dish-description"
-                                    name="description"
-                                    value={form.description}
-                                    onChange={handleInputChange}
-                                    placeholder={`${t('type')}`}/>
-                            </div>
-                            <div className="form-field-container">
-                                <label htmlFor="dish-allergen" className="form-label">
-                                    {t('allergens')} <span className="form-optional">{t('optional')}:</span>
-                                </label>
-                                <div className="form-field allergens" id="dish-allergen">
-                                    {allergens.map(allergen => (
-                                        <img key={allergen.id}
-                                             className="selectable-icon allergen"
-                                             src={getIconPath(allergen, 'allergen')}
-                                             alt={allergen.iconName}
-                                             onClick={() => handleAllergensChange(allergen)}/>
-                                    ))}
-                                </div>
-                            </div>
-                            <div className="form-field-container">
-                                <label htmlFor="dish-allergen" className="form-label">
-                                    {t('additions')} <span className="form-optional">{t('optional')}:</span>
-                                </label>
-                                <button id="dish-addition"
-                                        className="form-field advanced-view"
-                                        onClick={() => setIsAdditionsViewActive(true)}>
-                                    {chosenAdditions.length === 0 ?
-                                        <span>{t('choose')}</span> :
-                                        <span>Wybrano ({chosenAdditions.length})</span>}
-                                </button>
-                            </div>
+                            <CustomSelect id={"dish-category"}
+                                          name={"category"}
+                                          labelName={t('category')}
+                                          value={chosenCategory}
+                                          options={categories.map(category => {
+                                              return {value: category, label: getTranslation(category.name)}
+                                          })}
+                                          placeholder={t('choose')}
+                                          onChange={(selectedOption) => handleCategoryChange(selectedOption)}
+                            />
+                            <PriceField id={'dish-price'}
+                                        form={form}
+                                        onChange={handleInputChange}/>
+                            <CustomSelect id={"category-display-order"}
+                                          name={"displayOrder"}
+                                          labelName={t('displayOrder')}
+                                          isDisabled={!chosenCategory}
+                                          value={form.displayOrder}
+                                          onChange={handleDisplayOrderChange}
+                                          placeholder={chosenCategory ? t('choose') : t('noCategoryChosen')}
+                                          options={displayOrders.map(displayOrder => {
+                                              return {value: displayOrder, label: displayOrder}
+                                          })}
+                            />
+                            <FileUploadField file={file}
+                                             onChange={handleFileChange}
+                                             onClick={removeFile}
+                                             fileName={fileName}/>
+                            <CustomSelect
+                                id={"dish-banner"}
+                                name={"banner"}
+                                labelName={t('banner')}
+                                isOptional={true}
+                                value={form.banner}
+                                onChange={handleBannersChange}
+                                placeholder={t('choose')}
+                                isClearable={true}
+                                options={[
+                                    {value: t('isNew'), label: t('isNew')},
+                                    {value: t('isBestseller'), label: t('isBestseller')}
+                                ]}
+                            />
+                            <CustomSelect
+                                id={"category-available"}
+                                name={"available"}
+                                labelName={t('availability')}
+                                value={form.available}
+                                onChange={handleAvailableChange}
+                                options={[
+                                    {value: true, label: t('availableDish')},
+                                    {value: false, label: t('unavailableDish')}
+                                ]}
+                            />
+                            <NameField id={"category-name"}
+                                       value={form.name}
+                                       onChange={handleInputChange}
+                            />
+                            <LabelsMultiselect labels={labels}
+                                               iconPath={getIconPath}
+                                               onClick={handleLabelsChange}/>
+                            <DescriptionField form={form} onChange={handleInputChange}/>
+                            <AllergensMultiselect allergens={allergens}
+                                                  iconPath={getIconPath}
+                                                  onClick={handleAllergensChange}/>
+                            <AdditionalIngredientsMultiselect onClick={setIsAdditionsViewActive}
+                                                              chosenAdditions={chosenAdditions}/>
                             {errorData.name && <span className="validation-msg">{errorData.name}</span>}
                         </div>
                     </div>

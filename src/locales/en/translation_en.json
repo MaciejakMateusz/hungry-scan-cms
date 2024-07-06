@@ -17,6 +17,7 @@
   "newCategory": "New category",
   "newDish": "New dish",
   "createNewCategory": "Add new category",
+  "editCategory": "Edit category ",
   "createNewDish": "Add new dish",
   "cancel": "Cancel",
   "save": "Save",
@@ -48,9 +49,11 @@
   "close": "Close",
   "errorSummary": "Details",
   "noChosenIngr": "No chosen ingredients",
+  "chosenIngr": "Chosen",
   "chosen": "Chosen",
   "allIngredients": "All ingredients",
   "noCategoryChosen": "No category is chosen",
   "noFileChosen": "No file chosen",
-  "noOptionsMsg": "No available options"
+  "noOptionsMsg": "No available options",
+  "chooseFile": "Choose file"
 }

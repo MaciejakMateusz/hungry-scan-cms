@@ -3,6 +3,8 @@ import {apiHost} from "../../../apiData";
 import {getDecodedJwt} from "../../../utils";
 import {useTranslation} from "react-i18next";
 import {getCategoriesDisplayOrders} from "../../../apiUtils";
+import {FormHeader} from "./formComponents/FormHeader";
+import {CategoryFormTemplate} from "./formComponents/CategoryFormTemplate";
 
 export const NewCategoryForm = ({setCategoryFormActive, setIsSubmittedSuccessfully}) => {
     const {t} = useTranslation()
@@ -10,17 +12,21 @@ export const NewCategoryForm = ({setCategoryFormActive, setIsSubmittedSuccessful
     const [errorData, setErrorData] = useState({})
     const [form, setForm] = useState({
             'name': '',
-            'available': true,
-            'displayOrder': displayOrders.length + 1
+            'available': {value: true, label: t('availableCategory')},
+            'displayOrder': 0
         }
     );
 
     useEffect(() => {
         getCategoriesDisplayOrders().then(data => {
             setDisplayOrders(data)
+            const initialDisplayOrder = data.length + 1;
             setForm(prevForm => ({
                 ...prevForm,
-                displayOrder: data.length + 1
+                displayOrder: {
+                    value: initialDisplayOrder,
+                    label: initialDisplayOrder
+                }
             }));
         })
     }, []);
@@ -33,6 +39,13 @@ export const NewCategoryForm = ({setCategoryFormActive, setIsSubmittedSuccessful
         }));
     };
 
+    const handleSelectChange = (field) => (selected) => {
+        setForm(prevState => ({
+            ...prevState,
+            [field]: selected
+        }))
+    }
+
     const handleFormSubmit = (e) => {
         e.preventDefault();
 
@@ -41,8 +54,8 @@ export const NewCategoryForm = ({setCategoryFormActive, setIsSubmittedSuccessful
                 defaultTranslation: form.name,
                 translationEn: ''
             },
-            available: form.available,
-            displayOrder: form.displayOrder
+            available: form.available.value,
+            displayOrder: form.displayOrder.value
         });
 
         return fetch(`${apiHost}/api/cms/categories/add`, {
@@ -72,79 +85,15 @@ export const NewCategoryForm = ({setCategoryFormActive, setIsSubmittedSuccessful
         <form onSubmit={handleFormSubmit}
               className="form-container">
             <div className="form-grid">
-                <div className="form-header">
-                    <div className="category-form-title">{t('createNewCategory')}</div>
-                    <div className="category-form-top-buttons">
-                        <button className="add-new-button cancel"
-                                onClick={() => setCategoryFormActive(false)}>
-                            {t('cancel')}
-                        </button>
-                        <button className="add-new-button submit"
-                                onClick={handleFormSubmit}>
-                            {t('save')}
-                        </button>
-                    </div>
-                </div>
-                <div className="form-wrapper">
-                    <div className="form">
-                        <div className="form-field-wrapper">
-                            <div className="form-field-container">
-                                <label htmlFor="category-display-order" className="form-label">
-                                    {t('displayOrder')}:
-                                </label>
-                                <select id="category-display-order"
-                                        name="displayOrder"
-                                        className="form-field select"
-                                        value={form.displayOrder}
-                                        onChange={handleInputChange}>
-                                    {displayOrders.map(displayOrder => (
-                                        <option className="form-select-option"
-                                                key={displayOrder}
-                                                value={displayOrder}>
-                                            {displayOrder}
-                                        </option>
-                                    ))}
-                                    <option value={displayOrders.length + 1}>
-                                        {displayOrders.length + 1}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                        <div className="form-field-wrapper">
-                            <div className="form-field-container">
-                                <label htmlFor="category-available" className="form-label">
-                                    {t('availability')}:
-                                </label>
-                                <select id="category-available"
-                                        className="form-field select"
-                                        name="available"
-                                        value={form.available}
-                                        onChange={handleInputChange}>
-                                    <option value={true}>
-                                        {t('availableCategory')}
-                                    </option>
-                                    <option value={false}>
-                                        {t('unavailableCategory')}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                        <div className="form-field-wrapper">
-                            <div className="form-field-container">
-                                <label htmlFor="category-name" className="form-label">
-                                    {t('name')}:
-                                </label>
-                                <textarea className="form-field name"
-                                          id="category-name"
-                                          name="name"
-                                          value={form.name}
-                                          onChange={handleInputChange}
-                                          placeholder={t('categoryName')}/>
-                            </div>
-                        </div>
-                        {errorData.name && <span className="validation-msg">{errorData.name}</span>}
-                    </div>
-                </div>
+                <FormHeader headerTitle={t('createNewCategory')}
+                            onAdd={() => setCategoryFormActive(false)}
+                            onCancel={handleFormSubmit}/>
+                <CategoryFormTemplate form={form}
+                                      displayOrderChange={handleSelectChange('displayOrder')}
+                                      displayOrders={displayOrders}
+                                      availableChange={handleSelectChange('available')}
+                                      inputChange={handleInputChange}
+                                      errorData={errorData}/>
             </div>
         </form>
     );

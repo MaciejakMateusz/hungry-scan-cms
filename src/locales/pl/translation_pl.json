@@ -18,6 +18,7 @@
   "newCategory": "Nowa kategoria",
   "newDish": "Nowe danie",
   "createNewCategory": "Dodaj nową kategorię",
+  "editCategory": "Edytuj kategorię ",
   "createNewDish": "Dodaj nowe danie",
   "cancel": "Anuluj",
   "save": "Zapisz",
@@ -49,9 +50,11 @@
   "close": "Zamknij",
   "errorSummary": "Szczegóły",
   "noChosenIngr": "Brak wybranych dodatków",
+  "chosenIngr": "Wybrano",
   "chosen": "Wybrane",
   "allIngredients": "Wszystkie dodatki",
   "noCategoryChosen": "Brak wybranej kategorii",
   "noFileChosen": "Nie wybrano pliku",
-  "noOptionsMsg": "Brak dostępnych opcji"
+  "noOptionsMsg": "Brak dostępnych opcji",
+  "chooseFile": "Wybierz plik"
 }
