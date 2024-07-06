@@ -52,5 +52,6 @@
   "chosen": "Wybrane",
   "allIngredients": "Wszystkie dodatki",
   "noCategoryChosen": "Brak wybranej kategorii",
-  "noFileChosen": "Nie wybrano pliku"
+  "noFileChosen": "Nie wybrano pliku",
+  "noOptionsMsg": "Brak dostępnych opcji"
 }

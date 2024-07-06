@@ -48,6 +48,13 @@ export const customSelect = {
         ...provided,
         borderRadius: '8px',
     }),
+    noOptionsMessage: (provided) => ({
+        ...provided,
+        fontSize: '0.8rem',
+        color: '#888',
+        fontFamily: '"Lexend", sans-serif',
+        textAlign: 'left',
+    }),
     option: (provided, state) => ({
         ...provided,
         fontSize: '0.8rem',

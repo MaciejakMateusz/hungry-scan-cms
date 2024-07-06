@@ -4,13 +4,12 @@ import {getDecodedJwt} from "../../../utils";
 import {useTranslation} from "react-i18next";
 import {getTranslation} from "../../../locales/langUtils";
 import {DishAdditionsView} from "./DishAdditionsView";
-import Select from 'react-select'
-import {customSelect} from "../../../styles";
+import {CustomSelect} from "../../customForm/CustomSelect";
 
 export const NewDishForm = ({setMenuItemFormActive, setIsSubmittedSuccessfully, categories}) => {
-    const {t} = useTranslation()
-    const [displayOrders, setDisplayOrders] = useState([])
-    const [errorData, setErrorData] = useState({})
+    const {t} = useTranslation();
+    const [displayOrders, setDisplayOrders] = useState([]);
+    const [errorData, setErrorData] = useState({});
     const [chosenCategory, setChosenCategory] = useState(null);
     const [chosenAdditions, setChosenAdditions] = useState([]);
     const [chosenLabels, setChosenLabels] = useState([]);
@@ -77,15 +76,6 @@ export const NewDishForm = ({setMenuItemFormActive, setIsSubmittedSuccessfully, 
         fetchLabels()
         fetchAllergens()
     }, []);
-
-    useEffect(() => {
-        if (chosenCategory) {
-            setForm(prevForm => ({
-                ...prevForm,
-                displayOrder: displayOrders.length + 1
-            }));
-        }
-    }, [chosenCategory, displayOrders]);
 
     const handleInputChange = (e) => {
         const {name, value, options} = e.target;
@@ -212,10 +202,20 @@ export const NewDishForm = ({setMenuItemFormActive, setIsSubmittedSuccessfully, 
     };
 
     const handleCategoryChange = (selectedCategory) => {
+        console.log("Category changed:", selectedCategory);
+        const displayOrders = selectedCategory.value.menuItems.map(menuItem => menuItem.displayOrder);
+        const additional = displayOrders.length + 1;
+        setDisplayOrders([...displayOrders, additional]);
+
         if (selectedCategory) {
+            setChosenCategory(selectedCategory)
             setForm(prevForm => ({
                 ...prevForm,
-                category: selectedCategory
+                category: selectedCategory,
+                displayOrder: {
+                    value: additional,
+                    label: additional
+                }
             }));
         } else {
             setForm(prevForm => ({
@@ -223,21 +223,13 @@ export const NewDishForm = ({setMenuItemFormActive, setIsSubmittedSuccessfully, 
                 category: null,
                 displayOrder: null
             }));
-        }
-    };
-
-    const handleReadOnlyFields = (selectedOption) => {
-        if (selectedOption && selectedOption.value.id !== '0') {
-            const selectedCategory = categories.find(category => category.id === parseInt(selectedOption.value.id, 10));
-            setChosenCategory(selectedOption);
-            setDisplayOrders(selectedCategory.menuItems.map(menuItem => menuItem.displayOrder));
-        } else {
             setChosenCategory(null);
             setDisplayOrders([]);
         }
     };
 
     const handleDisplayOrderChange = (selectedDisplayOrder) => {
+        console.log("Display order changed:", selectedDisplayOrder);
         if (selectedDisplayOrder) {
             setForm(prevForm => ({
                 ...prevForm,
@@ -276,6 +268,7 @@ export const NewDishForm = ({setMenuItemFormActive, setIsSubmittedSuccessfully, 
         const chosenLabelsIds = chosenLabels.map(l => l.id)
         if (chosenLabelsIds.includes(label.id)) {
             setChosenLabels(chosenLabels.filter(l => l.id !== label.id))
+            console.log(chosenLabels.filter(l => l.id !== label.id))
             return;
         }
         setChosenLabels(prevState => [...prevState, label])
@@ -327,19 +320,14 @@ export const NewDishForm = ({setMenuItemFormActive, setIsSubmittedSuccessfully, 
                                 <label htmlFor="dish-category" className="form-label">
                                     {t('category')}:
                                 </label>
-                                <Select id="dish-category"
-                                        name="category"
-                                        styles={customSelect}
-                                        value={chosenCategory}
-                                        options={categories.map(category => {
-                                            return {value: category, label: getTranslation(category.name)}
-                                        })}
-                                        placeholder={t('choose')}
-                                        isClearable={true}
-                                        onChange={(selectedOption) => {
-                                            handleCategoryChange(selectedOption);
-                                            handleReadOnlyFields(selectedOption);
-                                        }}
+                                <CustomSelect id={"dish-category"}
+                                              name={"category"}
+                                              value={chosenCategory}
+                                              options={categories.map(category => {
+                                                  return {value: category, label: getTranslation(category.name)}
+                                              })}
+                                              placeholder={t('choose')}
+                                              onChange={(selectedOption) => handleCategoryChange(selectedOption)}
                                 />
                             </div>
                             <div className="form-field-container">
@@ -360,17 +348,15 @@ export const NewDishForm = ({setMenuItemFormActive, setIsSubmittedSuccessfully, 
                                 <label htmlFor="category-display-order" className="form-label">
                                     {t('displayOrder')}:
                                 </label>
-                                <Select id="category-display-order"
-                                        name="displayOrder"
-                                        styles={customSelect}
-                                        isDisabled={!chosenCategory}
-                                        value={form.displayOrder}
-                                        onChange={handleDisplayOrderChange}
-                                        placeholder={chosenCategory ? t('choose') : t('noCategoryChosen')}
-                                        isClearable={true}
-                                        options={displayOrders.map(displayOrder => {
-                                            return {value: displayOrder, label: displayOrder}
-                                        })}
+                                <CustomSelect id={"category-display-order"}
+                                              name={"displayOrder"}
+                                              isDisabled={!chosenCategory}
+                                              value={form.displayOrder}
+                                              onChange={handleDisplayOrderChange}
+                                              placeholder={chosenCategory ? t('choose') : t('noCategoryChosen')}
+                                              options={displayOrders.map(displayOrder => {
+                                                  return {value: displayOrder, label: displayOrder}
+                                              })}
                                 />
                             </div>
                             <div className="form-field-container">
@@ -405,32 +391,32 @@ export const NewDishForm = ({setMenuItemFormActive, setIsSubmittedSuccessfully, 
                                 <label htmlFor="dish-banner" className="form-label">
                                     {t('banner')} <span className="form-optional">{t('optional')}:</span>
                                 </label>
-                                <Select id="dish-banner"
-                                        name="banner"
-                                        styles={customSelect}
-                                        value={form.banner}
-                                        onChange={handleBannersChange}
-                                        placeholder={t('choose')}
-                                        isClearable={true}
-                                        options={[
-                                            {value: t('isNew'), label: t('isNew')},
-                                            {value: t('isBestseller'), label: t('isBestseller')}
-                                        ]}
+                                <CustomSelect
+                                    id={"dish-banner"}
+                                    name={"banner"}
+                                    value={form.banner}
+                                    onChange={handleBannersChange}
+                                    placeholder={t('choose')}
+                                    isClearable={true}
+                                    options={[
+                                        {value: t('isNew'), label: t('isNew')},
+                                        {value: t('isBestseller'), label: t('isBestseller')}
+                                    ]}
                                 />
                             </div>
                             <div className="form-field-container">
                                 <label htmlFor="category-available" className="form-label">
                                     {t('availability')}:
                                 </label>
-                                <Select id="category-available"
-                                        name="available"
-                                        styles={customSelect}
-                                        value={form.available}
-                                        onChange={handleAvailableChange}
-                                        options={[
-                                            {value: true, label: t('availableDish')},
-                                            {value: false, label: t('unavailableDish')}
-                                        ]}
+                                <CustomSelect
+                                    id={"category-available"}
+                                    name={"available"}
+                                    value={form.available}
+                                    onChange={handleAvailableChange}
+                                    options={[
+                                        {value: true, label: t('availableDish')},
+                                        {value: false, label: t('unavailableDish')}
+                                    ]}
                                 />
                             </div>
                             <div className="form-field-container">

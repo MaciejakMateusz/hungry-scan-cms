@@ -51,5 +51,6 @@
   "chosen": "Chosen",
   "allIngredients": "All ingredients",
   "noCategoryChosen": "No category is chosen",
-  "noFileChosen": "No file chosen"
+  "noFileChosen": "No file chosen",
+  "noOptionsMsg": "No available options"
 }
