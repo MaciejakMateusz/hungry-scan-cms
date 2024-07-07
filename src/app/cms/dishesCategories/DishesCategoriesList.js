@@ -11,14 +11,15 @@ import {ImgPlaceholderIcon} from "../../icons/ImgPlaceholderIcon";
 import {useTranslation} from "react-i18next";
 import {getTranslation} from "../../../locales/langUtils";
 import {LoadingSpinner} from "../../icons/LoadingSpinner";
+import {RemovalDialog} from "../dialogWindows/RemovalDialog";
 
 export const DishesCategoriesList = ({categoryFormActive, setCategory, setCategoryList}) => {
     const {t} = useTranslation();
     const [categories, setCategories] = useState([]);
     const [categoryForAction, setCategoryForAction] = useState({});
     const [menuItemForAction, setMenuItemForAction] = useState({});
-    const [isRemovalActive, setIsRemovalActive] = useState(false);
-    const [isRemovalConfirmed, setIsRemovalConfirmed] = useState(false);
+    const [activeRemovalType, setActiveRemovalType] = useState(null);
+    const [confirmedRemovalType, setConfirmedRemovalType] = useState(null);
     const [errorData, setErrorData] = useState({});
     const [confirmationTimeoutId, setConfirmationTimeoutId] = useState(null);
     const [errorTimeoutId, setErrorTimeoutId] = useState(null);
@@ -51,7 +52,7 @@ export const DishesCategoriesList = ({categoryFormActive, setCategory, setCatego
         fetchCategories()
     }, []);
 
-    const handleRemovalSubmission = (e) => {
+    const handleCategoryRemoval = (e) => {
         e.preventDefault();
 
         const requestBody = JSON.stringify(categoryForAction.id);
@@ -65,16 +66,16 @@ export const DishesCategoriesList = ({categoryFormActive, setCategory, setCatego
             body: requestBody
         }).then(response => {
             if (response.ok) {
-                setIsRemovalActive(false);
+                setActiveRemovalType(null);
                 setCategoryForAction({});
-                setIsRemovalConfirmed(true);
+                setConfirmedRemovalType('category');
 
                 if (confirmationTimeoutId) {
                     clearTimeout(confirmationTimeoutId);
                 }
 
                 const newConfirmationTimeoutId = setTimeout(() => {
-                    setIsRemovalConfirmed(false);
+                    setConfirmedRemovalType(null);
                 }, 4000);
                 setConfirmationTimeoutId(newConfirmationTimeoutId);
 
@@ -86,7 +87,58 @@ export const DishesCategoriesList = ({categoryFormActive, setCategory, setCatego
                 });
             }
         }).catch(errorData => {
-            setIsRemovalActive(false);
+            setActiveRemovalType(null);
+
+            if (errorTimeoutId) {
+                clearTimeout(errorTimeoutId);
+                setErrorData({})
+            }
+
+            setErrorData(errorData);
+
+            const newErrorTimeoutId = setTimeout(() => {
+                setErrorData({});
+            }, 4000);
+            setErrorTimeoutId(newErrorTimeoutId);
+        });
+    };
+
+    const handleDishRemoval = (e) => {
+        e.preventDefault();
+
+        const requestBody = JSON.stringify(menuItemForAction.id);
+
+        fetch(`${apiHost}/api/cms/items/delete`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${getDecodedJwt()}`
+            },
+            body: requestBody
+        }).then(response => {
+            if (response.ok) {
+                setActiveRemovalType(null);
+                setMenuItemForAction({});
+                setConfirmedRemovalType('dish');
+
+                if (confirmationTimeoutId) {
+                    clearTimeout(confirmationTimeoutId);
+                }
+
+                const newConfirmationTimeoutId = setTimeout(() => {
+                    setConfirmedRemovalType(null);
+                }, 4000);
+                setConfirmationTimeoutId(newConfirmationTimeoutId);
+
+                fetchCategories();
+                return response.text();
+            } else {
+                return response.json().then(errorData => {
+                    throw errorData;
+                });
+            }
+        }).catch(errorData => {
+            setActiveRemovalType(null);
 
             if (errorTimeoutId) {
                 clearTimeout(errorTimeoutId);
@@ -103,27 +155,34 @@ export const DishesCategoriesList = ({categoryFormActive, setCategory, setCatego
     };
 
     const renderRemovalDialog = () => {
-        return (
-            <>
-                <div className={'overlay'}></div>
-                <div className={'removal-dialog'}>
-                    {t('confirmCategoryRemoval')} "{getTranslation(categoryForAction.name)}"
-                    <form onSubmit={handleRemovalSubmission}>
-                        <button type="submit">{t('remove')}</button>
-                    </form>
-                    <button onClick={discardDeletion}>{t('cancel')}</button>
-                </div>
-            </>
-        );
+        if (activeRemovalType === 'category') {
+            return <RemovalDialog msg={t('confirmCategoryRemoval')}
+                                  objName={categoryForAction.name}
+                                  onSubmit={handleCategoryRemoval}
+                                  onClick={discardDeletion}/>
+        } else if (activeRemovalType === 'dish') {
+            return <RemovalDialog msg={t('confirmDishRemoval')}
+                                  objName={menuItemForAction.name}
+                                  onSubmit={handleDishRemoval}
+                                  onClick={discardDeletion}/>
+        }
     };
 
+    const renderConfirmationDialog = () => {
+        if (confirmedRemovalType === 'category') {
+            return (<ConfirmationDialogWindow text={t('categoryRemovalSuccess')}/>);
+        } else if (confirmedRemovalType === 'dish') {
+            return (<ConfirmationDialogWindow text={t('dishRemovalSuccess')}/>);
+        }
+    }
+
     const discardDeletion = () => {
-        setIsRemovalActive(false);
+        setActiveRemovalType(false);
         setCategoryForAction({});
     };
 
     const renderList = () => {
-        if(spinner) {
+        if (spinner) {
             return (<LoadingSpinner/>);
         }
         return categories.map(category => (
@@ -147,7 +206,7 @@ export const DishesCategoriesList = ({categoryFormActive, setCategory, setCatego
                         </div>
                         <div className={'clickable-icon hover-scaling'} onClick={() => {
                             setCategoryForAction(category);
-                            setIsRemovalActive(true);
+                            setActiveRemovalType('category');
                         }}>
                             <DeleteIcon/>
                         </div>
@@ -167,13 +226,14 @@ export const DishesCategoriesList = ({categoryFormActive, setCategory, setCatego
                                             {menuItem.imageName ?
                                                 <img className={'dish-image'}
                                                      src={`${imagesPath}/${menuItem.imageName}`}
-                                                     alt={`Dish - ${menuItem.imageName}`} /> :
+                                                     alt={`Dish - ${menuItem.imageName}`}/> :
                                                 <ImgPlaceholderIcon/>
                                             }
                                         </div>
                                         <div className={'dish-text-grid'}>
                                             <span className={'dish-title'}>{getTranslation(menuItem.name)}</span>
-                                            <span className={'dish-description'}>{getTranslation(menuItem.description)}</span>
+                                            <span
+                                                className={'dish-description'}>{getTranslation(menuItem.description)}</span>
                                             <div className={'dish-price'}>
                                                 <span>{menuItem.price} zł</span>
                                             </div>
@@ -189,7 +249,10 @@ export const DishesCategoriesList = ({categoryFormActive, setCategory, setCatego
                                     <div className={'clickable-icon hover-scaling'}>
                                         <EditIcon/>
                                     </div>
-                                    <div className={'clickable-icon hover-scaling'}>
+                                    <div className={'clickable-icon hover-scaling'} onClick={() => {
+                                        setMenuItemForAction(menuItem);
+                                        setActiveRemovalType('dish');
+                                    }}>
                                         <DeleteIcon/>
                                     </div>
                                 </div>
@@ -203,9 +266,10 @@ export const DishesCategoriesList = ({categoryFormActive, setCategory, setCatego
 
     return (
         <div className="dishes-categories-list-container">
-            {categories.length === 0 ? (<span className="no-items-msg categories">{t('noCategories')}</span>) : renderList()}
-            {isRemovalActive && renderRemovalDialog()}
-            {isRemovalConfirmed && (<ConfirmationDialogWindow text={"Kategoria usunięta pomyślnie."}/>)}
+            {categories.length === 0 ? (
+                <span className="no-items-msg categories">{t('noCategories')}</span>) : renderList()}
+            {activeRemovalType && renderRemovalDialog()}
+            {confirmedRemovalType && renderConfirmationDialog()}
             {errorData.exceptionMsg && (<WarningDialogWindow text={errorData.exceptionMsg}/>)}
         </div>
     );
