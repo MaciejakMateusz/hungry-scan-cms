@@ -14,29 +14,43 @@ import {DescriptionField} from "./formComponents/DescriptionField";
 import {AllergensMultiselect} from "./formComponents/AllergensMultiselect";
 import {AdditionalIngredientsMultiselect} from "./formComponents/AdditionalIngredientsMultiselect";
 
-export const NewDishForm = ({setMenuItemFormActive, setSubmittedSuccessfullyType, categories}) => {
+export const EditDishForm = ({setMenuItemFormActive, setSubmittedSuccessfullyType, categories, menuItem, category}) => {
     const {t} = useTranslation();
     const [displayOrders, setDisplayOrders] = useState([]);
     const [errorData, setErrorData] = useState({});
-    const [chosenCategory, setChosenCategory] = useState(null);
-    const [chosenAdditions, setChosenAdditions] = useState([]);
-    const [chosenLabels, setChosenLabels] = useState([]);
-    const [chosenAllergens, setChosenAllergens] = useState([]);
+    const [chosenCategory, setChosenCategory] = useState({value: category, label: getTranslation(category.name)});
+    const [chosenAdditions, setChosenAdditions] = useState(menuItem.additionalIngredients);
+    const [chosenLabels, setChosenLabels] = useState(menuItem.labels);
+    const [chosenAllergens, setChosenAllergens] = useState(menuItem.allergens);
     const [labels, setLabels] = useState([]);
     const [allergens, setAllergens] = useState([]);
     const [file, setFile] = useState(null);
-    const [fileName, setFileName] = useState(null)
+    const [fileName, setFileName] = useState(menuItem.imageName)
     const [isAdditionsViewActive, setIsAdditionsViewActive] = useState(false);
-    const [form, setForm] = useState({
-            category: null,
-            displayOrder: 0,
-            banner: '',
-            name: '',
-            description: '',
-            variants: [],
-            price: "0.00",
-            file: {},
-            available: {value: true, label: t('availableDish')}
+    const [form, setForm] = useState(() => {
+            let menuItemBanner;
+            if (menuItem.bestseller) {
+                menuItemBanner = t('isBestseller')
+            } else if (menuItem.new) {
+                menuItemBanner = t('isNew')
+            } else {
+                menuItemBanner = null;
+            }
+            console.log(menuItem)
+            return {
+                category: {value: category, label: getTranslation(category.name)},
+                displayOrder: {value: menuItem.displayOrder, label: menuItem.displayOrder},
+                banner: menuItemBanner ? {value: menuItemBanner, label: menuItemBanner} : menuItemBanner,
+                name: menuItem.name.defaultTranslation,
+                description: menuItem.description.defaultTranslation,
+                variants: menuItem.variants,
+                price: menuItem.price.toFixed(2),
+                file: {},
+                available: {
+                    value: menuItem.available,
+                    label: menuItem.available ? t('availableDish') : t('unavailableDish')
+                }
+            }
         }
     );
 
@@ -159,6 +173,7 @@ export const NewDishForm = ({setMenuItemFormActive, setSubmittedSuccessfullyType
 
         uploadImage().then(() => {
             const requestBody = JSON.stringify({
+                id: menuItem.id,
                 categoryId: form.category.value.id,
                 displayOrder: form.displayOrder.value,
                 new: form.banner && form.banner.value === t("isNew"),

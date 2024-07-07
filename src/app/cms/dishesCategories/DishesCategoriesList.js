@@ -13,7 +13,7 @@ import {getTranslation} from "../../../locales/langUtils";
 import {LoadingSpinner} from "../../icons/LoadingSpinner";
 import {RemovalDialog} from "../dialogWindows/RemovalDialog";
 
-export const DishesCategoriesList = ({categoryFormActive, setCategory, setCategoryList}) => {
+export const DishesCategoriesList = ({categoryFormActive, setCategory, setCategoryList, menuItemFormActive, setMenuItem}) => {
     const {t} = useTranslation();
     const [categories, setCategories] = useState([]);
     const [categoryForAction, setCategoryForAction] = useState({});
@@ -246,7 +246,10 @@ export const DishesCategoriesList = ({categoryFormActive, setCategory, setCatego
                                     <div className={'hover-scaling'}>
                                         {menuItem.available ? <AvailableIcon/> : <UnavailableIcon/>}
                                     </div>
-                                    <div className={'clickable-icon hover-scaling'}>
+                                    <div className={'clickable-icon hover-scaling'} onClick={() => {
+                                        setCategory(category);
+                                        setMenuItem(menuItem);
+                                        menuItemFormActive(true)}}>
                                         <EditIcon/>
                                     </div>
                                     <div className={'clickable-icon hover-scaling'} onClick={() => {

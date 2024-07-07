@@ -10,7 +10,7 @@ export const FileUploadField = (props) => {
                     {t('image')}:
                 </label>
                 <div className={'custom-file-upload'}>
-                    {props.file === null ? (
+                    {props.fileName === null ? (
                             <>
                                 <label htmlFor={'dish-image'}
                                        className={'custom-file-upload label'}>
@@ -31,7 +31,9 @@ export const FileUploadField = (props) => {
                             {t('clear')}
                             <span className={'clear-file-icon'}>x</span>
                         </label>}
-                    <span className={'file-name'} id={'file-name'}>{props.fileName}</span>
+                    <span className={'file-name'}
+                          id={'file-name'}>{props.fileName ? props.fileName : t('noFileChosen')}
+                    </span>
                 </div>
             </div>
         </div>
