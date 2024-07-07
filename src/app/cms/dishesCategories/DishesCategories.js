@@ -81,12 +81,12 @@ export const DishesCategories = () => {
             return (<div>Formularz edycji dania</div>);
         } else {
             return (
-                <div className="dishes-categories-grid">
-                    <div className="new-buttons-container">
-                        <button className="add-new-button new-category" onClick={renderNewCategoryForm}>
+                <div className={'dishes-categories-grid'}>
+                    <div className={'new-buttons-container'}>
+                        <button className={'add-new-button new-category'} onClick={renderNewCategoryForm}>
                             <span>+ {t('newCategory')}</span>
                         </button>
-                        <button className="add-new-button new-dish" onClick={renderNewMenuItemForm}>
+                        <button className={'add-new-button new-dish'} onClick={renderNewMenuItemForm}>
                             <span>+ {t('newDish')}</span>
                         </button>
                         <div className={`search-button ${searchActive ? 'search-active' : ''}`}>
@@ -124,7 +124,7 @@ export const DishesCategories = () => {
     return (
         <>
             <Helmet>
-                <title>CMS - {t("dishesCategories")}</title>
+                <title>CMS - {t('dishesCategories')}</title>
             </Helmet>
             {submittedSuccessfullyType && renderConfirmationDialog(submittedSuccessfullyType)}
             <ErrorBoundary>

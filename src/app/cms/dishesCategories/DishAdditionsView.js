@@ -98,7 +98,7 @@ export const DishAdditionsView = ({setAdditions, chosenAdditions, isActive}) => 
     const renderForm = () => {
         return (
             <form className={'search-button-form'} onSubmit={handleSearchSubmit}>
-                <input type="text"
+                <input type={'text'}
                        className={'search-button-input'}
                        placeholder={t('search')}
                        name={'filter'}
@@ -111,16 +111,16 @@ export const DishAdditionsView = ({setAdditions, chosenAdditions, isActive}) => 
     const renderIngrRecord = (ingr, action) => {
         return (
             <>
-                <div className="ingredient-container">
-                    <span className="ingredient-name">{getTranslation(ingr.name)}</span>
-                    <span className="ingredient-price">+ {ingr.price.toFixed(2)}zł</span>
+                <div className={'ingredient-container'}>
+                    <span className={'ingredient-name'}>{getTranslation(ingr.name)}</span>
+                    <span className={'ingredient-price'}>+ {ingr.price.toFixed(2)}zł</span>
                 </div>
                 {action === 'add' ?
-                    (<button className="move-ingredient-btn"
+                    (<button className={'move-ingredient-btn'}
                              onClick={() => addIngr(ingr)}>
                         +
                     </button>) :
-                    (<button className="move-ingredient-btn"
+                    (<button className={'move-ingredient-btn'}
                              onClick={() => removeIngr(ingr)}>
                         -
                     </button>)
@@ -145,7 +145,7 @@ export const DishAdditionsView = ({setAdditions, chosenAdditions, isActive}) => 
     const renderPageableFooter = () => {
         const pageNumbers = Array.from({ length: pageData.totalPages }, (_, i) => i + 1);
         return (
-            <div className="pagination-footer">
+            <div className={'pagination-footer'}>
                 {pageNumbers.map(pageNumber => (
                     <button className={`pagination-button ${pageData.pageable.pageNumber + 1 === pageNumber && 'active'}`}
                             key={pageNumber}
@@ -154,16 +154,16 @@ export const DishAdditionsView = ({setAdditions, chosenAdditions, isActive}) => 
                         {pageNumber}
                     </button>
                 ))}
-                <span className="pagination-total">({pageData.totalElements})</span>
+                <span className={'pagination-total'}>({pageData.totalElements})</span>
             </div>
         );
     }
 
     return (
-        <div className="dish-additions-container">
-            <div className="dish-additions-grid">
-                <div className="dish-additions-left-panel">
-                    <div className="ingredients-header">
+        <div className={'dish-additions-container'}>
+            <div className={'dish-additions-grid'}>
+                <div className={'dish-additions-left-panel'}>
+                    <div className={'ingredients-header'}>
                         <div className={`search-button ingredients ${searchActive ? 'search-active' : ''}`}>
                             <button className={`search-initial-circle ${searchActive ? 'circle-active' : ''}`}
                                     onClick={() => setSearchActive(!searchActive)}>
@@ -171,13 +171,13 @@ export const DishAdditionsView = ({setAdditions, chosenAdditions, isActive}) => 
                             </button>
                             {searchActive ? renderForm() : <></>}
                         </div>
-                        <div className="ingredients-label">
+                        <div className={'ingredients-label'}>
                             <span>{t('allIngredients')}</span>
                         </div>
                     </div>
                     <ul className="ingredients-list">
                         {ingredients.map(ingredient => (
-                            <li className="ingredient-wrapper"
+                            <li className={'ingredient-wrapper'}
                                 key={ingredient.id}>
                                 {renderIngrRecord(ingredient, 'add')}
                             </li>
@@ -185,19 +185,19 @@ export const DishAdditionsView = ({setAdditions, chosenAdditions, isActive}) => 
                     </ul>
                     {renderPageableFooter()}
                 </div>
-                <div className="dish-additions-right-panel">
+                <div className={'dish-additions-right-panel'}>
                     <div>
-                        <div className="chosen-additions-header">
-                            <div className="chosen-additions-label">{t('chosen')}:</div>
-                            <div className="category-form-top-buttons">
-                                <button className="add-new-button cancel"
+                        <div className={'chosen-additions-header'}>
+                            <div className={'chosen-additions-label'}>{t('chosen')}:</div>
+                            <div className={'category-form-top-buttons'}>
+                                <button className={'add-new-button cancel'}
                                         onClick={() => {
                                             isActive(false);
                                             setAdditions(initialAdditions);
                                         }}>
                                     {t('cancel')}
                                 </button>
-                                <button className="add-new-button submit-additions"
+                                <button className={'add-new-button submit-additions'}
                                         onClick={() => {
                                             isActive(false);
                                             setAdditions(chosenAdditions);
@@ -211,10 +211,10 @@ export const DishAdditionsView = ({setAdditions, chosenAdditions, isActive}) => 
                                 {chosenAdditions.length !== 0 ?
                                     chosenAdditions.map(ingredient => (
                                         <li key={ingredient.id}
-                                            className="ingredient-wrapper">
+                                            className={'ingredient-wrapper'}>
                                             {renderIngrRecord(ingredient, 'remove')}
                                         </li>)) :
-                                    <p className="text-center">{t('noChosenIngr')}</p>}
+                                    <p className={'text-center'}>{t('noChosenIngr')}</p>}
                             </ul>
                         </ul>
                     </div>

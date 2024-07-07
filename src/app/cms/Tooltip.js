@@ -13,13 +13,13 @@ export const Tooltip = ({children, content}) => {
 
     return (
         <div
-            className="tooltip-wrapper"
+            className={'tooltip-wrapper'}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}>
             {children}
             {isVisible && (
                 <div
-                    className="tooltip-content">
+                    className={'tooltip-content'}>
                     {content}
                 </div>
             )}

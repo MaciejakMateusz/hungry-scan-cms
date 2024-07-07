@@ -7,10 +7,10 @@ export const CategoryFormTemplate = (props) => {
     const {t} = useTranslation();
 
     return (
-        <div className="form-wrapper">
-            <div className="form">
-                <CustomSelect id={"category-display-order"}
-                              name={"displayOrder"}
+        <div className={'form-wrapper'}>
+            <div className={'form'}>
+                <CustomSelect id={'category-display-order'}
+                              name={'displayOrder'}
                               labelName={t('displayOrder')}
                               value={props.form.displayOrder}
                               onChange={props.displayOrderChange}
@@ -19,8 +19,8 @@ export const CategoryFormTemplate = (props) => {
                                   label: displayOrder
                               }))}
                 />
-                <CustomSelect id={"category-available"}
-                              name={"available"}
+                <CustomSelect id={'category-available'}
+                              name={'available'}
                               labelName={t('availability')}
                               value={props.form.available}
                               onChange={props.availableChange}
@@ -33,7 +33,7 @@ export const CategoryFormTemplate = (props) => {
                            value={props.form.name}
                            onChange={props.inputChange}
                 />
-                {props.errorData.name && <span className="validation-msg">{props.errorData.name}</span>}
+                {props.errorData.name && <span className={'validation-msg'}>{props.errorData.name}</span>}
             </div>
         </div>
     );

@@ -65,7 +65,7 @@ export const LoginForm = () => {
 
     const validationFail = () => {
         return (
-            <p className="login-validation-msg">
+            <p className={'login-validation-msg'}>
                 {t('invalidCredentials')}
             </p>
         );
@@ -73,7 +73,7 @@ export const LoginForm = () => {
 
     const logoutSuccess = () => {
         return (
-            <p className="logout-success-msg">
+            <p className={'logout-success-msg'}>
                 {t('logoutSuccess')}
             </p>
         );
@@ -81,35 +81,35 @@ export const LoginForm = () => {
 
     return (
         <>
-            <div className="login-form-header">
+            <div className={'login-form-header'}>
                 <h1 className="">{t('cmsLogin')}</h1>
             </div>
-            <form className="login-form" onSubmit={submitForm}>
-                <div className="login-input-container username-grid">
-                    <input type="text"
-                           className="login-input"
+            <form className={'login-form'} onSubmit={submitForm}>
+                <div className={'login-input-container username-grid'}>
+                    <input type={'text'}
+                           className={'login-input'}
                            placeholder={t('typeLogin')}
-                           name="username"
+                           name={'username'}
                            value={form.username}
                            onChange={setFormFields}/>
 
                 </div>
-                <div className="login-input-container password-grid">
-                    <input type="password"
-                           className="login-input"
+                <div className={'login-input-container password-grid'}>
+                    <input type={'password'}
+                           className={'login-input'}
                            placeholder={t('typePassword')}
                            value={form.password}
-                           name="password"
+                           name={'password'}
                            onChange={setFormFields}/>
                     {renderMessage()}
                 </div>
-                <div className="login-btn-container">
-                    <button className="login-btn"
+                <div className={'login-btn-container'}>
+                    <button className={'login-btn'}
                             style={{fontSize: '1.1rem'}}>{t('logIn')}
                     </button>
                 </div>
             </form>
-            <div className="login-form-footer">
+            <div className={'login-form-footer'}>
                     <span className="">{t('loginProblems')}
                         <Link to="/#"> {t('recoverPassword')}</Link>
                     </span>

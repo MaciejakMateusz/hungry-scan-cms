@@ -79,8 +79,8 @@ export const EditCategoryForm = ({setCategoryFormActive, setSubmittedSuccessfull
 
     return (
         <form onSubmit={handleFormSubmit}
-              className="form-container">
-            <div className="form-grid">
+              className={'form-container'}>
+            <div className={'form-grid'}>
                 <FormHeader headerTitle={`${t('editCategory')}"${getTranslation(category.name)}"`}
                             onAdd={() => setCategoryFormActive(false)}
                             onCancel={handleFormSubmit}/>

@@ -25,7 +25,7 @@ export const CustomSelect = (props) => {
         <div className={'form-field-wrapper'}>
             <div className={'form-field-container'}>
                 <label htmlFor={props.id} className={'form-label'}>
-                    {props.labelName} {props.isOptional ? <span className="form-optional">{t('optional')}:</span> : ':'}
+                    {props.labelName} {props.isOptional ? <span className={'form-optional'}>{t('optional')}:</span> : ':'}
                 </label>
                 <Select id={props.id}
                         name={props.name}

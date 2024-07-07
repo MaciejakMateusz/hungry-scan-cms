@@ -52,44 +52,44 @@ export const CmsNavigation = () => {
 
     return (
         <>
-            <div className="cms-nav-panel">
-                <div className="cms-nav-header">
-                    <button className="cms-accordion-button">
+            <div className={'cms-nav-panel'}>
+                <div className={'cms-nav-header'}>
+                    <button className={'cms-accordion-button'}>
                         <AccordionIcon/>
                     </button>
                 </div>
-                <div className="cms-nav-menu">
-                    <ul className="cms-nav-ul">
+                <div className={'cms-nav-menu'}>
+                    <ul className={'cms-nav-ul'}>
                         <NavButton isActive={activeButton === 'dishesCategories'}
-                                   name={t("dishesCategories")}
+                                   name={t('dishesCategories')}
                                    onClick={() => setActiveButton("dishesCategories")}/>
                         <NavButton isActive={activeButton === 'variants'}
-                                   name={t("variants")}
+                                   name={t('variants')}
                                    onClick={() => setActiveButton("variants")}/>
                         <NavButton isActive={activeButton === 'additions'}
-                                   name={t("additions")}
+                                   name={t('additions')}
                                    onClick={() => setActiveButton("additions")}/>
                         <NavButton isActive={activeButton === 'qrCode'}
-                                   name={t("qrCode")}
+                                   name={t('qrCode')}
                                    onClick={() => setActiveButton("qrCode")}/>
                         <NavButton isActive={activeButton === 'translations'}
-                                   name={t("translations")}
+                                   name={t('translations')}
                                    onClick={() => setActiveButton("translations")}/>
                         <NavButton isActive={activeButton === 'adPopUps'}
-                                   name={t("adPopUps")}
+                                   name={t('adPopUps')}
                                    onClick={() => setActiveButton("adPopUps")}/>
                         <NavButton isActive={activeButton === 'interface'}
-                                   name={t("interface")}
+                                   name={t('interface')}
                                    onClick={() => setActiveButton("interface")}/>
                         <LanguageSwitcher/>
 
                     </ul>
                 </div>
-                <div className="cms-nav-footer">
+                <div className={'cms-nav-footer'}>
                     <span>Powered by HackyBear<sup>&copy;</sup></span>
                 </div>
             </div>
-            <div className="cms-main">
+            <div className={'cms-main'}>
                 {renderMainView()}
             </div>
         </>

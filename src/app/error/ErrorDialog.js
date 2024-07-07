@@ -14,19 +14,19 @@ export const ErrorDialog = ({ error, errorInfo }) => {
     }
 
     return (
-        <div className="error-dialog-overlay">
-            <div className="error-dialog">
-                <div className="error-dialog-title">
+        <div className={'error-dialog-overlay'}>
+            <div className={'error-dialog'}>
+                <div className={'error-dialog-title'}>
                     <h2>{t('errorOccurred')}</h2>
                 </div>
-                <div className="error-dialog-content">
+                <div className={'error-dialog-content'}>
                     <p>{error && error.toString()}</p>
-                    <details className="error-details">
+                    <details className={'error-details'}>
                         <summary>{t('errorSummary')}</summary>
                         {errorInfo && errorInfo.componentStack.toString()}
                     </details>
                 </div>
-                <div className="error-dialog-actions">
+                <div className={'error-dialog-actions'}>
                     <button onClick={handleClose}>{t('close')}</button>
                 </div>
             </div>

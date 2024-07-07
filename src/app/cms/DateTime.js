@@ -35,19 +35,19 @@ export const DateTime = () => {
     }, []);
 
     return (
-        <div className="cms-date-time">
-            <div className="cms-date-time-container">
-                <div className="cms-calendar-icon-container">
+        <div className={'cms-date-time'}>
+            <div className={'cms-date-time-container'}>
+                <div className={'cms-calendar-icon-container'}>
                     <CalendarIcon/>
                 </div>
-                <div className="cms-date-time-wrapper">
+                <div className={'cms-date-time-wrapper'}>
                     <div>
-                        <span className="cms-date">{dateTime.date}
-                            <span className="bullet"/>
-                            <span className="cms-day">{dateTime.day}</span>
+                        <span className={'cms-date'}>{dateTime.date}
+                            <span className={'bullet'}/>
+                            <span className={'cms-day'}>{dateTime.day}</span>
                         </span>
                     </div>
-                    <div className="cms-time">
+                    <div className={'cms-time'}>
                         <span>{dateTime.time}</span>
                     </div>
                 </div>

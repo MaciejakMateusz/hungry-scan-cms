@@ -304,13 +304,13 @@ export const NewDishForm = ({setMenuItemFormActive, setSubmittedSuccessfullyType
                 chosenAdditions={chosenAdditions}
                 isActive={setIsAdditionsViewActive}/> :
             <form onSubmit={handleFormSubmit}
-                  className="form-container">
-                <div className="form-grid">
+                  className={'form-container'}>
+                <div className={'form-grid'}>
                     <FormHeader headerTitle={t('createNewDish')}
                                 onAdd={() => setMenuItemFormActive(false)}
                                 onCancel={handleFormSubmit}/>
-                    <div className="form-wrapper">
-                        <div className="form">
+                    <div className={'form-wrapper'}>
+                        <div className={'form'}>
                             <div className={'form-column left'}>
                                 <div className={'form-fields-container'}>
                                     <CustomSelect id={"dish-category"}
@@ -323,8 +323,8 @@ export const NewDishForm = ({setMenuItemFormActive, setSubmittedSuccessfullyType
                                                   placeholder={t('choose')}
                                                   onChange={(selectedOption) => handleCategoryChange(selectedOption)}
                                     />
-                                    <CustomSelect id={"category-display-order"}
-                                                  name={"displayOrder"}
+                                    <CustomSelect id={'category-display-order'}
+                                                  name={'displayOrder'}
                                                   labelName={t('displayOrder')}
                                                   isDisabled={!chosenCategory}
                                                   value={form.displayOrder}
@@ -335,8 +335,8 @@ export const NewDishForm = ({setMenuItemFormActive, setSubmittedSuccessfullyType
                                                   })}
                                     />
                                     <CustomSelect
-                                        id={"dish-banner"}
-                                        name={"banner"}
+                                        id={'dish-banner'}
+                                        name={'banner'}
                                         labelName={t('banner')}
                                         isOptional={true}
                                         value={form.banner}
@@ -348,7 +348,7 @@ export const NewDishForm = ({setMenuItemFormActive, setSubmittedSuccessfullyType
                                             {value: t('isBestseller'), label: t('isBestseller')}
                                         ]}
                                     />
-                                    <NameField id={"category-name"}
+                                    <NameField id={'category-name'}
                                                value={form.name}
                                                onChange={handleInputChange}
                                     />
@@ -374,8 +374,8 @@ export const NewDishForm = ({setMenuItemFormActive, setSubmittedSuccessfullyType
                                                      onClick={removeFile}
                                                      fileName={fileName}/>
                                     <CustomSelect
-                                        id={"category-available"}
-                                        name={"available"}
+                                        id={'category-available'}
+                                        name={'available'}
                                         labelName={t('availability')}
                                         value={form.available}
                                         onChange={handleAvailableChange}
@@ -386,7 +386,7 @@ export const NewDishForm = ({setMenuItemFormActive, setSubmittedSuccessfullyType
                                     />
                                 </div>
                             </div>
-                            {errorData.name && <span className="validation-msg">{errorData.name}</span>}
+                            {errorData.name && <span className={'validation-msg'}>{errorData.name}</span>}
                         </div>
                     </div>
                 </div>

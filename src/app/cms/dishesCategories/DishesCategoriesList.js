@@ -105,8 +105,8 @@ export const DishesCategoriesList = ({categoryFormActive, setCategory, setCatego
     const renderRemovalDialog = () => {
         return (
             <>
-                <div className="overlay"></div>
-                <div className="removal-dialog">
+                <div className={'overlay'}></div>
+                <div className={'removal-dialog'}>
                     {t('confirmCategoryRemoval')} "{getTranslation(categoryForAction.name)}"
                     <form onSubmit={handleRemovalSubmission}>
                         <button type="submit">{t('remove')}</button>
@@ -127,25 +127,25 @@ export const DishesCategoriesList = ({categoryFormActive, setCategory, setCatego
             return (<LoadingSpinner/>);
         }
         return categories.map(category => (
-            <div key={category.id} className="dishes-categories-list-grid">
-                <div className="category-wrapper">
-                    <div className="category-container">
-                        <div className="category-display-order">{category.displayOrder}</div>
-                        <span className="category-container-text">{getTranslation(category.name)}</span>
+            <div key={category.id} className={'dishes-categories-list-grid'}>
+                <div className={'category-wrapper'}>
+                    <div className={'category-container'}>
+                        <div className={'category-display-order'}>{category.displayOrder}</div>
+                        <span className={'category-container-text'}>{getTranslation(category.name)}</span>
                     </div>
-                    <div className="category-manage-btns-pill-box">
-                        <div className="hover-scaling">
+                    <div className={'category-manage-btns-pill-box'}>
+                        <div className={'hover-scaling'}>
                             {category.available ? <AvailableIcon/> : <UnavailableIcon/>}
                         </div>
                         <div>
-                            <div className="clickable-icon hover-scaling" onClick={() => {
+                            <div className={'clickable-icon hover-scaling'} onClick={() => {
                                 setCategory(category);
                                 categoryFormActive(true);
                             }}>
                                 <EditIcon/>
                             </div>
                         </div>
-                        <div className="clickable-icon hover-scaling" onClick={() => {
+                        <div className={'clickable-icon hover-scaling'} onClick={() => {
                             setCategoryForAction(category);
                             setIsRemovalActive(true);
                         }}>
@@ -153,43 +153,43 @@ export const DishesCategoriesList = ({categoryFormActive, setCategory, setCatego
                         </div>
                     </div>
                 </div>
-                <div className="dishes-wrapper">
-                    {category.menuItems.length === 0 && (<span className="no-items-msg">{t('noDishes')}</span>)}
+                <div className={'dishes-wrapper'}>
+                    {category.menuItems.length === 0 && (<span className={'no-items-msg'}>{t('noDishes')}</span>)}
                     {category.menuItems.map(menuItem => (
-                        <div key={menuItem.id} className="dish-container">
-                            <div className="dish-content-wrapper">
-                                <div className="dish-display-order">
+                        <div key={menuItem.id} className={'dish-container'}>
+                            <div className={'dish-content-wrapper'}>
+                                <div className={'dish-display-order'}>
                                     <span>{menuItem.displayOrder}</span>
                                 </div>
-                                <div className="dish-content-box">
-                                    <div className="dish-content-grid">
-                                        <div className="dish-image-container">
+                                <div className={'dish-content-box'}>
+                                    <div className={'dish-content-grid'}>
+                                        <div className={'dish-image-container'}>
                                             {menuItem.imageName ?
-                                                <img className="dish-image"
+                                                <img className={'dish-image'}
                                                      src={`${imagesPath}/${menuItem.imageName}`}
                                                      alt={`Dish - ${menuItem.imageName}`} /> :
                                                 <ImgPlaceholderIcon/>
                                             }
                                         </div>
-                                        <div className="dish-text-grid">
-                                            <span className="dish-title">{getTranslation(menuItem.name)}</span>
-                                            <span className="dish-description">{getTranslation(menuItem.description)}</span>
-                                            <div className="dish-price">
+                                        <div className={'dish-text-grid'}>
+                                            <span className={'dish-title'}>{getTranslation(menuItem.name)}</span>
+                                            <span className={'dish-description'}>{getTranslation(menuItem.description)}</span>
+                                            <div className={'dish-price'}>
                                                 <span>{menuItem.price} zł</span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div className="dish-manage-btns-pill-wrapper">
-                                <div className="dish-manage-btns-pill-box">
-                                    <div className="hover-scaling">
+                            <div className={'dish-manage-btns-pill-wrapper'}>
+                                <div className={'dish-manage-btns-pill-box'}>
+                                    <div className={'hover-scaling'}>
                                         {menuItem.available ? <AvailableIcon/> : <UnavailableIcon/>}
                                     </div>
-                                    <div className="clickable-icon hover-scaling">
+                                    <div className={'clickable-icon hover-scaling'}>
                                         <EditIcon/>
                                     </div>
-                                    <div className="clickable-icon hover-scaling">
+                                    <div className={'clickable-icon hover-scaling'}>
                                         <DeleteIcon/>
                                     </div>
                                 </div>

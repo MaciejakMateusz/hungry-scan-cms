@@ -15,8 +15,8 @@ export const Router = () => {
                 <Route element={<PrivateRoutes/>}>
                     <Route path='/cms' element={<CmsPage/>}/>
                 </Route>
-                <Route path='*' element={<ErrorPage title={"Nie znaleziono strony"}
-                                                    message={"Strona z podanym adresem nie istnieje w tej domenie."}/>}/>
+                <Route path='*' element={<ErrorPage title={'Nie znaleziono strony'}
+                                                    message={'Strona z podanym adresem nie istnieje w tej domenie.'}/>}/>
             </Routes>
         </BrowserRouter>
     )

@@ -4,7 +4,7 @@ import {CmsNavigation} from "./CmsNavigation";
 export const CmsPage = () => {
 
     return (
-        <div className="cms-grid">
+        <div className={'cms-grid'}>
             <CmsNavigation/>
         </div>
     );

@@ -83,8 +83,8 @@ export const NewCategoryForm = ({setCategoryFormActive, setSubmittedSuccessfully
 
     return (
         <form onSubmit={handleFormSubmit}
-              className="form-container">
-            <div className="form-grid">
+              className={'form-container'}>
+            <div className={'form-grid'}>
                 <FormHeader headerTitle={t('createNewCategory')}
                             onAdd={() => setCategoryFormActive(false)}
                             onCancel={handleFormSubmit}/>

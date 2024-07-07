@@ -23,9 +23,9 @@ export const LoginPage = () => {
             <Helmet>
                 <title>HungryScan CMS Login</title>
             </Helmet>
-            <div className="login-grid">
-                <div className="login-container">
-                    <div className="login-box">
+            <div className={'login-grid'}>
+                <div className={'login-container'}>
+                    <div className={'login-box'}>
                         <LoginForm/>
                     </div>
                 </div>
