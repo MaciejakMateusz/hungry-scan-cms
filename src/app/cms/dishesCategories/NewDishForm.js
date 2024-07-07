@@ -2,17 +2,9 @@ import React, {useEffect, useState} from "react";
 import {apiHost} from "../../../apiData";
 import {getDecodedJwt} from "../../../utils";
 import {useTranslation} from "react-i18next";
-import {getTranslation} from "../../../locales/langUtils";
 import {DishAdditionsView} from "./DishAdditionsView";
-import {CustomSelect} from "./formComponents/CustomSelect";
-import {NameField} from "./formComponents/NameField";
 import {FormHeader} from "./formComponents/FormHeader";
-import {PriceField} from "./formComponents/PriceField";
-import {FileUploadField} from "./formComponents/FileUploadField";
-import {LabelsMultiselect} from "./formComponents/LabelsMultiselect";
-import {DescriptionField} from "./formComponents/DescriptionField";
-import {AllergensMultiselect} from "./formComponents/AllergensMultiselect";
-import {AdditionalIngredientsMultiselect} from "./formComponents/AdditionalIngredientsMultiselect";
+import {DishFormTemplate} from "./formComponents/DishFormTemplate";
 
 export const NewDishForm = ({setMenuItemFormActive, setSubmittedSuccessfullyType, categories}) => {
     const {t} = useTranslation();
@@ -159,7 +151,7 @@ export const NewDishForm = ({setMenuItemFormActive, setSubmittedSuccessfullyType
 
         uploadImage().then(() => {
             const requestBody = JSON.stringify({
-                categoryId: form.category.value.id,
+                categoryId: form.category && form.category.value.id,
                 displayOrder: form.displayOrder.value,
                 new: form.banner && form.banner.value === t("isNew"),
                 bestseller: form.banner && form.banner.value === t("isBestseller"),
@@ -198,13 +190,13 @@ export const NewDishForm = ({setMenuItemFormActive, setSubmittedSuccessfullyType
                         return response.json();
                     } else {
                         return response.json().then((errorData) => {
+                            setErrorData(errorData);
                             throw new Error(errorData.message || "Failed to add item");
                         });
                     }
                 })
                 .catch((error) => {
                     console.error("Error adding item:", error);
-                    setErrorData(error);
                 });
         });
     };
@@ -309,86 +301,28 @@ export const NewDishForm = ({setMenuItemFormActive, setSubmittedSuccessfullyType
                     <FormHeader headerTitle={t('createNewDish')}
                                 onAdd={() => setMenuItemFormActive(false)}
                                 onCancel={handleFormSubmit}/>
-                    <div className={'form-wrapper'}>
-                        <div className={'form'}>
-                            <div className={'form-column left'}>
-                                <div className={'form-fields-container'}>
-                                    <CustomSelect id={"dish-category"}
-                                                  name={"category"}
-                                                  labelName={t('category')}
-                                                  value={chosenCategory}
-                                                  options={categories.map(category => {
-                                                      return {value: category, label: getTranslation(category.name)}
-                                                  })}
-                                                  placeholder={t('choose')}
-                                                  onChange={(selectedOption) => handleCategoryChange(selectedOption)}
-                                    />
-                                    <CustomSelect id={'category-display-order'}
-                                                  name={'displayOrder'}
-                                                  labelName={t('displayOrder')}
-                                                  isDisabled={!chosenCategory}
-                                                  value={form.displayOrder}
-                                                  onChange={handleDisplayOrderChange}
-                                                  placeholder={chosenCategory ? t('choose') : t('noCategoryChosen')}
-                                                  options={displayOrders.map(displayOrder => {
-                                                      return {value: displayOrder, label: displayOrder}
-                                                  })}
-                                    />
-                                    <CustomSelect
-                                        id={'dish-banner'}
-                                        name={'banner'}
-                                        labelName={t('banner')}
-                                        isOptional={true}
-                                        value={form.banner}
-                                        onChange={handleBannersChange}
-                                        placeholder={t('choose')}
-                                        isClearable={true}
-                                        options={[
-                                            {value: t('isNew'), label: t('isNew')},
-                                            {value: t('isBestseller'), label: t('isBestseller')}
-                                        ]}
-                                    />
-                                    <NameField id={'category-name'}
-                                               value={form.name}
-                                               onChange={handleInputChange}
-                                    />
-                                    <LabelsMultiselect labels={labels}
-                                                       iconPath={getIconPath}
-                                                       onClick={handleLabelsChange}/>
-                                    <DescriptionField value={form.description}
-                                                      onChange={handleInputChange}/>
-                                    <AllergensMultiselect allergens={allergens}
-                                                          iconPath={getIconPath}
-                                                          onClick={handleAllergensChange}/>
-                                </div>
-                            </div>
-                            <div className={'form-column right'}>
-                                <div className={'form-fields-container'}>
-                                    <AdditionalIngredientsMultiselect onClick={setIsAdditionsViewActive}
-                                                                      chosenAdditions={chosenAdditions}/>
-                                    <PriceField id={'dish-price'}
-                                                value={form.price}
-                                                onChange={handleInputChange}/>
-                                    <FileUploadField file={file}
-                                                     onChange={handleFileChange}
-                                                     onClick={removeFile}
-                                                     fileName={fileName}/>
-                                    <CustomSelect
-                                        id={'dish-available'}
-                                        name={'available'}
-                                        labelName={t('availability')}
-                                        value={form.available}
-                                        onChange={handleAvailableChange}
-                                        options={[
-                                            {value: true, label: t('availableDish')},
-                                            {value: false, label: t('unavailableDish')}
-                                        ]}
-                                    />
-                                </div>
-                            </div>
-                            {errorData.name && <span className={'validation-msg'}>{errorData.name}</span>}
-                        </div>
-                    </div>
+                    <DishFormTemplate chosenCategory={chosenCategory}
+                                      categories={categories}
+                                      handleCategoryChange={handleCategoryChange}
+                                      errorData={errorData}
+                                      form={form}
+                                      handleDisplayOrderChange={handleDisplayOrderChange}
+                                      displayOrders={displayOrders}
+                                      handleBannersChange={handleBannersChange}
+                                      handleInputChange={handleInputChange}
+                                      labels={labels}
+                                      getIconPath={getIconPath}
+                                      handleLabelsChange={handleLabelsChange}
+                                      allergens={allergens}
+                                      handleAllergensChange={handleAllergensChange}
+                                      setIsAdditionsViewActive={setIsAdditionsViewActive}
+                                      chosenAdditions={chosenAdditions}
+                                      file={file}
+                                      fileName={fileName}
+                                      handleFileChange={handleFileChange}
+                                      removeFile={removeFile}
+                                      handleAvailableChange={handleAvailableChange}
+                    />
                 </div>
             </form>
     );

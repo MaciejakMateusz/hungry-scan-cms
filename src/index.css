@@ -817,6 +817,11 @@ ul {
     padding: 10px;
 }
 
+.form-field.name.error {
+    border: 2px solid rgba(255, 0, 0, 0.5);
+    animation: shake 0.5s ease-in-out;
+}
+
 .form-field.name::placeholder {
 }
 

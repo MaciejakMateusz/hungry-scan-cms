@@ -8,13 +8,14 @@ export const NameField = (props) => {
     const handleFocus = () => setIsFocused(true);
     const handleBlur = () => setIsFocused(false);
 
+    
     return (
         <div className={'form-field-wrapper'}>
             <div className={'form-field-container'}>
                 <label htmlFor={props.id} className={'form-label'}>
                     {t('name')}:
                 </label>
-                <textarea className={'form-field name'}
+                <textarea className={`form-field name ${props.error ? 'error' : ''}`}
                           id={props.id}
                           name={'name'}
                           value={props.value}

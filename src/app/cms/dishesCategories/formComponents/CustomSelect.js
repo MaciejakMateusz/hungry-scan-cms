@@ -5,10 +5,27 @@ import {useTranslation} from "react-i18next";
 
 export const CustomSelect = (props) => {
     const {t} = useTranslation();
-    const [chosenValue, setChosenValue] = useState(props.value)
+    const [chosenValue, setChosenValue] = useState(props.value);
+
+    const errorStyles = {
+        control: () => ({
+            border: '2px solid rgba(255, 0, 0, 0.5)',
+            animation: 'shake 0.5s ease-in-out'
+        })
+    };
+
+    const mergeStyles = (baseStyles, errorStyles) => {
+        return {
+            ...baseStyles,
+            control: (provided, state) => ({
+                ...baseStyles.control(provided, state),
+                ...(props.error ? errorStyles.control(provided) : {})
+            })
+        };
+    };
 
     useEffect(() => {
-        setChosenValue(props.value)
+        setChosenValue(props.value);
     }, [props.value]);
 
     const CustomNoOptionsMessage = (props) => {
@@ -25,11 +42,12 @@ export const CustomSelect = (props) => {
         <div className={'form-field-wrapper'}>
             <div className={'form-field-container'}>
                 <label htmlFor={props.id} className={'form-label'}>
-                    {props.labelName} {props.isOptional ? <span className={'form-optional'}>{t('optional')}:</span> : ':'}
+                    {props.labelName} {props.isOptional ?
+                    <span className={'form-optional'}>{t('optional')}:</span> : ':'}
                 </label>
                 <Select id={props.id}
                         name={props.name}
-                        styles={customSelect}
+                        styles={mergeStyles(customSelect, errorStyles)}
                         isDisabled={props.isDisabled}
                         value={chosenValue}
                         onChange={props.onChange}
