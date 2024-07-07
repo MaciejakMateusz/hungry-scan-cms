@@ -907,6 +907,10 @@ ul {
     cursor: pointer;
 }
 
+.selectable-icon.fallback {
+    background-color: #E1E1E1;
+}
+
 .selectable-icon.allergen {
     margin-bottom: 5px;
 }

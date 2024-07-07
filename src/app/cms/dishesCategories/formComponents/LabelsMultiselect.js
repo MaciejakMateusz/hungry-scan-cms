@@ -2,6 +2,7 @@ import React from "react";
 import {useTranslation} from "react-i18next";
 import {Tooltip} from "../../Tooltip";
 import {getTranslation} from "../../../../locales/langUtils";
+import {ReactSVG} from "react-svg";
 
 export const LabelsMultiselect = (props) => {
     const {t} = useTranslation();
@@ -16,10 +17,10 @@ export const LabelsMultiselect = (props) => {
                     {props.labels.map(label => (
                         <Tooltip key={label.id}
                                  content={getTranslation(label.name)}>
-                            <img className={'selectable-icon'}
-                                 src={props.iconPath(label, 'label')}
-                                 alt={label.iconName}
-                                 onClick={() => props.onClick(label)}/>
+                            <ReactSVG className={'selectable-icon'}
+                                      src={props.iconPath(label, 'label')}
+                                      onClick={() => props.onClick(label)}
+                                      fallback={() => (<div className={'selectable-icon fallback'}/>)}/>
                         </Tooltip>
 
                     ))}
