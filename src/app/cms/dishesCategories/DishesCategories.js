@@ -17,7 +17,7 @@ export const DishesCategories = () => {
     const [isEditCategoryFormActive, setIsEditCategoryFormActive] = useState(false);
     const [isNewMenuItemFormActive, setIsNewMenuItemFormActive] = useState(false);
     const [isEditMenuItemFormActive, setIsEditMenuItemFormActive] = useState(false);
-    const [isSubmittedSuccessfully, setIsSubmittedSuccessfully] = useState(false);
+    const [submittedSuccessfullyType, setSubmittedSuccessfullyType] = useState(null);
     const [category, setCategory] = useState({});
     const [categories, setCategories] = useState({});
 
@@ -63,18 +63,18 @@ export const DishesCategories = () => {
         if (isNewCategoryFormActive) {
             return <NewCategoryForm
                 setCategoryFormActive={setIsNewCategoryFormActive}
-                setIsSubmittedSuccessfully={setIsSubmittedSuccessfully}
+                setSubmittedSuccessfullyType={setSubmittedSuccessfullyType}
             />
         } else if (isEditCategoryFormActive) {
             return <EditCategoryForm
                 setCategoryFormActive={setIsEditCategoryFormActive}
-                setIsSubmittedSuccessfully={setIsSubmittedSuccessfully}
+                setSubmittedSuccessfullyType={setSubmittedSuccessfullyType}
                 category={category}
             />
         } else if (isNewMenuItemFormActive) {
             return <NewDishForm
                 setMenuItemFormActive={setIsNewMenuItemFormActive}
-                setIsSubmittedSuccessfully={setIsSubmittedSuccessfully}
+                setSubmittedSuccessfullyType={setSubmittedSuccessfullyType}
                 categories={categories}
             />;
         } else if (isEditMenuItemFormActive) {
@@ -106,12 +106,27 @@ export const DishesCategories = () => {
         }
     }
 
+    const renderConfirmationDialog = (type) => {
+        switch(type) {
+            case 'category-save':
+                return (<ConfirmationDialogWindow text={t('categorySaved')}/>);
+            case 'category-edit':
+                return (<ConfirmationDialogWindow text={t('categoryEdited')}/>);
+            case 'dish-save':
+                return (<ConfirmationDialogWindow text={t('dishSaved')}/>);
+            case 'dish-edit':
+                return (<ConfirmationDialogWindow text={t('dishEdited')}/>);
+            default:
+                return null;
+        }
+    }
+
     return (
         <>
             <Helmet>
                 <title>CMS - {t("dishesCategories")}</title>
             </Helmet>
-            {isSubmittedSuccessfully && (<ConfirmationDialogWindow text={"Kategoria zapisana pomyślnie."}/>)}
+            {submittedSuccessfullyType && renderConfirmationDialog(submittedSuccessfullyType)}
             <ErrorBoundary>
                 {handleDishesCategoriesRendering()}
             </ErrorBoundary>

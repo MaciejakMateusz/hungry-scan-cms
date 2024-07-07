@@ -6,7 +6,7 @@ import {getCategoriesDisplayOrders} from "../../../apiUtils";
 import {FormHeader} from "./formComponents/FormHeader";
 import {CategoryFormTemplate} from "./formComponents/CategoryFormTemplate";
 
-export const NewCategoryForm = ({setCategoryFormActive, setIsSubmittedSuccessfully}) => {
+export const NewCategoryForm = ({setCategoryFormActive, setSubmittedSuccessfullyType}) => {
     const {t} = useTranslation()
     const [displayOrders, setDisplayOrders] = useState([])
     const [errorData, setErrorData] = useState({})
@@ -67,9 +67,9 @@ export const NewCategoryForm = ({setCategoryFormActive, setIsSubmittedSuccessful
             body: requestBody
         }).then(response => {
             if (response.ok) {
-                setIsSubmittedSuccessfully(true);
+                setSubmittedSuccessfullyType('category-save');
                 setTimeout(() => {
-                    setIsSubmittedSuccessfully(false);
+                    setSubmittedSuccessfullyType(null);
                 }, 4000);
                 setCategoryFormActive(false)
                 return response.json();

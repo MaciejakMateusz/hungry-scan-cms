@@ -16,7 +16,7 @@ export const PriceField = (props) => {
                        placeholder={'0.00'}
                        name={'price'}
                        className={'form-field price'}
-                       value={props.form.price}
+                       value={props.value}
                        onChange={props.onChange}/>
             </div>
         </div>

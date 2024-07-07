@@ -753,7 +753,7 @@ ul {
 .form-container {
     margin-left: 80px;
     margin-right: 80px;
-    margin-top: 86px;
+    margin-top: 81px;
 }
 
 .form-grid {
@@ -778,6 +778,18 @@ ul {
     grid-template-columns: 1fr 1fr;
     margin-top: 3rem;
     width: 100%;
+}
+
+.form-column.left {
+    grid-column: 1;
+}
+
+.form-column.right {
+    grid-column: 2;
+}
+
+.form-fields-container {
+    width: fit-content;
 }
 
 .form-field-wrapper {
@@ -1155,6 +1167,39 @@ ul {
     font-size: 0.8rem;
 }
 
+.tooltip-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip-content {
+    position: absolute;
+    top: -35px;
+    box-shadow: 0 2px 15px 0 #0000001A;
+    background-color: #E1E1E1;
+    color: #000;
+    padding: 5px 7px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    z-index: 1000;
+    pointer-events: none;
+    width: max-content;
+    max-width: 45vw;
+    white-space: normal;
+    overflow-wrap: break-word;
+}
+
+@media (max-width: 1325px) {
+    .form {
+        grid-template-columns: 1fr;
+    }
+
+    .form-column.right {
+        grid-column: 1;
+        padding-bottom: 2rem;
+    }
+}
+
 @media (max-width: 1240px) {
     .dishes-wrapper {
         grid-template-columns: 1fr;
@@ -1162,10 +1207,6 @@ ul {
 
     .form-wrapper {
         display: ruby;
-    }
-
-    .form {
-        grid-template-columns: 1fr;
     }
 
     .dish-additions-grid {

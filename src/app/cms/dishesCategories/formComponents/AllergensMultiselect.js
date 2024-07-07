@@ -1,5 +1,7 @@
 import React from "react";
 import {useTranslation} from "react-i18next";
+import {Tooltip} from "../../Tooltip";
+import {getTranslation} from "../../../../locales/langUtils";
 
 export const AllergensMultiselect = (props) => {
     const {t} = useTranslation();
@@ -11,11 +13,13 @@ export const AllergensMultiselect = (props) => {
                 </label>
                 <div className={'form-field allergens'} id={'dish-allergen'}>
                     {props.allergens.map(allergen => (
-                        <img key={allergen.id}
-                             className={'selectable-icon allergen'}
-                             src={props.iconPath(allergen, 'allergen')}
-                             alt={allergen.iconName}
-                             onClick={() => props.onClick(allergen)}/>
+                        <Tooltip content={getTranslation(allergen.description)}
+                                 key={allergen.id}>
+                            <img className={'selectable-icon allergen'}
+                                 src={props.iconPath(allergen, 'allergen')}
+                                 alt={allergen.iconName}
+                                 onClick={() => props.onClick(allergen)}/>
+                        </Tooltip>
                     ))}
                 </div>
             </div>

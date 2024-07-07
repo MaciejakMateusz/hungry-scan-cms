@@ -55,5 +55,9 @@
   "noCategoryChosen": "No category is chosen",
   "noFileChosen": "No file chosen",
   "noOptionsMsg": "No available options",
-  "chooseFile": "Choose file"
+  "chooseFile": "Choose file",
+  "categorySaved": "Category saved successfully",
+  "categoryEdited": "Category edited successfully",
+  "dishSaved": "Dish saved successfully",
+  "dishEdited": "Dish edited successfully"
 }

@@ -1,8 +1,13 @@
-import React from "react";
+import React, {useState} from "react";
 import {useTranslation} from "react-i18next";
 
 export const NameField = (props) => {
     const {t} = useTranslation();
+    const [isFocused, setIsFocused] = useState(false);
+
+    const handleFocus = () => setIsFocused(true);
+    const handleBlur = () => setIsFocused(false);
+
     return (
         <div className={'form-field-wrapper'}>
             <div className="form-field-container">
@@ -14,7 +19,9 @@ export const NameField = (props) => {
                           name={'name'}
                           value={props.value}
                           onChange={props.onChange}
-                          placeholder={`${t('name')}...`}/>
+                          placeholder={isFocused ? '' : `${t('name')}...`}
+                          onFocus={handleFocus}
+                          onBlur={handleBlur}/>
             </div>
         </div>
     );

@@ -7,7 +7,7 @@ import {CategoryFormTemplate} from "./formComponents/CategoryFormTemplate";
 import {FormHeader} from "./formComponents/FormHeader";
 import {getTranslation} from "../../../locales/langUtils";
 
-export const EditCategoryForm = ({setCategoryFormActive, setIsSubmittedSuccessfully, category}) => {
+export const EditCategoryForm = ({setCategoryFormActive, setSubmittedSuccessfullyType, category}) => {
     const {t} = useTranslation();
     const [displayOrders, setDisplayOrders] = useState([]);
     const [errorData, setErrorData] = useState({});
@@ -63,9 +63,9 @@ export const EditCategoryForm = ({setCategoryFormActive, setIsSubmittedSuccessfu
             body: requestBody
         }).then(response => {
             if (response.ok) {
-                setIsSubmittedSuccessfully(true);
+                setSubmittedSuccessfullyType('category-edit');
                 setTimeout(() => {
-                    setIsSubmittedSuccessfully(false);
+                    setSubmittedSuccessfullyType(null);
                 }, 4000);
                 setCategoryFormActive(false)
                 return response.json();
