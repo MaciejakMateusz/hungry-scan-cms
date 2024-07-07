@@ -1202,15 +1202,20 @@ ul {
         grid-column: 1;
         padding-bottom: 2rem;
     }
+
+    .form-fields-container {
+        width: unset;
+    }
+
+    .form-wrapper {
+        display: ruby;
+    }
+
 }
 
 @media (max-width: 1240px) {
     .dishes-wrapper {
         grid-template-columns: 1fr;
-    }
-
-    .form-wrapper {
-        display: ruby;
     }
 
     .dish-additions-grid {

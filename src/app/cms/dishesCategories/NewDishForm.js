@@ -374,7 +374,7 @@ export const NewDishForm = ({setMenuItemFormActive, setSubmittedSuccessfullyType
                                                      onClick={removeFile}
                                                      fileName={fileName}/>
                                     <CustomSelect
-                                        id={'category-available'}
+                                        id={'dish-available'}
                                         name={'available'}
                                         labelName={t('availability')}
                                         value={form.available}
