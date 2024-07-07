@@ -26,9 +26,10 @@ export const FileUploadField = (props) => {
                             </>
                         ) :
                         <label htmlFor={'dish-image'}
-                               className={'custom-file-upload label'}
+                               className={'custom-file-upload label clear'}
                                onClick={props.onClick}>
-                            Wyczyść
+                            {t('clear')}
+                            <span className={'clear-file-icon'}>x</span>
                         </label>}
                     <span className={'file-name'} id={'file-name'}>{props.fileName}</span>
                 </div>
