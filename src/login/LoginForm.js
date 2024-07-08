@@ -47,7 +47,8 @@ export const LoginForm = () => {
                 }
             })
             .then(data => {
-                document.cookie = `jwt=${encodeURIComponent(JSON.stringify(data))} path=/`;
+                const maxAge = 20 * 60 * 60;
+                document.cookie = `jwt=${encodeURIComponent(JSON.stringify(data))}; path=/; max-age=${maxAge}`;
                 window.location.href = `/cms`;
             })
             .catch(() => setNotAuthorized(true))
