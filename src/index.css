@@ -93,6 +93,20 @@ iframe {
     margin-bottom: 20px;
 }
 
+.error-field-wrapper {
+    display: flex;
+    justify-content: left;
+}
+
+.error-field-key {
+    font-weight: 600;
+}
+
+.error-field-value {
+    color: red;
+    font-weight: 300;
+}
+
 .error-details {
     white-space: pre-wrap;
     overflow-y: scroll;
@@ -811,15 +825,15 @@ ul {
     border: none;
 }
 
+.form-field.error {
+    border: 2px solid rgba(255, 0, 0, 0.5);
+    animation: shake 0.5s ease-in-out;
+}
+
 .form-field.name {
     height: 66px;
     resize: none;
     padding: 10px;
-}
-
-.form-field.name.error {
-    border: 2px solid rgba(255, 0, 0, 0.5);
-    animation: shake 0.5s ease-in-out;
 }
 
 .form-field.name::placeholder {
@@ -929,10 +943,6 @@ ul {
     height: 30px;
     margin-right: 6px;
     cursor: pointer;
-}
-
-.selectable-icon.fallback {
-    background-color: #E1E1E1;
 }
 
 .selectable-icon.allergen {

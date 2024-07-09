@@ -65,5 +65,6 @@
   "categorySaved": "Kategoria zapisana pomyślnie",
   "categoryEdited": "Kategoria edytowana pomyślnie",
   "dishSaved": "Danie zapisane pomyślnie",
-  "dishEdited": "Danie edytowane pomyślnie"
+  "dishEdited": "Danie edytowane pomyślnie",
+  "formHasErrors": "Formularz zawiera błędy"
 }

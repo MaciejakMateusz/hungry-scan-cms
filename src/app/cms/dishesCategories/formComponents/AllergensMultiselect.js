@@ -18,8 +18,7 @@ export const AllergensMultiselect = (props) => {
                                  key={allergen.id}>
                             <ReactSVG className={'selectable-icon allergen'}
                                       src={props.iconPath(allergen, 'allergen')}
-                                      onClick={() => props.onClick(allergen)}
-                                      fallback={() => (<div className={'selectable-icon fallback'}/>)}/>
+                                      onClick={() => props.onClick(allergen)}/>
                         </Tooltip>
                     ))}
                 </div>

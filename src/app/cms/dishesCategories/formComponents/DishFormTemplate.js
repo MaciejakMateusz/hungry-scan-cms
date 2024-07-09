@@ -26,16 +26,26 @@ export const DishFormTemplate = (props) => {
                                           return {value: category, label: getTranslation(category.name)}
                                       })}
                                       placeholder={t('choose')}
-                                      onChange={(selectedOption) => props.handleCategoryChange(selectedOption)}
-                                      error={props.errorData.categoryId}
+                                      onChange={(selectedOption) =>
+                                          props.onSelectChange(
+                                              'category',
+                                              selectedOption,
+                                              props.setForm,
+                                              props.setChosenCategory,
+                                              props.setDisplayOrders)}                                      error={props.errorData}
                         />
                         <CustomSelect id={'category-display-order'}
                                       name={'displayOrder'}
                                       labelName={t('displayOrder')}
                                       isDisabled={!props.chosenCategory}
                                       value={props.form.displayOrder}
-                                      onChange={props.handleDisplayOrderChange}
-                                      placeholder={props.chosenCategory ? t('choose') : t('noCategoryChosen')}
+                                      onChange={(selectedOption) =>
+                                          props.onSelectChange(
+                                              'displayOrder',
+                                              selectedOption,
+                                              props.setForm,
+                                              props.setChosenCategory,
+                                              props.setDisplayOrders)}                                      placeholder={props.chosenCategory ? t('choose') : t('noCategoryChosen')}
                                       options={props.displayOrders.map(displayOrder => {
                                           return {value: displayOrder, label: displayOrder}
                                       })}
@@ -46,7 +56,13 @@ export const DishFormTemplate = (props) => {
                             labelName={t('banner')}
                             isOptional={true}
                             value={props.form.banner}
-                            onChange={props.handleBannersChange}
+                            onChange={(selectedOption) =>
+                                props.onSelectChange(
+                                    'banner',
+                                    selectedOption,
+                                    props.setForm,
+                                    props.setChosenCategory,
+                                    props.setDisplayOrders)}
                             placeholder={t('choose')}
                             isClearable={true}
                             options={[
@@ -57,7 +73,7 @@ export const DishFormTemplate = (props) => {
                         <NameField id={'category-name'}
                                    value={props.form.name}
                                    onChange={props.handleInputChange}
-                                   error={props.errorData.name}
+                                   error={props.errorData}
                         />
                         <LabelsMultiselect labels={props.labels}
                                            iconPath={props.getIconPath}
@@ -75,7 +91,8 @@ export const DishFormTemplate = (props) => {
                                                           chosenAdditions={props.chosenAdditions}/>
                         <PriceField id={'dish-price'}
                                     value={props.form.price}
-                                    onChange={props.handleInputChange}/>
+                                    onChange={props.handleInputChange}
+                                    error={props.errorData}/>
                         <FileUploadField file={props.file}
                                          onChange={props.handleFileChange}
                                          onClick={props.removeFile}
@@ -85,7 +102,13 @@ export const DishFormTemplate = (props) => {
                             name={'available'}
                             labelName={t('availability')}
                             value={props.form.available}
-                            onChange={props.handleAvailableChange}
+                            onChange={(selectedOption) =>
+                                props.onSelectChange(
+                                    'available',
+                                    selectedOption,
+                                    props.setForm,
+                                    props.setChosenCategory,
+                                    props.setDisplayOrders)}
                             options={[
                                 {value: true, label: t('availableDish')},
                                 {value: false, label: t('unavailableDish')}

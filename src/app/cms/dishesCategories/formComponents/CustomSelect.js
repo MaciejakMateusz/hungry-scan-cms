@@ -19,7 +19,7 @@ export const CustomSelect = (props) => {
             ...baseStyles,
             control: (provided, state) => ({
                 ...baseStyles.control(provided, state),
-                ...(props.error ? errorStyles.control(provided) : {})
+                ...(props.error && !chosenValue ? props.error.categoryId && errorStyles.control(provided) : {})
             })
         };
     };

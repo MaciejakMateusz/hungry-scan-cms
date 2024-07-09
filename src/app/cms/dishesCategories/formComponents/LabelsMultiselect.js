@@ -19,8 +19,7 @@ export const LabelsMultiselect = (props) => {
                                  content={getTranslation(label.name)}>
                             <ReactSVG className={'selectable-icon'}
                                       src={props.iconPath(label, 'label')}
-                                      onClick={() => props.onClick(label)}
-                                      fallback={() => (<div className={'selectable-icon fallback'}/>)}/>
+                                      onClick={() => props.onClick(label)}/>
                         </Tooltip>
 
                     ))}

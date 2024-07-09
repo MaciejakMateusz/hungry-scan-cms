@@ -64,5 +64,6 @@
   "categorySaved": "Category saved successfully",
   "categoryEdited": "Category edited successfully",
   "dishSaved": "Dish saved successfully",
-  "dishEdited": "Dish edited successfully"
+  "dishEdited": "Dish edited successfully",
+  "formHasErrors": "Form has errors"
 }
