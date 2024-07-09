@@ -24,7 +24,7 @@ export const CategoryFormTemplate = (props) => {
                         <NameField id={"category-name"}
                                    value={props.form.name}
                                    onChange={props.inputChange}
-                                   error={props.errorData.name}
+                                   error={props.errorData}
                         />
                     </div>
                 </div>
