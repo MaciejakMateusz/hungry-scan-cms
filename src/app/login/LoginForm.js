@@ -1,63 +1,31 @@
 import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
-import {apiHost} from "../apiData";
-import {urlParamValue} from "../utils";
+import {urlParamValue} from "../../utils";
 import {useTranslation} from "react-i18next";
+import {useDispatch, useSelector} from "react-redux";
+import {executeLoginFetch, setPassword, setUsername} from "../../slices/loginFormSlice";
+import {LoadingSpinner} from "../icons/LoadingSpinner";
 
 export const LoginForm = () => {
-    const [form, setForm] = useState({username: "", password: ""});
-    const [notAuthorized, setNotAuthorized] = useState(false);
-    const [isLoggedOut, setIsLoggedOut] = useState(false);
     const {t} = useTranslation();
+    const dispatch = useDispatch();
+    const {username, password} = useSelector((state) => state.loginForm);
+    const {notAuthorized, isLoading} = useSelector((state) => state.loginFetch);
+    const [isLoggedOut, setIsLoggedOut] = useState(false);
 
     useEffect(() => {
         setIsLoggedOut(Boolean(urlParamValue("logout")))
     }, []);
 
-    const setFormFields = e => {
-        const {name, value} = e.target;
-        setForm(prevState => {
-            return {
-                ...prevState,
-                [name]: value
-            };
-        });
-    }
-
-    const submitForm = (e) => {
-        e.preventDefault()
-
-        const requestBody = JSON.stringify({
-            username: form.username,
-            password: form.password
-        });
-
-        return fetch(`${apiHost}/api/login`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: requestBody
-        })
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error("Login failed");
-                }
-            })
-            .then(data => {
-                const maxAge = 20 * 60 * 60;
-                document.cookie = `jwt=${encodeURIComponent(JSON.stringify(data))}; path=/; max-age=${maxAge}`;
-                window.location.href = `/cms`;
-            })
-            .catch(() => setNotAuthorized(true))
-    }
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        dispatch(executeLoginFetch());
+    };
 
     const renderMessage = () => {
-        if(notAuthorized) {
+        if (notAuthorized) {
             return validationFail();
-        } else if(isLoggedOut) {
+        } else if (isLoggedOut) {
             return logoutSuccess();
         } else {
             return <></>
@@ -85,28 +53,30 @@ export const LoginForm = () => {
             <div className={'login-form-header'}>
                 <h1 className="">{t('cmsLogin')}</h1>
             </div>
-            <form className={'login-form'} onSubmit={submitForm}>
+            <form className={'login-form'} onSubmit={handleSubmit}>
                 <div className={'login-input-container username-grid'}>
                     <input type={'text'}
                            className={'login-input'}
                            placeholder={t('typeLogin')}
                            name={'username'}
-                           value={form.username}
-                           onChange={setFormFields}/>
+                           value={username}
+                           onChange={(e) => dispatch(setUsername(e.target.value))}/>
 
                 </div>
                 <div className={'login-input-container password-grid'}>
                     <input type={'password'}
                            className={'login-input'}
                            placeholder={t('typePassword')}
-                           value={form.password}
+                           value={password}
                            name={'password'}
-                           onChange={setFormFields}/>
+                           onChange={(e) => dispatch(setPassword(e.target.value))}/>
                     {renderMessage()}
                 </div>
                 <div className={'login-btn-container'}>
                     <button className={'login-btn'}
-                            style={{fontSize: '1.1rem'}}>{t('logIn')}
+                            style={{fontSize: '1.1rem'}}
+                            disabled={isLoading}>
+                        {isLoading ? <LoadingSpinner buttonMode={true}/> : t('logIn')}
                     </button>
                 </div>
             </form>

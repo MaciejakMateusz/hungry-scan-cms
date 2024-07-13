@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {LoginForm} from "./LoginForm";
 import {LoginFooter} from "./LoginFooter";
-import {getDecodedJwt} from "../utils";
+import {getDecodedJwt} from "../../utils";
 import {Navigate} from "react-router-dom";
 import {Helmet} from "react-helmet";
 

@@ -4,7 +4,7 @@ import {BrowserRouter, Navigate, Route, Routes} from 'react-router-dom';
 import {PrivateRoutes} from "./PrivateRoutes";
 import {ErrorPage} from "../app/error/ErrorPage";
 import {CmsPage} from "../app/cms/CmsPage";
-import {LoginPage} from "../login/LoginPage";
+import {LoginPage} from "../app/login/LoginPage";
 
 export const Router = () => {
     return (

@@ -1,9 +1,10 @@
 import React from 'react';
 
-export const LoadingSpinner = () => {
+export const LoadingSpinner = (props) => {
+
     return (
-        <div className="spinner-container">
-            <div className="spinner"/>
+        <div className={props.buttonMode ? 'button-spinner-container' : 'spinner-container'}>
+            <div className={props.buttonMode ? 'button-spinner' : 'spinner'}/>
         </div>
     );
 };
