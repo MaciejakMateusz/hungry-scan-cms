@@ -4,7 +4,7 @@ import {apiHost} from "../apiData";
 export const executeLoginFetch = createAsyncThunk(
     'loginFetch/executeLoginFetch',
     async (credentials, {getState}) => {
-        const state = getState().loginForm;
+        const state = getState().login.loginForm;
         const response = await fetch(`${apiHost}/api/login`, {
             method: 'POST',
             headers: {
@@ -60,6 +60,7 @@ export const loginFetchSlice = createSlice(
                     window.location.href = `/cms`;
                 })
                 .addCase(executeLoginFetch.rejected, state => {
+                    console.log("rejected")
                     state.isLoading = false;
                     state.notAuthorized = true;
                 })

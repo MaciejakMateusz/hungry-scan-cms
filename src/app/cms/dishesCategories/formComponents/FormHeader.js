@@ -8,11 +8,11 @@ export const FormHeader = (props) => {
             <div className={'form-header-title'}>{props.headerTitle}</div>
             <div className={'form-header-top-buttons'}>
                 <button className={'add-new-button cancel'}
-                        onClick={props.onAdd}>
+                        onClick={props.onCancel}>
                     {t('cancel')}
                 </button>
                 <button className={'add-new-button submit'}
-                        onClick={props.onCancel}>
+                        onClick={props.onAdd}>
                     {t('save')}
                 </button>
             </div>

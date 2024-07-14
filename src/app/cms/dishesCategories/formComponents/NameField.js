@@ -5,8 +5,6 @@ export const NameField = (props) => {
     const {t} = useTranslation();
     const [isFocused, setIsFocused] = useState(false);
     const [hasError, setHasError] = useState(props.error.name);
-    const handleFocus = () => setIsFocused(true);
-    const handleBlur = () => setIsFocused(false);
 
     const resetErrorStyles = () => {
         setHasError(null);
@@ -27,12 +25,12 @@ export const NameField = (props) => {
                           name={'name'}
                           value={props.value}
                           onChange={(e) => {
-                              props.onChange(e)
+                              props.onChange(e.target.value)
                               resetErrorStyles()
                           }}
                           placeholder={isFocused ? '' : `${t('name')}...`}
-                          onFocus={handleFocus}
-                          onBlur={handleBlur}/>
+                          onFocus={() => setIsFocused(true)}
+                          onBlur={() => setIsFocused(false)}/>
             </div>
         </div>
     );

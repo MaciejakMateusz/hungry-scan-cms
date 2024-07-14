@@ -9,7 +9,6 @@ import {useFetchAllergens} from "../../utils/hooks/useFetchAllergens";
 import {useFormState} from "../../utils/hooks/useFormState";
 import {handleSelectChange} from "../../utils/handleSelectChange";
 import {uploadImage} from "../../utils/fetch/uploadImage";
-import {postMenuItem} from "../../utils/fetch/postMenuItem";
 import {
     getIconPath,
     handleAllergensChange,
@@ -17,9 +16,15 @@ import {
     handleLabelsChange,
     removeFile
 } from "../../utils/formUtils";
+import {useDispatch, useSelector} from "react-redux";
+import {apiHost} from "../../../apiData";
+import {getDecodedJwt} from "../../../utils";
+import {setNewDishFormActive, setSubmittedSuccessType} from "../../../slices/dishesCategoriesSlice";
 
-export const NewDishForm = ({setMenuItemFormActive, setSubmittedSuccessfullyType, categories}) => {
+export const NewDishForm = () => {
+    const dispatch = useDispatch();
     const {t} = useTranslation();
+    const {categories} = useSelector(state => state.dishesCategories)
     const [displayOrders, setDisplayOrders] = useState([]);
     const [errorData, setErrorData] = useState({});
     const [chosenCategory, setChosenCategory] = useState(null);
@@ -70,7 +75,28 @@ export const NewDishForm = ({setMenuItemFormActive, setSubmittedSuccessfullyType
                 imageName: file ? file.name : null,
                 available: form.available.value,
             });
-            postMenuItem(requestBody, setSubmittedSuccessfullyType, setMenuItemFormActive, setErrorData, setErrorMessage)
+            fetch(`${apiHost}/api/cms/items/add`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${getDecodedJwt()}`,
+                },
+                body: requestBody,
+            }).then((response) => {
+                if (response.ok) {
+                    dispatch(setSubmittedSuccessType('dish-save'));
+                    setTimeout(() => {
+                        dispatch(setSubmittedSuccessType(null));
+                    }, 4000);
+                    dispatch(setNewDishFormActive(false));
+                    return response.json();
+                } else {
+                    return response.json().then((errorData) => {
+                        setErrorData(errorData);
+                        setErrorMessage(errorData);
+                    });
+                }
+            })
         });
     };
 
@@ -90,8 +116,8 @@ export const NewDishForm = ({setMenuItemFormActive, setSubmittedSuccessfullyType
             {errorMessage ? <FormErrorDialog error={errorData} resetMessage={setErrorMessage}/> : null}
             <div className={'form-grid'}>
                 <FormHeader headerTitle={t('createNewDish')}
-                            onAdd={() => setMenuItemFormActive(false)}
-                            onCancel={handleFormSubmit}/>
+                            onAdd={handleFormSubmit}
+                            onCancel={() => dispatch(setNewDishFormActive(false)) }/>
                 <DishFormTemplate chosenCategory={chosenCategory}
                                   setChosenCategory={setChosenCategory}
                                   categories={categories}

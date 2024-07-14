@@ -10,22 +10,24 @@ export const PrivateRoutes = () => {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        setIsLoading(true);
-        fetch(`${apiHost}/api/auth${location.pathname}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${getDecodedJwt()}`
-            }
-        }).then(response => {
-            if (response.ok) {
-                setIsLoading(false);
-                setIsAuthorized(true);
-            } else {
-                setIsLoading(false)
+        const authorizeRequest = async () => {
+            setIsLoading(true);
+            try {
+                const response = await fetch(`${apiHost}/api/auth${location.pathname}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${getDecodedJwt()}`
+                    }
+                });
+                setIsAuthorized(response.ok)
+            } catch {
                 setIsAuthorized(false)
+            } finally {
+                setIsLoading(false)
             }
-        });
+        }
+        authorizeRequest();
     }, [location.pathname]);
 
     if (isLoading) {

@@ -1,84 +1,52 @@
-import React, {useEffect, useState} from "react";
-import {apiHost} from "../../../apiData";
-import {getDecodedJwt} from "../../../utils";
+import React, {useEffect} from "react";
 import {useTranslation} from "react-i18next";
-import {getCategoriesDisplayOrders} from "../../../apiUtils";
 import {FormHeader} from "./formComponents/FormHeader";
 import {CategoryFormTemplate} from "./formComponents/CategoryFormTemplate";
+import {useDispatch} from "react-redux";
+import {setNewCategoryFormActive, setSubmittedSuccessType,} from "../../../slices/dishesCategoriesSlice";
+import {
+    clearForm,
+    getCategoriesDisplayOrders,
+    postCategory,
+    setAvailable,
+    setDisplayOrderLabel,
+    setDisplayOrders,
+    setDisplayOrderValue,
+    setErrorData
+} from "../../../slices/categoryFormSlice";
 
-export const NewCategoryForm = ({setCategoryFormActive, setSubmittedSuccessfullyType}) => {
-    const {t} = useTranslation()
-    const [displayOrders, setDisplayOrders] = useState([])
-    const [errorData, setErrorData] = useState({})
-    const [form, setForm] = useState({
-            'name': '',
-            'available': {value: true, label: t('availableCategory')},
-            'displayOrder': 0
-        }
-    );
+export const NewCategoryForm = () => {
+    const {t} = useTranslation();
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        getCategoriesDisplayOrders().then(data => {
-            setDisplayOrders(data)
-            const initialDisplayOrder = data.length + 1;
-            setForm(prevForm => ({
-                ...prevForm,
-                displayOrder: {
-                    value: initialDisplayOrder,
-                    label: initialDisplayOrder
-                }
-            }));
-        })
-    }, []);
-
-    const handleInputChange = (e) => {
-        const {name, value} = e.target;
-        setForm(prevForm => ({
-            ...prevForm,
-            [name]: value
-        }));
-    };
-
-    const handleSelectChange = (field) => (selected) => {
-        setForm(prevState => ({
-            ...prevState,
-            [field]: selected
-        }))
-    }
-
-    const handleFormSubmit = (e) => {
-        e.preventDefault();
-
-        const requestBody = JSON.stringify({
-            name: {
-                defaultTranslation: form.name,
-                translationEn: ''
-            },
-            available: form.available.value,
-            displayOrder: form.displayOrder.value
-        });
-
-        return fetch(`${apiHost}/api/cms/categories/add`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${getDecodedJwt()}`
-            },
-            body: requestBody
-        }).then(response => {
-            if (response.ok) {
-                setSubmittedSuccessfullyType('category-save');
-                setTimeout(() => {
-                    setSubmittedSuccessfullyType(null);
-                }, 4000);
-                setCategoryFormActive(false)
-                return response.json();
-            } else {
-                response.json().then(errorData => {
-                    setErrorData(errorData);
-                })
+        const prepareDisplayOrders = async () => {
+            const resultAction = await dispatch(getCategoriesDisplayOrders());
+            if (getCategoriesDisplayOrders.fulfilled.match(resultAction)) {
+                dispatch(setDisplayOrders(resultAction.payload));
+                const initialDisplayOrder = resultAction.payload.length + 1;
+                dispatch(setDisplayOrderValue(initialDisplayOrder));
+                dispatch(setDisplayOrderLabel(initialDisplayOrder));
             }
-        })
+        }
+        prepareDisplayOrders();
+        //todo jak ustawić pierwotny label żeby nie resetować wartości na true przy zmianie języka?
+        dispatch(setAvailable({label: t('availableCategory'), value: true}));
+    }, [dispatch, t]);
+
+    const handleFormSubmit = async (e) => {
+        e.preventDefault();
+        const resultAction = await dispatch(postCategory());
+        if (postCategory.fulfilled.match(resultAction)) {
+            dispatch(setSubmittedSuccessType('category-save'));
+            setTimeout(() => {
+                dispatch(setSubmittedSuccessType(null));
+            }, 4000);
+            dispatch(setNewCategoryFormActive(false));
+            dispatch(clearForm());
+        } else if (postCategory.rejected.match(resultAction)) {
+            dispatch(setErrorData(resultAction.payload))
+        }
     };
 
     return (
@@ -86,14 +54,12 @@ export const NewCategoryForm = ({setCategoryFormActive, setSubmittedSuccessfully
               className={'form-container'}>
             <div className={'form-grid'}>
                 <FormHeader headerTitle={t('createNewCategory')}
-                            onAdd={() => setCategoryFormActive(false)}
-                            onCancel={handleFormSubmit}/>
-                <CategoryFormTemplate form={form}
-                                      displayOrderChange={handleSelectChange('displayOrder')}
-                                      displayOrders={displayOrders}
-                                      availableChange={handleSelectChange('available')}
-                                      inputChange={handleInputChange}
-                                      errorData={errorData}/>
+                            onAdd={handleFormSubmit}
+                            onCancel={() => {
+                                dispatch(setNewCategoryFormActive(false));
+                                dispatch(clearForm());
+                            }}/>
+                <CategoryFormTemplate/>
             </div>
         </form>
     );

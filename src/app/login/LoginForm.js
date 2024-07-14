@@ -9,8 +9,8 @@ import {LoadingSpinner} from "../icons/LoadingSpinner";
 export const LoginForm = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
-    const {username, password} = useSelector((state) => state.loginForm);
-    const {notAuthorized, isLoading} = useSelector((state) => state.loginFetch);
+    const {username, password} = useSelector((state) => state.login.loginForm);
+    const {notAuthorized, isLoading} = useSelector((state) => state.login.loginFetch);
     const [isLoggedOut, setIsLoggedOut] = useState(false);
 
     useEffect(() => {

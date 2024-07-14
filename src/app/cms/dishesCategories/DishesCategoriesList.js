@@ -12,10 +12,19 @@ import {useTranslation} from "react-i18next";
 import {getTranslation} from "../../../locales/langUtils";
 import {LoadingSpinner} from "../../icons/LoadingSpinner";
 import {RemovalDialog} from "../dialogWindows/RemovalDialog";
+import {useDispatch, useSelector} from "react-redux";
+import {
+    setCategories,
+    setCategory,
+    setDish,
+    setEditCategoryFormActive,
+    setEditDishFormActive
+} from "../../../slices/dishesCategoriesSlice";
 
-export const DishesCategoriesList = ({categoryFormActive, setCategory, setCategoryList, menuItemFormActive, setMenuItem}) => {
+export const DishesCategoriesList = () => {
     const {t} = useTranslation();
-    const [categories, setCategories] = useState([]);
+    const dispatch = useDispatch();
+    const {categories} = useSelector(state => state.dishesCategories)
     const [categoryForAction, setCategoryForAction] = useState({});
     const [menuItemForAction, setMenuItemForAction] = useState({});
     const [activeRemovalType, setActiveRemovalType] = useState(null);
@@ -26,7 +35,7 @@ export const DishesCategoriesList = ({categoryFormActive, setCategory, setCatego
     const [spinner, setSpinner] = useState(null);
 
     const fetchCategories = () => {
-        setSpinner(<LoadingSpinner/>)
+        setSpinner(<LoadingSpinner/>);
         fetch(`${apiHost}/api/cms/categories`, {
             method: 'GET',
             headers: {
@@ -40,9 +49,8 @@ export const DishesCategoriesList = ({categoryFormActive, setCategory, setCatego
                 throw new Error("There was an error while communicating with a server.");
             }
         }).then(data => {
-            setSpinner(null)
-            setCategories(data);
-            setCategoryList(data);
+            setSpinner(null);
+            dispatch(setCategories(data));
         }).catch(error => {
             console.log(error);
         });
@@ -182,7 +190,7 @@ export const DishesCategoriesList = ({categoryFormActive, setCategory, setCatego
     };
 
     const renderList = () => {
-        if (spinner) {
+        if (spinner || !categories || categories.length === 0) {
             return (<LoadingSpinner/>);
         }
         return categories.map(category => (
@@ -198,8 +206,8 @@ export const DishesCategoriesList = ({categoryFormActive, setCategory, setCatego
                         </div>
                         <div>
                             <div className={'clickable-icon hover-scaling'} onClick={() => {
-                                setCategory(category);
-                                categoryFormActive(true);
+                                dispatch(setCategory(category));
+                                dispatch(setEditCategoryFormActive(true));
                             }}>
                                 <EditIcon/>
                             </div>
@@ -247,9 +255,9 @@ export const DishesCategoriesList = ({categoryFormActive, setCategory, setCatego
                                         {menuItem.available ? <AvailableIcon/> : <UnavailableIcon/>}
                                     </div>
                                     <div className={'clickable-icon hover-scaling'} onClick={() => {
-                                        setCategory(category);
-                                        setMenuItem(menuItem);
-                                        menuItemFormActive(true)}}>
+                                        dispatch(setCategory(category));
+                                        dispatch(setDish(menuItem));
+                                        dispatch(setEditDishFormActive(true))}}>
                                         <EditIcon/>
                                     </div>
                                     <div className={'clickable-icon hover-scaling'} onClick={() => {

@@ -10,18 +10,22 @@ import {FormErrorDialog} from "../../error/FormErrorDialog";
 import {useGetDisplayOrders} from "../../utils/hooks/useGetDisplayOrders";
 import {handleSelectChange} from "../../utils/handleSelectChange";
 import {uploadImage} from "../../utils/fetch/uploadImage";
-import {postMenuItem} from "../../utils/fetch/postMenuItem";
-import {imagesPath} from "../../../apiData";
+import {apiHost, imagesPath} from "../../../apiData";
 import {
     getIconPath,
-    handleAllergensChange, handleFileChange,
+    handleAllergensChange,
+    handleFileChange,
     handleLabelsChange,
     removeFile
 } from "../../utils/formUtils";
 import {DishAdditionsView} from "./DishAdditionsView";
+import {getDecodedJwt} from "../../../utils";
+import {setEditDishFormActive, setSubmittedSuccessType} from "../../../slices/dishesCategoriesSlice";
+import {useDispatch} from "react-redux";
 
-export const EditDishForm = ({setMenuItemFormActive, setSubmittedSuccessfullyType, categories, menuItem, category}) => {
+export const EditDishForm = ({categories, menuItem, category}) => {
     const {t} = useTranslation();
+    const dispatch = useDispatch();
     const [displayOrders, setDisplayOrders] = useState(useGetDisplayOrders(category));
     const [errorData, setErrorData] = useState({});
     const [chosenCategory, setChosenCategory] = useState({value: category, label: getTranslation(category.name)});
@@ -99,7 +103,28 @@ export const EditDishForm = ({setMenuItemFormActive, setSubmittedSuccessfullyTyp
                 imageName: file ? file.name : null,
                 available: form.available.value,
             });
-            postMenuItem(requestBody, setSubmittedSuccessfullyType, setMenuItemFormActive, setErrorData, setErrorMessage)
+            fetch(`${apiHost}/api/cms/items/add`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${getDecodedJwt()}`,
+                },
+                body: requestBody,
+            }).then((response) => {
+                if (response.ok) {
+                    dispatch(setSubmittedSuccessType('dish-edit'));
+                    setTimeout(() => {
+                        dispatch(setSubmittedSuccessType(null));
+                    }, 4000);
+                    dispatch(setEditDishFormActive(false));
+                    return response.json();
+                } else {
+                    return response.json().then((errorData) => {
+                        setErrorData(errorData);
+                        setErrorMessage(errorData);
+                    });
+                }
+            })
         });
     };
 
@@ -119,8 +144,8 @@ export const EditDishForm = ({setMenuItemFormActive, setSubmittedSuccessfullyTyp
             {errorMessage ? <FormErrorDialog error={errorData} resetMessage={setErrorMessage}/> : null}
             <div className={'form-grid'}>
                 <FormHeader headerTitle={t('createNewDish')}
-                            onAdd={() => setMenuItemFormActive(false)}
-                            onCancel={handleFormSubmit}/>
+                            onAdd={handleFormSubmit}
+                            onCancel={() => dispatch(setEditDishFormActive(false))}/>
                 <DishFormTemplate chosenCategory={chosenCategory}
                                   setChosenCategory={setChosenCategory}
                                   categories={categories}

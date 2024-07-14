@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import {Helmet} from "react-helmet";
 import {useTranslation} from "react-i18next";
 import {SearchIcon} from "../../icons/SearchIcon";
@@ -7,37 +7,37 @@ import {NewCategoryForm} from "./NewCategoryForm";
 import {ConfirmationDialogWindow} from "../dialogWindows/ConfirmationDialogWindow";
 import {EditCategoryForm} from "./EditCategoryForm";
 import {NewDishForm} from "./NewDishForm";
-import ErrorBoundary from "../../error/ErrorBoundary";
 import {EditDishForm} from "./EditDishForm";
+import ErrorBoundary from "../../error/ErrorBoundary";
+import {useDispatch, useSelector} from "react-redux";
+import {
+    setForm,
+    setNewCategoryFormActive,
+    setNewDishFormActive,
+    setSearchActive
+} from "../../../slices/dishesCategoriesSlice";
 
 export const DishesCategories = () => {
     const {t} = useTranslation();
-    const [searchActive, setSearchActive] = useState(false);
-    const [form, setForm] = useState({filter: ''});
-    const [isNewCategoryFormActive, setIsNewCategoryFormActive] = useState(false);
-    const [isEditCategoryFormActive, setIsEditCategoryFormActive] = useState(false);
-    const [isNewMenuItemFormActive, setIsNewMenuItemFormActive] = useState(false);
-    const [isEditMenuItemFormActive, setIsEditMenuItemFormActive] = useState(false);
-    const [submittedSuccessfullyType, setSubmittedSuccessfullyType] = useState(null);
-    const [category, setCategory] = useState({});
-    const [menuItem, setMenuItem] = useState({});
-    const [categories, setCategories] = useState({});
+    const dispatch = useDispatch();
+    const {
+        searchActive,
+        form,
+        newCategoryFormActive,
+        editCategoryFormActive,
+        newDishFormActive,
+        editDishFormActive,
+        submittedSuccessType,
+        category,
+        dish,
+        categories
+    } = useSelector(state => state.dishesCategories)
 
     const handleSearchSubmit = (event) => {
         event.preventDefault()
         if ('' !== form.filter) {
             console.log(form.filter)
         }
-    }
-
-    const setFormFields = e => {
-        const {name, value} = e.target;
-        setForm(prevState => {
-            return {
-                ...prevState,
-                [name]: value
-            };
-        });
     }
 
     const renderForm = () => {
@@ -48,21 +48,13 @@ export const DishesCategories = () => {
                        placeholder={t('search')}
                        name={'filter'}
                        value={form.filter}
-                       onChange={setFormFields}/>
+                       onChange={(e) => dispatch(setForm(e.target.value))}/>
             </form>
         );
     };
 
-    const renderNewCategoryForm = () => {
-        setIsNewCategoryFormActive(true);
-    }
-
-    const renderNewMenuItemForm = () => {
-        setIsNewMenuItemFormActive(true);
-    }
-
     const renderConfirmationDialog = (type) => {
-        switch(type) {
+        switch (type) {
             case 'category-save':
                 return (<ConfirmationDialogWindow text={t('categorySaved')}/>);
             case 'category-edit':
@@ -77,49 +69,37 @@ export const DishesCategories = () => {
     }
 
     const handleDishesCategoriesRendering = () => {
-        if (isNewCategoryFormActive) {
-            return <NewCategoryForm setCategoryFormActive={setIsNewCategoryFormActive}
-                                    setSubmittedSuccessfullyType={setSubmittedSuccessfullyType}
-            />
-        } else if (isEditCategoryFormActive) {
-            return <EditCategoryForm setCategoryFormActive={setIsEditCategoryFormActive}
-                                     setSubmittedSuccessfullyType={setSubmittedSuccessfullyType}
-                                     category={category}
-            />
-        } else if (isNewMenuItemFormActive) {
-            return <NewDishForm setMenuItemFormActive={setIsNewMenuItemFormActive}
-                                setSubmittedSuccessfullyType={setSubmittedSuccessfullyType}
-                                categories={categories}
-            />
-        } else if (isEditMenuItemFormActive) {
-            return (<EditDishForm setMenuItemFormActive={setIsEditMenuItemFormActive}
-                                  setSubmittedSuccessfullyType={setSubmittedSuccessfullyType}
-                                  categories={categories}
+        if (newCategoryFormActive) {
+            return <NewCategoryForm/>
+        } else if (editCategoryFormActive) {
+            return <EditCategoryForm/>
+        } else if (newDishFormActive) {
+            return <NewDishForm/>
+        } else if (editDishFormActive) {
+            return (<EditDishForm categories={categories}
                                   category={category}
-                                  menuItem={menuItem}/>);
+                                  menuItem={dish}/>);
         } else {
             return (
                 <div className={'dishes-categories-grid'}>
                     <div className={'new-buttons-container'}>
-                        <button className={'add-new-button new-category'} onClick={renderNewCategoryForm}>
+                        <button className={'add-new-button new-category'}
+                                onClick={() => dispatch(setNewCategoryFormActive(true))}>
                             <span>+ {t('newCategory')}</span>
                         </button>
-                        <button className={'add-new-button new-dish'} onClick={renderNewMenuItemForm}>
+                        <button className={'add-new-button new-dish'}
+                                onClick={() => dispatch(setNewDishFormActive(true))}>
                             <span>+ {t('newDish')}</span>
                         </button>
                         <div className={`search-button ${searchActive ? 'search-active' : ''}`}>
                             <button className={`search-initial-circle ${searchActive ? 'circle-active' : ''}`}
-                                    onClick={() => setSearchActive(!searchActive)}>
+                                    onClick={() => dispatch(setSearchActive(true))}>
                                 <SearchIcon/>
                             </button>
                             {searchActive ? renderForm() : <></>}
                         </div>
                     </div>
-                    <DishesCategoriesList
-                        categoryFormActive={setIsEditCategoryFormActive}
-                        setCategory={setCategory}
-                        setCategoryList={setCategories}
-                        menuItemFormActive={setIsEditMenuItemFormActive} setMenuItem={setMenuItem}/>
+                    <DishesCategoriesList/>
                 </div>
             );
         }
@@ -130,7 +110,7 @@ export const DishesCategories = () => {
             <Helmet>
                 <title>CMS - {t('dishesCategories')}</title>
             </Helmet>
-            {submittedSuccessfullyType && renderConfirmationDialog(submittedSuccessfullyType)}
+            {submittedSuccessType && renderConfirmationDialog(submittedSuccessType)}
             <ErrorBoundary>
                 {handleDishesCategoriesRendering()}
             </ErrorBoundary>
