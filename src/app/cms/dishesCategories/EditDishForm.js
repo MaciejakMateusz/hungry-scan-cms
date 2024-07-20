@@ -16,6 +16,7 @@ import {
     setAvailable,
     setBanner,
     setCategory,
+    setCategoryId,
     setChosenAdditions,
     setChosenAllergens,
     setChosenLabels,
@@ -65,6 +66,7 @@ export const EditDishForm = () => {
                 dishBanner = null;
             }
             dispatch(setBanner(dishBanner ? {value: dishBanner, label: dishBanner} : dishBanner));
+            dispatch(setCategoryId(dish.categoryId));
             dispatch(setCategory({
                 category: {value: category, label: getTranslation(category.name)},
                 isNew: false

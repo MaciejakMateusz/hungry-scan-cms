@@ -207,6 +207,7 @@ export const dishFormSlice = createSlice({
         name: '',
         description: '',
         category: null,
+        categoryId: null,
         banner: '',
         variants: [],
         price: "0.00",
@@ -236,11 +237,12 @@ export const dishFormSlice = createSlice({
             state.description = action.payload;
         },
         setCategory: (state, action) => {
-            state.category = action.payload.category;
-            if (action.payload.category) {
-                const displayOrders = action.payload.category.value.menuItems.map(menuItem => menuItem.displayOrder);
+            const category = action.payload.category;
+            state.category = category
+            if (category) {
+                const displayOrders = category.value.menuItems.map(menuItem => menuItem.displayOrder);
                 const additional = displayOrders.length + 1;
-                if (action.payload.isNew) {
+                if (action.payload.isNew || category.value.id !== state.categoryId) {
                     state.displayOrders = [...displayOrders, additional];
                     state.displayOrder = {value: additional, label: additional};
                 } else {
@@ -252,12 +254,14 @@ export const dishFormSlice = createSlice({
                         state.displayOrder = {value: displayOrders.length, label: displayOrders.length};
                     }
                 }
-                state.category = action.payload.category;
             } else {
                 state.category = null;
                 state.displayOrder = 0;
                 state.displayOrders = [];
             }
+        },
+        setCategoryId: (state, action) => {
+            state.categoryId = action.payload;
         },
         setBanner: (state, action) => {
             state.banner = action.payload || null;
@@ -347,6 +351,7 @@ export const {
     setName,
     setDescription,
     setCategory,
+    setCategoryId,
     setBanner,
     setVariants,
     setPrice,

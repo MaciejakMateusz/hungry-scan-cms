@@ -109,6 +109,9 @@ iframe {
 
 .error-dialog-content {
     margin-bottom: 20px;
+    white-space: break-spaces;
+    overflow: auto;
+    max-height: 50vh;
 }
 
 .error-field-wrapper {
