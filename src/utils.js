@@ -36,3 +36,9 @@ export const urlParamValue = param => {
     const urlParams = new URLSearchParams(queryString);
     return urlParams.get(param);
 }
+
+export const formatPrice = (price) => {
+    let formattedPrice = price.toFixed(2);
+    formattedPrice = formattedPrice.replace('.', ',');
+    return formattedPrice;
+}

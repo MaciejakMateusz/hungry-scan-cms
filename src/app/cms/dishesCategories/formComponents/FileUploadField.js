@@ -1,8 +1,26 @@
 import React from "react";
 import {useTranslation} from "react-i18next";
+import {useDispatch, useSelector} from "react-redux";
+import {clearFileName} from "../../../../slices/dishFormSlice";
 
 export const FileUploadField = (props) => {
     const {t} = useTranslation();
+    const dispatch = useDispatch();
+    const {fileName} = useSelector(state => state.dishForm.form);
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            props.setFileName(file.name);
+        }
+        props.setFile(file);
+    };
+
+    const clearFileData = () => {
+        dispatch(clearFileName());
+        props.setFile(null);
+    }
+
     return (
         <div className={'form-field-wrapper'}>
             <div className={'form-field-container'}>
@@ -10,7 +28,7 @@ export const FileUploadField = (props) => {
                     {t('image')}:
                 </label>
                 <div className={'custom-file-upload'}>
-                    {props.fileName === null ? (
+                    {fileName === null ? (
                             <>
                                 <label htmlFor={'dish-image'}
                                        className={'custom-file-upload label'}>
@@ -20,19 +38,19 @@ export const FileUploadField = (props) => {
                                     type={'file'}
                                     id={'dish-image'}
                                     name={'imageName'}
-                                    onChange={props.onChange}
+                                    onChange={(e) => handleFileChange(e)}
                                     accept={'.png'}
                                     className={'file-input'}/>
                             </>
                         ) :
                         <label htmlFor={'dish-image'}
                                className={'custom-file-upload label clear'}
-                               onClick={props.onClick}>
+                               onClick={clearFileData}>
                             {t('clear')}
                             <span className={'clear-file-icon'}>x</span>
                         </label>}
                     <span className={'file-name'}
-                          id={'file-name'}>{props.fileName ? props.fileName : t('noFileChosen')}
+                          id={'file-name'}>{fileName ? fileName : t('noFileChosen')}
                     </span>
                 </div>
             </div>

@@ -3,7 +3,7 @@ import {AvailableIcon} from "../../icons/AvailableIcon";
 import {EditIcon} from "../../icons/EditIcon";
 import {DeleteIcon} from "../../icons/DeleteIcon";
 import {apiHost, imagesPath} from "../../../apiData";
-import {getDecodedJwt} from "../../../utils";
+import {formatPrice, getDecodedJwt} from "../../../utils";
 import {UnavailableIcon} from "../../icons/UnavailableIcon";
 import {WarningDialogWindow} from "../dialogWindows/WarningDialogWindow";
 import {ConfirmationDialogWindow} from "../dialogWindows/ConfirmationDialogWindow";
@@ -243,7 +243,7 @@ export const DishesCategoriesList = () => {
                                             <span
                                                 className={'dish-description'}>{getTranslation(menuItem.description)}</span>
                                             <div className={'dish-price'}>
-                                                <span>{menuItem.price} zł</span>
+                                                <span>{formatPrice(menuItem.price)} zł</span>
                                             </div>
                                         </div>
                                     </div>

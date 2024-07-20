@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import {useTranslation} from "react-i18next";
 import {FormHeader} from "./formComponents/FormHeader";
 import {CategoryFormTemplate} from "./formComponents/CategoryFormTemplate";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {setNewCategoryFormActive, setSubmittedSuccessType,} from "../../../slices/dishesCategoriesSlice";
 import {
     clearForm,
@@ -12,12 +12,15 @@ import {
     setDisplayOrderLabel,
     setDisplayOrders,
     setDisplayOrderValue,
-    setErrorData
+    setErrorData,
+    setErrorMessage
 } from "../../../slices/categoryFormSlice";
+import {FormErrorDialog} from "../../error/FormErrorDialog";
 
 export const NewCategoryForm = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
+    const {errorData, errorMessage} = useSelector(state => state.categoryForm.form);
 
     useEffect(() => {
         const prepareDisplayOrders = async () => {
@@ -45,21 +48,23 @@ export const NewCategoryForm = () => {
             dispatch(setNewCategoryFormActive(false));
             dispatch(clearForm());
         } else if (postCategory.rejected.match(resultAction)) {
-            dispatch(setErrorData(resultAction.payload))
+            dispatch(setErrorData(resultAction.payload));
+            dispatch(setErrorMessage(resultAction.payload));
         }
     };
 
+
     return (
-        <form onSubmit={handleFormSubmit}
-              className={'form-container'}>
+        <form onSubmit={handleFormSubmit} className={'form-container'}>
+            {errorMessage ? <FormErrorDialog error={errorData} resetMessage={() => dispatch(setErrorMessage(null))} /> : null}
             <div className={'form-grid'}>
                 <FormHeader headerTitle={t('createNewCategory')}
                             onAdd={handleFormSubmit}
                             onCancel={() => {
                                 dispatch(setNewCategoryFormActive(false));
                                 dispatch(clearForm());
-                            }}/>
-                <CategoryFormTemplate/>
+                            }} />
+                <CategoryFormTemplate />
             </div>
         </form>
     );

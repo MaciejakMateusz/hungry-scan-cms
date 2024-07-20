@@ -4,7 +4,7 @@ import {getDecodedJwt} from "../utils";
 
 export const postCategory = createAsyncThunk(
     'categoryFetch/postCategory',
-    async (credentials, {getState, rejectWithValue}) => {
+    async (_, {getState, rejectWithValue}) => {
         const state = getState().categoryForm.form;
         const response = await fetch(`${apiHost}/api/cms/categories/add`, {
             method: 'POST',
@@ -18,6 +18,7 @@ export const postCategory = createAsyncThunk(
                     defaultTranslation: state.name,
                     translationEn: ''
                 },
+                menuItems: state.dishes,
                 available: state.available.value,
                 displayOrder: state.displayOrder.value
             })
@@ -34,7 +35,7 @@ export const postCategory = createAsyncThunk(
 
 export const getCategoriesDisplayOrders = createAsyncThunk(
     'categoryFetch/getCategoriesDisplayOrders',
-    async (credentials, {rejectWithValue}) => {
+    async (_, {rejectWithValue}) => {
         const response = await fetch(`${apiHost}/api/cms/categories/display-orders`, {
             method: 'GET',
             headers: {
@@ -80,13 +81,13 @@ export const displayOrdersFetchSlice = createSlice(
         },
         extraReducers: (builder) => {
             builder
-                .addCase(postCategory.pending, state => {
+                .addCase(getCategoriesDisplayOrders.pending, state => {
                     state.isLoading = true;
                 })
-                .addCase(postCategory.fulfilled, (state) => {
+                .addCase(getCategoriesDisplayOrders.fulfilled, (state) => {
                     state.isLoading = false;
                 })
-                .addCase(postCategory.rejected, (state) => {
+                .addCase(getCategoriesDisplayOrders.rejected, (state) => {
                     state.isLoading = false;
                 })
         }
@@ -97,6 +98,7 @@ export const categoryFormSlice = createSlice({
     initialState: {
         id: null,
         name: '',
+        dishes: [],
         available: {
             value: true,
             label: ''
@@ -106,6 +108,7 @@ export const categoryFormSlice = createSlice({
             label: 0
         },
         displayOrders: [],
+        errorMessage: null,
         errorData: {}
     },
     reducers: {
@@ -114,6 +117,9 @@ export const categoryFormSlice = createSlice({
         },
         setName: (state, action) => {
             state.name = action.payload;
+        },
+        setDishes: (state, action) => {
+            state.dishes = action.payload;
         },
         setAvailable: (state, action) => {
             state.available = action.payload;
@@ -130,12 +136,16 @@ export const categoryFormSlice = createSlice({
         setDisplayOrders: (state, action) => {
             state.displayOrders = action.payload;
         },
+        setErrorMessage: (state, action) => {
+            state.errorMessage = action.payload;
+        },
         setErrorData: (state, action) => {
             state.errorData = action.payload;
         },
         clearForm: state => {
             state.id = null;
             state.name = '';
+            state.dishes = [];
             state.available = {
                 value: true,
                 label: ''
@@ -152,11 +162,13 @@ export const categoryFormSlice = createSlice({
 export const {
     setId,
     setName,
+    setDishes,
     setAvailable,
     setDisplayOrder,
     setDisplayOrderValue,
     setDisplayOrderLabel,
     setDisplayOrders,
+    setErrorMessage,
     setErrorData,
     clearForm
 } = categoryFormSlice.actions

@@ -1,12 +1,18 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
 
 export const DescriptionField = (props) => {
     const {t} = useTranslation();
     const [isFocused, setIsFocused] = useState(false);
+    const [hasError, setHasError] = useState(props.error.description);
 
-    const handleFocus = () => setIsFocused(true);
-    const handleBlur = () => setIsFocused(false);
+    const resetErrorStyles = () => {
+        setHasError(null);
+    }
+
+    useEffect(() => {
+        setHasError(props.error.description && props.value.length > 255)
+    }, [props.error, props.value]);
 
     return (
         <div className={'form-field-wrapper'}>
@@ -15,14 +21,17 @@ export const DescriptionField = (props) => {
                     {t('description')}:
                 </label>
                 <textarea
-                    className={'form-field description'}
+                    className={`form-field description ${hasError ? 'error' : ''}`}
                     id={'dish-description'}
                     name={'description'}
                     value={props.value}
-                    onChange={props.onChange}
+                    onChange={(e) => {
+                        props.onChange(e.target.value);
+                        resetErrorStyles();
+                    }}
                     placeholder={isFocused ? '' : t('type')}
-                    onFocus={handleFocus}
-                    onBlur={handleBlur}/>
+                    onFocus={() => setIsFocused(true)}
+                    onBlur={() => setIsFocused(false)}/>
             </div>
         </div>
     );

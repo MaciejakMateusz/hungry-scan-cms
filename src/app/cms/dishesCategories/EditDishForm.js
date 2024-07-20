@@ -3,138 +3,121 @@ import {useTranslation} from "react-i18next";
 import {getTranslation} from "../../../locales/langUtils";
 import {FormHeader} from "./formComponents/FormHeader";
 import {DishFormTemplate} from "./formComponents/DishFormTemplate";
-import {useFetchLabels} from "../../utils/hooks/useFetchLables";
-import {useFetchAllergens} from "../../utils/hooks/useFetchAllergens";
-import {useFormState} from "../../utils/hooks/useFormState";
 import {FormErrorDialog} from "../../error/FormErrorDialog";
-import {useGetDisplayOrders} from "../../utils/hooks/useGetDisplayOrders";
-import {handleSelectChange} from "../../utils/handleSelectChange";
-import {uploadImage} from "../../utils/fetch/uploadImage";
-import {apiHost, imagesPath} from "../../../apiData";
-import {
-    getIconPath,
-    handleAllergensChange,
-    handleFileChange,
-    handleLabelsChange,
-    removeFile
-} from "../../utils/formUtils";
+import {imagesPath} from "../../../apiData";
 import {DishAdditionsView} from "./DishAdditionsView";
-import {getDecodedJwt} from "../../../utils";
-import {setEditDishFormActive, setSubmittedSuccessType} from "../../../slices/dishesCategoriesSlice";
-import {useDispatch} from "react-redux";
+import {
+    setEditDishFormActive,
+    setSubmittedSuccessType
+} from "../../../slices/dishesCategoriesSlice";
+import {useDispatch, useSelector} from "react-redux";
+import {
+    clearForm, postDish, postImage,
+    setAvailable,
+    setBanner,
+    setCategory,
+    setChosenAdditions,
+    setChosenAllergens,
+    setChosenLabels,
+    setDescription,
+    setDisplayOrder,
+    setErrorData,
+    setErrorMessage,
+    setFileName, setId,
+    setName,
+    setPrice,
+    setVariants
+} from "../../../slices/dishFormSlice";
 
-export const EditDishForm = ({categories, menuItem, category}) => {
+export const EditDishForm = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
-    const [displayOrders, setDisplayOrders] = useState(useGetDisplayOrders(category));
-    const [errorData, setErrorData] = useState({});
-    const [chosenCategory, setChosenCategory] = useState({value: category, label: getTranslation(category.name)});
-    const [chosenAdditions, setChosenAdditions] = useState(menuItem.additionalIngredients);
-    const [chosenLabels, setChosenLabels] = useState(menuItem.labels);
-    const [chosenAllergens, setChosenAllergens] = useState(menuItem.allergens);
-    const [file, setFile] = useState({});
-    const [fileName, setFileName] = useState(menuItem.imageName)
-    const [isAdditionsViewActive, setIsAdditionsViewActive] = useState(false);
-    const [errorMessage, setErrorMessage] = useState(null);
-    const labels = useFetchLabels(setErrorMessage);
-    const allergens = useFetchAllergens(setErrorMessage)
-    const [form, setForm, handleInputChange] = useFormState(() => {
-        let menuItemBanner;
-        if (menuItem.bestseller) {
-            menuItemBanner = t('isBestseller')
-        } else if (menuItem.new) {
-            menuItemBanner = t('isNew')
-        } else {
-            menuItemBanner = null;
-        }
-
-        return {
-            category: {value: category, label: getTranslation(category.name)},
-            displayOrder: {value: menuItem.displayOrder, label: menuItem.displayOrder},
-            banner: menuItemBanner ? {value: menuItemBanner, label: menuItemBanner} : menuItemBanner,
-            name: menuItem.name.defaultTranslation,
-            description: menuItem.description.defaultTranslation,
-            variants: menuItem.variants,
-            price: menuItem.price.toFixed(2),
-            file: file,
-            available: {
-                value: menuItem.available,
-                label: menuItem.available ? t('availableDish') : t('unavailableDish')
-            }
-        }
-    }, labels, allergens);
+    const {
+        banner,
+        isAdditionsViewActive,
+        errorMessage,
+        errorData,
+    } = useSelector(state => state.dishForm.form);
+    const {category, dish} = useSelector(state => state.dishesCategories);
+    const [file, setFile] = useState(null);
 
     useEffect(() => {
         const fetchImage = async () => {
-            const response = await fetch(`${imagesPath}/${menuItem.imageName}`);
-            if(response.ok) {
+            const response = await fetch(`${imagesPath}/${dish.imageName}`);
+            if (response.ok) {
                 const blob = await response.blob();
-                const file = new File([blob], menuItem.imageName, {type: blob.type});
-                setFile(file)
+                const file = new File([blob], dish.imageName, {type: blob.type});
+                setFile(file);
+                dispatch(setFileName(file.name));
             }
         };
         fetchImage().catch(error => console.log(error));
-    }, [menuItem, setForm]);
+    }, [dish, dispatch]);
 
-    const handleFormSubmit = (e) => {
+    useEffect(() => {
+        const setInitialFormState = () => {
+            let dishBanner;
+            if (dish.bestseller) {
+                dishBanner = t('isBestseller')
+            } else if (dish.new) {
+                dishBanner = t('isNew')
+            } else {
+                dishBanner = null;
+            }
+            dispatch(setBanner(dishBanner ? {value: dishBanner, label: dishBanner} : dishBanner));
+            dispatch(setCategory({
+                category: {value: category, label: getTranslation(category.name)},
+                isNew: false
+            }));
+            dispatch(setDisplayOrder({value: dish.displayOrder, label: dish.displayOrder}));
+            dispatch(setId(dish.id));
+            dispatch(setName(dish.name.defaultTranslation));
+            dispatch(setDescription(dish.description.defaultTranslation));
+            dispatch(setVariants(dish.variants));
+            dispatch(setPrice(dish.price.toFixed(2)));
+            dispatch(setAvailable({
+                value: dish.available,
+                label: dish.available ? t('availableDish') : t('unavailableDish')
+            }));
+            dispatch(setChosenLabels(dish.labels));
+            dispatch(setChosenAllergens(dish.allergens));
+            dispatch(setChosenAdditions(dish.additionalIngredients));
+        }
+        setInitialFormState();
+    }, []);
+
+    const handleFormSubmit = async (e) => {
         e.preventDefault();
         setErrorMessage(null);
 
-        uploadImage().then(() => {
-            const requestBody = JSON.stringify({
-                id: menuItem.id,
-                categoryId: form.category.value.id,
-                displayOrder: form.displayOrder.value,
-                new: form.banner && form.banner.value === t("isNew"),
-                bestseller: form.banner && form.banner.value === t("isBestseller"),
-                name: {
-                    defaultTranslation: form.name,
-                    translationEn: ''
-                },
-                description: {
-                    defaultTranslation: form.description,
-                    translationEn: ''
-                },
-                labels: chosenLabels,
-                allergens: chosenAllergens,
-                variants: form.variants,
-                additionalIngredients: chosenAdditions,
-                price: form.price,
-                imageName: file ? file.name : null,
-                available: form.available.value,
-            });
-            fetch(`${apiHost}/api/cms/items/add`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${getDecodedJwt()}`,
-                },
-                body: requestBody,
-            }).then((response) => {
-                if (response.ok) {
-                    dispatch(setSubmittedSuccessType('dish-edit'));
-                    setTimeout(() => {
-                        dispatch(setSubmittedSuccessType(null));
-                    }, 4000);
-                    dispatch(setEditDishFormActive(false));
-                    return response.json();
-                } else {
-                    return response.json().then((errorData) => {
-                        setErrorData(errorData);
-                        setErrorMessage(errorData);
-                    });
-                }
-            })
-        });
+        const imageAction = await dispatch(postImage({file: file}));
+        if(postImage.fulfilled.match(imageAction)) {
+            dispatch(setFileName(file && file.name));
+        } else if(postImage.rejected.match(imageAction)) {
+            dispatch(setErrorData(imageAction.payload));
+            dispatch(setErrorMessage(imageAction.payload));
+            return;
+        }
+
+        const newBanner = banner && banner.value === t("isNew");
+        const bestsellerBanner = banner && banner.value === t("isBestseller");
+        const dishAction = await dispatch(postDish({new: newBanner, bestseller: bestsellerBanner}));
+        if(postDish.fulfilled.match(dishAction)) {
+            dispatch(setSubmittedSuccessType('dish-edit'));
+            setTimeout(() => {
+                dispatch(setSubmittedSuccessType(null));
+            }, 4000);
+            dispatch(setEditDishFormActive(false));
+            dispatch(clearForm());
+        } else if(postDish.rejected.match(dishAction)) {
+            dispatch(setErrorData(dishAction.payload));
+            dispatch(setErrorMessage(dishAction.payload));
+        }
     };
 
     if (isAdditionsViewActive) {
         return (
-            <DishAdditionsView
-                setAdditions={setChosenAdditions}
-                chosenAdditions={chosenAdditions}
-                isActive={setIsAdditionsViewActive}
-            />
+            <DishAdditionsView/>
         );
     }
 
@@ -143,31 +126,13 @@ export const EditDishForm = ({categories, menuItem, category}) => {
               className={'form-container'}>
             {errorMessage ? <FormErrorDialog error={errorData} resetMessage={setErrorMessage}/> : null}
             <div className={'form-grid'}>
-                <FormHeader headerTitle={t('createNewDish')}
+                <FormHeader headerTitle={`${t('editDish')}${getTranslation(dish.name)}`}
                             onAdd={handleFormSubmit}
-                            onCancel={() => dispatch(setEditDishFormActive(false))}/>
-                <DishFormTemplate chosenCategory={chosenCategory}
-                                  setChosenCategory={setChosenCategory}
-                                  categories={categories}
-                                  onSelectChange={handleSelectChange}
-                                  errorData={errorData}
-                                  form={form}
-                                  setForm={setForm}
-                                  displayOrders={displayOrders}
-                                  setDisplayOrders={setDisplayOrders}
-                                  handleInputChange={handleInputChange}
-                                  labels={labels}
-                                  getIconPath={(obj, type) => getIconPath(chosenLabels, chosenAllergens, obj, type)}
-                                  handleLabelsChange={(label) => handleLabelsChange(chosenLabels, setChosenLabels, label)}
-                                  allergens={allergens}
-                                  handleAllergensChange={(allergen) => handleAllergensChange(chosenAllergens, setChosenAllergens, allergen)}
-                                  setIsAdditionsViewActive={setIsAdditionsViewActive}
-                                  chosenAdditions={chosenAdditions}
-                                  file={file}
-                                  fileName={fileName}
-                                  handleFileChange={(e) => handleFileChange(setFileName, setFile, e)}
-                                  removeFile={() => removeFile(setFile, setFileName)}
-                />
+                            onCancel={() => {
+                                dispatch(setEditDishFormActive(false))
+                                dispatch(clearForm())
+                            }}/>
+                <DishFormTemplate setFile={setFile} isNewDish={false}/>
             </div>
         </form>
     );

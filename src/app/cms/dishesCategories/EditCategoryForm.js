@@ -8,21 +8,22 @@ import {setEditCategoryFormActive, setSubmittedSuccessType} from "../../../slice
 import {
     clearForm, getCategoriesDisplayOrders,
     postCategory,
-    setAvailable,
+    setAvailable, setDishes,
     setDisplayOrder,
     setDisplayOrders,
-    setErrorData,
+    setErrorData, setErrorMessage,
     setId,
     setName
 } from "../../../slices/categoryFormSlice";
+import {FormErrorDialog} from "../../error/FormErrorDialog";
 
 export const EditCategoryForm = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {category} = useSelector(state => state.dishesCategories);
+    const {errorData, errorMessage} = useSelector(state => state.categoryForm.form);
 
     useEffect(() => {
-        console.log('No sie renderuje sie no')
         const prepareDisplayOrders = async () => {
             const resultAction = await dispatch(getCategoriesDisplayOrders());
             if (getCategoriesDisplayOrders.fulfilled.match(resultAction)) {
@@ -36,6 +37,7 @@ export const EditCategoryForm = () => {
         const setFormInitialState = () => {
             dispatch(setId(category.id));
             dispatch(setName(category.name.defaultTranslation));
+            dispatch(setDishes(category.menuItems))
             dispatch(setAvailable({
                 value: category.available,
                 label: category.available ? t('availableCategory') : t('unavailableCategory')
@@ -59,15 +61,17 @@ export const EditCategoryForm = () => {
             dispatch(setEditCategoryFormActive(false));
             dispatch(clearForm());
         } else if (postCategory.rejected.match(resultAction)) {
-            dispatch(setErrorData(resultAction.payload))
+            dispatch(setErrorData(resultAction.payload));
+            dispatch(setErrorMessage(resultAction.payload));
         }
     };
 
     return (
         <form onSubmit={handleFormSubmit}
               className={'form-container'}>
+            {errorMessage ? <FormErrorDialog error={errorData} resetMessage={() => dispatch(setErrorMessage(null))} /> : null}
             <div className={'form-grid'}>
-                <FormHeader headerTitle={`${t('editCategory')}"${getTranslation(category.name)}"`}
+                <FormHeader headerTitle={`${t('editCategory')}${getTranslation(category.name)}`}
                             onAdd={handleFormSubmit}
                             onCancel={() => dispatch(setEditCategoryFormActive(false))}/>
                 <CategoryFormTemplate/>

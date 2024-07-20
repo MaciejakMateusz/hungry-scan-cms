@@ -11,7 +11,7 @@ export const NameField = (props) => {
     }
 
     useEffect(() => {
-        setHasError(props.error.name && !props.value)
+        setHasError(props.error.name && (!props.value || props.value.length > 255))
     }, [props.error, props.value]);
 
     return (

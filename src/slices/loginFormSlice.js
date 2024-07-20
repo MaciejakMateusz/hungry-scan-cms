@@ -3,7 +3,7 @@ import {apiHost} from "../apiData";
 
 export const executeLoginFetch = createAsyncThunk(
     'loginFetch/executeLoginFetch',
-    async (credentials, {getState}) => {
+    async (_, {getState}) => {
         const state = getState().login.loginForm;
         const response = await fetch(`${apiHost}/api/login`, {
             method: 'POST',
