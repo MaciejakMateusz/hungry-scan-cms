@@ -39,7 +39,7 @@ export const EditDishForm = () => {
         errorMessage,
         errorData,
     } = useSelector(state => state.dishForm.form);
-    const {category, dish} = useSelector(state => state.dishesCategories);
+    const {category, dish} = useSelector(state => state.dishesCategories.view);
     const [file, setFile] = useState(null);
 
     useEffect(() => {

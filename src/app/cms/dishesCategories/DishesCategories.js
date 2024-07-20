@@ -31,7 +31,7 @@ export const DishesCategories = () => {
         category,
         dish,
         categories
-    } = useSelector(state => state.dishesCategories)
+    } = useSelector(state => state.dishesCategories.view)
 
     const handleSearchSubmit = (event) => {
         event.preventDefault()

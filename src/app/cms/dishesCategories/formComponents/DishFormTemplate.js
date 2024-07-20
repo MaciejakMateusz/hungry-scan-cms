@@ -35,7 +35,7 @@ export const DishFormTemplate = ({setFile, isNewDish}) => {
         displayOrders,
         errorData,
     } = useSelector(state => state.dishForm.form);
-    const {categories} = useSelector(state => state.dishesCategories)
+    const {categories} = useSelector(state => state.dishesCategories.view)
 
     return (
         <div className={'form-wrapper'}>

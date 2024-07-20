@@ -14,6 +14,7 @@ import {LoadingSpinner} from "../../icons/LoadingSpinner";
 import {RemovalDialog} from "../dialogWindows/RemovalDialog";
 import {useDispatch, useSelector} from "react-redux";
 import {
+    getCategories,
     setCategories,
     setCategory,
     setDish,
@@ -24,7 +25,7 @@ import {
 export const DishesCategoriesList = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
-    const {categories} = useSelector(state => state.dishesCategories)
+    const {categories} = useSelector(state => state.dishesCategories.view)
     const [categoryForAction, setCategoryForAction] = useState({});
     const [menuItemForAction, setMenuItemForAction] = useState({});
     const [activeRemovalType, setActiveRemovalType] = useState(null);
@@ -34,26 +35,13 @@ export const DishesCategoriesList = () => {
     const [errorTimeoutId, setErrorTimeoutId] = useState(null);
     const [spinner, setSpinner] = useState(null);
 
-    const fetchCategories = () => {
+    const fetchCategories = async () => {
         setSpinner(<LoadingSpinner/>);
-        fetch(`${apiHost}/api/cms/categories`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${getDecodedJwt()}`
-            }
-        }).then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error("There was an error while communicating with a server.");
-            }
-        }).then(data => {
+        const resultAction = await dispatch(getCategories());
+        if(getCategories.fulfilled.match(resultAction)) {
             setSpinner(null);
-            dispatch(setCategories(data));
-        }).catch(error => {
-            console.log(error);
-        });
+            dispatch(setCategories(resultAction.payload));
+        }
     }
 
     useEffect(() => {

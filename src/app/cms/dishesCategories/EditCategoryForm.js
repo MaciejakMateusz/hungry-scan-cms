@@ -20,7 +20,7 @@ import {FormErrorDialog} from "../../error/FormErrorDialog";
 export const EditCategoryForm = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
-    const {category} = useSelector(state => state.dishesCategories);
+    const {category} = useSelector(state => state.dishesCategories.view);
     const {errorData, errorMessage} = useSelector(state => state.categoryForm.form);
 
     useEffect(() => {
