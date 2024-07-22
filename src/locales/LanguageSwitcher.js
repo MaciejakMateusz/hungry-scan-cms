@@ -6,6 +6,7 @@ const LanguageSwitcher = () => {
 
     const changeLanguage = (lng) => {
         i18n.changeLanguage(lng);
+        document.cookie = `i18next=${lng}`;
     };
 
     return (
