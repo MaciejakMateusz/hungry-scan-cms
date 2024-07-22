@@ -185,10 +185,10 @@ export const DishesCategoriesList = () => {
             <div key={category.id} className={'dishes-categories-list-grid'}>
                 <div className={'category-wrapper'}>
                     <div className={'category-container'}>
-                        <div className={'category-display-order'}>{category.displayOrder}</div>
+                        <div className={'display-order'}>{category.displayOrder}</div>
                         <span className={'category-container-text'}>{getTranslation(category.name)}</span>
                     </div>
-                    <div className={'category-manage-btns-pill-box'}>
+                    <div className={'manage-buttons-horizontal-pill'}>
                         <div className={'hover-scaling'}>
                             {category.available ? <AvailableIcon/> : <UnavailableIcon/>}
                         </div>

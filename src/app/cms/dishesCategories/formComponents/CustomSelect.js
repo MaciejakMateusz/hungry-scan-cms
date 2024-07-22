@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from "react";
-import Select, {components} from "react-select";
+import Select from "react-select";
 import {customSelect} from "../../../../styles";
 import {useTranslation} from "react-i18next";
+import {CustomNoOptionsMessage} from "./CustomNoOptionsMessage";
 
 export const CustomSelect = (props) => {
     const {t} = useTranslation();
@@ -27,16 +28,6 @@ export const CustomSelect = (props) => {
     useEffect(() => {
         setChosenValue(props.value);
     }, [props.value]);
-
-    const CustomNoOptionsMessage = (props) => {
-        return (
-            <components.NoOptionsMessage {...props}>
-                <div>
-                    {t('noOptionsMsg')}
-                </div>
-            </components.NoOptionsMessage>
-        );
-    };
 
     return (
         <div className={'form-field-wrapper'}>

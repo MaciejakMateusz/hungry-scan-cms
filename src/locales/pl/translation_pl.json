@@ -31,6 +31,8 @@
   "displayOrder": "Pozycja",
   "availability": "Dostępność",
   "availableCategory": "Dostępna",
+  "availableVariant": "Dostępny",
+  "unavailableVariant": "Niedostępny",
   "unavailableCategory": "Niedostępna",
   "availableDish": "Dostępne",
   "unavailableDish": "Niedostępne",
@@ -52,6 +54,8 @@
   "description": "Opis",
   "noCategories": "Brak dodanych kategorii",
   "noDishes": "Brak dodanych dań",
+  "noDishesInCategory": "Kategoria nie posiada dań",
+  "noVariantsInDish": "Danie nie posiada wariantów",
   "errorOccurred": "Wystąpił błąd",
   "close": "Zamknij",
   "errorSummary": "Szczegóły",
@@ -61,6 +65,7 @@
   "chosen": "Wybrane",
   "allIngredients": "Wszystkie dodatki",
   "noCategoryChosen": "Brak wybranej kategorii",
+  "noDishChosen": "Brak wybranego dania",
   "noFileChosen": "Nie wybrano pliku",
   "noOptionsMsg": "Brak dostępnych opcji",
   "chooseFile": "Wybierz plik",
@@ -68,5 +73,8 @@
   "categoryEdited": "Kategoria edytowana pomyślnie",
   "dishSaved": "Danie zapisane pomyślnie",
   "dishEdited": "Danie edytowane pomyślnie",
-  "formHasErrors": "Formularz zawiera błędy"
+  "formHasErrors": "Formularz zawiera błędy",
+  "newVariant": "Nowy wariant",
+  "createNewVariantForDish": "Stwórz nowy wariant dla dania: ",
+  "editVariant": "Edytuj wariant"
 }

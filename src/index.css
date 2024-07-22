@@ -511,6 +511,15 @@ ul {
     margin-right: 0;
 }
 
+.add-new-button.submit-additions:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.add-new-button.submit-additions:disabled:hover {
+    background: #3E424C;
+}
+
 .new-category {
     width: 173px;
     margin-right: 8px;
@@ -629,7 +638,7 @@ ul {
     font-weight: 400;
 }
 
-.category-display-order {
+.display-order {
     width: 35px;
     height: 35px;
     min-width: 35px;
@@ -649,11 +658,12 @@ ul {
     text-overflow: ellipsis;
 }
 
-.category-manage-btns-pill-box {
+.manage-buttons-horizontal-pill {
     display: flex;
     width: 121px;
     height: 35px;
     box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.1);
+    background-color: #FFF;
     border-radius: 100px;
     margin-left: 10px;
     align-items: center;
@@ -1175,7 +1185,7 @@ ul {
     align-items: center;
 }
 
-.ingredient-wrapper {
+.details-wrapper {
     padding-left: 20px;
     padding-right: 20px;
     padding-bottom: 15px;
@@ -1183,7 +1193,7 @@ ul {
     align-items: center;
 }
 
-.ingredient-container {
+.details-container {
     border-radius: 100px;
     background-color: #FFF;
     height: 35px;
@@ -1192,6 +1202,15 @@ ul {
     justify-content: space-between;
     width: 100%;
     margin-right: 10px;
+}
+
+.details-container.variants {
+    justify-content: normal;
+}
+
+.details-container.variants:hover {
+    cursor: pointer;
+    background-color: #F8F8F8;
 }
 
 .move-ingredient-btn {
@@ -1212,11 +1231,37 @@ ul {
     color: #FFF;
 }
 
-.ingredient-name {
+.details-record-grid {
+    display:grid;
+    grid-template-columns: 70% 1fr;
+    width: 100%;
+}
+
+.grid-column-left {
+    grid-column: 1;
+    display: flex;
+    margin-left: 15px;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.grid-column-right {
+    grid-column: 2;
+    display: flex;
+    margin-right: 15px;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.detail-name {
     margin-left: 15px;
 }
 
-.ingredient-price {
+.detail-price {
+    margin-right: 15px;
+}
+
+.variants-number {
     margin-right: 15px;
 }
 
@@ -1276,6 +1321,25 @@ ul {
     max-width: 45vw;
     white-space: normal;
     overflow-wrap: break-word;
+}
+
+.variant-form-dialog {
+    position: fixed;
+    top: 25vh;
+    left: 40vw;
+    background-color: #FFF;
+    padding: 2rem;
+    border: 0;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    display: grid;
+    grid-template-rows: 90% 10%;
+}
+
+.variant-dialog-footer {
+    display: flex;
+    justify-content: flex-end;
 }
 
 @media (max-width: 1325px) {
