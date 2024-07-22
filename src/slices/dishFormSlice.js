@@ -4,7 +4,7 @@ import {getDecodedJwt} from "../utils";
 
 export const postImage = createAsyncThunk(
     'postImage/postImage',
-    async (credentials, { rejectWithValue }) => {
+    async (credentials, {rejectWithValue}) => {
         if (!credentials.file) {
             return;
         }
@@ -22,7 +22,7 @@ export const postImage = createAsyncThunk(
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => null);
-            return rejectWithValue(errorData || { message: 'Failed to upload image' });
+            return rejectWithValue(errorData || {message: 'Failed to upload image'});
         }
 
         try {
@@ -324,9 +324,7 @@ export const dishFormSlice = createSlice({
             state.price = "0.00";
             state.file = {};
             state.fileName = null;
-            state.labels = [];
             state.chosenLabels = [];
-            state.allergens = [];
             state.chosenAllergens = [];
             state.additionalIngredients = [];
             state.chosenAdditions = [];
@@ -334,10 +332,7 @@ export const dishFormSlice = createSlice({
                 value: true,
                 label: ''
             };
-            state.displayOrder = {
-                value: 0,
-                label: 0
-            };
+            state.displayOrder = 0;
             state.displayOrders = [];
             state.isAdditionsViewActive = false;
             state.errorMessage = null;

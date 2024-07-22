@@ -58,9 +58,9 @@ export const DishAdditionsView = () => {
     const renderIngrRecord = (ingredient, action) => {
         return (
             <>
-                <div className={'ingredient-container'}>
-                    <span className={'ingredient-name'}>{getTranslation(ingredient.name)}</span>
-                    <span className={'ingredient-price'}>+ {ingredient.price.toFixed(2)}zł</span>
+                <div className={'details-container'}>
+                    <span className={'detail-name'}>{getTranslation(ingredient.name)}</span>
+                    <span className={'detail-price'}>+ {ingredient.price.toFixed(2)}zł</span>
                 </div>
                 {action === 'add' ?
                     (<button className={'move-ingredient-btn'}
@@ -124,7 +124,7 @@ export const DishAdditionsView = () => {
                     <ul className="ingredients-list">
                         {ingredients.length !== 0 ?
                             ingredients.map(ingredient => (
-                                <li className={'ingredient-wrapper'}
+                                <li className={'details-wrapper'}
                                     key={ingredient.id}>
                                     {renderIngrRecord(ingredient, 'add')}
                                 </li>
@@ -162,7 +162,7 @@ export const DishAdditionsView = () => {
                                 {additions.length !== 0 ?
                                     additions.map(ingredient => (
                                         <li key={ingredient.id}
-                                            className={'ingredient-wrapper'}>
+                                            className={'details-wrapper'}>
                                             {renderIngrRecord(ingredient, 'remove')}
                                         </li>)) :
                                     <p className={'text-center'}>{t('noChosenIngr')}</p>}

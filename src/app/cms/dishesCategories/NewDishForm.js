@@ -72,8 +72,8 @@ export const NewDishForm = () => {
                 <FormHeader headerTitle={t('createNewDish')}
                             onAdd={handleFormSubmit}
                             onCancel={() => {
-                                dispatch(setNewDishFormActive(false))
-                                dispatch(clearForm())
+                                dispatch(setNewDishFormActive(false));
+                                dispatch(clearForm());
                             }}/>
                 <DishFormTemplate setFile={setFile} isNewDish={true}/>
             </div>

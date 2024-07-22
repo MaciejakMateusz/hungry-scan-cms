@@ -30,6 +30,8 @@
   "displayOrder": "Position",
   "availability": "Availability",
   "availableCategory": "Available",
+  "availableVariant": "Available",
+  "unavailableVariant": "Unavailable",
   "unavailableCategory": "Unavailable",
   "availableDish": "Available",
   "unavailableDish": "Unavailable",
@@ -51,6 +53,8 @@
   "description": "Description",
   "noCategories": "There is no added categories",
   "noDishes": "There is no added dishes",
+  "noDishesInCategory": "Category does not contain any dishes",
+  "noVariantsInDish": "Dish does not contain any variants",
   "errorOccurred": "An error occurred",
   "close": "Close",
   "errorSummary": "Details",
@@ -60,6 +64,7 @@
   "chosen": "Chosen",
   "allIngredients": "All ingredients",
   "noCategoryChosen": "No category is chosen",
+  "noDishChosen": "No dish is chosen",
   "noFileChosen": "No file chosen",
   "noOptionsMsg": "No available options",
   "chooseFile": "Choose file",
@@ -67,5 +72,8 @@
   "categoryEdited": "Category edited successfully",
   "dishSaved": "Dish saved successfully",
   "dishEdited": "Dish edited successfully",
-  "formHasErrors": "Form has errors"
+  "formHasErrors": "Form has errors",
+  "newVariant": "New variant",
+  "createNewVariantForDish": "Create new variant for dish: ",
+  "editVariant": "Edit variant"
 }

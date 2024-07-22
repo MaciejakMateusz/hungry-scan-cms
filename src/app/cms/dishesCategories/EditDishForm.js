@@ -131,8 +131,8 @@ export const EditDishForm = () => {
                 <FormHeader headerTitle={`${t('editDish')}${getTranslation(dish.name)}`}
                             onAdd={handleFormSubmit}
                             onCancel={() => {
-                                dispatch(setEditDishFormActive(false))
-                                dispatch(clearForm())
+                                dispatch(setEditDishFormActive(false));
+                                dispatch(clearForm());
                             }}/>
                 <DishFormTemplate setFile={setFile} isNewDish={false}/>
             </div>
