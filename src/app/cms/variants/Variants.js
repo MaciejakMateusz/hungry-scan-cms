@@ -10,11 +10,14 @@ import {
     setCategory,
     setDish,
     setErrorData,
-    setFilter,
+    setFilteredItems,
+    setFilterExpanded,
+    setFilteringActive,
+    setFilterValue,
     setIsNewVariant,
-    setSearchActive,
     setVariant,
-    setVariantDialogActive, setVariantToRemove
+    setVariantDialogActive,
+    setVariantToRemove
 } from "../../../slices/variantsSlice";
 import {getCategories, setCategories} from "../../../slices/dishesCategoriesSlice";
 import {getTranslation} from "../../../locales/langUtils";
@@ -28,13 +31,17 @@ import {DeleteIcon} from "../../icons/DeleteIcon";
 import {VariantFormDialog} from "./VariantFormDialog";
 import {RemovalDialog} from "../dialogWindows/RemovalDialog";
 import {remove} from "../../../slices/objectRemovalSlice";
+import {FilteringForm} from "../utils/filtering/FilteringForm";
+import {filter} from "../../../slices/filteringSlice";
 
 export const Variants = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {
-        searchActive,
-        filter,
+        filteringActive,
+        filterValue,
+        filteredItems,
+        filterExpanded,
         category,
         dish,
         variantDialogActive,
@@ -47,6 +54,20 @@ export const Variants = () => {
         dispatch(setAvailable({label: t('availableVariant'), value: true}));
     }, [dispatch, t]);
 
+    useEffect(() => {
+        if (!filterExpanded && filterValue !== '') {
+            dispatch(setFilterValue(''));
+            executeFilter('');
+        }
+    }, [dispatch, filterExpanded]);
+
+    useEffect(() => {
+        fetchCategories()
+        if (categories.length > 0) {
+            dispatch(setCategory({value: categories[0], label: getTranslation(categories[0].name)}));
+        }
+    }, [categories.length]);
+
     const fetchCategories = async () => {
         const resultAction = await dispatch(getCategories());
         if (getCategories.fulfilled.match(resultAction)) {
@@ -58,52 +79,45 @@ export const Variants = () => {
         await dispatch(fetchVariants());
     }
 
-    useEffect(() => {
-        fetchCategories()
-        if (categories.length > 0) {
-            dispatch(setCategory({value: categories[0], label: getTranslation(categories[0].name)}));
-        }
-    }, [categories.length]);
-
     const handleVariantRemoval = async (e, variant) => {
         e.preventDefault();
         const resultAction = await dispatch(remove({id: variant.id, path: 'variants'}));
-        if(remove.fulfilled.match(resultAction)) {
+        if (remove.fulfilled.match(resultAction)) {
             dispatch(setVariantToRemove(null));
             await getVariants();
-        } else if(remove.rejected.match(resultAction)) {
-            console.log('rejected', resultAction.payload)
+        } else if (remove.rejected.match(resultAction)) {
             setErrorData(resultAction.payload);
         }
     };
 
-    const handleSearchSubmit = (event) => {
-        event.preventDefault()
-        if ('' !== filter) {
-            console.log(filter)
+    const handleSearchSubmit = async (e) => {
+        e.preventDefault()
+        dispatch(setFilterValue(e.target.value));
+        await executeFilter(e.target.value);
+    }
+
+    const executeFilter = async value => {
+        if ('' !== value) {
+            dispatch(setFilteringActive(true));
+            const resultAction = await dispatch(filter({path: 'items', value: value}));
+            if (filter.fulfilled.match(resultAction)) {
+                dispatch(setFilteredItems(resultAction.payload));
+            }
+        } else {
+            dispatch(setFilteringActive(false));
+            dispatch(setFilteredItems(null));
+            await dispatch(getVariants());
         }
     }
 
-    const renderForm = () => {
-        return (
-            <form className={'search-button-form'} onSubmit={handleSearchSubmit}>
-                <input type={'text'}
-                       className={'search-button-input'}
-                       placeholder={t('search')}
-                       name={'filter'}
-                       value={filter}
-                       onChange={(e) => dispatch(setFilter(e.target.value))}/>
-            </form>
-        );
-    };
-
-    const renderDishRecord = (dish) => {
+    const renderDishRecord = (dish, index) => {
+        console.log(index)
         return (
             <div className={'details-container variants'} onClick={async () => {
                 dispatch(setDish(dish));
                 await getVariants();
             }}>
-                <div className={'display-order'}>{dish.displayOrder}</div>
+                <div className={'display-order'}>{index ? index : dish.displayOrder}</div>
                 <div className={'details-record-grid'}>
                     <span className={'grid-column-left'}>{getTranslation(dish.name)}</span>
                     <span className={'grid-column-right'}>Warianty: {dish.variants ? dish.variants.length : 0}</span>
@@ -144,12 +158,36 @@ export const Variants = () => {
         );
     }
 
+    const renderMenuItemsRecords = () => {
+        if (!filteredItems) {
+            return (
+                category ? (category.value.menuItems.length !== 0 ?
+                        category.value.menuItems.map(menuItem => (
+                            <li className={'details-wrapper'}
+                                key={menuItem.id}>
+                                {renderDishRecord(menuItem, false)}
+                            </li>
+                        )) : <p className={'text-center zero-margin'}>{t('noDishesInCategory')}</p>) :
+                    <p className={'text-center zero-margin'}>{t('noCategoryChosen')}</p>
+            );
+        }
+        return (
+            filteredItems.length !== 0 ?
+                filteredItems.map((filteredItem, index) => (
+                    <li className={'details-wrapper'}
+                        key={filteredItem.id}>
+                        {renderDishRecord(filteredItem, index + 1)}
+                    </li>
+                )) : <p className={'text-center zero-margin'}>{t('noDishesFiltered')}</p>
+        );
+    }
+
     return (
         <>
             <Helmet>
                 <title>CMS - {t("variants")}</title>
             </Helmet>
-            {variantDialogActive ? <VariantFormDialog/> : <></>}
+            {variantDialogActive ? <VariantFormDialog filter={executeFilter}/> : <></>}
             {variantToRemove ?
                 <RemovalDialog msg={t('confirmDishRemoval')}
                                objName={variantToRemove.name}
@@ -159,22 +197,24 @@ export const Variants = () => {
                 <div className={'dish-additions-grid'}>
                     <div className={'dish-additions-left-panel'}>
                         <div className={'ingredients-header'}>
-                            <div className={`search-button ingredients ${searchActive ? 'search-active' : ''}`}>
-                                <button className={`search-initial-circle ${searchActive ? 'circle-active' : ''}`}
-                                        onClick={() => dispatch(setSearchActive(!searchActive))}>
+                            <div className={`search-button ingredients ${filterExpanded ? 'search-active' : ''}`}>
+                                <button className={`search-initial-circle ${filterExpanded ? 'circle-active' : ''}`}
+                                        onClick={() => dispatch(setFilterExpanded(!filterExpanded))}>
                                     <SearchIcon/>
                                 </button>
-                                {searchActive ? renderForm() : <></>}
+                                {filterExpanded ?
+                                    <FilteringForm value={filterValue} searchSubmit={handleSearchSubmit}/> : <></>}
                             </div>
                             <Select id={'dish-category-variant'}
                                     name={'category'}
                                     styles={customSelect}
-                                    value={category}
+                                    value={filteringActive ? {value: category.value, label: 'Filtrowane...'} : category}
                                     onChange={(selected) => {
                                         dispatch(setCategory(selected));
                                         dispatch(clearVariants());
                                         dispatch(setDish(null));
                                     }}
+                                    isDisabled={filteringActive}
                                     options={categories.map(category => {
                                         return {value: category, label: getTranslation(category.name)}
                                     })}
@@ -182,16 +222,7 @@ export const Variants = () => {
                             />
                         </div>
                         <ul className="ingredients-list">
-                            {
-                                category ? (category.value.menuItems.length !== 0 ?
-                                        category.value.menuItems.map(menuItem => (
-                                            <li className={'details-wrapper'}
-                                                key={menuItem.id}>
-                                                {renderDishRecord(menuItem)}
-                                            </li>
-                                        )) : <p className={'text-center zero-margin'}>{t('noDishesInCategory')}</p>) :
-                                    <p className={'text-center zero-margin'}>{t('noCategoryChosen')}</p>
-                            }
+                            {renderMenuItemsRecords()}
                         </ul>
                     </div>
                     <div className={'dish-additions-right-panel'}>

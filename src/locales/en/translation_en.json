@@ -54,6 +54,7 @@
   "noCategories": "There is no added categories",
   "noDishes": "There is no added dishes",
   "noDishesInCategory": "Category does not contain any dishes",
+  "noDishesFiltered": "No dishes with given filter",
   "noVariantsInDish": "Dish does not contain any variants",
   "errorOccurred": "An error occurred",
   "close": "Close",

@@ -55,6 +55,7 @@
   "noCategories": "Brak dodanych kategorii",
   "noDishes": "Brak dodanych dań",
   "noDishesInCategory": "Kategoria nie posiada dań",
+  "noDishesFiltered": "Brak dań z podanym filtrem",
   "noVariantsInDish": "Danie nie posiada wariantów",
   "errorOccurred": "Wystąpił błąd",
   "close": "Zamknij",

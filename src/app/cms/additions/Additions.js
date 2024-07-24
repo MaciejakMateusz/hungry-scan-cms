@@ -8,11 +8,11 @@ import {
     setAdditionDialogActive,
     setAdditionToRemove,
     setErrorData,
+    setFilterExpanded,
     setFilteringActive,
     setFilterValue,
     setIngredients,
-    setIsNewAddition,
-    setSearchActive
+    setIsNewAddition
 } from "../../../slices/additionsSlice";
 import {AdditionFormDialog} from "./AdditionFormDialog";
 import {getTranslation} from "../../../locales/langUtils";
@@ -32,7 +32,7 @@ export const Additions = () => {
     const dispatch = useDispatch();
     const {
         filterValue,
-        searchActive,
+        filterExpanded,
         additionDialogActive,
         additionToRemove,
         filteringActive
@@ -43,28 +43,35 @@ export const Additions = () => {
         dispatch(getIngredients());
     }, [dispatch]);
 
+    useEffect(() => {
+        if (!filterExpanded && filterValue !== '') {
+            dispatch(setFilterValue(''));
+            executeFilter('');
+        }
+    }, [dispatch, filterExpanded]);
+
+    const handleAdditionRemoval = async (e, ingredient) => {
+        e.preventDefault();
+        const resultAction = await dispatch(remove({id: ingredient.id, path: 'ingredients'}));
+        if (remove.fulfilled.match(resultAction)) {
+            dispatch(setAdditionToRemove(null));
+            filteringActive ? await executeFilter(filterValue) : await dispatch(getIngredients())
+        } else if (remove.rejected.match(resultAction)) {
+            setErrorData(resultAction.payload);
+        }
+    };
+
     const handleSearchSubmit = async (e) => {
         e.preventDefault()
         dispatch(setFilterValue(e.target.value));
         await executeFilter(e.target.value);
     }
 
-    const handleAdditionRemoval = async (e, ingredient) => {
-        e.preventDefault();
-        const resultAction = await dispatch(remove({id: ingredient.id, path: 'ingredients'}));
-        if(remove.fulfilled.match(resultAction)) {
-            dispatch(setAdditionToRemove(null));
-            filteringActive ? await executeFilter(filterValue) : await dispatch(getIngredients())
-        } else if(remove.rejected.match(resultAction)) {
-            setErrorData(resultAction.payload);
-        }
-    };
-
     const executeFilter = async value => {
         if ('' !== value) {
             dispatch(setFilteringActive(true));
             const resultAction = await dispatch(filter({path: 'ingredients', value: value}));
-            if(filter.fulfilled.match(resultAction)) {
+            if (filter.fulfilled.match(resultAction)) {
                 dispatch(setIngredients(resultAction.payload));
             }
         } else {
@@ -127,12 +134,13 @@ export const Additions = () => {
                                         + {t('newAddition')}
                                     </button>
                                 </div>
-                                <div className={`search-button additions ${searchActive ? 'search-active' : ''}`}>
-                                    <button className={`search-initial-circle ${searchActive ? 'circle-active' : ''}`}
-                                            onClick={() => dispatch(setSearchActive(!searchActive))}>
+                                <div className={`search-button additions ${filterExpanded ? 'search-active' : ''}`}>
+                                    <button className={`search-initial-circle ${filterExpanded ? 'circle-active' : ''}`}
+                                            onClick={() => dispatch(setFilterExpanded(!filterExpanded))}>
                                         <SearchIcon/>
                                     </button>
-                                    {searchActive ? <FilteringForm value={filterValue} searchSubmit={handleSearchSubmit}/> : <></>}
+                                    {filterExpanded ?
+                                        <FilteringForm value={filterValue} searchSubmit={handleSearchSubmit}/> : <></>}
                                 </div>
                             </div>
                             {isLoading ? <LoadingSpinner/> :

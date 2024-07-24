@@ -10,7 +10,11 @@ import {
     setPrice,
     setAvailable,
     setAdditionDialogActive,
-    postAddition, clearForm, resetViewData, getIngredients, setErrorData
+    postAddition,
+    clearForm,
+    resetViewData,
+    getIngredients,
+    setErrorData
 } from "../../../slices/additionsSlice";
 
 export const AdditionFormDialog = (props) => {

@@ -118,8 +118,10 @@ export const fetchVariantsSlice = createSlice(
 export const variantsSlice = createSlice({
     name: 'view',
     initialState: {
-        searchActive: false,
-        filter: null,
+        filteringActive: false,
+        filterValue: '',
+        filteredItems: null,
+        filterExpanded: false,
         category: null,
         dish: null,
         variantDialogActive: false,
@@ -127,11 +129,17 @@ export const variantsSlice = createSlice({
         isNewVariant: true,
     },
     reducers: {
-        setSearchActive: (state, action) => {
-            state.searchActive = action.payload;
+        setFilteringActive: (state, action) => {
+            state.filteringActive = action.payload;
         },
-        setFilter: (state, action) => {
-            state.filter = action.payload;
+        setFilterValue: (state, action) => {
+            state.filterValue = action.payload;
+        },
+        setFilteredItems: (state, action) => {
+            state.filteredItems = action.payload;
+        },
+        setFilterExpanded: (state, action) => {
+            state.filterExpanded = action.payload;
         },
         setCategory: (state, action) => {
             state.category = action.payload;
@@ -195,8 +203,10 @@ export const variantFormSlice = createSlice({
 });
 
 export const {
-    setSearchActive,
-    setFilter,
+    setFilteringActive,
+    setFilterValue,
+    setFilteredItems,
+    setFilterExpanded,
     setCategory,
     setDish,
     setVariantDialogActive,
