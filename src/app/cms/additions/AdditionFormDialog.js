@@ -13,10 +13,10 @@ import {
     postAddition, clearForm, resetViewData, getIngredients, setErrorData
 } from "../../../slices/additionsSlice";
 
-export const AdditionFormDialog = () => {
+export const AdditionFormDialog = (props) => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
-    const {isNewAddition} = useSelector(state => state.additions.view);
+    const {isNewAddition, filteringActive, filterValue} = useSelector(state => state.additions.view);
     const {name, price, available, addition} = useSelector(state => state.additions.form);
     const {errorData} = useSelector(state => state.additions.postAddition);
 
@@ -44,7 +44,7 @@ export const AdditionFormDialog = () => {
             dispatch(setAdditionDialogActive(false));
             dispatch(clearForm());
             dispatch(resetViewData());
-            await dispatch(getIngredients());
+            filteringActive ? await props.filter(filterValue) : await dispatch(getIngredients());
         }
     }
 

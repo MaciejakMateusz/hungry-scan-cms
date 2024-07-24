@@ -5,8 +5,13 @@ import {useDispatch, useSelector} from "react-redux";
 import {
     getIngredients,
     setAddition,
-    setAdditionDialogActive, setAdditionToRemove, setErrorData, setFilteringActive,
-    setFilterValue, setIngredients, setIsNewAddition,
+    setAdditionDialogActive,
+    setAdditionToRemove,
+    setErrorData,
+    setFilteringActive,
+    setFilterValue,
+    setIngredients,
+    setIsNewAddition,
     setSearchActive
 } from "../../../slices/additionsSlice";
 import {AdditionFormDialog} from "./AdditionFormDialog";
@@ -28,7 +33,8 @@ export const Additions = () => {
         filterValue,
         searchActive,
         additionDialogActive,
-        additionToRemove
+        additionToRemove,
+        filteringActive
     } = useSelector(state => state.additions.view);
     const {isLoading, ingredients, pageData} = useSelector(state => state.additions.getIngredients);
 
@@ -39,10 +45,24 @@ export const Additions = () => {
     const handleSearchSubmit = async (e) => {
         e.preventDefault()
         dispatch(setFilterValue(e.target.value));
+        await executeFilter(e.target.value);
+    }
 
-        if ('' !== e.target.value) {
+    const handleAdditionRemoval = async (e, ingredient) => {
+        e.preventDefault();
+        const resultAction = await dispatch(remove({id: ingredient.id, path: 'ingredients'}));
+        if(remove.fulfilled.match(resultAction)) {
+            dispatch(setAdditionToRemove(null));
+            filteringActive ? await executeFilter(filterValue) : await dispatch(getIngredients())
+        } else if(remove.rejected.match(resultAction)) {
+            setErrorData(resultAction.payload);
+        }
+    };
+
+    const executeFilter = async value => {
+        if ('' !== value) {
             dispatch(setFilteringActive(true));
-            const resultAction = await dispatch(filter({path: 'ingredients', value: e.target.value}));
+            const resultAction = await dispatch(filter({path: 'ingredients', value: value}));
             if(filter.fulfilled.match(resultAction)) {
                 dispatch(setIngredients(resultAction.payload));
             }
@@ -51,18 +71,6 @@ export const Additions = () => {
             dispatch(getIngredients());
         }
     }
-
-    const handleAdditionRemoval = async (e, ingredient) => {
-        e.preventDefault();
-        const resultAction = await dispatch(remove({id: ingredient.id, path: 'ingredients'}));
-        if(remove.fulfilled.match(resultAction)) {
-            dispatch(setAdditionToRemove(null));
-            await dispatch(getIngredients());
-        } else if(remove.rejected.match(resultAction)) {
-            console.log('rejected', resultAction.payload)
-            setErrorData(resultAction.payload);
-        }
-    };
 
     const renderForm = () => {
         return (
@@ -114,7 +122,7 @@ export const Additions = () => {
             <Helmet>
                 <title>CMS - {t("additions")}</title>
             </Helmet>
-            {additionDialogActive ? <AdditionFormDialog/> : <></>}
+            {additionDialogActive ? <AdditionFormDialog filter={executeFilter}/> : <></>}
             {additionToRemove ?
                 <RemovalDialog msg={t('confirmDishRemoval')}
                                objName={additionToRemove.name}

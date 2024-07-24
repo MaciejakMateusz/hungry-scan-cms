@@ -8,7 +8,7 @@ import {
     setName,
     setPrice,
     setVariantDialogActive
-} from "../../../slices/variantsViewSlice";
+} from "../../../slices/variantsSlice";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {getTranslation} from "../../../locales/langUtils";

@@ -115,7 +115,7 @@ export const fetchVariantsSlice = createSlice(
         }
     });
 
-export const variantsViewSlice = createSlice({
+export const variantsSlice = createSlice({
     name: 'view',
     initialState: {
         searchActive: false,
@@ -203,7 +203,7 @@ export const {
     setVariantToRemove,
     setIsNewVariant,
     resetViewData
-} = variantsViewSlice.actions;
+} = variantsSlice.actions;
 
 export const {
     clearVariants
@@ -222,7 +222,7 @@ export const {
 export const {setErrorData} = postVariantSlice.actions;
 
 const variantsReducer = combineReducers({
-    view: variantsViewSlice.reducer,
+    view: variantsSlice.reducer,
     fetchVariants: fetchVariantsSlice.reducer,
     form: variantFormSlice.reducer,
     postVariant: postVariantSlice.reducer

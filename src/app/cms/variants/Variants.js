@@ -15,7 +15,7 @@ import {
     setSearchActive,
     setVariant,
     setVariantDialogActive, setVariantToRemove
-} from "../../../slices/variantsViewSlice";
+} from "../../../slices/variantsSlice";
 import {getCategories, setCategories} from "../../../slices/dishesCategoriesSlice";
 import {getTranslation} from "../../../locales/langUtils";
 import Select from "react-select";
