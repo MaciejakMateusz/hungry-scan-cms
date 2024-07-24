@@ -51,6 +51,8 @@ export const dishesCategoriesSlice = createSlice(
             newDishFormActive: false,
             editDishFormActive: false,
             submittedSuccessType: null,
+            categoryForAction: null,
+            menuItemForAction: null,
             category: {},
             dish: {},
             categories: [],
@@ -77,6 +79,12 @@ export const dishesCategoriesSlice = createSlice(
             setSubmittedSuccessType: (state, action) => {
                 state.submittedSuccessType = action.payload;
             },
+            setCategoryForAction: (state, action) => {
+                state.categoryForAction = action.payload;
+            },
+            setMenuItemForAction: (state, action) => {
+                state.menuItemForAction = action.payload;
+            },
             setCategory: (state, action) => {
                 state.category = action.payload;
             },
@@ -98,6 +106,8 @@ export const {
     setNewDishFormActive,
     setEditDishFormActive,
     setSubmittedSuccessType,
+    setCategoryForAction,
+    setMenuItemForAction,
     setCategory,
     setDish,
     setCategories,

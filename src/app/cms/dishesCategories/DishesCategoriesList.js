@@ -2,8 +2,8 @@ import React, {useEffect, useState} from "react";
 import {AvailableIcon} from "../../icons/AvailableIcon";
 import {EditIcon} from "../../icons/EditIcon";
 import {DeleteIcon} from "../../icons/DeleteIcon";
-import {apiHost, imagesPath} from "../../../apiData";
-import {formatPrice, getDecodedJwt} from "../../../utils";
+import {imagesPath} from "../../../apiData";
+import {formatPrice} from "../../../utils";
 import {UnavailableIcon} from "../../icons/UnavailableIcon";
 import {WarningDialogWindow} from "../dialogWindows/WarningDialogWindow";
 import {ConfirmationDialogWindow} from "../dialogWindows/ConfirmationDialogWindow";
@@ -17,17 +17,22 @@ import {
     getCategories,
     setCategories,
     setCategory,
+    setCategoryForAction,
     setDish,
     setEditCategoryFormActive,
-    setEditDishFormActive
+    setEditDishFormActive,
+    setMenuItemForAction
 } from "../../../slices/dishesCategoriesSlice";
+import {remove} from "../../../slices/objectRemovalSlice";
 
 export const DishesCategoriesList = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
-    const {categories} = useSelector(state => state.dishesCategories.view)
-    const [categoryForAction, setCategoryForAction] = useState({});
-    const [menuItemForAction, setMenuItemForAction] = useState({});
+    const {
+        categories,
+        categoryForAction,
+        menuItemForAction
+    } = useSelector(state => state.dishesCategories.view)
     const [activeRemovalType, setActiveRemovalType] = useState(null);
     const [confirmedRemovalType, setConfirmedRemovalType] = useState(null);
     const [errorData, setErrorData] = useState({});
@@ -48,22 +53,17 @@ export const DishesCategoriesList = () => {
         fetchCategories()
     }, []);
 
-    const handleCategoryRemoval = (e) => {
+    const handleRemoval = async (e) => {
         e.preventDefault();
 
-        const requestBody = JSON.stringify(categoryForAction.id);
+        const actionType = categoryForAction ? 'categories' : 'items';
+        const id = categoryForAction ? categoryForAction.id : menuItemForAction.id;
 
-        fetch(`${apiHost}/api/cms/categories/delete`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${getDecodedJwt()}`
-            },
-            body: requestBody
-        }).then(response => {
-            if (response.ok) {
+        const resultAction = await dispatch(remove({id: id, path: actionType}));
+        if(remove.fulfilled.match(resultAction)) {
+            if('categories' === actionType) {
                 setActiveRemovalType(null);
-                setCategoryForAction({});
+                dispatch(setCategoryForAction(null));
                 setConfirmedRemovalType('category');
 
                 if (confirmationTimeoutId) {
@@ -75,46 +75,10 @@ export const DishesCategoriesList = () => {
                 }, 4000);
                 setConfirmationTimeoutId(newConfirmationTimeoutId);
 
-                fetchCategories();
-                return response.text();
+                await fetchCategories();
             } else {
-                return response.json().then(errorData => {
-                    throw errorData;
-                });
-            }
-        }).catch(errorData => {
-            setActiveRemovalType(null);
-
-            if (errorTimeoutId) {
-                clearTimeout(errorTimeoutId);
-                setErrorData({})
-            }
-
-            setErrorData(errorData);
-
-            const newErrorTimeoutId = setTimeout(() => {
-                setErrorData({});
-            }, 4000);
-            setErrorTimeoutId(newErrorTimeoutId);
-        });
-    };
-
-    const handleDishRemoval = (e) => {
-        e.preventDefault();
-
-        const requestBody = JSON.stringify(menuItemForAction.id);
-
-        fetch(`${apiHost}/api/cms/items/delete`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${getDecodedJwt()}`
-            },
-            body: requestBody
-        }).then(response => {
-            if (response.ok) {
                 setActiveRemovalType(null);
-                setMenuItemForAction({});
+                dispatch(setMenuItemForAction(null));
                 setConfirmedRemovalType('dish');
 
                 if (confirmationTimeoutId) {
@@ -126,42 +90,48 @@ export const DishesCategoriesList = () => {
                 }, 4000);
                 setConfirmationTimeoutId(newConfirmationTimeoutId);
 
-                fetchCategories();
-                return response.text();
+                await fetchCategories();
+            }
+        } else if(remove.rejected.match(resultAction)) {
+            if('categories' === actionType) {
+                setActiveRemovalType(null);
+
+                if (errorTimeoutId) {
+                    clearTimeout(errorTimeoutId);
+                    setErrorData({})
+                }
+
+                setErrorData(resultAction.payload);
+
+                const newErrorTimeoutId = setTimeout(() => {
+                    setErrorData({});
+                }, 4000);
+                setErrorTimeoutId(newErrorTimeoutId);
             } else {
-                return response.json().then(errorData => {
-                    throw errorData;
-                });
+                setActiveRemovalType(null);
+
+                if (errorTimeoutId) {
+                    clearTimeout(errorTimeoutId);
+                    setErrorData({})
+                }
+
+                setErrorData(resultAction.payload);
+
+                const newErrorTimeoutId = setTimeout(() => {
+                    setErrorData({});
+                }, 4000);
+                setErrorTimeoutId(newErrorTimeoutId);
             }
-        }).catch(errorData => {
-            setActiveRemovalType(null);
-
-            if (errorTimeoutId) {
-                clearTimeout(errorTimeoutId);
-                setErrorData({})
-            }
-
-            setErrorData(errorData);
-
-            const newErrorTimeoutId = setTimeout(() => {
-                setErrorData({});
-            }, 4000);
-            setErrorTimeoutId(newErrorTimeoutId);
-        });
-    };
+        }
+    }
 
     const renderRemovalDialog = () => {
-        if (activeRemovalType === 'category') {
-            return <RemovalDialog msg={t('confirmCategoryRemoval')}
-                                  objName={categoryForAction.name}
-                                  onSubmit={handleCategoryRemoval}
-                                  onClick={discardDeletion}/>
-        } else if (activeRemovalType === 'dish') {
-            return <RemovalDialog msg={t('confirmDishRemoval')}
-                                  objName={menuItemForAction.name}
-                                  onSubmit={handleDishRemoval}
-                                  onClick={discardDeletion}/>
-        }
+        const msg = activeRemovalType === 'category' ? t('confirmCategoryRemoval') : t('confirmDishRemoval');
+        const objName = activeRemovalType === 'category' ? categoryForAction.name : menuItemForAction.name;
+        return <RemovalDialog msg={msg}
+                              objName={objName}
+                              onSubmit={handleRemoval}
+                              onCancel={discardDeletion}/>
     };
 
     const renderConfirmationDialog = () => {
@@ -173,8 +143,9 @@ export const DishesCategoriesList = () => {
     }
 
     const discardDeletion = () => {
-        setActiveRemovalType(false);
-        setCategoryForAction({});
+        setActiveRemovalType(null);
+        dispatch(setCategoryForAction(null));
+        dispatch(setMenuItemForAction(null));
     };
 
     const renderList = () => {
@@ -201,7 +172,7 @@ export const DishesCategoriesList = () => {
                             </div>
                         </div>
                         <div className={'clickable-icon hover-scaling'} onClick={() => {
-                            setCategoryForAction(category);
+                            dispatch(setCategoryForAction(category));
                             setActiveRemovalType('category');
                         }}>
                             <DeleteIcon/>
@@ -249,7 +220,7 @@ export const DishesCategoriesList = () => {
                                         <EditIcon/>
                                     </div>
                                     <div className={'clickable-icon hover-scaling'} onClick={() => {
-                                        setMenuItemForAction(menuItem);
+                                        dispatch(setMenuItemForAction(menuItem));
                                         setActiveRemovalType('dish');
                                     }}>
                                         <DeleteIcon/>

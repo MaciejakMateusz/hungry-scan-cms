@@ -1342,6 +1342,16 @@ ul {
     justify-content: flex-end;
 }
 
+.additions-header {
+    display: flex;
+    align-items: center;
+    padding: 18px 20px 14px;
+}
+
+.search-button.additions {
+    margin-left: 10px;
+}
+
 @media (max-width: 1325px) {
     .form {
         grid-template-columns: 1fr;

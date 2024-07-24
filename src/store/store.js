@@ -5,6 +5,9 @@ import categoryFormReducer from "../slices/categoryFormSlice";
 import dishFormReducer from "../slices/dishFormSlice";
 import dishAdditionsReducer from "../slices/dishAdditionsSlice";
 import variantsReducer from "../slices/variantsViewSlice";
+import additionsReducer from "../slices/additionsSlice";
+import objectRemovalReducer from "../slices/objectRemovalSlice";
+import filteringReducer from "../slices/filteringSlice";
 
 const rootReducer = combineReducers({
     login: loginReducer,
@@ -12,7 +15,10 @@ const rootReducer = combineReducers({
     categoryForm: categoryFormReducer,
     dishForm: dishFormReducer,
     dishAdditions: dishAdditionsReducer,
-    variants: variantsReducer
+    variants: variantsReducer,
+    additions: additionsReducer,
+    objRemoval: objectRemovalReducer,
+    filtering: filteringReducer
 })
 
 export const store = configureStore({

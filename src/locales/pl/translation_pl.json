@@ -76,5 +76,9 @@
   "formHasErrors": "Formularz zawiera błędy",
   "newVariant": "Nowy wariant",
   "createNewVariantForDish": "Stwórz nowy wariant dla dania: ",
-  "editVariant": "Edytuj wariant"
+  "createNewAddition": "Stwórz nowy dodatek",
+  "editVariant": "Edytuj wariant",
+  "newAddition": "Nowy dodatek",
+  "editAddition": "Edytuj dodatek",
+  "noAdditions": "Brak dodatków"
 }

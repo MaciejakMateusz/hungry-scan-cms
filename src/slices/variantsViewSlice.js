@@ -123,6 +123,7 @@ export const variantsViewSlice = createSlice({
         category: null,
         dish: null,
         variantDialogActive: false,
+        variantToRemove: null,
         isNewVariant: true,
     },
     reducers: {
@@ -140,6 +141,9 @@ export const variantsViewSlice = createSlice({
         },
         setVariantDialogActive: (state, action) => {
             state.variantDialogActive = action.payload;
+        },
+        setVariantToRemove: (state, action) => {
+            state.variantToRemove = action.payload;
         },
         setIsNewVariant: (state, action) => {
             state.isNewVariant = action.payload;
@@ -196,6 +200,7 @@ export const {
     setCategory,
     setDish,
     setVariantDialogActive,
+    setVariantToRemove,
     setIsNewVariant,
     resetViewData
 } = variantsViewSlice.actions;

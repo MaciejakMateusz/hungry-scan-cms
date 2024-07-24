@@ -5,12 +5,16 @@ import {SearchIcon} from "../../icons/SearchIcon";
 import {useDispatch, useSelector} from "react-redux";
 import {
     clearVariants,
-    fetchVariants, setAvailable,
+    fetchVariants,
+    setAvailable,
     setCategory,
     setDish,
-    setFilter, setIsNewVariant,
-    setSearchActive, setVariant,
-    setVariantDialogActive
+    setErrorData,
+    setFilter,
+    setIsNewVariant,
+    setSearchActive,
+    setVariant,
+    setVariantDialogActive, setVariantToRemove
 } from "../../../slices/variantsViewSlice";
 import {getCategories, setCategories} from "../../../slices/dishesCategoriesSlice";
 import {getTranslation} from "../../../locales/langUtils";
@@ -22,6 +26,8 @@ import {UnavailableIcon} from "../../icons/UnavailableIcon";
 import {EditIcon} from "../../icons/EditIcon";
 import {DeleteIcon} from "../../icons/DeleteIcon";
 import {VariantFormDialog} from "./VariantFormDialog";
+import {RemovalDialog} from "../dialogWindows/RemovalDialog";
+import {remove} from "../../../slices/objectRemovalSlice";
 
 export const Variants = () => {
     const {t} = useTranslation();
@@ -31,7 +37,9 @@ export const Variants = () => {
         filter,
         category,
         dish,
-        variantDialogActive} = useSelector(state => state.variants.view);
+        variantDialogActive,
+        variantToRemove
+    } = useSelector(state => state.variants.view);
     const {categories} = useSelector(state => state.dishesCategories.view);
     const {variants} = useSelector(state => state.variants.fetchVariants);
 
@@ -56,6 +64,18 @@ export const Variants = () => {
             dispatch(setCategory({value: categories[0], label: getTranslation(categories[0].name)}));
         }
     }, [categories.length]);
+
+    const handleVariantRemoval = async (e, variant) => {
+        e.preventDefault();
+        const resultAction = await dispatch(remove({id: variant.id, path: 'variants'}));
+        if(remove.fulfilled.match(resultAction)) {
+            dispatch(setVariantToRemove(null));
+            await getVariants();
+        } else if(remove.rejected.match(resultAction)) {
+            console.log('rejected', resultAction.payload)
+            setErrorData(resultAction.payload);
+        }
+    };
 
     const handleSearchSubmit = (event) => {
         event.preventDefault()
@@ -115,7 +135,8 @@ export const Variants = () => {
                             <EditIcon/>
                         </div>
                     </div>
-                    <div className={'clickable-icon hover-scaling'}>
+                    <div className={'clickable-icon hover-scaling'}
+                         onClick={() => dispatch(setVariantToRemove(variant))}>
                         <DeleteIcon/>
                     </div>
                 </div>
@@ -129,6 +150,11 @@ export const Variants = () => {
                 <title>CMS - {t("variants")}</title>
             </Helmet>
             {variantDialogActive ? <VariantFormDialog/> : <></>}
+            {variantToRemove ?
+                <RemovalDialog msg={t('confirmDishRemoval')}
+                               objName={variantToRemove.name}
+                               onSubmit={(e) => handleVariantRemoval(e, variantToRemove)}
+                               onCancel={() => dispatch(setVariantToRemove(null))}/> : <></>}
             <div className={'dish-additions-container'}>
                 <div className={'dish-additions-grid'}>
                     <div className={'dish-additions-left-panel'}>
