@@ -25,6 +25,7 @@ import {LoadingSpinner} from "../../icons/LoadingSpinner";
 import {remove} from "../../../slices/objectRemovalSlice";
 import {RemovalDialog} from "../dialogWindows/RemovalDialog";
 import {filter} from "../../../slices/filteringSlice";
+import {FilteringForm} from "../utils/filtering/FilteringForm";
 
 export const Additions = () => {
     const {t} = useTranslation();
@@ -71,19 +72,6 @@ export const Additions = () => {
             dispatch(getIngredients());
         }
     }
-
-    const renderForm = () => {
-        return (
-            <form className={'search-button-form'} onSubmit={handleSearchSubmit}>
-                <input type={'text'}
-                       className={'search-button-input'}
-                       placeholder={t('search')}
-                       name={'filter'}
-                       value={filterValue}
-                       onChange={handleSearchSubmit}/>
-            </form>
-        );
-    };
 
     const renderIngredientRecord = (ingredient, index) => {
         return (
@@ -144,7 +132,7 @@ export const Additions = () => {
                                             onClick={() => dispatch(setSearchActive(!searchActive))}>
                                         <SearchIcon/>
                                     </button>
-                                    {searchActive ? renderForm() : <></>}
+                                    {searchActive ? <FilteringForm value={filterValue} searchSubmit={handleSearchSubmit}/> : <></>}
                                 </div>
                             </div>
                             {isLoading ? <LoadingSpinner/> :
