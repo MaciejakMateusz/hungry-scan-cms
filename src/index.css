@@ -620,6 +620,12 @@ ul {
     margin-left: 80px;
 }
 
+.filtered-dishes-list-grid {
+    display: grid;
+    grid-template-rows: 1fr;
+    margin-left: 80px;
+}
+
 .category-wrapper {
     grid-row: 1;
     display: flex;

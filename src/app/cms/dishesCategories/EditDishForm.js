@@ -30,7 +30,7 @@ import {
     setVariants
 } from "../../../slices/dishFormSlice";
 
-export const EditDishForm = () => {
+export const EditDishForm = ({executeFilter}) => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {
@@ -39,7 +39,7 @@ export const EditDishForm = () => {
         errorMessage,
         errorData,
     } = useSelector(state => state.dishForm.form);
-    const {category, dish} = useSelector(state => state.dishesCategories.view);
+    const {category, dish, filterValue} = useSelector(state => state.dishesCategories.view);
     const [file, setFile] = useState(null);
 
     useEffect(() => {
@@ -57,6 +57,8 @@ export const EditDishForm = () => {
 
     useEffect(() => {
         const setInitialFormState = () => {
+            console.log('initialFormState.dish', dish)
+            console.log('initialFormState.category', category)
             let dishBanner;
             if (dish.bestseller) {
                 dishBanner = t('isBestseller')
@@ -111,6 +113,7 @@ export const EditDishForm = () => {
             }, 4000);
             dispatch(setEditDishFormActive(false));
             dispatch(clearForm());
+            executeFilter(filterValue);
         } else if(postDish.rejected.match(dishAction)) {
             dispatch(setErrorData(dishAction.payload));
             dispatch(setErrorMessage(dishAction.payload));

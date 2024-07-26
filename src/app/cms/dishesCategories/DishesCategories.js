@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Helmet} from "react-helmet";
 import {useTranslation} from "react-i18next";
 import {SearchIcon} from "../../icons/SearchIcon";
@@ -11,47 +11,54 @@ import {EditDishForm} from "./EditDishForm";
 import ErrorBoundary from "../../error/ErrorBoundary";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    setForm,
+    setFilteringActive,
+    setFilteredItems,
+    setFilterValue,
+    setFilterExpanded,
     setNewCategoryFormActive,
     setNewDishFormActive,
-    setSearchActive
 } from "../../../slices/dishesCategoriesSlice";
+import {filter} from "../../../slices/filteringSlice";
+import {FilteringForm} from "../utils/filtering/FilteringForm";
 
 export const DishesCategories = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {
-        searchActive,
-        form,
+        filterValue,
+        filterExpanded,
         newCategoryFormActive,
         editCategoryFormActive,
         newDishFormActive,
         editDishFormActive,
-        submittedSuccessType,
-        category,
-        dish,
-        categories
+        submittedSuccessType
     } = useSelector(state => state.dishesCategories.view)
 
-    const handleSearchSubmit = (event) => {
-        event.preventDefault()
-        if ('' !== form.filter) {
-            console.log(form.filter)
+    useEffect(() => {
+        if (!filterExpanded && filterValue !== '') {
+            dispatch(setFilterValue(''));
+            executeFilter('');
         }
+    }, [dispatch, filterExpanded]);
+
+    const handleSearchSubmit = async (e) => {
+        e.preventDefault()
+        dispatch(setFilterValue(e.target.value));
+        await executeFilter(e.target.value);
     }
 
-    const renderForm = () => {
-        return (
-            <form className={'search-button-form'} onSubmit={handleSearchSubmit}>
-                <input type="text"
-                       className={'search-button-input'}
-                       placeholder={t('search')}
-                       name={'filter'}
-                       value={form.filter}
-                       onChange={(e) => dispatch(setForm(e.target.value))}/>
-            </form>
-        );
-    };
+    const executeFilter = async value => {
+        if ('' !== value) {
+            dispatch(setFilteringActive(true));
+            const resultAction = await dispatch(filter({path: 'items', value: value}));
+            if (filter.fulfilled.match(resultAction)) {
+                dispatch(setFilteredItems(resultAction.payload));
+            }
+        } else {
+            dispatch(setFilteringActive(false));
+            dispatch(setFilteredItems(null));
+        }
+    }
 
     const renderConfirmationDialog = (type) => {
         switch (type) {
@@ -76,9 +83,7 @@ export const DishesCategories = () => {
         } else if (newDishFormActive) {
             return <NewDishForm/>
         } else if (editDishFormActive) {
-            return (<EditDishForm categories={categories}
-                                  category={category}
-                                  menuItem={dish}/>);
+            return (<EditDishForm executeFilter={executeFilter}/>);
         } else {
             return (
                 <div className={'dishes-categories-grid'}>
@@ -91,12 +96,12 @@ export const DishesCategories = () => {
                                 onClick={() => dispatch(setNewDishFormActive(true))}>
                             <span>+ {t('newDish')}</span>
                         </button>
-                        <div className={`search-button ${searchActive ? 'search-active' : ''}`}>
-                            <button className={`search-initial-circle ${searchActive ? 'circle-active' : ''}`}
-                                    onClick={() => dispatch(setSearchActive(true))}>
+                        <div className={`search-button ${filterExpanded ? 'search-active' : ''}`}>
+                            <button className={`search-initial-circle ${filterExpanded ? 'circle-active' : ''}`}
+                                    onClick={() => dispatch(setFilterExpanded(!filterExpanded))}>
                                 <SearchIcon/>
                             </button>
-                            {searchActive ? renderForm() : <></>}
+                            {filterExpanded ? <FilteringForm value={filterValue} searchSubmit={handleSearchSubmit}/>  : <></>}
                         </div>
                     </div>
                     <DishesCategoriesList/>
