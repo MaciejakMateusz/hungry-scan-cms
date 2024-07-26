@@ -12,7 +12,7 @@ export const RemovalDialog = (props) => {
                     {props.msg} "{getTranslation(props.objName)}"
                 </div>
                 <div className={'removal-dialog-footer'}>
-                    <button onClick={props.onClick} className={'add-new-button cancel'}>{t('cancel')}</button>
+                    <button onClick={props.onCancel} className={'add-new-button cancel'}>{t('cancel')}</button>
                     <form onSubmit={props.onSubmit} style={{all: 'unset'}}>
                         <button type="submit" className={'add-new-button'}>{t('remove')}</button>
                     </form>

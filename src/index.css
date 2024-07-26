@@ -620,6 +620,12 @@ ul {
     margin-left: 80px;
 }
 
+.filtered-dishes-list-grid {
+    display: grid;
+    grid-template-rows: 1fr;
+    margin-left: 80px;
+}
+
 .category-wrapper {
     grid-row: 1;
     display: flex;
@@ -1340,6 +1346,16 @@ ul {
 .variant-dialog-footer {
     display: flex;
     justify-content: flex-end;
+}
+
+.additions-header {
+    display: flex;
+    align-items: center;
+    padding: 18px 20px 14px;
+}
+
+.search-button.additions {
+    margin-left: 10px;
 }
 
 @media (max-width: 1325px) {

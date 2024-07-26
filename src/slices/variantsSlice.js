@@ -115,22 +115,31 @@ export const fetchVariantsSlice = createSlice(
         }
     });
 
-export const variantsViewSlice = createSlice({
+export const variantsSlice = createSlice({
     name: 'view',
     initialState: {
-        searchActive: false,
-        filter: null,
+        filteringActive: false,
+        filterValue: '',
+        filteredItems: null,
+        filterExpanded: false,
         category: null,
         dish: null,
         variantDialogActive: false,
+        variantToRemove: null,
         isNewVariant: true,
     },
     reducers: {
-        setSearchActive: (state, action) => {
-            state.searchActive = action.payload;
+        setFilteringActive: (state, action) => {
+            state.filteringActive = action.payload;
         },
-        setFilter: (state, action) => {
-            state.filter = action.payload;
+        setFilterValue: (state, action) => {
+            state.filterValue = action.payload;
+        },
+        setFilteredItems: (state, action) => {
+            state.filteredItems = action.payload;
+        },
+        setFilterExpanded: (state, action) => {
+            state.filterExpanded = action.payload;
         },
         setCategory: (state, action) => {
             state.category = action.payload;
@@ -140,6 +149,9 @@ export const variantsViewSlice = createSlice({
         },
         setVariantDialogActive: (state, action) => {
             state.variantDialogActive = action.payload;
+        },
+        setVariantToRemove: (state, action) => {
+            state.variantToRemove = action.payload;
         },
         setIsNewVariant: (state, action) => {
             state.isNewVariant = action.payload;
@@ -191,14 +203,17 @@ export const variantFormSlice = createSlice({
 });
 
 export const {
-    setSearchActive,
-    setFilter,
+    setFilteringActive,
+    setFilterValue,
+    setFilteredItems,
+    setFilterExpanded,
     setCategory,
     setDish,
     setVariantDialogActive,
+    setVariantToRemove,
     setIsNewVariant,
     resetViewData
-} = variantsViewSlice.actions;
+} = variantsSlice.actions;
 
 export const {
     clearVariants
@@ -217,7 +232,7 @@ export const {
 export const {setErrorData} = postVariantSlice.actions;
 
 const variantsReducer = combineReducers({
-    view: variantsViewSlice.reducer,
+    view: variantsSlice.reducer,
     fetchVariants: fetchVariantsSlice.reducer,
     form: variantFormSlice.reducer,
     postVariant: postVariantSlice.reducer
