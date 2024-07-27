@@ -19,10 +19,10 @@ import {getTranslation} from "../../../locales/langUtils";
 import {SearchIcon} from "../../icons/SearchIcon";
 import {LoadingSpinner} from "../../icons/LoadingSpinner";
 import {remove} from "../../../slices/objectRemovalSlice";
-import {DecisionDialog} from "../dialogWindows/DecisionDialog";
+import {DecisionDialog} from "../dialog-windows/DecisionDialog";
 import {filter} from "../../../slices/filteringSlice";
-import {FilteringForm} from "../utils/filtering/FilteringForm";
-import {HorizontalPill} from "../dishesCategories/HorizontalPill";
+import {FilteringForm} from "../shared-components/FilteringForm";
+import {HorizontalPill} from "../dishes-categories/HorizontalPill";
 
 export const Additions = () => {
     const {t} = useTranslation();
@@ -107,21 +107,19 @@ export const Additions = () => {
             {additionDialogActive ? <AdditionFormDialog filter={executeFilter}/> : <></>}
             {additionToRemove ?
                 <DecisionDialog msg={t('confirmDishRemoval')}
-                               objName={additionToRemove.name}
-                               onSubmit={(e) => handleAdditionRemoval(e, additionToRemove)}
-                               onCancel={() => dispatch(setAdditionToRemove(null))}/> : <></>}
-            <div className={'dish-additions-container'}>
-                <div className={'dish-additions-grid'}>
-                    <div className={'dish-additions-left-panel'}>
+                                objName={additionToRemove.name}
+                                onSubmit={(e) => handleAdditionRemoval(e, additionToRemove)}
+                                onCancel={() => dispatch(setAdditionToRemove(null))}/> : <></>}
+            <div className={'padded-view-container'}>
+                <div className={'vertical-split-grid'}>
+                    <div className={'vertical-split-left-panel'}>
                         <div>
-                            <div className={'additions-header'}>
-                                <div className={'category-form-top-buttons'}>
-                                    <button className={'general-button submit-additions'}
-                                            onClick={() => dispatch(setAdditionDialogActive(true))}>
-                                        + {t('newAddition')}
-                                    </button>
-                                </div>
-                                <div className={`search-button additions ${filterExpanded ? 'search-active' : ''}`}>
+                            <div className={'vertical-split-left-panel-header no-justify'}>
+                                <button className={'general-button submit'}
+                                        onClick={() => dispatch(setAdditionDialogActive(true))}>
+                                    + {t('newAddition')}
+                                </button>
+                                <div className={`search-button margin-left ${filterExpanded ? 'search-active' : ''}`}>
                                     <button className={`search-initial-circle ${filterExpanded ? 'circle-active' : ''}`}
                                             onClick={() => dispatch(setFilterExpanded(!filterExpanded))}>
                                         <SearchIcon/>

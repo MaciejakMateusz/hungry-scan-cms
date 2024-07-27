@@ -1,9 +1,9 @@
 import React, {useEffect} from "react";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
-import {CustomSelect} from "../dishesCategories/formComponents/CustomSelect";
-import {NameField} from "../dishesCategories/formComponents/NameField";
-import {PriceField} from "../dishesCategories/formComponents/PriceField";
+import {CustomSelect} from "../dishes-categories/form-components/CustomSelect";
+import {NameField} from "../dishes-categories/form-components/NameField";
+import {PriceField} from "../dishes-categories/form-components/PriceField";
 import {
     setId,
     setName,

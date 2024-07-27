@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from "react";
 import {imagesPath} from "../../../apiData";
 import {formatPrice} from "../../../utils";
-import {FailureMessage} from "../dialogWindows/FailureMessage";
-import {SuccessMessage} from "../dialogWindows/SuccessMessage";
+import {FailureMessage} from "../dialog-windows/FailureMessage";
+import {SuccessMessage} from "../dialog-windows/SuccessMessage";
 import {ImgPlaceholderIcon} from "../../icons/ImgPlaceholderIcon";
 import {useTranslation} from "react-i18next";
 import {getTranslation} from "../../../locales/langUtils";
 import {LoadingSpinner} from "../../icons/LoadingSpinner";
-import {DecisionDialog} from "../dialogWindows/DecisionDialog";
+import {DecisionDialog} from "../dialog-windows/DecisionDialog";
 import {useDispatch, useSelector} from "react-redux";
 import {
     getCategories,

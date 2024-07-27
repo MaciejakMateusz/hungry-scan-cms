@@ -4,7 +4,7 @@ import {useTranslation} from "react-i18next";
 import {SearchIcon} from "../../icons/SearchIcon";
 import {DishesCategoriesList} from "./DishesCategoriesList";
 import {NewCategoryForm} from "./NewCategoryForm";
-import {SuccessMessage} from "../dialogWindows/SuccessMessage";
+import {SuccessMessage} from "../dialog-windows/SuccessMessage";
 import {EditCategoryForm} from "./EditCategoryForm";
 import {NewDishForm} from "./NewDishForm";
 import {EditDishForm} from "./EditDishForm";
@@ -19,7 +19,7 @@ import {
     setNewDishFormActive,
 } from "../../../slices/dishesCategoriesSlice";
 import {filter} from "../../../slices/filteringSlice";
-import {FilteringForm} from "../utils/filtering/FilteringForm";
+import {FilteringForm} from "../shared-components/FilteringForm";
 
 export const DishesCategories = () => {
     const {t} = useTranslation();

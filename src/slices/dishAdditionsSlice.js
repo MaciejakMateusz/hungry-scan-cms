@@ -78,22 +78,22 @@ export const fetchIngredientsSlice = createSlice(
 export const dishAdditionsSlice = createSlice({
     name: 'dishAdditionsData',
     initialState: {
-        filter: '',
-        searchActive: false
+        filterValue: '',
+        filterExpanded: false
     },
     reducers: {
-        setFilter: (state, action) => {
-            state.filter = action.payload;
+        setFilterValue: (state, action) => {
+            state.filterValue = action.payload;
         },
-        setSearchActive: (state, action) => {
-            state.searchActive = action.payload;
+        setFilterExpanded: (state, action) => {
+            state.filterExpanded = action.payload;
         }
     }
 });
 
 export const {
-    setFilter,
-    setSearchActive
+    setFilterValue,
+    setFilterExpanded
 } = dishAdditionsSlice.actions
 
 export const {

@@ -507,16 +507,16 @@ ul {
     margin-right: 20px;
 }
 
-.general-button.submit-additions {
+.general-button.submit.no-margin-right {
     margin-right: 0;
 }
 
-.general-button.submit-additions:disabled {
+.general-button.submit:disabled {
     opacity: 0.6;
     cursor: not-allowed;
 }
 
-.general-button.submit-additions:disabled:hover {
+.general-button.submit:disabled:hover {
     background: #3E424C;
 }
 
@@ -560,8 +560,12 @@ ul {
     transition: width 0.5s ease;
 }
 
-.search-button.ingredients {
+.search-button.margin-right {
     margin-right: 10px;
+}
+
+.search-button.margin-left {
+    margin-left: 10px;
 }
 
 .search-active {
@@ -1124,42 +1128,46 @@ ul {
     padding-right: 5px;
 }
 
-.dish-additions-container {
+.padded-view-container {
     padding: 77px 115px 30px 60px;
     height: 85.5vh;
 }
 
-.dish-additions-grid {
+.vertical-split-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     height: 100%;
 }
 
-.dish-additions-left-panel {
+.vertical-split-left-panel {
     border-radius: 10px;
     background-color: #989FC008;
     grid-column: 1;
     margin-right: 10px;
 }
 
-.ingredients-list {
+.vertical-split-left-panel-content {
     overflow-y: scroll;
     height: 67vh;
     margin-bottom: 0;
 }
 
-.dish-additions-right-panel {
+.vertical-split-right-panel {
     border-radius: 10px;
     background-color: #33353E08;
     grid-column: 2;
     margin-left: 10px;
 }
 
-.ingredients-header {
+.vertical-split-left-panel-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 18px 20px 14px;
+}
+
+.vertical-split-left-panel-header.no-justify{
+    justify-content: normal;
 }
 
 .ingredients-label {
@@ -1173,14 +1181,14 @@ ul {
     align-items: center;
 }
 
-.chosen-additions-header {
+.vertical-split-right-panel-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 18px 20px 14px;
 }
 
-.chosen-additions-label {
+.chosen-record-label {
     width: 249px;
     height: 35px;
     border-radius: 100px;
@@ -1348,16 +1356,6 @@ ul {
     justify-content: flex-end;
 }
 
-.additions-header {
-    display: flex;
-    align-items: center;
-    padding: 18px 20px 14px;
-}
-
-.search-button.additions {
-    margin-left: 10px;
-}
-
 @media (max-width: 1325px) {
     .form {
         grid-template-columns: 1fr;
@@ -1383,11 +1381,11 @@ ul {
         grid-template-columns: 1fr;
     }
 
-    .dish-additions-grid {
+    .vertical-split-grid {
         grid-template-columns: 1fr;
     }
 
-    .dish-additions-right-panel {
+    .vertical-split-right-panel {
         grid-column: 1;
     }
 }

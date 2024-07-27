@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {getTranslation} from "../../../locales/langUtils";
-import {FormHeader} from "./formComponents/FormHeader";
-import {DishFormTemplate} from "./formComponents/DishFormTemplate";
+import {FormHeader} from "./form-components/FormHeader";
+import {DishFormTemplate} from "./form-components/DishFormTemplate";
 import {FormErrorDialog} from "../../error/FormErrorDialog";
 import {imagesPath} from "../../../apiData";
 import {DishAdditionsView} from "./DishAdditionsView";
