@@ -58,7 +58,7 @@ export const Variants = () => {
     }, [dispatch, filterExpanded]);
 
     useEffect(() => {
-        fetchCategories()
+        fetchCategories();
         if (categories.length > 0) {
             dispatch(setCategory({value: categories[0], label: getTranslation(categories[0].name)}));
         }

@@ -12,11 +12,25 @@ import {Interface} from "./interface/Interface";
 import {getDecodedJwt} from "../../utils";
 import {Navigate} from "react-router-dom";
 import LanguageSwitcher from "../../locales/LanguageSwitcher";
+import {useDispatch, useSelector} from "react-redux";
+import {DecisionDialog} from "./dialog-windows/DecisionDialog";
+import {clearForm as clearDishForm} from "../../slices/dishFormSlice";
+import {clearForm as clearCategoryForm} from "../../slices/categoryFormSlice";
+import {clearView} from "../../slices/dishesCategoriesSlice";
 
 export const CmsNavigation = () => {
     const {t} = useTranslation();
-    const [activeButton, setActiveButton] = useState("dishesCategories")
+    const dispatch = useDispatch();
+    const [activeView, setActiveView] = useState("variants")
     const [redirect, setRedirect] = useState(false);
+    const {
+        newCategoryFormActive,
+        editCategoryFormActive,
+        newDishFormActive,
+        editDishFormActive
+    } = useSelector(state => state.dishesCategories.view);
+    const [switchViewDialog, setSwitchViewDialog] = useState(null);
+    const [isInEditMode, setIsInEditMode] = useState(false);
 
     useEffect(() => {
         let jwtCookie = getDecodedJwt();
@@ -25,12 +39,27 @@ export const CmsNavigation = () => {
         }
     }, []);
 
-    if (redirect) {
-        return <Navigate to="/login"/>;
+    useEffect(() => {
+        setIsInEditMode(newCategoryFormActive || editCategoryFormActive || newDishFormActive || editDishFormActive);
+    }, [editCategoryFormActive, editDishFormActive, newCategoryFormActive, newDishFormActive]);
+
+    const clearAppState = () => {
+        dispatch(clearDishForm());
+        dispatch(clearCategoryForm());
+        dispatch(clearView());
+    }
+
+    const switchView = (viewName) => {
+        if (isInEditMode) {
+            setSwitchViewDialog(viewName)
+        } else {
+            clearAppState();
+            setActiveView(viewName);
+        }
     }
 
     const renderMainView = () => {
-        switch (activeButton) {
+        switch (activeView) {
             case 'dishesCategories':
                 return <DishesCategories/>;
             case 'variants':
@@ -50,8 +79,22 @@ export const CmsNavigation = () => {
         }
     };
 
+    if (redirect) {
+        return <Navigate to="/login"/>;
+    }
+
     return (
         <>
+            {switchViewDialog ?
+                <DecisionDialog
+                    msg={t('confirmViewSwitch')}
+                    onCancel={() => setSwitchViewDialog(null)}
+                    onSubmit={() => {
+                        setSwitchViewDialog(null);
+                        clearAppState();
+                        setActiveView(switchViewDialog);
+                    }}/> : <></>
+            }
             <div className={'cms-nav-panel'}>
                 <div className={'cms-nav-header'}>
                     <button className={'cms-accordion-button'}>
@@ -60,27 +103,27 @@ export const CmsNavigation = () => {
                 </div>
                 <div className={'cms-nav-menu'}>
                     <ul className={'cms-nav-ul'}>
-                        <NavButton isActive={activeButton === 'dishesCategories'}
+                        <NavButton isActive={activeView === 'dishesCategories'}
                                    name={t('dishesCategories')}
-                                   onClick={() => setActiveButton("dishesCategories")}/>
-                        <NavButton isActive={activeButton === 'variants'}
+                                   onClick={() => switchView("dishesCategories")}/>
+                        <NavButton isActive={activeView === 'variants'}
                                    name={t('variants')}
-                                   onClick={() => setActiveButton("variants")}/>
-                        <NavButton isActive={activeButton === 'additions'}
+                                   onClick={() => switchView("variants")}/>
+                        <NavButton isActive={activeView === 'additions'}
                                    name={t('additions')}
-                                   onClick={() => setActiveButton("additions")}/>
-                        <NavButton isActive={activeButton === 'qrCode'}
+                                   onClick={() => switchView("additions")}/>
+                        <NavButton isActive={activeView === 'qrCode'}
                                    name={t('qrCode')}
-                                   onClick={() => setActiveButton("qrCode")}/>
-                        <NavButton isActive={activeButton === 'translations'}
+                                   onClick={() => switchView("qrCode")}/>
+                        <NavButton isActive={activeView === 'translations'}
                                    name={t('translations')}
-                                   onClick={() => setActiveButton("translations")}/>
-                        <NavButton isActive={activeButton === 'adPopUps'}
+                                   onClick={() => switchView("translations")}/>
+                        <NavButton isActive={activeView === 'adPopUps'}
                                    name={t('adPopUps')}
-                                   onClick={() => setActiveButton("adPopUps")}/>
-                        <NavButton isActive={activeButton === 'interface'}
+                                   onClick={() => switchView("adPopUps")}/>
+                        <NavButton isActive={activeView === 'interface'}
                                    name={t('interface')}
-                                   onClick={() => setActiveButton("interface")}/>
+                                   onClick={() => switchView("interface")}/>
                         <LanguageSwitcher/>
 
                     </ul>

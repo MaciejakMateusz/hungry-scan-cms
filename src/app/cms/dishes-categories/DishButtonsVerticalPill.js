@@ -19,19 +19,17 @@ export const DishButtonsVerticalPill = (props) => {
     const getCategoryData = async id => {
         const resultAction = await dispatch(getCategory({id: id}));
         if(getCategory.fulfilled.match(resultAction)) {
-            console.log('resultAction', resultAction.payload)
             return resultAction.payload.category;
         }
         return null;
     }
     
     const handleEditClick = async () => {
-        console.log('handleEditClick', props.category)
         if(props.category) {
             dispatch(setCategory(props.category))
         } else {
-            const dupsko = await getCategoryData(props.menuItem.categoryId);
-            dispatch(setCategory(dupsko))
+            const categoryData = await getCategoryData(props.menuItem.categoryId);
+            dispatch(setCategory(categoryData));
         }
         dispatch(setDish(props.menuItem));
         dispatch(setEditDishFormActive(true));

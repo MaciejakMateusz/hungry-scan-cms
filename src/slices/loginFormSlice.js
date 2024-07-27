@@ -60,7 +60,6 @@ export const loginFetchSlice = createSlice(
                     window.location.href = `/cms`;
                 })
                 .addCase(executeLoginFetch.rejected, state => {
-                    console.log("rejected")
                     state.isLoading = false;
                     state.notAuthorized = true;
                 })

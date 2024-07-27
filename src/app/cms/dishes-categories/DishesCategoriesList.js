@@ -1,9 +1,6 @@
 import React, {useEffect, useState} from "react";
-import {imagesPath} from "../../../apiData";
-import {formatPrice} from "../../../utils";
 import {FailureMessage} from "../dialog-windows/FailureMessage";
 import {SuccessMessage} from "../dialog-windows/SuccessMessage";
-import {ImgPlaceholderIcon} from "../../icons/ImgPlaceholderIcon";
 import {useTranslation} from "react-i18next";
 import {getTranslation} from "../../../locales/langUtils";
 import {LoadingSpinner} from "../../icons/LoadingSpinner";
@@ -19,8 +16,8 @@ import {
     setMenuItemForAction
 } from "../../../slices/dishesCategoriesSlice";
 import {remove} from "../../../slices/objectRemovalSlice";
-import {DishButtonsVerticalPill} from "./DishButtonsVerticalPill";
 import {HorizontalPill} from "./HorizontalPill";
+import {DishContainer} from "./DishContainer";
 
 export const DishesCategoriesList = () => {
     const {t} = useTranslation();
@@ -176,32 +173,7 @@ export const DishesCategoriesList = () => {
                     {category.menuItems.length === 0 && (<span className={'no-items-msg'}>{t('noDishes')}</span>)}
                     {category.menuItems.map(menuItem => (
                         <div key={menuItem.id} className={'dish-container'}>
-                            <div className={'dish-content-wrapper'}>
-                                <div className={'dish-display-order'}>
-                                    <span>{menuItem.displayOrder}</span>
-                                </div>
-                                <div className={'dish-content-box'}>
-                                    <div className={'dish-content-grid'}>
-                                        <div className={'dish-image-container'}>
-                                            {menuItem.imageName ?
-                                                <img className={'dish-image'}
-                                                     src={`${imagesPath}/${menuItem.imageName}`}
-                                                     alt={`Dish - ${menuItem.imageName}`}/> :
-                                                <ImgPlaceholderIcon/>
-                                            }
-                                        </div>
-                                        <div className={'dish-text-grid'}>
-                                            <span className={'dish-title'}>{getTranslation(menuItem.name)}</span>
-                                            <span
-                                                className={'dish-description'}>{getTranslation(menuItem.description)}</span>
-                                            <div className={'dish-price'}>
-                                                <span>{formatPrice(menuItem.price)} zł</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <DishButtonsVerticalPill menuItem={menuItem} category={category}/>
+                            <DishContainer menuItem={menuItem} category={category}/>
                         </div>
                     ))}
                 </div>
@@ -218,34 +190,7 @@ export const DishesCategoriesList = () => {
                 <div className={'dishes-wrapper'}>
                     {filteredItems.length === 0 && (<span className={'no-items-msg'}>{t('noDishes')}</span>)}
                     {filteredItems.map(menuItem => (
-                        <div key={menuItem.id} className={'dish-container'}>
-                            <div className={'dish-content-wrapper'}>
-                                <div className={'dish-display-order'}>
-                                    <span>{menuItem.displayOrder}</span>
-                                </div>
-                                <div className={'dish-content-box'}>
-                                    <div className={'dish-content-grid'}>
-                                        <div className={'dish-image-container'}>
-                                            {menuItem.imageName ?
-                                                <img className={'dish-image'}
-                                                     src={`${imagesPath}/${menuItem.imageName}`}
-                                                     alt={`Dish - ${menuItem.imageName}`}/> :
-                                                <ImgPlaceholderIcon/>
-                                            }
-                                        </div>
-                                        <div className={'dish-text-grid'}>
-                                            <span className={'dish-title'}>{getTranslation(menuItem.name)}</span>
-                                            <span
-                                                className={'dish-description'}>{getTranslation(menuItem.description)}</span>
-                                            <div className={'dish-price'}>
-                                                <span>{formatPrice(menuItem.price)} zł</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <DishButtonsVerticalPill menuItem={menuItem}/>
-                        </div>
+                        <DishContainer menuItem={menuItem} category={null}/>
                     ))}
                 </div>
             </div>

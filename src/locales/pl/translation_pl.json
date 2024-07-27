@@ -81,5 +81,7 @@
   "editVariant": "Edytuj wariant",
   "newAddition": "Nowy dodatek",
   "editAddition": "Edytuj dodatek",
-  "noAdditions": "Brak dodatków"
+  "noAdditions": "Brak dodatków",
+  "confirm": "Potwierdź",
+  "confirmViewSwitch": "Czy na pewno chcesz zmienić widok? Zmiany nie zostaną zapisane."
 }

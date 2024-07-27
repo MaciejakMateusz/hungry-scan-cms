@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {CalendarIcon} from "../icons/CalendarIcon";
+import {CalendarIcon} from "../../icons/CalendarIcon";
 
 export const DateTime = () => {
     const [dateTime, setDateTime] = useState({

@@ -1,4 +1,4 @@
-import {combineReducers, configureStore} from "@reduxjs/toolkit";
+import {combineReducers, configureStore, createAction} from "@reduxjs/toolkit";
 import loginReducer from "../slices/loginFormSlice";
 import dishesCategoriesReducer from "../slices/dishesCategoriesSlice"
 import categoryFormReducer from "../slices/categoryFormSlice";
@@ -8,6 +8,8 @@ import variantsReducer from "../slices/variantsSlice";
 import additionsReducer from "../slices/additionsSlice";
 import objectRemovalReducer from "../slices/objectRemovalSlice";
 import filteringReducer from "../slices/filteringSlice";
+
+export const revertAll = createAction('REVERT_ALL')
 
 const rootReducer = combineReducers({
     login: loginReducer,

@@ -80,5 +80,7 @@
   "editVariant": "Edit variant",
   "newAddition": "New addition",
   "editAddition": "Edit addition",
-  "noAdditions": "No additions"
+  "noAdditions": "No additions",
+  "confirm": "Confirm",
+  "confirmViewSwitch": "Are you sure you want to change the view? Changes will not be saved."
 }
