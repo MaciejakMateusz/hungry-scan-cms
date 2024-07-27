@@ -15,14 +15,13 @@ import {
     setIsNewAddition
 } from "../../../slices/additionsSlice";
 import {AdditionFormDialog} from "./AdditionFormDialog";
-import {getTranslation} from "../../../locales/langUtils";
 import {SearchIcon} from "../../icons/SearchIcon";
 import {LoadingSpinner} from "../../icons/LoadingSpinner";
 import {remove} from "../../../slices/objectRemovalSlice";
 import {DecisionDialog} from "../dialog-windows/DecisionDialog";
 import {filter} from "../../../slices/filteringSlice";
 import {FilteringForm} from "../shared-components/FilteringForm";
-import {HorizontalPill} from "../dishes-categories/HorizontalPill";
+import {ListRecord} from "../shared-components/ListRecord";
 
 export const Additions = () => {
     const {t} = useTranslation();
@@ -77,28 +76,6 @@ export const Additions = () => {
         }
     }
 
-    const renderIngredientRecord = (ingredient, index) => {
-        return (
-            <>
-                <div className={'details-container variants'}>
-                    <div className={'display-order'}>{index}</div>
-                    <div className={'details-record-grid'}>
-                        <span className={'grid-column-left'}>{getTranslation(ingredient.name)}</span>
-                        <span className={'grid-column-right'}>+ {ingredient.price.toFixed(2)} zł</span>
-                    </div>
-                </div>
-                <HorizontalPill available={ingredient.available}
-                                onEdit={() => {
-                                    dispatch(setAddition(ingredient));
-                                    dispatch(setIsNewAddition(false));
-                                    dispatch(setAdditionDialogActive(true));
-                                }}
-                                onDelete={() => dispatch(setAdditionToRemove(ingredient))}
-                />
-            </>
-        );
-    }
-
     return (
         <>
             <Helmet>
@@ -135,7 +112,17 @@ export const Additions = () => {
                                                 ingredients.map((ingredient, index) => (
                                                     <li key={ingredient.id}
                                                         className={'details-wrapper'}>
-                                                        {renderIngredientRecord(ingredient, index + 1)}
+                                                        <ListRecord displayOrder={index + 1}
+                                                                    name={ingredient.name}
+                                                                    price={ingredient.price}
+                                                                    available={ingredient.available}
+                                                                    onEdit={() => {
+                                                                        dispatch(setAddition(ingredient));
+                                                                        dispatch(setIsNewAddition(false));
+                                                                        dispatch(setAdditionDialogActive(true));
+                                                                    }}
+                                                                    onDelete={() => dispatch(setAdditionToRemove(ingredient))}
+                                                        />
                                                     </li>)) :
                                                 <p className={'text-center'}>{t('noAdditions')}</p>) :
                                             <p className={'text-center'}>{t('noDishChosen')}</p>

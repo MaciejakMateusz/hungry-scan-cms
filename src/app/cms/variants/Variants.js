@@ -27,8 +27,8 @@ import {VariantFormDialog} from "./VariantFormDialog";
 import {DecisionDialog} from "../dialog-windows/DecisionDialog";
 import {remove} from "../../../slices/objectRemovalSlice";
 import {filter} from "../../../slices/filteringSlice";
-import {HorizontalPill} from "../dishes-categories/HorizontalPill";
 import {SplitLeftPanelHeader} from "../shared-components/SplitLeftPanelHeader";
+import {ListRecord} from "../shared-components/ListRecord";
 
 export const Variants = () => {
     const {t} = useTranslation();
@@ -121,28 +121,6 @@ export const Variants = () => {
         );
     }
 
-    const renderVariantRecord = (variant) => {
-        return (
-            <>
-                <div className={'details-container variants'}>
-                    <div className={'display-order'}>{variant.displayOrder}</div>
-                    <div className={'details-record-grid'}>
-                        <span className={'grid-column-left'}>{getTranslation(variant.name)}</span>
-                        <span className={'grid-column-right'}>+ {variant.price.toFixed(2)} zł</span>
-                    </div>
-                </div>
-                <HorizontalPill available={variant.available}
-                                onEdit={() => {
-                                    dispatch(setVariant(variant));
-                                    dispatch(setIsNewVariant(false));
-                                    dispatch(setVariantDialogActive(true));
-                                }}
-                                onDelete={() => dispatch(setVariantToRemove(variant))}
-                />
-            </>
-        );
-    }
-
     const renderMenuItemsRecords = () => {
         if (!filteredItems) {
             return (
@@ -228,7 +206,17 @@ export const Variants = () => {
                                                 variants.map(variant => (
                                                     <li key={variant.id}
                                                         className={'details-wrapper'}>
-                                                        {renderVariantRecord(variant)}
+                                                        <ListRecord displayOrder={variant.displayOrder}
+                                                                    name={variant.name}
+                                                                    price={variant.price}
+                                                                    available={variant.available}
+                                                                    onEdit={() => {
+                                                                        dispatch(setVariant(variant));
+                                                                        dispatch(setIsNewVariant(false));
+                                                                        dispatch(setVariantDialogActive(true));
+                                                                    }}
+                                                                    onDelete={() => dispatch(setVariantToRemove(variant))}
+                                                        />
                                                     </li>)) :
                                                 <p className={'text-center'}>{t('noVariantsInDish')}</p>) :
                                             <p className={'text-center'}>{t('noDishChosen')}</p>
