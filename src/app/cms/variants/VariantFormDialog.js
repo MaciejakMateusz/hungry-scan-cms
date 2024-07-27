@@ -113,7 +113,7 @@ export const VariantFormDialog = () => {
                     />
                 </div>
                 <div className={'variant-dialog-footer'}>
-                    <button className={'add-new-button cancel'} onClick={() => {
+                    <button className={'general-button cancel'} onClick={() => {
                         dispatch(setVariantDialogActive(false));
                         dispatch(clearForm());
                         dispatch(setErrorData({}));
@@ -122,7 +122,7 @@ export const VariantFormDialog = () => {
                         {t('cancel')}
                     </button>
                     <form style={{all: 'unset'}} onSubmit={(e) => handleFormSubmit(e)}>
-                        <button type="submit" className={'add-new-button'}>{t('save')}</button>
+                        <button type="submit" className={'general-button'}>{t('save')}</button>
                     </form>
                 </div>
 

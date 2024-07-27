@@ -137,7 +137,7 @@ export const DishAdditionsView = () => {
                         <div className={'chosen-additions-header'}>
                             <div className={'chosen-additions-label'}>{t('chosen')}:</div>
                             <div className={'category-form-top-buttons'}>
-                                <button className={'add-new-button cancel'}
+                                <button className={'general-button cancel'}
                                         onClick={() => {
                                             dispatch(setIsAdditionsViewActive(false));
                                             dispatch(setAdditions([]));
@@ -146,7 +146,7 @@ export const DishAdditionsView = () => {
                                         }}>
                                     {t('cancel')}
                                 </button>
-                                <button className={'add-new-button submit-additions'}
+                                <button className={'general-button submit-additions'}
                                         onClick={() => {
                                             dispatch(setIsAdditionsViewActive(false));
                                             dispatch(setChosenAdditions(additions));

@@ -5,13 +5,13 @@ import {DeleteIcon} from "../../icons/DeleteIcon";
 import {imagesPath} from "../../../apiData";
 import {formatPrice} from "../../../utils";
 import {UnavailableIcon} from "../../icons/UnavailableIcon";
-import {WarningDialogWindow} from "../dialogWindows/WarningDialogWindow";
-import {ConfirmationDialogWindow} from "../dialogWindows/ConfirmationDialogWindow";
+import {FailureMessage} from "../dialogWindows/FailureMessage";
+import {SuccessMessage} from "../dialogWindows/SuccessMessage";
 import {ImgPlaceholderIcon} from "../../icons/ImgPlaceholderIcon";
 import {useTranslation} from "react-i18next";
 import {getTranslation} from "../../../locales/langUtils";
 import {LoadingSpinner} from "../../icons/LoadingSpinner";
-import {RemovalDialog} from "../dialogWindows/RemovalDialog";
+import {DecisionDialog} from "../dialogWindows/DecisionDialog";
 import {useDispatch, useSelector} from "react-redux";
 import {
     getCategories,
@@ -130,7 +130,7 @@ export const DishesCategoriesList = () => {
     const renderRemovalDialog = () => {
         const msg = activeRemovalType === 'category' ? t('confirmCategoryRemoval') : t('confirmDishRemoval');
         const objName = activeRemovalType === 'category' ? categoryForAction.name : menuItemForAction.name;
-        return <RemovalDialog msg={msg}
+        return <DecisionDialog msg={msg}
                               objName={objName}
                               onSubmit={handleRemoval}
                               onCancel={discardDeletion}/>
@@ -138,9 +138,9 @@ export const DishesCategoriesList = () => {
 
     const renderConfirmationDialog = () => {
         if (confirmedRemovalType === 'category') {
-            return (<ConfirmationDialogWindow text={t('categoryRemovalSuccess')}/>);
+            return (<SuccessMessage text={t('categoryRemovalSuccess')}/>);
         } else if (confirmedRemovalType === 'dish') {
-            return (<ConfirmationDialogWindow text={t('dishRemovalSuccess')}/>);
+            return (<SuccessMessage text={t('dishRemovalSuccess')}/>);
         }
     }
 
@@ -272,7 +272,7 @@ export const DishesCategoriesList = () => {
             {filterValue !== '' ? renderFilteredItems() : <></>}
             {activeRemovalType && renderRemovalDialog()}
             {confirmedRemovalType && renderConfirmationDialog()}
-            {errorData.exceptionMsg && (<WarningDialogWindow text={errorData.exceptionMsg}/>)}
+            {errorData.exceptionMsg && (<FailureMessage text={errorData.exceptionMsg}/>)}
         </div>
     );
 };

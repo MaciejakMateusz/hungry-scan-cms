@@ -485,7 +485,7 @@ ul {
     margin-left: 80px;
 }
 
-.add-new-button {
+.general-button {
     height: 35px;
     border: 0;
     border-radius: 100px;
@@ -498,25 +498,25 @@ ul {
     padding-right: 20px;
 }
 
-.add-new-button.cancel {
+.general-button.cancel {
     background: rgb(255, 255, 255, 0);
     color: #33353E;
 }
 
-.add-new-button.submit {
+.general-button.submit {
     margin-right: 20px;
 }
 
-.add-new-button.submit-additions {
+.general-button.submit-additions {
     margin-right: 0;
 }
 
-.add-new-button.submit-additions:disabled {
+.general-button.submit-additions:disabled {
     opacity: 0.6;
     cursor: not-allowed;
 }
 
-.add-new-button.submit-additions:disabled:hover {
+.general-button.submit-additions:disabled:hover {
     background: #3E424C;
 }
 
@@ -540,11 +540,11 @@ ul {
     position: absolute;
 }
 
-.search-initial-circle:hover, .add-new-button:hover, .circle-active {
+.search-initial-circle:hover, .general-button:hover, .circle-active {
     background: #33353E;
 }
 
-.add-new-button.cancel:hover {
+.general-button.cancel:hover {
     background: rgb(255, 255, 255, 0);
 }
 
@@ -1097,7 +1097,7 @@ ul {
     z-index: 1000;
 }
 
-.removal-dialog {
+.decision-dialog {
     position: fixed;
     top: 40%;
     left: 45%;
@@ -1113,12 +1113,12 @@ ul {
     grid-template-rows: 70% 30%;
 }
 
-.removal-dialog-content {
+.decision-dialog-content {
     display: flex;
     padding: 10px;
 }
 
-.removal-dialog-footer {
+.decision-dialog-footer {
     display: flex;
     justify-content: flex-end;
     padding-right: 5px;

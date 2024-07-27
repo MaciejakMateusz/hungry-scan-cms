@@ -23,7 +23,7 @@ import {DeleteIcon} from "../../icons/DeleteIcon";
 import {SearchIcon} from "../../icons/SearchIcon";
 import {LoadingSpinner} from "../../icons/LoadingSpinner";
 import {remove} from "../../../slices/objectRemovalSlice";
-import {RemovalDialog} from "../dialogWindows/RemovalDialog";
+import {DecisionDialog} from "../dialogWindows/DecisionDialog";
 import {filter} from "../../../slices/filteringSlice";
 import {FilteringForm} from "../utils/filtering/FilteringForm";
 
@@ -119,7 +119,7 @@ export const Additions = () => {
             </Helmet>
             {additionDialogActive ? <AdditionFormDialog filter={executeFilter}/> : <></>}
             {additionToRemove ?
-                <RemovalDialog msg={t('confirmDishRemoval')}
+                <DecisionDialog msg={t('confirmDishRemoval')}
                                objName={additionToRemove.name}
                                onSubmit={(e) => handleAdditionRemoval(e, additionToRemove)}
                                onCancel={() => dispatch(setAdditionToRemove(null))}/> : <></>}
@@ -129,7 +129,7 @@ export const Additions = () => {
                         <div>
                             <div className={'additions-header'}>
                                 <div className={'category-form-top-buttons'}>
-                                    <button className={'add-new-button submit-additions'}
+                                    <button className={'general-button submit-additions'}
                                             onClick={() => dispatch(setAdditionDialogActive(true))}>
                                         + {t('newAddition')}
                                     </button>

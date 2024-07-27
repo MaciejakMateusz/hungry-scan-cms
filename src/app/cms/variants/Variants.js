@@ -29,7 +29,7 @@ import {UnavailableIcon} from "../../icons/UnavailableIcon";
 import {EditIcon} from "../../icons/EditIcon";
 import {DeleteIcon} from "../../icons/DeleteIcon";
 import {VariantFormDialog} from "./VariantFormDialog";
-import {RemovalDialog} from "../dialogWindows/RemovalDialog";
+import {DecisionDialog} from "../dialogWindows/DecisionDialog";
 import {remove} from "../../../slices/objectRemovalSlice";
 import {FilteringForm} from "../utils/filtering/FilteringForm";
 import {filter} from "../../../slices/filteringSlice";
@@ -189,7 +189,7 @@ export const Variants = () => {
             </Helmet>
             {variantDialogActive ? <VariantFormDialog filter={executeFilter}/> : <></>}
             {variantToRemove ?
-                <RemovalDialog msg={t('confirmDishRemoval')}
+                <DecisionDialog msg={t('confirmDishRemoval')}
                                objName={variantToRemove.name}
                                onSubmit={(e) => handleVariantRemoval(e, variantToRemove)}
                                onCancel={() => dispatch(setVariantToRemove(null))}/> : <></>}
@@ -230,7 +230,7 @@ export const Variants = () => {
                             <div className={'chosen-additions-header'}>
                                 <div className={'chosen-additions-label'}>{t('chosen')}:</div>
                                 <div className={'category-form-top-buttons'}>
-                                    <button className={'add-new-button submit-additions'} disabled={!dish}
+                                    <button className={'general-button submit-additions'} disabled={!dish}
                                             onClick={() => dispatch(setVariantDialogActive(true))}>
                                         + {t('newVariant')}
                                     </button>

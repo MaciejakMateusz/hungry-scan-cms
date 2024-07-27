@@ -4,7 +4,7 @@ import {useTranslation} from "react-i18next";
 import {SearchIcon} from "../../icons/SearchIcon";
 import {DishesCategoriesList} from "./DishesCategoriesList";
 import {NewCategoryForm} from "./NewCategoryForm";
-import {ConfirmationDialogWindow} from "../dialogWindows/ConfirmationDialogWindow";
+import {SuccessMessage} from "../dialogWindows/SuccessMessage";
 import {EditCategoryForm} from "./EditCategoryForm";
 import {NewDishForm} from "./NewDishForm";
 import {EditDishForm} from "./EditDishForm";
@@ -63,13 +63,13 @@ export const DishesCategories = () => {
     const renderConfirmationDialog = (type) => {
         switch (type) {
             case 'category-save':
-                return (<ConfirmationDialogWindow text={t('categorySaved')}/>);
+                return (<SuccessMessage text={t('categorySaved')}/>);
             case 'category-edit':
-                return (<ConfirmationDialogWindow text={t('categoryEdited')}/>);
+                return (<SuccessMessage text={t('categoryEdited')}/>);
             case 'dish-save':
-                return (<ConfirmationDialogWindow text={t('dishSaved')}/>);
+                return (<SuccessMessage text={t('dishSaved')}/>);
             case 'dish-edit':
-                return (<ConfirmationDialogWindow text={t('dishEdited')}/>);
+                return (<SuccessMessage text={t('dishEdited')}/>);
             default:
                 return null;
         }
@@ -88,11 +88,11 @@ export const DishesCategories = () => {
             return (
                 <div className={'dishes-categories-grid'}>
                     <div className={'new-buttons-container'}>
-                        <button className={'add-new-button new-category'}
+                        <button className={'general-button new-category'}
                                 onClick={() => dispatch(setNewCategoryFormActive(true))}>
                             <span>+ {t('newCategory')}</span>
                         </button>
-                        <button className={'add-new-button new-dish'}
+                        <button className={'general-button new-dish'}
                                 onClick={() => dispatch(setNewDishFormActive(true))}>
                             <span>+ {t('newDish')}</span>
                         </button>
