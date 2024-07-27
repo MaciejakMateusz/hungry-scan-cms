@@ -18,7 +18,7 @@ import {
     setVariantDialogActive,
     setVariantToRemove
 } from "../../../slices/variantsSlice";
-import {getCategories, setCategories,} from "../../../slices/dishesCategoriesSlice";
+import {getCategories, setCategories} from "../../../slices/dishesCategoriesSlice";
 import {getTranslation} from "../../../locales/langUtils";
 import Select from "react-select";
 import {customSelect} from "../../../styles";
@@ -47,6 +47,7 @@ export const Variants = () => {
     const {variants} = useSelector(state => state.variants.fetchVariants);
 
     useEffect(() => {
+        console.log('useEffect.available')
         dispatch(setAvailable({label: t('availableVariant'), value: true}));
     }, [dispatch, t]);
 
@@ -58,18 +59,18 @@ export const Variants = () => {
     }, [dispatch, filterExpanded]);
 
     useEffect(() => {
+        const fetchCategories = async () => {
+            const resultAction = await dispatch(getCategories());
+            if (getCategories.fulfilled.match(resultAction)) {
+                dispatch(setCategories(resultAction.payload));
+                if (resultAction.payload.length > 0) {
+                    dispatch(setCategory({ value: resultAction.payload[0], label: getTranslation(resultAction.payload[0].name) }));
+                }
+            }
+        };
         fetchCategories();
-        if (categories.length > 0) {
-            dispatch(setCategory({value: categories[0], label: getTranslation(categories[0].name)}));
-        }
-    }, [categories.length]);
-
-    const fetchCategories = async () => {
-        const resultAction = await dispatch(getCategories());
-        if (getCategories.fulfilled.match(resultAction)) {
-            dispatch(setCategories(resultAction.payload));
-        }
-    }
+        console.log('useEffect.fetchCategories executed')
+    }, [dispatch]);
 
     const getVariants = async () => {
         await dispatch(fetchVariants());
@@ -123,9 +124,15 @@ export const Variants = () => {
 
     const renderMenuItemsRecords = () => {
         if (!filteredItems) {
+            console.log('renderMenuItemsRecords.category', category)
+            console.log('renderMenuItemsRecords.categories', categories)
+            let menuItems = [];
+            if(category) {
+               menuItems = category.value ? category.value.menuItems : category.menuItems;
+            }
             return (
-                category ? (category.value.menuItems.length !== 0 ?
-                        category.value.menuItems.map(menuItem => (
+                category ? (menuItems.length !== 0 ?
+                        menuItems.map(menuItem => (
                             <li className={'details-wrapper'}
                                 key={menuItem.id}>
                                 {renderDishRecord(menuItem, false)}
@@ -143,6 +150,16 @@ export const Variants = () => {
                     </li>
                 )) : <p className={'text-center zero-margin'}>{t('noDishesFiltered')}</p>
         );
+    }
+
+    const getCategoryForSelect = () => {
+        if(!category) {
+            return null;
+        }
+        if(filteringActive) {
+            return {value: category.value, label: t('filterResult')};
+        }
+        return category.value ? category : {value: category, label: getTranslation(category.name)};
     }
 
     return (
@@ -167,10 +184,7 @@ export const Variants = () => {
                                                   <Select id={'dish-category-variant'}
                                                           name={'category'}
                                                           styles={customSelect}
-                                                          value={filteringActive ? {
-                                                              value: category.value,
-                                                              label: 'Filtrowane...'
-                                                          } : category}
+                                                          value={getCategoryForSelect()}
                                                           onChange={(selected) => {
                                                               dispatch(setCategory(selected));
                                                               dispatch(clearVariants());

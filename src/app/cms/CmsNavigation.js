@@ -21,7 +21,7 @@ import {clearView} from "../../slices/dishesCategoriesSlice";
 export const CmsNavigation = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
-    const [activeView, setActiveView] = useState("variants")
+    const [activeView, setActiveView] = useState("dishesCategories")
     const [redirect, setRedirect] = useState(false);
     const {
         newCategoryFormActive,

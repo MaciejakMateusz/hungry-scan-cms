@@ -83,5 +83,6 @@
   "editAddition": "Edytuj dodatek",
   "noAdditions": "Brak dodatków",
   "confirm": "Potwierdź",
-  "confirmViewSwitch": "Czy na pewno chcesz zmienić widok? Zmiany nie zostaną zapisane."
+  "confirmViewSwitch": "Czy na pewno chcesz zmienić widok? Zmiany nie zostaną zapisane.",
+  "filterResult": "Wynik filtrowania:"
 }

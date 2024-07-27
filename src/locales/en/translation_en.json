@@ -82,5 +82,6 @@
   "editAddition": "Edit addition",
   "noAdditions": "No additions",
   "confirm": "Confirm",
-  "confirmViewSwitch": "Are you sure you want to change the view? Changes will not be saved."
+  "confirmViewSwitch": "Are you sure you want to change the view? Changes will not be saved.",
+  "filterResult": "Filter result:"
 }
