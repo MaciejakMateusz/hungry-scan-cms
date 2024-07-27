@@ -7,11 +7,11 @@ export const FormHeader = (props) => {
         <div className={'form-header'}>
             <div className={'form-header-title'}>{props.headerTitle}</div>
             <div className={'form-header-top-buttons'}>
-                <button className={'add-new-button cancel'}
+                <button className={'general-button cancel'}
                         onClick={props.onCancel}>
                     {t('cancel')}
                 </button>
-                <button className={'add-new-button submit'}
+                <button className={'general-button submit'}
                         onClick={props.onAdd}>
                     {t('save')}
                 </button>

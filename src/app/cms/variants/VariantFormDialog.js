@@ -12,9 +12,9 @@ import {
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {getTranslation} from "../../../locales/langUtils";
-import {CustomSelect} from "../dishesCategories/formComponents/CustomSelect";
-import {NameField} from "../dishesCategories/formComponents/NameField";
-import {PriceField} from "../dishesCategories/formComponents/PriceField";
+import {CustomSelect} from "../dishes-categories/form-components/CustomSelect";
+import {NameField} from "../dishes-categories/form-components/NameField";
+import {PriceField} from "../dishes-categories/form-components/PriceField";
 
 export const VariantFormDialog = () => {
     const {t} = useTranslation();
@@ -113,7 +113,7 @@ export const VariantFormDialog = () => {
                     />
                 </div>
                 <div className={'variant-dialog-footer'}>
-                    <button className={'add-new-button cancel'} onClick={() => {
+                    <button className={'general-button cancel'} onClick={() => {
                         dispatch(setVariantDialogActive(false));
                         dispatch(clearForm());
                         dispatch(setErrorData({}));
@@ -122,7 +122,7 @@ export const VariantFormDialog = () => {
                         {t('cancel')}
                     </button>
                     <form style={{all: 'unset'}} onSubmit={(e) => handleFormSubmit(e)}>
-                        <button type="submit" className={'add-new-button'}>{t('save')}</button>
+                        <button type="submit" className={'general-button'}>{t('save')}</button>
                     </form>
                 </div>
 

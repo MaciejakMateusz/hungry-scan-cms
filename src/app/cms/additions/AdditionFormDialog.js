@@ -1,9 +1,9 @@
 import React, {useEffect} from "react";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
-import {CustomSelect} from "../dishesCategories/formComponents/CustomSelect";
-import {NameField} from "../dishesCategories/formComponents/NameField";
-import {PriceField} from "../dishesCategories/formComponents/PriceField";
+import {CustomSelect} from "../dishes-categories/form-components/CustomSelect";
+import {NameField} from "../dishes-categories/form-components/NameField";
+import {PriceField} from "../dishes-categories/form-components/PriceField";
 import {
     setId,
     setName,
@@ -83,7 +83,7 @@ export const AdditionFormDialog = (props) => {
                     />
                 </div>
                 <div className={'variant-dialog-footer'}>
-                    <button className={'add-new-button cancel'} onClick={() => {
+                    <button className={'general-button cancel'} onClick={() => {
                         dispatch(setAdditionDialogActive(false));
                         dispatch(clearForm());
                         dispatch(setErrorData({}));
@@ -92,7 +92,7 @@ export const AdditionFormDialog = (props) => {
                         {t('cancel')}
                     </button>
                     <form style={{all: 'unset'}} onSubmit={(e) => handleFormSubmit(e)}>
-                        <button type="submit" className={'add-new-button'}>{t('save')}</button>
+                        <button type="submit" className={'general-button'}>{t('save')}</button>
                     </form>
                 </div>
 

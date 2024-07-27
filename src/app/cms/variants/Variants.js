@@ -1,7 +1,6 @@
 import React, {useEffect} from "react";
 import {Helmet} from "react-helmet";
 import {useTranslation} from "react-i18next";
-import {SearchIcon} from "../../icons/SearchIcon";
 import {useDispatch, useSelector} from "react-redux";
 import {
     clearVariants,
@@ -19,20 +18,17 @@ import {
     setVariantDialogActive,
     setVariantToRemove
 } from "../../../slices/variantsSlice";
-import {getCategories, setCategories} from "../../../slices/dishesCategoriesSlice";
+import {getCategories, setCategories,} from "../../../slices/dishesCategoriesSlice";
 import {getTranslation} from "../../../locales/langUtils";
 import Select from "react-select";
 import {customSelect} from "../../../styles";
-import {CustomNoOptionsMessage} from "../dishesCategories/formComponents/CustomNoOptionsMessage";
-import {AvailableIcon} from "../../icons/AvailableIcon";
-import {UnavailableIcon} from "../../icons/UnavailableIcon";
-import {EditIcon} from "../../icons/EditIcon";
-import {DeleteIcon} from "../../icons/DeleteIcon";
+import {CustomNoOptionsMessage} from "../dishes-categories/form-components/CustomNoOptionsMessage";
 import {VariantFormDialog} from "./VariantFormDialog";
-import {RemovalDialog} from "../dialogWindows/RemovalDialog";
+import {DecisionDialog} from "../dialog-windows/DecisionDialog";
 import {remove} from "../../../slices/objectRemovalSlice";
-import {FilteringForm} from "../utils/filtering/FilteringForm";
 import {filter} from "../../../slices/filteringSlice";
+import {SplitLeftPanelHeader} from "../shared-components/SplitLeftPanelHeader";
+import {ListRecord} from "../shared-components/ListRecord";
 
 export const Variants = () => {
     const {t} = useTranslation();
@@ -111,7 +107,6 @@ export const Variants = () => {
     }
 
     const renderDishRecord = (dish, index) => {
-        console.log(index)
         return (
             <div className={'details-container variants'} onClick={async () => {
                 dispatch(setDish(dish));
@@ -123,38 +118,6 @@ export const Variants = () => {
                     <span className={'grid-column-right'}>Warianty: {dish.variants ? dish.variants.length : 0}</span>
                 </div>
             </div>
-        );
-    }
-
-    const renderVariantRecord = (variant) => {
-        return (
-            <>
-                <div className={'details-container variants'}>
-                    <div className={'display-order'}>{variant.displayOrder}</div>
-                    <div className={'details-record-grid'}>
-                        <span className={'grid-column-left'}>{getTranslation(variant.name)}</span>
-                        <span className={'grid-column-right'}>+ {variant.price.toFixed(2)} zł</span>
-                    </div>
-                </div>
-                <div className={'manage-buttons-horizontal-pill'}>
-                    <div className={'hover-scaling'}>
-                        {variant.available ? <AvailableIcon/> : <UnavailableIcon/>}
-                    </div>
-                    <div>
-                        <div className={'clickable-icon hover-scaling'} onClick={() => {
-                            dispatch(setVariant(variant));
-                            dispatch(setIsNewVariant(false));
-                            dispatch(setVariantDialogActive(true));
-                        }}>
-                            <EditIcon/>
-                        </div>
-                    </div>
-                    <div className={'clickable-icon hover-scaling'}
-                         onClick={() => dispatch(setVariantToRemove(variant))}>
-                        <DeleteIcon/>
-                    </div>
-                </div>
-            </>
         );
     }
 
@@ -189,52 +152,52 @@ export const Variants = () => {
             </Helmet>
             {variantDialogActive ? <VariantFormDialog filter={executeFilter}/> : <></>}
             {variantToRemove ?
-                <RemovalDialog msg={t('confirmDishRemoval')}
-                               objName={variantToRemove.name}
-                               onSubmit={(e) => handleVariantRemoval(e, variantToRemove)}
-                               onCancel={() => dispatch(setVariantToRemove(null))}/> : <></>}
-            <div className={'dish-additions-container'}>
-                <div className={'dish-additions-grid'}>
-                    <div className={'dish-additions-left-panel'}>
-                        <div className={'ingredients-header'}>
-                            <div className={`search-button ingredients ${filterExpanded ? 'search-active' : ''}`}>
-                                <button className={`search-initial-circle ${filterExpanded ? 'circle-active' : ''}`}
-                                        onClick={() => dispatch(setFilterExpanded(!filterExpanded))}>
-                                    <SearchIcon/>
-                                </button>
-                                {filterExpanded ?
-                                    <FilteringForm value={filterValue} searchSubmit={handleSearchSubmit}/> : <></>}
-                            </div>
-                            <Select id={'dish-category-variant'}
-                                    name={'category'}
-                                    styles={customSelect}
-                                    value={filteringActive ? {value: category.value, label: 'Filtrowane...'} : category}
-                                    onChange={(selected) => {
-                                        dispatch(setCategory(selected));
-                                        dispatch(clearVariants());
-                                        dispatch(setDish(null));
-                                    }}
-                                    isDisabled={filteringActive}
-                                    options={categories.map(category => {
-                                        return {value: category, label: getTranslation(category.name)}
-                                    })}
-                                    components={{NoOptionsMessage: CustomNoOptionsMessage}}
-                            />
-                        </div>
-                        <ul className="ingredients-list">
+                <DecisionDialog msg={t('confirmDishRemoval')}
+                                objName={variantToRemove.name}
+                                onSubmit={(e) => handleVariantRemoval(e, variantToRemove)}
+                                onCancel={() => dispatch(setVariantToRemove(null))}/> : <></>}
+            <div className={'padded-view-container'}>
+                <div className={'vertical-split-grid'}>
+                    <div className={'vertical-split-left-panel'}>
+                        <SplitLeftPanelHeader filterExpanded={filterExpanded}
+                                              expandFilter={() => dispatch(setFilterExpanded(!filterExpanded))}
+                                              filterValue={filterValue}
+                                              onSearchSubmit={handleSearchSubmit}
+                                              component={
+                                                  <Select id={'dish-category-variant'}
+                                                          name={'category'}
+                                                          styles={customSelect}
+                                                          value={filteringActive ? {
+                                                              value: category.value,
+                                                              label: 'Filtrowane...'
+                                                          } : category}
+                                                          onChange={(selected) => {
+                                                              dispatch(setCategory(selected));
+                                                              dispatch(clearVariants());
+                                                              dispatch(setDish(null));
+                                                          }}
+                                                          isDisabled={filteringActive}
+                                                          options={categories.map(category => {
+                                                              return {
+                                                                  value: category,
+                                                                  label: getTranslation(category.name)
+                                                              }
+                                                          })}
+                                                          components={{NoOptionsMessage: CustomNoOptionsMessage}}
+                                                  />}
+                        />
+                        <ul className="vertical-split-left-panel-content">
                             {renderMenuItemsRecords()}
                         </ul>
                     </div>
-                    <div className={'dish-additions-right-panel'}>
+                    <div className={'vertical-split-right-panel'}>
                         <div>
-                            <div className={'chosen-additions-header'}>
-                                <div className={'chosen-additions-label'}>{t('chosen')}:</div>
-                                <div className={'category-form-top-buttons'}>
-                                    <button className={'add-new-button submit-additions'} disabled={!dish}
-                                            onClick={() => dispatch(setVariantDialogActive(true))}>
-                                        + {t('newVariant')}
-                                    </button>
-                                </div>
+                            <div className={'vertical-split-right-panel-header'}>
+                                <div className={'chosen-record-label'}>{t('chosen')}:</div>
+                                <button className={'general-button submit no-margin-right'} disabled={!dish}
+                                        onClick={() => dispatch(setVariantDialogActive(true))}>
+                                    + {t('newVariant')}
+                                </button>
                             </div>
                             <ul>
                                 <ul>
@@ -243,7 +206,17 @@ export const Variants = () => {
                                                 variants.map(variant => (
                                                     <li key={variant.id}
                                                         className={'details-wrapper'}>
-                                                        {renderVariantRecord(variant)}
+                                                        <ListRecord displayOrder={variant.displayOrder}
+                                                                    name={variant.name}
+                                                                    price={variant.price}
+                                                                    available={variant.available}
+                                                                    onEdit={() => {
+                                                                        dispatch(setVariant(variant));
+                                                                        dispatch(setIsNewVariant(false));
+                                                                        dispatch(setVariantDialogActive(true));
+                                                                    }}
+                                                                    onDelete={() => dispatch(setVariantToRemove(variant))}
+                                                        />
                                                     </li>)) :
                                                 <p className={'text-center'}>{t('noVariantsInDish')}</p>) :
                                             <p className={'text-center'}>{t('noDishChosen')}</p>

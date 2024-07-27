@@ -15,17 +15,13 @@ import {
     setIsNewAddition
 } from "../../../slices/additionsSlice";
 import {AdditionFormDialog} from "./AdditionFormDialog";
-import {getTranslation} from "../../../locales/langUtils";
-import {AvailableIcon} from "../../icons/AvailableIcon";
-import {UnavailableIcon} from "../../icons/UnavailableIcon";
-import {EditIcon} from "../../icons/EditIcon";
-import {DeleteIcon} from "../../icons/DeleteIcon";
 import {SearchIcon} from "../../icons/SearchIcon";
 import {LoadingSpinner} from "../../icons/LoadingSpinner";
 import {remove} from "../../../slices/objectRemovalSlice";
-import {RemovalDialog} from "../dialogWindows/RemovalDialog";
+import {DecisionDialog} from "../dialog-windows/DecisionDialog";
 import {filter} from "../../../slices/filteringSlice";
-import {FilteringForm} from "../utils/filtering/FilteringForm";
+import {FilteringForm} from "../shared-components/FilteringForm";
+import {ListRecord} from "../shared-components/ListRecord";
 
 export const Additions = () => {
     const {t} = useTranslation();
@@ -80,38 +76,6 @@ export const Additions = () => {
         }
     }
 
-    const renderIngredientRecord = (ingredient, index) => {
-        return (
-            <>
-                <div className={'details-container variants'}>
-                    <div className={'display-order'}>{index}</div>
-                    <div className={'details-record-grid'}>
-                        <span className={'grid-column-left'}>{getTranslation(ingredient.name)}</span>
-                        <span className={'grid-column-right'}>+ {ingredient.price.toFixed(2)} zł</span>
-                    </div>
-                </div>
-                <div className={'manage-buttons-horizontal-pill'}>
-                    <div className={'hover-scaling'}>
-                        {ingredient.available ? <AvailableIcon/> : <UnavailableIcon/>}
-                    </div>
-                    <div>
-                        <div className={'clickable-icon hover-scaling'} onClick={() => {
-                            dispatch(setAddition(ingredient));
-                            dispatch(setIsNewAddition(false));
-                            dispatch(setAdditionDialogActive(true));
-                        }}>
-                            <EditIcon/>
-                        </div>
-                    </div>
-                    <div className={'clickable-icon hover-scaling'}
-                         onClick={() => dispatch(setAdditionToRemove(ingredient))}>
-                        <DeleteIcon/>
-                    </div>
-                </div>
-            </>
-        );
-    }
-
     return (
         <>
             <Helmet>
@@ -119,22 +83,20 @@ export const Additions = () => {
             </Helmet>
             {additionDialogActive ? <AdditionFormDialog filter={executeFilter}/> : <></>}
             {additionToRemove ?
-                <RemovalDialog msg={t('confirmDishRemoval')}
-                               objName={additionToRemove.name}
-                               onSubmit={(e) => handleAdditionRemoval(e, additionToRemove)}
-                               onCancel={() => dispatch(setAdditionToRemove(null))}/> : <></>}
-            <div className={'dish-additions-container'}>
-                <div className={'dish-additions-grid'}>
-                    <div className={'dish-additions-left-panel'}>
+                <DecisionDialog msg={t('confirmDishRemoval')}
+                                objName={additionToRemove.name}
+                                onSubmit={(e) => handleAdditionRemoval(e, additionToRemove)}
+                                onCancel={() => dispatch(setAdditionToRemove(null))}/> : <></>}
+            <div className={'padded-view-container'}>
+                <div className={'vertical-split-grid'}>
+                    <div className={'vertical-split-left-panel'}>
                         <div>
-                            <div className={'additions-header'}>
-                                <div className={'category-form-top-buttons'}>
-                                    <button className={'add-new-button submit-additions'}
-                                            onClick={() => dispatch(setAdditionDialogActive(true))}>
-                                        + {t('newAddition')}
-                                    </button>
-                                </div>
-                                <div className={`search-button additions ${filterExpanded ? 'search-active' : ''}`}>
+                            <div className={'vertical-split-left-panel-header no-justify'}>
+                                <button className={'general-button submit'}
+                                        onClick={() => dispatch(setAdditionDialogActive(true))}>
+                                    + {t('newAddition')}
+                                </button>
+                                <div className={`search-button margin-left ${filterExpanded ? 'search-active' : ''}`}>
                                     <button className={`search-initial-circle ${filterExpanded ? 'circle-active' : ''}`}
                                             onClick={() => dispatch(setFilterExpanded(!filterExpanded))}>
                                         <SearchIcon/>
@@ -150,7 +112,17 @@ export const Additions = () => {
                                                 ingredients.map((ingredient, index) => (
                                                     <li key={ingredient.id}
                                                         className={'details-wrapper'}>
-                                                        {renderIngredientRecord(ingredient, index + 1)}
+                                                        <ListRecord displayOrder={index + 1}
+                                                                    name={ingredient.name}
+                                                                    price={ingredient.price}
+                                                                    available={ingredient.available}
+                                                                    onEdit={() => {
+                                                                        dispatch(setAddition(ingredient));
+                                                                        dispatch(setIsNewAddition(false));
+                                                                        dispatch(setAdditionDialogActive(true));
+                                                                    }}
+                                                                    onDelete={() => dispatch(setAdditionToRemove(ingredient))}
+                                                        />
                                                     </li>)) :
                                                 <p className={'text-center'}>{t('noAdditions')}</p>) :
                                             <p className={'text-center'}>{t('noDishChosen')}</p>

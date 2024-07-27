@@ -1,7 +1,6 @@
 import React, {useEffect} from "react";
 import {getTranslation} from "../../../locales/langUtils";
 import {useTranslation} from "react-i18next";
-import {SearchIcon} from "../../icons/SearchIcon";
 import {useDispatch, useSelector} from "react-redux";
 import {
     setChosenAdditions,
@@ -12,17 +11,19 @@ import {
 import {
     addAddition,
     getIngredients,
-    removeAddition, setAdditions,
-    setFilter, setPageData,
-    setSearchActive
+    removeAddition,
+    setAdditions,
+    setPageData,
+    setFilterExpanded
 } from "../../../slices/dishAdditionsSlice";
+import {SplitLeftPanelHeader} from "../shared-components/SplitLeftPanelHeader";
 
 export const DishAdditionsView = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {
-        searchActive,
-        filter
+        filterExpanded,
+        filterValue
     } = useSelector(state => state.dishAdditions.dishAdditionsData);
     const {ingredients, additions, pageData} = useSelector(state => state.dishAdditions.fetchIngredients);
     const {chosenAdditions} = useSelector(state => state.dishForm.form);
@@ -37,23 +38,10 @@ export const DishAdditionsView = () => {
 
     const handleSearchSubmit = (event) => {
         event.preventDefault()
-        if ('' !== filter) {
-            console.log(filter)
+        if ('' !== filterValue) {
+            console.log(filterValue)
         }
     }
-
-    const renderForm = () => {
-        return (
-            <form className={'search-button-form'} onSubmit={handleSearchSubmit}>
-                <input type={'text'}
-                       className={'search-button-input'}
-                       placeholder={t('search')}
-                       name={'filter'}
-                       value={filter}
-                       onChange={(e) => dispatch(setFilter(e.target.value))}/>
-            </form>
-        );
-    };
 
     const renderIngrRecord = (ingredient, action) => {
         return (
@@ -106,22 +94,20 @@ export const DishAdditionsView = () => {
     }
 
     return (
-        <div className={'dish-additions-container'}>
-            <div className={'dish-additions-grid'}>
-                <div className={'dish-additions-left-panel'}>
-                    <div className={'ingredients-header'}>
-                        <div className={`search-button ingredients ${searchActive ? 'search-active' : ''}`}>
-                            <button className={`search-initial-circle ${searchActive ? 'circle-active' : ''}`}
-                                    onClick={() => dispatch(setSearchActive(!searchActive))}>
-                                <SearchIcon/>
-                            </button>
-                            {searchActive ? renderForm() : <></>}
-                        </div>
-                        <div className={'ingredients-label'}>
-                            <span>{t('allIngredients')}</span>
-                        </div>
-                    </div>
-                    <ul className="ingredients-list">
+        <div className={'padded-view-container'}>
+            <div className={'vertical-split-grid'}>
+                <div className={'vertical-split-left-panel'}>
+                    <SplitLeftPanelHeader filterExpanded={filterExpanded}
+                                          expandFilter={() => dispatch(setFilterExpanded(!filterExpanded))}
+                                          filterValue={filterValue}
+                                          onSearchSubmit={handleSearchSubmit}
+                                          component={
+                                              <div className={'ingredients-label'}>
+                                                  <span>{t('allIngredients')}</span>
+                                              </div>
+                                          }
+                    />
+                    <ul className="vertical-split-left-panel-content">
                         {ingredients.length !== 0 ?
                             ingredients.map(ingredient => (
                                 <li className={'details-wrapper'}
@@ -132,12 +118,12 @@ export const DishAdditionsView = () => {
                     </ul>
                     {renderPageableFooter()}
                 </div>
-                <div className={'dish-additions-right-panel'}>
+                <div className={'vertical-split-right-panel'}>
                     <div>
-                        <div className={'chosen-additions-header'}>
-                            <div className={'chosen-additions-label'}>{t('chosen')}:</div>
-                            <div className={'category-form-top-buttons'}>
-                                <button className={'add-new-button cancel'}
+                        <div className={'vertical-split-right-panel-header'}>
+                            <div className={'chosen-record-label'}>{t('chosen')}:</div>
+                            <div>
+                                <button className={'general-button cancel'}
                                         onClick={() => {
                                             dispatch(setIsAdditionsViewActive(false));
                                             dispatch(setAdditions([]));
@@ -146,7 +132,7 @@ export const DishAdditionsView = () => {
                                         }}>
                                     {t('cancel')}
                                 </button>
-                                <button className={'add-new-button submit-additions'}
+                                <button className={'general-button submit no-margin-right'}
                                         onClick={() => {
                                             dispatch(setIsAdditionsViewActive(false));
                                             dispatch(setChosenAdditions(additions));

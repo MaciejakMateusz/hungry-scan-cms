@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const WarningDialogWindow = ({ text }) => {
+export const FailureMessage = ({ text }) => {
     return (
         <div className={'warning-dialog'}>
             {text}

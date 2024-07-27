@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import {useTranslation} from "react-i18next";
-import {CategoryFormTemplate} from "./formComponents/CategoryFormTemplate";
-import {FormHeader} from "./formComponents/FormHeader";
+import {CategoryFormTemplate} from "./form-components/CategoryFormTemplate";
+import {FormHeader} from "./form-components/FormHeader";
 import {getTranslation} from "../../../locales/langUtils";
 import {useDispatch, useSelector} from "react-redux";
 import {setEditCategoryFormActive, setSubmittedSuccessType} from "../../../slices/dishesCategoriesSlice";
