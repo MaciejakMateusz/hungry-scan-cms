@@ -47,7 +47,6 @@ export const Variants = () => {
     const {variants} = useSelector(state => state.variants.fetchVariants);
 
     useEffect(() => {
-        console.log('useEffect.available')
         dispatch(setAvailable({label: t('availableVariant'), value: true}));
     }, [dispatch, t]);
 
@@ -69,7 +68,7 @@ export const Variants = () => {
             }
         };
         fetchCategories();
-        console.log('useEffect.fetchCategories executed')
+        console.log(dish)
     }, [dispatch]);
 
     const getVariants = async () => {
@@ -107,6 +106,16 @@ export const Variants = () => {
         }
     }
 
+    const getCategoryForSelect = () => {
+        if(!category) {
+            return null;
+        }
+        if(filteringActive) {
+            return {value: category.value, label: t('filterResult')};
+        }
+        return category.value ? category : {value: category, label: getTranslation(category.name)};
+    }
+
     const renderDishRecord = (dish, index) => {
         return (
             <div className={'details-container variants'} onClick={async () => {
@@ -124,8 +133,6 @@ export const Variants = () => {
 
     const renderMenuItemsRecords = () => {
         if (!filteredItems) {
-            console.log('renderMenuItemsRecords.category', category)
-            console.log('renderMenuItemsRecords.categories', categories)
             let menuItems = [];
             if(category) {
                menuItems = category.value ? category.value.menuItems : category.menuItems;
@@ -150,16 +157,6 @@ export const Variants = () => {
                     </li>
                 )) : <p className={'text-center zero-margin'}>{t('noDishesFiltered')}</p>
         );
-    }
-
-    const getCategoryForSelect = () => {
-        if(!category) {
-            return null;
-        }
-        if(filteringActive) {
-            return {value: category.value, label: t('filterResult')};
-        }
-        return category.value ? category : {value: category, label: getTranslation(category.name)};
     }
 
     return (
@@ -208,7 +205,8 @@ export const Variants = () => {
                         <div>
                             <div className={'vertical-split-right-panel-header'}>
                                 <div className={'chosen-record-label'}>{t('chosen')}:</div>
-                                <button className={'general-button submit no-margin-right'} disabled={!dish}
+                                <button className={'general-button submit no-margin-right'}
+                                        disabled={!dish}
                                         onClick={() => dispatch(setVariantDialogActive(true))}>
                                     + {t('newVariant')}
                                 </button>

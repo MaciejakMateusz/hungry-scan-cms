@@ -16,7 +16,9 @@ import {useDispatch, useSelector} from "react-redux";
 import {DecisionDialog} from "./dialog-windows/DecisionDialog";
 import {clearForm as clearDishForm} from "../../slices/dishFormSlice";
 import {clearForm as clearCategoryForm} from "../../slices/categoryFormSlice";
-import {clearView} from "../../slices/dishesCategoriesSlice";
+import {clearView as clearDishesCategoriesView} from "../../slices/dishesCategoriesSlice";
+import {clearView as clearVariantsView} from "../../slices/variantsSlice";
+import {clearView as clearAdditionsView} from "../../slices/additionsSlice";
 
 export const CmsNavigation = () => {
     const {t} = useTranslation();
@@ -46,7 +48,9 @@ export const CmsNavigation = () => {
     const clearAppState = () => {
         dispatch(clearDishForm());
         dispatch(clearCategoryForm());
-        dispatch(clearView());
+        dispatch(clearDishesCategoriesView());
+        dispatch(clearVariantsView());
+        dispatch(clearAdditionsView());
     }
 
     const switchView = (viewName) => {

@@ -151,6 +151,7 @@ export const additionsFormSlice = createSlice({
         },
         clearForm: state => {
             state.id = null;
+            state.addition = null;
             state.name = '';
             state.price = '0.00';
             state.available = true;
@@ -187,9 +188,17 @@ export const additionsSlice = createSlice({
         setFilterExpanded: (state, action) => {
             state.filterExpanded = action.payload;
         },
-        resetViewData: state => {
+        resetAdditionData: state => {
             state.additionDialogActive = false;
             state.isNewAddition = true;
+        },
+        clearView: state => {
+            state.filterValue = '';
+            state.additionDialogActive = false;
+            state.additionToRemove = null;
+            state.isNewAddition = true;
+            state.filteringActive = false;
+            state.filterExpanded = false;
         }
     }
 });
@@ -201,7 +210,8 @@ export const {
     setIsNewAddition,
     setFilteringActive,
     setFilterExpanded,
-    resetViewData
+    resetAdditionData,
+    clearView
 } = additionsSlice.actions;
 
 export const {setPageNumber, setPageSize, setIngredients} = getIngredientsSlice.actions;

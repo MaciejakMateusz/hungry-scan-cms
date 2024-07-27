@@ -156,8 +156,19 @@ export const variantsSlice = createSlice({
         setIsNewVariant: (state, action) => {
             state.isNewVariant = action.payload;
         },
-        resetViewData: state => {
+        resetVariantData: state => {
             state.variantDialogActive = false;
+            state.isNewVariant = true;
+        },
+        clearView: state => {
+            state.filteringActive = false;
+            state.filterValue = '';
+            state.filteredItems = null;
+            state.filterExpanded = false;
+            state.category = null;
+            state.dish = null;
+            state.variantDialogActive = false;
+            state.variantToRemove = null;
             state.isNewVariant = true;
         }
     }
@@ -194,6 +205,7 @@ export const variantFormSlice = createSlice({
         },
         clearForm: state => {
             state.id = null;
+            state.variant = null;
             state.displayOrder = {value: 1, label: 1};
             state.name = '';
             state.price = '0.00';
@@ -212,7 +224,8 @@ export const {
     setVariantDialogActive,
     setVariantToRemove,
     setIsNewVariant,
-    resetViewData
+    resetVariantData,
+    clearView
 } = variantsSlice.actions;
 
 export const {
