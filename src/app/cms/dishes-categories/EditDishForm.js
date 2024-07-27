@@ -57,8 +57,6 @@ export const EditDishForm = ({executeFilter}) => {
 
     useEffect(() => {
         const setInitialFormState = () => {
-            console.log('initialFormState.dish', dish)
-            console.log('initialFormState.category', category)
             let dishBanner;
             if (dish.bestseller) {
                 dishBanner = t('isBestseller')

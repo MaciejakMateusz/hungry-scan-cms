@@ -2,9 +2,12 @@ import React, {useEffect, useState} from "react";
 import {
     clearForm,
     fetchVariants,
-    postVariant, resetViewData,
+    postVariant,
+    resetVariantData,
     setAvailable,
-    setDisplayOrder, setErrorData, setId,
+    setDisplayOrder,
+    setErrorData,
+    setId,
     setName,
     setPrice,
     setVariantDialogActive
@@ -64,7 +67,7 @@ export const VariantFormDialog = () => {
         if(postVariant.fulfilled.match(resultAction)) {
             dispatch(setVariantDialogActive(false));
             dispatch(clearForm());
-            dispatch(resetViewData());
+            dispatch(resetVariantData());
             await dispatch(fetchVariants());
         }
     }
@@ -117,7 +120,7 @@ export const VariantFormDialog = () => {
                         dispatch(setVariantDialogActive(false));
                         dispatch(clearForm());
                         dispatch(setErrorData({}));
-                        dispatch(resetViewData());
+                        dispatch(resetVariantData());
                     }}>
                         {t('cancel')}
                     </button>

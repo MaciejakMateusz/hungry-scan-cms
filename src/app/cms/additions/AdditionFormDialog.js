@@ -12,7 +12,7 @@ import {
     setAdditionDialogActive,
     postAddition,
     clearForm,
-    resetViewData,
+    resetAdditionData,
     getIngredients,
     setErrorData
 } from "../../../slices/additionsSlice";
@@ -47,7 +47,7 @@ export const AdditionFormDialog = (props) => {
         if(postAddition.fulfilled.match(resultAction)) {
             dispatch(setAdditionDialogActive(false));
             dispatch(clearForm());
-            dispatch(resetViewData());
+            dispatch(resetAdditionData());
             filteringActive ? await props.filter(filterValue) : await dispatch(getIngredients());
         }
     }
@@ -87,7 +87,7 @@ export const AdditionFormDialog = (props) => {
                         dispatch(setAdditionDialogActive(false));
                         dispatch(clearForm());
                         dispatch(setErrorData({}));
-                        dispatch(resetViewData());
+                        dispatch(resetAdditionData());
                     }}>
                         {t('cancel')}
                     </button>

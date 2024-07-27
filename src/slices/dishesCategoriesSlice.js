@@ -146,8 +146,26 @@ export const dishesCategoriesSlice = createSlice(
             },
             setCategories: (state, action) => {
                 state.categories = action.payload;
+            },
+            clearView: state => {
+                state.filteringActive = false;
+                state.filterValue = '';
+                state.filteredItems = null;
+                state.filterExpanded = false;
+                state.newCategoryFormActive = false;
+                state.editCategoryFormActive = false;
+                state.newDishFormActive = false;
+                state.editDishFormActive = false;
+                state.submittedSuccessType = null;
+                state.categoryForAction = null;
+                state.menuItemForAction = null;
+                state.activeRemovalType = null;
+                state.category = {};
+                state.dish = {};
+                state.categories = [];
             }
-        }});
+        }
+    });
 
 export const {
     setFilteringActive,
@@ -164,7 +182,8 @@ export const {
     setActiveRemovalType,
     setCategory,
     setDish,
-    setCategories
+    setCategories,
+    clearView
 } = dishesCategoriesSlice.actions;
 
 const dishesCategoriesReducer = combineReducers({

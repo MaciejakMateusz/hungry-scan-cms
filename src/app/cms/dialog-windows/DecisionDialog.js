@@ -14,7 +14,7 @@ export const DecisionDialog = (props) => {
                 <div className={'decision-dialog-footer'}>
                     <button onClick={props.onCancel} className={'general-button cancel'}>{t('cancel')}</button>
                     <form onSubmit={props.onSubmit} style={{all: 'unset'}}>
-                        <button type="submit" className={'general-button'}>{t('remove')}</button>
+                        <button type="submit" className={'general-button'}>{t('confirm')}</button>
                     </form>
                 </div>
 
