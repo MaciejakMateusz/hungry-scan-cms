@@ -16,16 +16,13 @@ import {
 } from "../../../slices/additionsSlice";
 import {AdditionFormDialog} from "./AdditionFormDialog";
 import {getTranslation} from "../../../locales/langUtils";
-import {AvailableIcon} from "../../icons/AvailableIcon";
-import {UnavailableIcon} from "../../icons/UnavailableIcon";
-import {EditIcon} from "../../icons/EditIcon";
-import {DeleteIcon} from "../../icons/DeleteIcon";
 import {SearchIcon} from "../../icons/SearchIcon";
 import {LoadingSpinner} from "../../icons/LoadingSpinner";
 import {remove} from "../../../slices/objectRemovalSlice";
 import {DecisionDialog} from "../dialogWindows/DecisionDialog";
 import {filter} from "../../../slices/filteringSlice";
 import {FilteringForm} from "../utils/filtering/FilteringForm";
+import {HorizontalPill} from "../dishesCategories/HorizontalPill";
 
 export const Additions = () => {
     const {t} = useTranslation();
@@ -90,24 +87,14 @@ export const Additions = () => {
                         <span className={'grid-column-right'}>+ {ingredient.price.toFixed(2)} zł</span>
                     </div>
                 </div>
-                <div className={'manage-buttons-horizontal-pill'}>
-                    <div className={'hover-scaling'}>
-                        {ingredient.available ? <AvailableIcon/> : <UnavailableIcon/>}
-                    </div>
-                    <div>
-                        <div className={'clickable-icon hover-scaling'} onClick={() => {
-                            dispatch(setAddition(ingredient));
-                            dispatch(setIsNewAddition(false));
-                            dispatch(setAdditionDialogActive(true));
-                        }}>
-                            <EditIcon/>
-                        </div>
-                    </div>
-                    <div className={'clickable-icon hover-scaling'}
-                         onClick={() => dispatch(setAdditionToRemove(ingredient))}>
-                        <DeleteIcon/>
-                    </div>
-                </div>
+                <HorizontalPill available={ingredient.available}
+                                onEdit={() => {
+                                    dispatch(setAddition(ingredient));
+                                    dispatch(setIsNewAddition(false));
+                                    dispatch(setAdditionDialogActive(true));
+                                }}
+                                onDelete={() => dispatch(setAdditionToRemove(ingredient))}
+                />
             </>
         );
     }

@@ -19,20 +19,20 @@ import {
     setVariantDialogActive,
     setVariantToRemove
 } from "../../../slices/variantsSlice";
-import {getCategories, setCategories} from "../../../slices/dishesCategoriesSlice";
+import {
+    getCategories,
+    setCategories,
+} from "../../../slices/dishesCategoriesSlice";
 import {getTranslation} from "../../../locales/langUtils";
 import Select from "react-select";
 import {customSelect} from "../../../styles";
 import {CustomNoOptionsMessage} from "../dishesCategories/formComponents/CustomNoOptionsMessage";
-import {AvailableIcon} from "../../icons/AvailableIcon";
-import {UnavailableIcon} from "../../icons/UnavailableIcon";
-import {EditIcon} from "../../icons/EditIcon";
-import {DeleteIcon} from "../../icons/DeleteIcon";
 import {VariantFormDialog} from "./VariantFormDialog";
 import {DecisionDialog} from "../dialogWindows/DecisionDialog";
 import {remove} from "../../../slices/objectRemovalSlice";
 import {FilteringForm} from "../utils/filtering/FilteringForm";
 import {filter} from "../../../slices/filteringSlice";
+import {HorizontalPill} from "../dishesCategories/HorizontalPill";
 
 export const Variants = () => {
     const {t} = useTranslation();
@@ -136,24 +136,14 @@ export const Variants = () => {
                         <span className={'grid-column-right'}>+ {variant.price.toFixed(2)} zł</span>
                     </div>
                 </div>
-                <div className={'manage-buttons-horizontal-pill'}>
-                    <div className={'hover-scaling'}>
-                        {variant.available ? <AvailableIcon/> : <UnavailableIcon/>}
-                    </div>
-                    <div>
-                        <div className={'clickable-icon hover-scaling'} onClick={() => {
-                            dispatch(setVariant(variant));
-                            dispatch(setIsNewVariant(false));
-                            dispatch(setVariantDialogActive(true));
-                        }}>
-                            <EditIcon/>
-                        </div>
-                    </div>
-                    <div className={'clickable-icon hover-scaling'}
-                         onClick={() => dispatch(setVariantToRemove(variant))}>
-                        <DeleteIcon/>
-                    </div>
-                </div>
+                <HorizontalPill available={variant.available}
+                                onEdit={() => {
+                                    dispatch(setVariant(variant));
+                                    dispatch(setIsNewVariant(false));
+                                    dispatch(setVariantDialogActive(true));
+                                }}
+                                onDelete={() => dispatch(setVariantToRemove(variant))}
+                />
             </>
         );
     }

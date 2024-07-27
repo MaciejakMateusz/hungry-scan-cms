@@ -1,10 +1,6 @@
 import React, {useEffect, useState} from "react";
-import {AvailableIcon} from "../../icons/AvailableIcon";
-import {EditIcon} from "../../icons/EditIcon";
-import {DeleteIcon} from "../../icons/DeleteIcon";
 import {imagesPath} from "../../../apiData";
 import {formatPrice} from "../../../utils";
-import {UnavailableIcon} from "../../icons/UnavailableIcon";
 import {FailureMessage} from "../dialogWindows/FailureMessage";
 import {SuccessMessage} from "../dialogWindows/SuccessMessage";
 import {ImgPlaceholderIcon} from "../../icons/ImgPlaceholderIcon";
@@ -24,6 +20,7 @@ import {
 } from "../../../slices/dishesCategoriesSlice";
 import {remove} from "../../../slices/objectRemovalSlice";
 import {DishButtonsVerticalPill} from "./DishButtonsVerticalPill";
+import {HorizontalPill} from "./HorizontalPill";
 
 export const DishesCategoriesList = () => {
     const {t} = useTranslation();
@@ -164,25 +161,16 @@ export const DishesCategoriesList = () => {
                         <div className={'display-order'}>{category.displayOrder}</div>
                         <span className={'category-container-text'}>{getTranslation(category.name)}</span>
                     </div>
-                    <div className={'manage-buttons-horizontal-pill'}>
-                        <div className={'hover-scaling'}>
-                            {category.available ? <AvailableIcon/> : <UnavailableIcon/>}
-                        </div>
-                        <div>
-                            <div className={'clickable-icon hover-scaling'} onClick={() => {
-                                dispatch(setCategory(category));
-                                dispatch(setEditCategoryFormActive(true));
-                            }}>
-                                <EditIcon/>
-                            </div>
-                        </div>
-                        <div className={'clickable-icon hover-scaling'} onClick={() => {
-                            dispatch(setCategoryForAction(category));
-                            dispatch(setActiveRemovalType('category'));
-                        }}>
-                            <DeleteIcon/>
-                        </div>
-                    </div>
+                    <HorizontalPill available={category.available}
+                                    onEdit={() => {
+                                        dispatch(setCategory(category));
+                                        dispatch(setEditCategoryFormActive(true));
+                                    }}
+                                    onDelete={() => {
+                                        dispatch(setCategoryForAction(category));
+                                        dispatch(setActiveRemovalType('category'));
+                                    }}
+                    />
                 </div>
                 <div className={'dishes-wrapper'}>
                     {category.menuItems.length === 0 && (<span className={'no-items-msg'}>{t('noDishes')}</span>)}
