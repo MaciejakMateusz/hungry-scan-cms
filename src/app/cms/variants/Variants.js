@@ -68,7 +68,6 @@ export const Variants = () => {
             }
         };
         fetchCategories();
-        console.log(dish)
     }, [dispatch]);
 
     const getVariants = async () => {

@@ -85,3 +85,88 @@ export const customSelect = {
         }
     })
 }
+
+export const newCustomSelect = {
+    control: (provided, state) => ({
+        ...provided,
+        cursor: 'pointer',
+        borderRadius: '22px',
+        border: 'none',
+        backgroundColor: '#FAFAFA',
+        fontStyle: '"Lexend", sans-serif',
+        fontSize: '0.8rem',
+        color: state.isDisabled ? '#ccc' : '#3E424C',
+        width: '214px',
+        height: '32px',
+        minHeight: '32px',
+        textAlign: 'center',
+        '&:hover': {
+            borderColor: '#CCC',
+        },
+    }),
+    singleValue: (provided) => ({
+        ...provided,
+        color: '#3E424C',
+        maxWidth: '90%'
+    }),
+    dropdownIndicator: (provided, state) => ({
+        ...provided,
+        display: state.isDisabled ? 'none' : provided.display,
+        padding: '8px',
+        position: 'absolute',
+        right: '5px',
+        color: '#3E424C',
+        '& svg': {
+            width: '15px',
+            height: '15px',
+            '&:hover': {
+                color: '#000',
+            }
+        }
+    }),
+    indicatorSeparator: (provided) => ({
+        ...provided,
+        display: 'none'
+    }),
+    menu: (provided) => ({
+        ...provided,
+        borderRadius: '22px',
+        minHeight: '32px',
+        width: '214px'
+    }),
+    noOptionsMessage: (provided) => ({
+        ...provided,
+        fontSize: '0.8rem',
+        color: '#888',
+        fontFamily: '"Lexend", sans-serif',
+        textAlign: 'center'
+    }),
+    option: (provided, state) => ({
+        ...provided,
+        fontSize: '0.8rem',
+        fontWeight: '400',
+        background: state.isSelected ? '#f0f0f0' : '#FFF',
+        color: '#3E424C',
+        '&:hover': {backgroundColor: '#f0f0f0'}
+    }),
+    placeholder: (provided, state) => ({
+        ...provided,
+        color: state.isDisabled ? '#888' : '#3E424C',
+        fontSize: '0.8rem',
+        fontFamily: '"Lexend", sans-serif'
+    }),
+    clearIndicator: (provided) => ({
+        ...provided,
+        position: 'absolute',
+        cursor: 'pointer',
+        right: '25px',
+        '& svg': {
+            width: '16px',
+            height: '16px',
+            color: '#888',
+            '&:hover': {
+                color: '#000',
+            }
+        }
+    })
+}
