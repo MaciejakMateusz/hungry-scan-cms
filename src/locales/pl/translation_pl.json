@@ -7,7 +7,7 @@
   "logoutSuccess": "Wylogowano pomyślnie",
   "loginProblems": "Problemy z logowaniem?",
   "recoverPassword": "Odzyskaj hasło",
-  "dishesCategories": "Dania i kategorie",
+  "dishesCategories": "Kategorie i dania",
   "variants": "Warianty",
   "additions": "Dodatki",
   "qrCode": "Kod QR",
@@ -93,5 +93,6 @@
   "german": "Niemiecki",
   "originalText": "Tekst oryginalny",
   "typeTranslation": "Wpisz tłumaczenie...",
-  "automaticTranslation": "Automatyczne tłumaczenie"
+  "automaticTranslation": "Automatyczne tłumaczenie",
+  "noRecordsFound": "Nie znaleziono rekordów"
 }

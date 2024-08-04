@@ -1,19 +1,13 @@
 ::-webkit-scrollbar {
-    width: 10px;
+    width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 10px;
+    background: #E2E2E2;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #8888;
-    border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #888;
+    background: #6940C6;
 }
 
 *:focus {
@@ -351,13 +345,13 @@ ul {
 }
 
 .cms-accordion-button {
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
     background-color: #33353E;
     border: 0;
-    border-radius: 16px;
-    margin-top: 25px;
-    margin-left: 20px;
+    border-radius: 10px;
+    margin-top: 30px;
+    margin-left: 40px;
 }
 
 .cms-accordion-button:hover {
@@ -369,8 +363,6 @@ ul {
 }
 
 .cms-nav-li {
-    margin-left: 20px;
-    margin-bottom: 8px;
 }
 
 .cms-nav-btn {
@@ -379,19 +371,24 @@ ul {
     justify-content: space-between;
     height: 35px;
     border: none;
-    border-radius: 100px;
     background-color: inherit;
     color: #93939E;
     font-weight: 300;
-    font-size: 0.9rem;
-    width: 215px;
-    padding-left: 20px;
+    font-size: 0.8rem;
+    width: 100%;
+    padding-left: 40px;
 }
 
 .cms-nav-btn:hover {
     cursor: pointer;
     color: #FFF;
     background-color: #33353E;
+}
+
+.lang-switcher {
+    position: absolute;
+    top: 5px;
+    left: 130px;
 }
 
 .nav-active {
@@ -1410,13 +1407,13 @@ ul {
 
 /* NEW UI */
 .translation-background {
-    background-color: #E3E3E3;
+    background-color: #EEE;
     font-size: 0.8rem;
 }
 
 .translations-padded-view-container {
-    padding: 97px 115px 30px 40px;
-    height: 82.5vh;
+    padding: 50px 40px 30px 40px;
+    height: 89.1vh;
 }
 
 .translations-vertical-split-grid {
@@ -1439,6 +1436,10 @@ ul {
     overflow-y: auto;
 }
 
+.translations-vertical-split-left.simple {
+    padding-top: 20px;
+}
+
 .translations-vertical-split-header-right {
     grid-column: 2;
     grid-row: 1;
@@ -1458,7 +1459,7 @@ ul {
     padding: 7px 31px;
     border: none;
     border-radius: 100px;
-    background-color: #E3E3E3;
+    background-color: #EEE;
     color: #3E424C;
     margin-right: 10px;
     cursor: pointer;
@@ -1474,8 +1475,8 @@ ul {
 
 .translation-record-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    padding-left: 47px;
+    grid-template-columns: 38% 38% 24%;
+    padding-left: 20px;
     padding-top: 5px;
     padding-bottom: 5px;
     align-items: center;
@@ -1484,15 +1485,21 @@ ul {
 .translation-record-grid:hover {
     background-color: #F9F9F9;
     cursor: pointer;
+    .translation-record-arrow{
+        display: block;
+    }
 }
 
 .translation-record-grid.active {
     background-color: #F9F9F9;
     cursor: pointer;
+    .translation-record-arrow{
+        display: block;
+    }
 }
 
 .translation-record-grid.header {
-    margin-top: -22px;
+    margin-top: 10px;
 }
 
 .translation-record-grid.header:hover {
@@ -1501,7 +1508,7 @@ ul {
 }
 
 .translation-record-grid.parent {
-    margin-top: 40px;
+    margin-top: 20px;
     margin-bottom: 19px;
 }
 
@@ -1512,9 +1519,8 @@ ul {
 .translations-records-column {
     display: flex;
     height: fit-content;
-    width: 90%;
+    width: 75%;
     color: #3E424C;
-    max-width: 150px;
 }
 
 .translations-records-column.header {
@@ -1541,29 +1547,31 @@ ul {
 
 .translations-records-column.right {
     grid-column: 3;
+    position: relative;
 }
 
 .translation-status-box {
-    width: 100px;
-    height: 19px;
+    width: 101px;
+    height: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #AFAFAF;
-    font-size: 0.65rem;
+    border-radius: 5px;
+    background-color: #FAFAFA;
+    font-size: 0.7rem;
     font-weight: 400;
 }
 
 .translation-status-box.translated {
     background-color: #6EC191;
-    border-radius: 5px;
     color: #FFF;
     position: relative;
 }
 
 .translation-status-icon {
     position: absolute;
-    top: 0;
+    top: 1px;
     left: 2px;
 }
 
@@ -1571,12 +1579,7 @@ ul {
 }
 
 .translation-status-text.translated {
-    margin-left: 5px;
-}
-
-.translation-display-order {
-    position: absolute;
-    left: -25px;
+    margin-left: 10px;
 }
 
 .translation-record-content {
@@ -1589,7 +1592,7 @@ ul {
 }
 
 .original-translation-box {
-    height: 124px;
+    height: 116px;
     width: 100%;
     background: #FFF;
     margin-bottom: 3px;
@@ -1601,46 +1604,45 @@ ul {
 }
 
 .translation-text-label {
-    padding: 16px;
-    color: #8758F1;
+    padding: 24px 20px 10px 20px;
+    color: #6940C6;
     font-size: 0.7rem;
     font-weight: 400;
 }
 
 .language-label {
-    margin-top: 7px;
+    margin-top: 20px;
     margin-right: 23px;
     padding-left: 15px;
     padding-right: 15px;
-    height: 22px;
+    height: 20px;
     border-radius: 5px;
     background: #FFF;
     box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.10);
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #000;
+    color: #33353E;
     font-size: 0.7rem;
     font-weight: 500;
 }
 
 .original-text-content-container {
-    padding-top: 8px;
-    padding-left: 16px;
-    padding-right: 16px;
+    padding: 10px 20px 0 20px;
 }
 
 .original-text-content {
     color: #222;
     font-size: 0.8rem;
     font-style: normal;
-    font-weight: 500;
+    font-weight: 400;
 }
 
 .translate-to-box {
-    height: 255px;
+    height: 197px;
     width: 100%;
     background: #FFF;
+    margin-bottom: 2rem;
 }
 
 .translate-to-header {
@@ -1654,18 +1656,17 @@ ul {
 }
 
 .translate-to-translation-status {
-    margin-top: 8px;
-    margin-right: 15px;
+    margin-top: 20px;
+    margin-right: 5px;
 }
 
 .translate-to-content-container {
-    padding-left: 16px;
-    padding-right: 23px;
+    padding: 0 10px 0 10px;
 }
 
 .translation-textarea-input {
-    padding: 11px 15px 11px 15px;
-    height: 132px;
+    padding: 10px;
+    height: 93px;
     width: 100%;
     resize: none;
     background-color: #FAFAFA;
@@ -1676,21 +1677,37 @@ ul {
 
 .translate-to-footer {
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
+    padding: 15px 20px 0 20px;
 }
 
 .auto-translation-group {
-    margin-top: 31px;
-    margin-left: 24px;
     cursor: pointer;
-    color: #8758F1;
+    color: #6940C6;
     font-size: 0.8rem;
     font-weight: 400;
 }
 
 .translate-icon {
     margin-right: 17px;
+}
+
+.translations-general-button {
+    border-radius: 100px;
+    background: #6940C6;
+    padding: 8px 20px;
+    border: none;
+    color: #FFF;
+    font-weight: 300;
+    cursor: pointer;
+}
+
+.translation-record-arrow {
+    display: none;
+    position: absolute;
+    right: -1rem;
+    top: 25%;
 }
 
 /* END OF NEW UI */

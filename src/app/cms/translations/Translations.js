@@ -1,13 +1,59 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Helmet} from "react-helmet";
 import {useTranslation} from "react-i18next";
-import Select from "react-select";
-import {newCustomSelect} from "../../../styles";
-import {CustomNoOptionsMessage} from "../dishes-categories/form-components/CustomNoOptionsMessage";
-import {TranslationStatus} from "./TranslationStatus";
+import {useDispatch, useSelector} from "react-redux";
+import {TranslationRecordsHeader} from "./TranslationRecordsHeader";
+import {getCategories} from "../../../slices/dishesCategoriesSlice";
+import {
+    getAllIngredients,
+    getAllVariants,
+    setActiveRecord,
+    setActiveRecordId,
+    setErrorData,
+    setRecords
+} from "../../../slices/translationsSlice";
+import {TranslationRecord} from "./TranslationRecord";
+import {TranslationsEditor} from "./editor/TranslationsEditor";
 
 export const Translations = () => {
     const {t} = useTranslation();
+    const {chosenGroup, records} = useSelector(state => state.translations.view);
+    const dispatch = useDispatch();
+
+    const fetchRecords = async () => {
+        const fetchGroupData = async (provider) => {
+            try {
+                const data = await dispatch(provider());
+                if (provider.fulfilled.match(data)) {
+                    dispatch(setRecords(data.payload));
+                } else if (provider.rejected.match(data)) {
+                    dispatch(setErrorData(data.payload));
+                }
+                return data.payload
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                dispatch(setErrorData(error));
+            }
+        };
+        const groupValue = chosenGroup ? chosenGroup.value : chosenGroup;
+        switch (groupValue) {
+            case 'dishesCategories':
+                await fetchGroupData(getCategories);
+                break;
+            case 'variants':
+                await fetchGroupData(getAllVariants);
+                break;
+            case 'additions':
+                await fetchGroupData(getAllIngredients);
+                break;
+            default:
+                await fetchGroupData(getCategories);
+        }
+    }
+
+    useEffect(() => {
+        fetchRecords();
+    }, [chosenGroup]);
 
     return (
         <>
@@ -17,246 +63,31 @@ export const Translations = () => {
             <div className={'translation-background'}>
                 <main className={'translations-padded-view-container'}>
                     <div className={'translations-vertical-split-grid'}>
-                        <header className={'translations-vertical-split-header-left'}>
-                            <Select id={'translation-group'}
-                                    name={'translation-group'}
-                                    styles={newCustomSelect}
-                                    components={{NoOptionsMessage: CustomNoOptionsMessage}}
-                            />
-                        </header>
-                        <section className={'translations-vertical-split-left'}>
-                            <div className={'translation-record-grid header'}>
-                                <span className={'translations-records-column left header'}>{t('name')}</span>
-                                <span className={'translations-records-column middle header'}>{t('description')}</span>
-                                <span className={'translations-records-column right header'}>{t('status')}</span>
-                            </div>
-                            <div className={'translation-record-grid parent'}>
-                                <span className={'translations-records-column left'}>
-                                    <span className={'translation-display-order'}>1.</span>
-                                    <span className={'translation-record-content'}>Przystawki</span>
-                                </span>
-                                <span className={'translations-records-column middle'}></span>
-                                <span className={'translations-records-column right'}>
-                                        <TranslationStatus translated={true}/>
-                                </span>
-                            </div>
-                            <div className={'translation-record-grid child'}>
-                                <span className={'translations-records-column left'}>
-                                    <span className={'translation-record-content'}>
-                                            Pizza tuna
-                                    </span>
-                                </span>
-                                <span className={'translations-records-column middle'}>
-                                    <span className={'translation-record-content'}>sos pomidorowy, mozzarella, składniki fajne itp</span>
-                                </span>
-                                <span className={'translations-records-column right'}>
-                                        <TranslationStatus translated={true}/>
-                                </span>
-                            </div>
-                            <div className={'translation-record-grid child'}>
-                                <span className={'translations-records-column left'}>
-                                    <span className={'translation-record-content'}>
-                                            Pizza tuna
-                                    </span>
-                                </span>
-                                <span className={'translations-records-column middle'}>
-                                    <span className={'translation-record-content'}>sos pomidorowy, mozzarella, składniki fajne itp</span>
-                                </span>
-                                <span className={'translations-records-column right'}>
-                                        <TranslationStatus translated={true}/>
-                                </span>
-                            </div>
-                            <div className={'translation-record-grid child'}>
-                                <span className={'translations-records-column left'}>
-                                    <span className={'translation-record-content'}>
-                                            Pizza tuna
-                                    </span>
-                                </span>
-                                <span className={'translations-records-column middle'}>
-                                    <span className={'translation-record-content'}>sos pomidorowy, mozzarella, składniki fajne itp</span>
-                                </span>
-                                <span className={'translations-records-column right'}>
-                                        <TranslationStatus translated={false}/>
-                                </span>
-                            </div>
-                            <div className={'translation-record-grid child'}>
-                                <span className={'translations-records-column left'}>
-                                    <span className={'translation-record-content'}>
-                                            Pizza tuna
-                                    </span>
-                                </span>
-                                <span className={'translations-records-column middle'}>
-                                    <span className={'translation-record-content'}>sos pomidorowy, mozzarella, składniki fajne itp</span>
-                                </span>
-                                <span className={'translations-records-column right'}>
-                                        <TranslationStatus translated={false}/>
-                                </span>
-                            </div>
-                            <div className={'translation-record-grid child'}>
-                                <span className={'translations-records-column left'}>
-                                    <span className={'translation-record-content'}>
-                                            Pizza tuna
-                                    </span>
-                                </span>
-                                <span className={'translations-records-column middle'}>
-                                    <span className={'translation-record-content'}>sos pomidorowy, mozzarella, składniki fajne itp</span>
-                                </span>
-                                <span className={'translations-records-column right'}>
-                                        <TranslationStatus translated={false}/>
-                                </span>
-                            </div>
-
-                            <div className={'translation-record-grid parent'}>
-                                <span className={'translations-records-column left'}>
-                                    <span className={'translation-display-order'}>2.</span>
-                                    <span className={'translation-record-content'}>Dania główne</span>
-                                </span>
-                                <span className={'translations-records-column middle'}></span>
-                                <span className={'translations-records-column right'}>
-                                        <TranslationStatus translated={false}/>
-                                </span>
-                            </div>
-                            <div className={'translation-record-grid child'}>
-                                <span className={'translations-records-column left'}>
-                                    <span className={'translation-record-content'}>
-                                            Policzki wołowe
-                                    </span>
-                                </span>
-                                <span className={'translations-records-column middle'}>
-                                    <span className={'translation-record-content'}>Z chrzanem i kluskami śląskimi</span>
-                                </span>
-                                <span className={'translations-records-column right'}>
-                                        <TranslationStatus translated={true}/>
-                                </span>
-                            </div>
-                            <div className={'translation-record-grid child'}>
-                                <span className={'translations-records-column left'}>
-                                    <span className={'translation-record-content'}>
-                                            Policzki wołowe
-                                    </span>
-                                </span>
-                                <span className={'translations-records-column middle'}>
-                                    <span className={'translation-record-content'}>Z chrzanem i kluskami śląskimi</span>
-                                </span>
-                                <span className={'translations-records-column right'}>
-                                        <TranslationStatus translated={true}/>
-                                </span>
-                            </div>
-                            <div className={'translation-record-grid child'}>
-                                <span className={'translations-records-column left'}>
-                                    <span className={'translation-record-content'}>
-                                            Policzki wołowe
-                                    </span>
-                                </span>
-                                <span className={'translations-records-column middle'}>
-                                    <span className={'translation-record-content'}>Z chrzanem i kluskami śląskimi</span>
-                                </span>
-                                <span className={'translations-records-column right'}>
-                                        <TranslationStatus translated={true}/>
-                                </span>
-                            </div>
-                            <div className={'translation-record-grid child'}>
-                                <span className={'translations-records-column left'}>
-                                    <span className={'translation-record-content'}>
-                                            Policzki wołowe
-                                    </span>
-                                </span>
-                                <span className={'translations-records-column middle'}>
-                                    <span className={'translation-record-content'}>Z chrzanem i kluskami śląskimi</span>
-                                </span>
-                                <span className={'translations-records-column right'}>
-                                        <TranslationStatus translated={true}/>
-                                </span>
-                            </div>
-                            <div className={'translation-record-grid child'}>
-                                <span className={'translations-records-column left'}>
-                                    <span className={'translation-record-content'}>
-                                            Policzki wołowe
-                                    </span>
-                                </span>
-                                <span className={'translations-records-column middle'}>
-                                    <span className={'translation-record-content'}>Z chrzanem i kluskami śląskimi</span>
-                                </span>
-                                <span className={'translations-records-column right'}>
-                                        <TranslationStatus translated={true}/>
-                                </span>
-                            </div>
-
-                            <div className={'translation-record-grid parent'}>
-                                <span className={'translations-records-column left'}>
-                                    <span className={'translation-display-order'}>2.</span>
-                                    <span className={'translation-record-content'}>Dania główne</span>
-                                </span>
-                                <span className={'translations-records-column middle'}></span>
-                                <span className={'translations-records-column right'}>
-                                        <TranslationStatus translated={false}/>
-                                </span>
-                            </div>
-                            <div className={'translation-record-grid child'}>
-                                <span className={'translations-records-column left'}>
-                                    <span className={'translation-record-content'}>
-                                            Policzki wołowe
-                                    </span>
-                                </span>
-                                <span className={'translations-records-column middle'}>
-                                    <span className={'translation-record-content'}>Z chrzanem i kluskami śląskimi</span>
-                                </span>
-                                <span className={'translations-records-column right'}>
-                                        <TranslationStatus translated={true}/>
-                                </span>
-                            </div>
-                            <div className={'translation-record-grid child'}>
-                                <span className={'translations-records-column left'}>
-                                    <span className={'translation-record-content'}>
-                                            Policzki wołowe
-                                    </span>
-                                </span>
-                                <span className={'translations-records-column middle'}>
-                                    <span className={'translation-record-content'}>Z chrzanem i kluskami śląskimi</span>
-                                </span>
-                                <span className={'translations-records-column right'}>
-                                        <TranslationStatus translated={true}/>
-                                </span>
-                            </div>
-                            <div className={'translation-record-grid child'}>
-                                <span className={'translations-records-column left'}>
-                                    <span className={'translation-record-content'}>
-                                            Policzki wołowe
-                                    </span>
-                                </span>
-                                <span className={'translations-records-column middle'}>
-                                    <span className={'translation-record-content'}>Z chrzanem i kluskami śląskimi</span>
-                                </span>
-                                <span className={'translations-records-column right'}>
-                                        <TranslationStatus translated={true}/>
-                                </span>
-                            </div>
-                            <div className={'translation-record-grid child'}>
-                                <span className={'translations-records-column left'}>
-                                    <span className={'translation-record-content'}>
-                                            Policzki wołowe
-                                    </span>
-                                </span>
-                                <span className={'translations-records-column middle'}>
-                                    <span className={'translation-record-content'}>Z chrzanem i kluskami śląskimi</span>
-                                </span>
-                                <span className={'translations-records-column right'}>
-                                        <TranslationStatus translated={true}/>
-                                </span>
-                            </div>
-                            <div className={'translation-record-grid child'}>
-                                <span className={'translations-records-column left'}>
-                                    <span className={'translation-record-content'}>
-                                            Policzki wołowe
-                                    </span>
-                                </span>
-                                <span className={'translations-records-column middle'}>
-                                    <span className={'translation-record-content'}>Z chrzanem i kluskami śląskimi</span>
-                                </span>
-                                <span className={'translations-records-column right'}>
-                                        <TranslationStatus translated={true}/>
-                                </span>
-                            </div>
+                        <TranslationRecordsHeader/>
+                        <section className={`translations-vertical-split-left ${chosenGroup?.value !== 'dishesCategories' ? 'simple' : ''}`}>
+                            {records?.length > 0 ? records.map((record, index) => (
+                                <div key={record.id}>
+                                    <TranslationRecord parent={true}
+                                                       index={index + 1}
+                                                       record={record}
+                                                       setActive={() => {
+                                                           dispatch(setActiveRecordId('p' + record.id))
+                                                           dispatch(setActiveRecord(record));
+                                                       }}
+                                    />
+                                    {record.menuItems ? record.menuItems.map(menuItem => (
+                                            <div key={menuItem.id}>
+                                                <TranslationRecord parent={false}
+                                                                   record={menuItem}
+                                                                   setActive={() => {
+                                                                       dispatch(setActiveRecordId('c' + menuItem.id));
+                                                                       dispatch(setActiveRecord(menuItem));
+                                                                   }}
+                                                />
+                                            </div>
+                                    )) : <></>}
+                                </div>
+                            )) : t('noRecordsFound')}
 
                         </section>
                         <header className={'translations-vertical-split-header-right'}>
@@ -267,51 +98,7 @@ export const Translations = () => {
                                 {t('german')}
                             </button>
                         </header>
-                        <section className={'translations-vertical-split-right'}>
-                            <form className={'translation-wrapper'}>
-                                <div className={'original-translation-box'}>
-                                    <div className={'original-translation-header'}>
-                                        <span className={'translation-text-label'}>
-                                            {t('originalText')}
-                                        </span>
-                                        <div className={'language-label'}>
-                                            {t('originalText')}
-                                        </div>
-                                    </div>
-                                    <div className={'original-text-content-container'}>
-                                        <span className={'original-text-content'}>
-                                            Pizza tuna
-                                        </span>
-                                    </div>
-                                </div>
-                                <div className={'translate-to-box'}>
-                                    <div className={'translate-to-header'}>
-                                        <span className={'translation-text-label'}>
-                                            {t('translation')}
-                                        </span>
-                                        <div className={'translation-status-label-group'}>
-                                            <div className={'translate-to-translation-status'}>
-                                                <TranslationStatus translated={true}/>
-                                            </div>
-                                            <div className={'language-label'}>
-                                                {t('english')}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className={'translate-to-content-container'}>
-                                        <textarea className={'translation-textarea-input'}
-                                                  placeholder={t('typeTranslation')}/>
-                                    </div>
-                                    <div className={'translate-to-footer'}>
-                                        <div className={'auto-translation-group'}>
-                                            <span className={'translate-icon'}>#<sub>A</sub></span>
-                                            <span
-                                                className={'automatic-translation-text'}>{t('automaticTranslation')}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </section>
+                        <TranslationsEditor fetchRecords={fetchRecords}/>
                     </div>
                 </main>
             </div>

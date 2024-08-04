@@ -7,7 +7,7 @@
   "logoutSuccess": "Logged out successfully",
   "loginProblems": "Having login issues?",
   "recoverPassword": "Recover password",
-  "dishesCategories": "Dishes and categories",
+  "dishesCategories": "Categories and dishes",
   "variants": "Variants",
   "additions": "Additions",
   "translations": "Translations",
@@ -92,5 +92,6 @@
   "german": "German",
   "originalText": "Original text",
   "typeTranslation": "Type in translation...",
-  "automaticTranslation": "Automatic translation"
+  "automaticTranslation": "Automatic translation",
+  "noRecordsFound": "No records found"
 }
