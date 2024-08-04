@@ -96,13 +96,15 @@ export const newCustomSelect = {
         fontStyle: '"Lexend", sans-serif',
         fontSize: '0.8rem',
         color: state.isDisabled ? '#ccc' : '#3E424C',
-        width: '214px',
+        width: '171px',
         height: '32px',
         minHeight: '32px',
         textAlign: 'center',
+        borderColor: state.isFocused ? 'transparent' : provided.borderColor,
+        boxShadow: state.isFocused ? 'none' : provided.boxShadow,
         '&:hover': {
-            borderColor: '#CCC',
-        },
+            borderColor: state.isFocused ? 'transparent' : provided['&:hover'].borderColor,
+        }
     }),
     singleValue: (provided) => ({
         ...provided,
@@ -130,9 +132,9 @@ export const newCustomSelect = {
     }),
     menu: (provided) => ({
         ...provided,
-        borderRadius: '22px',
+        borderRadius: '5px',
         minHeight: '32px',
-        width: '214px'
+        width: '171px'
     }),
     noOptionsMessage: (provided) => ({
         ...provided,
@@ -145,6 +147,7 @@ export const newCustomSelect = {
         ...provided,
         fontSize: '0.8rem',
         fontWeight: '400',
+        borderRadius: '5px',
         background: state.isSelected ? '#f0f0f0' : '#FFF',
         color: '#3E424C',
         '&:hover': {backgroundColor: '#f0f0f0'}

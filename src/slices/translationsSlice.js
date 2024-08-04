@@ -5,18 +5,17 @@ import {getDecodedJwt} from "../utils";
 export const getAutoTranslation = createAsyncThunk(
     'translations/getAutoTranslations',
     async (credentials, {rejectWithValue}) => {
-        const response = await fetch(`https://translation.googleapis.com/v3/projects/translations/locations/global:translateText?key=YOUR_API_KEY`, {
+        const response = await fetch(`${apiHost}/api/cms/translatable/translate`, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${getDecodedJwt()}`,
             },
             body: JSON.stringify({
-                q: credentials.text,
-                source: "pl",
-                target: "en",
-                format: "text",
-                alternatives: 5,
-                api_key: ""
+                text: [credentials.text],
+                source_lang: "PL",
+                target_lang: "EN",
+                context: "Restaurant CMS - Translate names and descriptions for categories, dishes, ingredients, and variants."
             })
         });
 
@@ -53,8 +52,9 @@ export const postTranslatables = createAsyncThunk(
     'translations/postTranslatables',
     async (credentials, {getState, rejectWithValue}) => {
         const state = getState().translations.view;
-        const requestBody = [state.activeRecord?.name, state.activeRecord?.description];
-        console.log(requestBody);
+        const requestBody = state.activeRecord?.description ?
+            [state.activeRecord?.name, state.activeRecord.description] :
+            [state.activeRecord.name];
         const response = await fetch(`${apiHost}/api/cms/translatable/save-all`, {
             method: "POST",
             headers: {
@@ -69,7 +69,11 @@ export const postTranslatables = createAsyncThunk(
             return rejectWithValue(errorData);
         }
 
-        return await response.json();
+        try {
+            return await response.json();
+        } catch (error) {
+            return {};
+        }
     }
 );
 
@@ -180,6 +184,7 @@ export const translationsSlice = createSlice({
         activeRecord: null,
         records: [],
         chosenGroup: null,
+        saveSuccess: false,
         errorData: null
     },
     reducers: {
@@ -213,6 +218,9 @@ export const translationsSlice = createSlice({
         setChosenGroup: (state, action) => {
             state.chosenGroup = action.payload;
         },
+        setSaveSuccess: (state, action) => {
+          state.saveSuccess = action.payload;
+        },
         setErrorData: (state, action) => {
             state.errorData = action.payload;
         },
@@ -234,6 +242,7 @@ export const {
     setRecordDescription,
     setRecords,
     setChosenGroup,
+    setSaveSuccess,
     setErrorData,
     clearView
 } = translationsSlice.actions;

@@ -93,5 +93,6 @@
   "originalText": "Original text",
   "typeTranslation": "Type in translation...",
   "automaticTranslation": "Automatic translation",
-  "noRecordsFound": "No records found"
+  "noRecordsFound": "No records found",
+  "saved": "Saved"
 }

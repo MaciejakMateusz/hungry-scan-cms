@@ -14,10 +14,11 @@ import {
 } from "../../../slices/translationsSlice";
 import {TranslationRecord} from "./TranslationRecord";
 import {TranslationsEditor} from "./editor/TranslationsEditor";
+import {SuccessMessage} from "../dialog-windows/SuccessMessage";
 
 export const Translations = () => {
     const {t} = useTranslation();
-    const {chosenGroup, records} = useSelector(state => state.translations.view);
+    const {chosenGroup, records, saveSuccess} = useSelector(state => state.translations.view);
     const dispatch = useDispatch();
 
     const fetchRecords = async () => {
@@ -60,6 +61,7 @@ export const Translations = () => {
             <Helmet>
                 <title>CMS - {t("translations")}</title>
             </Helmet>
+            {saveSuccess ? <SuccessMessage text={t('saved')}/> : <></>}
             <div className={'translation-background'}>
                 <main className={'translations-padded-view-container'}>
                     <div className={'translations-vertical-split-grid'}>

@@ -94,5 +94,6 @@
   "originalText": "Tekst oryginalny",
   "typeTranslation": "Wpisz tłumaczenie...",
   "automaticTranslation": "Automatyczne tłumaczenie",
-  "noRecordsFound": "Nie znaleziono rekordów"
+  "noRecordsFound": "Nie znaleziono rekordów",
+  "saved": "Zapisano"
 }

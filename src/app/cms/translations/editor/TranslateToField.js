@@ -1,19 +1,38 @@
 import React from "react";
 import {TranslationStatus} from "../TranslationStatus";
 import {useTranslation} from "react-i18next";
-import {useDispatch} from "react-redux";
-import {setRecordDescription, setRecordName} from "../../../../slices/translationsSlice";
+import {useDispatch, useSelector} from "react-redux";
+import {
+    getAutoTranslation,
+    setErrorData,
+    setRecordDescription,
+    setRecordName
+} from "../../../../slices/translationsSlice";
 
 export const TranslateToField = ({value, renderButton, type}) => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
+    const {activeRecord} = useSelector(state => state.translations.view);
 
-    const handleFieldChange = (e) => {
-        if(t('name') === type) {
-            dispatch(setRecordName(e.target.value));
+    const handleFieldChange = (value) => {
+        if (t('name') === type) {
+            dispatch(setRecordName(value));
             return;
         }
-        dispatch(setRecordDescription(e.target.value));
+        dispatch(setRecordDescription(value));
+    }
+
+    const handleFieldTranslation = async () => {
+        const textToTranslate = t('name') === type ?
+            activeRecord.name.defaultTranslation :
+            activeRecord.description?.defaultTranslation;
+        const resultAction = await dispatch(getAutoTranslation({text: textToTranslate}));
+        if (getAutoTranslation.fulfilled.match(resultAction)) {
+            const translatedText = resultAction.payload?.translations[0].text;
+            handleFieldChange(translatedText);
+        } else if (getAutoTranslation.rejected.match(resultAction)) {
+            dispatch(setErrorData(resultAction.payload));
+        }
     }
 
     return (
@@ -37,15 +56,17 @@ export const TranslateToField = ({value, renderButton, type}) => {
                                                   id={type}
                                                   name={type}
                                                   value={value}
-                                                  onChange={handleFieldChange}/>
+                                                  onChange={(e) => handleFieldChange(e.target.value)}/>
             </div>
             <div className={'translate-to-footer'}>
-                <div className={'auto-translation-group'}>
+                <div className={'auto-translation-group'} onClick={handleFieldTranslation}>
                     <span className={'translate-icon'}>#<sub>A</sub></span>
-                    <span
-                        className={'automatic-translation-text'}>{t('automaticTranslation')}</span>
+                    <span className={'automatic-translation-text'}>
+                            {t('automaticTranslation')}
+                    </span>
                 </div>
-                {renderButton ? <button type={'submit'} className={'translations-general-button'}>{t('save')}</button> : <></>}
+                {renderButton ?
+                    <button type={'submit'} className={'translations-general-button'}>{t('save')}</button> : <></>}
             </div>
         </div>
     );

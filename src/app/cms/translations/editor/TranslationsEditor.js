@@ -3,12 +3,13 @@ import {OriginalTranslation} from "./OriginalTranslation";
 import {TranslateToField} from "./TranslateToField";
 import {useDispatch, useSelector} from "react-redux";
 import {useTranslation} from "react-i18next";
-import {postTranslatables} from "../../../../slices/translationsSlice";
+import {postTranslatables, setSaveSuccess} from "../../../../slices/translationsSlice";
 
 export const TranslationsEditor = ({fetchRecords}) => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {activeRecord} = useSelector(state => state.translations.view);
+    const [confirmationTimeoutId, setConfirmationTimeoutId] = useState(null);
     const [hasDescription, setHasDescription] = useState(false);
 
     useEffect(() => {
@@ -19,10 +20,23 @@ export const TranslationsEditor = ({fetchRecords}) => {
         }
     }, [activeRecord]);
 
-    const handleTranslatablesSubmit = (e) => {
+    const handleTranslatablesSubmit = async (e) => {
         e.preventDefault();
-        dispatch(postTranslatables());
-        fetchRecords();
+        const resultAction = await dispatch(postTranslatables());
+        if(postTranslatables.fulfilled.match(resultAction)) {
+            dispatch(setSaveSuccess(true));
+
+            if (confirmationTimeoutId) {
+                clearTimeout(confirmationTimeoutId);
+            }
+
+            const newConfirmationTimeoutId = setTimeout(() => {
+                dispatch(setSaveSuccess(false));
+            }, 2000);
+            setConfirmationTimeoutId(newConfirmationTimeoutId);
+
+            await fetchRecords();
+        }
     }
 
     const renderDescriptionTranslatable = () => {

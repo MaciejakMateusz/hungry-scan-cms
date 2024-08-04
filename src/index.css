@@ -374,7 +374,7 @@ ul {
     background-color: inherit;
     color: #93939E;
     font-weight: 300;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     width: 100%;
     padding-left: 40px;
 }
@@ -1026,14 +1026,22 @@ ul {
     align-items: center;
 }
 
-.confirmation-dialog {
+.success-msg {
     position: absolute;
-    top: 17px;
-    right: 17px;
-    background-color: #93D38D;
-    padding: 12px;
+    top: 20px;
+    right: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #6EC191;
+    padding-left: 5px;
+    padding-right: 15px;
+    height: 32px;
+    font-size: 14px;
+    font-weight: 300;
+    color: #FFF;
     border: 0;
-    border-radius: 10px;
+    border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     z-index: 9999;
     opacity: 0;
