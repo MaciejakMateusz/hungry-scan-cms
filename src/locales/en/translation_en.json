@@ -7,7 +7,7 @@
   "logoutSuccess": "Logged out successfully",
   "loginProblems": "Having login issues?",
   "recoverPassword": "Recover password",
-  "dishesCategories": "Dishes and categories",
+  "dishesCategories": "Categories and dishes",
   "variants": "Variants",
   "additions": "Additions",
   "translations": "Translations",
@@ -83,5 +83,16 @@
   "noAdditions": "No additions",
   "confirm": "Confirm",
   "confirmViewSwitch": "Are you sure you want to change the view? Changes will not be saved.",
-  "filterResult": "Filter result:"
+  "filterResult": "Filter result:",
+  "translation": "Translation",
+  "noTranslations": "No translations",
+  "status": "Status",
+  "polish": "Polish",
+  "english": "English",
+  "german": "German",
+  "originalText": "Original text",
+  "typeTranslation": "Type in translation...",
+  "automaticTranslation": "Automatic translation",
+  "noRecordsFound": "No records found",
+  "saved": "Saved"
 }

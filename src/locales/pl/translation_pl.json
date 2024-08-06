@@ -7,7 +7,7 @@
   "logoutSuccess": "Wylogowano pomyślnie",
   "loginProblems": "Problemy z logowaniem?",
   "recoverPassword": "Odzyskaj hasło",
-  "dishesCategories": "Dania i kategorie",
+  "dishesCategories": "Kategorie i dania",
   "variants": "Warianty",
   "additions": "Dodatki",
   "qrCode": "Kod QR",
@@ -84,5 +84,16 @@
   "noAdditions": "Brak dodatków",
   "confirm": "Potwierdź",
   "confirmViewSwitch": "Czy na pewno chcesz zmienić widok? Zmiany nie zostaną zapisane.",
-  "filterResult": "Wynik filtrowania:"
+  "filterResult": "Wynik filtrowania:",
+  "translation": "Tłumaczenie",
+  "noTranslations": "Brak tłumaczeń",
+  "status": "Status",
+  "polish": "Polski",
+  "english": "Angielski",
+  "german": "Niemiecki",
+  "originalText": "Tekst oryginalny",
+  "typeTranslation": "Wpisz tłumaczenie...",
+  "automaticTranslation": "Automatyczne tłumaczenie",
+  "noRecordsFound": "Nie znaleziono rekordów",
+  "saved": "Zapisano"
 }

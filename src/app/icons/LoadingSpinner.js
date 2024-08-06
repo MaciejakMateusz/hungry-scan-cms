@@ -1,10 +1,10 @@
 import React from 'react';
 
-export const LoadingSpinner = (props) => {
+export const LoadingSpinner = ({buttonMode, customStyle}) => {
 
     return (
-        <div className={props.buttonMode ? 'button-spinner-container' : 'spinner-container'}>
-            <div className={props.buttonMode ? 'button-spinner' : 'spinner'}/>
+        <div className={buttonMode ? 'button-spinner-container' : 'spinner-container'}>
+            <div className={buttonMode ? 'button-spinner' : 'spinner'} style={customStyle ? customStyle : {}}/>
         </div>
     );
 };
