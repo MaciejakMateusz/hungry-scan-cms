@@ -95,8 +95,7 @@ export const TranslateToField = ({value, renderButton, type}) => {
                             {t('automaticTranslation')}
                     </span>
                 </div>
-                {renderButton ?
-                    <button type={'submit'} className={'translations-general-button'}>{t('save')}</button> : <></>}
+                {renderButton ? <button type={'submit'} className={'translations-general-button'}>{t('save')}</button> : <></>}
             </div>
         </div>
     );

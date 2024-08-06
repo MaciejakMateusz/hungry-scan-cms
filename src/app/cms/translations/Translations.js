@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import {Helmet} from "react-helmet";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
@@ -15,33 +15,29 @@ import {
 import {TranslationsEditor} from "./editor/TranslationsEditor";
 import {SuccessMessage} from "../dialog-windows/SuccessMessage";
 import {TranslationsList} from "./TranslationsList";
-import {LoadingSpinner} from "../../icons/LoadingSpinner";
 import {TranslationsEditorHeader} from "./editor/TranslationsEditorHeader";
 
 export const Translations = () => {
     const {t} = useTranslation();
-    const [resourcesLoading, setResourcesLoading] = useState(false);
-    const {chosenGroup, saveSuccess} = useSelector(state => state.translations.view);
+    const {chosenGroup, saveSuccess, activeRecord} = useSelector(state => state.translations.view);
     const dispatch = useDispatch();
 
     const fetchRecords = async () => {
         const fetchGroupData = async (provider) => {
-            setResourcesLoading(true);
             try {
                 const data = await dispatch(provider());
                 if (provider.fulfilled.match(data)) {
                     dispatch(setRecords(data.payload));
-                    dispatch(setActiveRecord(data.payload[0]));
-                    setRecordId(data.payload[0]);
-                    setResourcesLoading(false);
+                    if(!activeRecord) {
+                        dispatch(setActiveRecord(data.payload[0]));
+                        setRecordId(data.payload[0]);
+                    }
                 } else if (provider.rejected.match(data)) {
-                    setResourcesLoading(false);
                     dispatch(setErrorData(data.payload));
                 }
                 return data.payload
             } catch (error) {
                 console.error("Error fetching data:", error);
-                setResourcesLoading(false);
                 dispatch(setErrorData(error));
             }
         };
@@ -86,7 +82,7 @@ export const Translations = () => {
                     <div className={'translations-vertical-split-grid'}>
                         <TranslationRecordsHeader/>
                         <section className={`translations-vertical-split-left ${chosenGroup?.value !== 'dishesCategories' ? 'simple' : ''}`}>
-                            {resourcesLoading ? <LoadingSpinner/> : <TranslationsList/>}
+                            <TranslationsList/>
                         </section>
                         <TranslationsEditorHeader/>
                         <TranslationsEditor fetchRecords={fetchRecords}/>
