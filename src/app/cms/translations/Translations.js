@@ -8,6 +8,7 @@ import {
     getAllIngredients,
     getAllVariants,
     setActiveRecord,
+    setActiveRecordId,
     setErrorData,
     setRecords
 } from "../../../slices/translationsSlice";
@@ -15,6 +16,7 @@ import {TranslationsEditor} from "./editor/TranslationsEditor";
 import {SuccessMessage} from "../dialog-windows/SuccessMessage";
 import {TranslationsList} from "./TranslationsList";
 import {LoadingSpinner} from "../../icons/LoadingSpinner";
+import {TranslationsEditorHeader} from "./editor/TranslationsEditorHeader";
 
 export const Translations = () => {
     const {t} = useTranslation();
@@ -30,6 +32,7 @@ export const Translations = () => {
                 if (provider.fulfilled.match(data)) {
                     dispatch(setRecords(data.payload));
                     dispatch(setActiveRecord(data.payload[0]));
+                    setRecordId(data.payload[0]);
                     setResourcesLoading(false);
                 } else if (provider.rejected.match(data)) {
                     setResourcesLoading(false);
@@ -58,6 +61,16 @@ export const Translations = () => {
         }
     }
 
+    const setRecordId = activeRecord => {
+        if(chosenGroup?.value === 'dishesCategories') {
+            const hasDescription = 'description' in activeRecord;
+            const activeRecordId = hasDescription ? 'c' + activeRecord?.id : 'p' + activeRecord?.id;
+            dispatch(setActiveRecordId(activeRecordId));
+            return;
+        }
+        dispatch(setActiveRecordId('p' + activeRecord.id));
+    }
+
     useEffect(() => {
         fetchRecords();
     }, [chosenGroup]);
@@ -75,14 +88,7 @@ export const Translations = () => {
                         <section className={`translations-vertical-split-left ${chosenGroup?.value !== 'dishesCategories' ? 'simple' : ''}`}>
                             {resourcesLoading ? <LoadingSpinner/> : <TranslationsList/>}
                         </section>
-                        <header className={'translations-vertical-split-header-right'}>
-                            <button className={'translations-chosen-lang active'}>
-                                {t('english')}
-                            </button>
-                            <button className={'translations-chosen-lang'}>
-                                {t('german')}
-                            </button>
-                        </header>
+                        <TranslationsEditorHeader/>
                         <TranslationsEditor fetchRecords={fetchRecords}/>
                     </div>
                 </main>
