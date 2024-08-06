@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {Helmet} from "react-helmet";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
@@ -8,31 +8,37 @@ import {
     getAllIngredients,
     getAllVariants,
     setActiveRecord,
-    setActiveRecordId,
     setErrorData,
     setRecords
 } from "../../../slices/translationsSlice";
-import {TranslationRecord} from "./TranslationRecord";
 import {TranslationsEditor} from "./editor/TranslationsEditor";
 import {SuccessMessage} from "../dialog-windows/SuccessMessage";
+import {TranslationsList} from "./TranslationsList";
+import {LoadingSpinner} from "../../icons/LoadingSpinner";
 
 export const Translations = () => {
     const {t} = useTranslation();
-    const {chosenGroup, records, saveSuccess} = useSelector(state => state.translations.view);
+    const [resourcesLoading, setResourcesLoading] = useState(false);
+    const {chosenGroup, saveSuccess} = useSelector(state => state.translations.view);
     const dispatch = useDispatch();
 
     const fetchRecords = async () => {
         const fetchGroupData = async (provider) => {
+            setResourcesLoading(true);
             try {
                 const data = await dispatch(provider());
                 if (provider.fulfilled.match(data)) {
                     dispatch(setRecords(data.payload));
+                    dispatch(setActiveRecord(data.payload[0]));
+                    setResourcesLoading(false);
                 } else if (provider.rejected.match(data)) {
+                    setResourcesLoading(false);
                     dispatch(setErrorData(data.payload));
                 }
                 return data.payload
             } catch (error) {
                 console.error("Error fetching data:", error);
+                setResourcesLoading(false);
                 dispatch(setErrorData(error));
             }
         };
@@ -67,30 +73,7 @@ export const Translations = () => {
                     <div className={'translations-vertical-split-grid'}>
                         <TranslationRecordsHeader/>
                         <section className={`translations-vertical-split-left ${chosenGroup?.value !== 'dishesCategories' ? 'simple' : ''}`}>
-                            {records?.length > 0 ? records.map((record, index) => (
-                                <div key={record.id}>
-                                    <TranslationRecord parent={true}
-                                                       index={index + 1}
-                                                       record={record}
-                                                       setActive={() => {
-                                                           dispatch(setActiveRecordId('p' + record.id))
-                                                           dispatch(setActiveRecord(record));
-                                                       }}
-                                    />
-                                    {record.menuItems ? record.menuItems.map(menuItem => (
-                                            <div key={menuItem.id}>
-                                                <TranslationRecord parent={false}
-                                                                   record={menuItem}
-                                                                   setActive={() => {
-                                                                       dispatch(setActiveRecordId('c' + menuItem.id));
-                                                                       dispatch(setActiveRecord(menuItem));
-                                                                   }}
-                                                />
-                                            </div>
-                                    )) : <></>}
-                                </div>
-                            )) : t('noRecordsFound')}
-
+                            {resourcesLoading ? <LoadingSpinner/> : <TranslationsList/>}
                         </section>
                         <header className={'translations-vertical-split-header-right'}>
                             <button className={'translations-chosen-lang active'}>

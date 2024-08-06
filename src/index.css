@@ -44,10 +44,10 @@ iframe {
 .spinner {
     transform: translate(-50%, -50%);
     border: 8px solid rgba(0, 0, 0, 0.1);
-    border-top: 8px solid #93939E;
+    border-top: 8px solid #6940C6;
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     animation: spin 1.5s linear infinite;
 }
 
@@ -61,12 +61,18 @@ iframe {
     transform: translate(-50%, -50%);
     border-width: 4px;
     border-style: solid;
-    border-color: #33353E rgba(0, 0, 0, 0.3) rgba(0, 0, 0, 0.3);
+    border-color: #6940C6 rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.2);
     border-image: initial;
     border-radius: 50%;
     width: 0.8rem;
     height: 0.8rem;
     animation: 1.5s linear 0s infinite normal none running spin;
+}
+
+.absolute-spinner-container {
+    position: absolute;
+    left: 100px;
+    top: 23px;
 }
 
 @keyframes spin {
@@ -1654,6 +1660,7 @@ ul {
 }
 
 .translate-to-header {
+    position: relative;
     display: flex;
     justify-content: space-between;
 }
@@ -1695,6 +1702,7 @@ ul {
     color: #6940C6;
     font-size: 0.8rem;
     font-weight: 400;
+    position: relative;
 }
 
 .translate-icon {
