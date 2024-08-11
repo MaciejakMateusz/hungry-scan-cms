@@ -9,6 +9,7 @@ import additionsReducer from "../slices/additionsSlice";
 import objectRemovalReducer from "../slices/objectRemovalSlice";
 import filteringReducer from "../slices/filteringSlice";
 import translationsReducer from "../slices/translationsSlice";
+import qrCodesReducer from "../slices/qrCodesSlice";
 
 const rootReducer = combineReducers({
     login: loginReducer,
@@ -20,7 +21,8 @@ const rootReducer = combineReducers({
     additions: additionsReducer,
     objRemoval: objectRemovalReducer,
     filtering: filteringReducer,
-    translations: translationsReducer
+    translations: translationsReducer,
+    qrCodes: qrCodesReducer
 })
 
 export const store = configureStore({
