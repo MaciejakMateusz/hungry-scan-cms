@@ -19,7 +19,7 @@ export const postCategory = createAsyncThunk(
                     translationEn: ''
                 },
                 menuItems: state.dishes,
-                available: state.available.value,
+                available: state.available,
                 displayOrder: state.displayOrder.value
             })
         });
@@ -99,10 +99,7 @@ export const categoryFormSlice = createSlice({
         id: null,
         name: '',
         dishes: [],
-        available: {
-            value: true,
-            label: ''
-        },
+        available: true,
         displayOrder: {
             value: 0,
             label: 0
@@ -146,10 +143,7 @@ export const categoryFormSlice = createSlice({
             state.id = null;
             state.name = '';
             state.dishes = [];
-            state.available = {
-                value: true,
-                label: ''
-            };
+            state.available = true;
             state.displayOrder = {
                 value: 0,
                 label: 0

@@ -37,8 +37,10 @@ export const urlParamValue = param => {
     return urlParams.get(param);
 }
 
-export const formatPrice = (price) => {
+export const formatPrice = (price, keepDot) => {
     let formattedPrice = price.toFixed(2);
-    formattedPrice = formattedPrice.replace('.', ',');
+    if(!keepDot) {
+        formattedPrice = formattedPrice.replace('.', ',');
+    }
     return formattedPrice;
 }

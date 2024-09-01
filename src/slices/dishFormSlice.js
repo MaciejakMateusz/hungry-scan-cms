@@ -1,6 +1,7 @@
 import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
-import {getDecodedJwt} from "../utils";
+import {formatPrice, getDecodedJwt} from "../utils";
+import {getTranslation} from "../locales/langUtils";
 
 export const postImage = createAsyncThunk(
     'postImage/postImage',
@@ -36,7 +37,13 @@ export const postImage = createAsyncThunk(
 export const postDish = createAsyncThunk(
     'postDish/postDish',
     async (credentials, {getState, rejectWithValue}) => {
-        const state = getState().dishForm.form;
+        const formState = getState().dishForm.form;
+        const allergensState = getState().dishForm.fetchAllergens;
+        const labelsState = getState().dishForm.fetchLabels;
+        const dishAdditionsState = getState().dishAdditions.fetchIngredients;
+        const labels = labelsState.chosenLabels?.map(label => label.value)
+        const allergens = allergensState.chosenAllergens?.map(allergen => allergen.value)
+        const additions = dishAdditionsState.chosenAdditions?.map(addition => addition.value)
         const response = await fetch(`${apiHost}/api/cms/items/add`, {
             method: "POST",
             headers: {
@@ -44,26 +51,26 @@ export const postDish = createAsyncThunk(
                 Authorization: `Bearer ${getDecodedJwt()}`,
             },
             body: JSON.stringify({
-                id: state.id,
-                categoryId: state.category && state.category.value.id,
-                displayOrder: state.displayOrder.value,
+                id: formState.id,
+                categoryId: formState.category && formState.category.id,
+                displayOrder: formState.displayOrder,
                 new: credentials.new,
                 bestseller: credentials.bestseller,
                 name: {
-                    defaultTranslation: state.name,
+                    defaultTranslation: formState.name,
                     translationEn: ''
                 },
                 description: {
-                    defaultTranslation: state.description,
+                    defaultTranslation: formState.description,
                     translationEn: ''
                 },
-                labels: state.chosenLabels,
-                allergens: state.chosenAllergens,
-                variants: state.variants,
-                additionalIngredients: state.chosenAdditions,
-                price: state.price,
-                imageName: state.fileName,
-                available: state.available.value,
+                labels: labels,
+                allergens: allergens,
+                variants: formState.variants,
+                additionalIngredients: additions,
+                price: formState.price,
+                imageName: formState.fileName,
+                available: formState.available.value,
             })
         });
 
@@ -161,7 +168,36 @@ export const fetchLabelsSlice = createSlice(
         name: 'getLabels',
         initialState: {
             isLoading: false,
-            labels: []
+            labels: [],
+            chosenLabels: []
+        },
+        reducers: {
+            setChosenLabels: (state, action) => {
+                const selectedLabels = action.payload;
+
+                const selectedIds = new Set(selectedLabels.map(item => item.value.id));
+                const currentIds = new Set(state.chosenLabels.map(item => item.value.id));
+
+                const removedLabels = state.chosenLabels.filter(item => !selectedIds.has(item.value.id));
+                const addedLabels = selectedLabels.filter(item => !currentIds.has(item.value.id));
+
+                state.chosenLabels = selectedLabels;
+
+                state.labels.push(...removedLabels.map(item => ({
+                    value: item.value,
+                    label: getTranslation(item.value.name)
+                })));
+
+                state.labels = state.labels.filter(label =>
+                    !addedLabels.find(added => added.value.id === label.value.id));
+                state.labels.sort((a, b) =>
+                    getTranslation(a.value.name).localeCompare(getTranslation(b.value.name))
+                );
+            },
+            clearLabels: (state) => {
+                state.labels = [];
+                state.chosenLabels = [];
+            }
         },
         extraReducers: (builder) => {
             builder
@@ -170,7 +206,19 @@ export const fetchLabelsSlice = createSlice(
                 })
                 .addCase(getLabels.fulfilled, (state, action) => {
                     state.isLoading = false;
-                    state.labels = action.payload;
+
+                    const formattedLabels = action.payload.map(label => ({
+                        value: label,
+                        label: getTranslation(label.name)
+                    }));
+
+                    const chosenLabelsIds = new Set(state.chosenLabels.map(item => item.value.id));
+
+                    state.labels = formattedLabels.filter(label => !chosenLabelsIds.has(label.value.id));
+
+                    state.labels.sort((a, b) =>
+                        getTranslation(a.value.name).localeCompare(getTranslation(b.value.name))
+                    );
                 })
                 .addCase(getLabels.rejected, (state) => {
                     state.isLoading = false;
@@ -183,7 +231,36 @@ export const fetchAllergensSlice = createSlice(
         name: 'getAllergens',
         initialState: {
             isLoading: false,
-            allergens: []
+            allergens: [],
+            chosenAllergens: []
+        },
+        reducers: {
+            setChosenAllergens: (state, action) => {
+                const selectedAllergens = action.payload;
+
+                const selectedIds = new Set(selectedAllergens.map(item => item.value.id));
+                const currentIds = new Set(state.chosenAllergens.map(item => item.value.id));
+
+                const removedAllergens = state.chosenAllergens.filter(item => !selectedIds.has(item.value.id));
+                const addedAllergens = selectedAllergens.filter(item => !currentIds.has(item.value.id));
+
+                state.chosenAllergens = selectedAllergens;
+
+                state.allergens.push(...removedAllergens.map(item => ({
+                    value: item.value,
+                    label: getTranslation(item.value.name)
+                })));
+
+                state.allergens = state.allergens.filter(allergen =>
+                    !addedAllergens.find(added => added.value.id === allergen.value.id));
+                state.allergens.sort((a, b) =>
+                    getTranslation(a.value.name).localeCompare(getTranslation(b.value.name))
+                );
+            },
+            clearAllergens: (state) => {
+                state.allergens = [];
+                state.chosenAllergens = [];
+            }
         },
         extraReducers: (builder) => {
             builder
@@ -192,7 +269,19 @@ export const fetchAllergensSlice = createSlice(
                 })
                 .addCase(getAllergens.fulfilled, (state, action) => {
                     state.isLoading = false;
-                    state.allergens = action.payload;
+
+                    const formattedAllergens = action.payload.map(allergen => ({
+                        value: allergen,
+                        label: getTranslation(allergen.name)
+                    }));
+
+                    const chosenAllergensIds = new Set(state.chosenAllergens.map(item => item.value.id));
+
+                    state.allergens = formattedAllergens.filter(allergen =>
+                        !chosenAllergensIds.has(allergen.value.id));
+                    state.allergens.sort((a, b) =>
+                        getTranslation(a.value.name).localeCompare(getTranslation(b.value.name))
+                    );
                 })
                 .addCase(getAllergens.rejected, (state) => {
                     state.isLoading = false;
@@ -210,19 +299,12 @@ export const dishFormSlice = createSlice({
         categoryId: null,
         banner: '',
         variants: [],
-        price: "0.00",
+        price: formatPrice(0, true),
         fileName: null,
-        chosenLabels: [],
-        chosenAllergens: [],
         additionalIngredients: [],
-        chosenAdditions: [],
-        available: {
-            value: true,
-            label: ''
-        },
+        available: true,
         displayOrder: 0,
         displayOrders: [],
-        isAdditionsViewActive: false,
         errorMessage: null,
         errorData: {}
     },
@@ -237,21 +319,21 @@ export const dishFormSlice = createSlice({
             state.description = action.payload;
         },
         setCategory: (state, action) => {
-            const category = action.payload.category;
+            const category = action.payload;
             state.category = category
             if (category) {
-                const displayOrders = category.value.menuItems.map(menuItem => menuItem.displayOrder);
+                const displayOrders = category.menuItems.map(menuItem => menuItem.displayOrder);
                 const additional = displayOrders.length + 1;
-                if (action.payload.isNew || category.value.id !== state.categoryId) {
+                if (action.payload.isNew || category.id !== state.categoryId) {
                     state.displayOrders = [...displayOrders, additional];
-                    state.displayOrder = {value: additional, label: additional};
+                    state.displayOrder = additional;
                 } else {
                     if (displayOrders.length === 0) {
                         state.displayOrders = [1];
-                        state.displayOrder = {value: 1, label: 1};
+                        state.displayOrder = 1;
                     } else {
                         state.displayOrders = displayOrders;
-                        state.displayOrder = {value: displayOrders.length, label: displayOrders.length};
+                        state.displayOrder = displayOrders.length;
                     }
                 }
             } else {
@@ -278,23 +360,8 @@ export const dishFormSlice = createSlice({
         clearFileName: state => {
             state.fileName = null;
         },
-        setChosenLabels: (state, action) => {
-            state.chosenLabels = action.payload;
-        },
-        setChosenAllergens: (state, action) => {
-            state.chosenAllergens = action.payload;
-        },
         setAdditionalIngredients: (state, action) => {
             state.additionalIngredients = action.payload;
-        },
-        setChosenAdditions: (state, action) => {
-            state.chosenAdditions = action.payload;
-        },
-        addChosenAddition: (state, action) => {
-            state.chosenAdditions.push(action.payload);
-        },
-        removeChosenAddition: (state, action) => {
-            state.chosenAdditions = state.chosenAdditions.filter(a => a.id !== action.payload.id)
         },
         setAvailable: (state, action) => {
             state.available = action.payload;
@@ -304,9 +371,6 @@ export const dishFormSlice = createSlice({
         },
         setDisplayOrders: (state, action) => {
             state.displayOrders = action.payload;
-        },
-        setIsAdditionsViewActive: (state, action) => {
-            state.isAdditionsViewActive = action.payload;
         },
         setErrorMessage: (state, action) => {
             state.errorMessage = action.payload;
@@ -321,25 +385,23 @@ export const dishFormSlice = createSlice({
             state.category = null;
             state.banner = '';
             state.variants = [];
-            state.price = "0.00";
+            state.price = formatPrice(0, true);
             state.file = {};
             state.fileName = null;
             state.chosenLabels = [];
             state.chosenAllergens = [];
             state.additionalIngredients = [];
-            state.chosenAdditions = [];
-            state.available = {
-                value: true,
-                label: ''
-            };
+            state.available = true;
             state.displayOrder = 0;
             state.displayOrders = [];
-            state.isAdditionsViewActive = false;
             state.errorMessage = null;
             state.errorData = {};
         }
     }
 });
+
+export const {setChosenLabels, clearLabels} = fetchLabelsSlice.actions;
+export const {setChosenAllergens, clearAllergens} = fetchAllergensSlice.actions;
 
 export const {
     setId,
@@ -352,16 +414,10 @@ export const {
     setPrice,
     setFileName,
     clearFileName,
-    setChosenLabels,
-    setChosenAllergens,
     setAdditionalIngredients,
     setAvailable,
     setDisplayOrder,
     setDisplayOrders,
-    setIsAdditionsViewActive,
-    setChosenAdditions,
-    addChosenAddition,
-    removeChosenAddition,
     setErrorMessage,
     setErrorData,
     clearForm

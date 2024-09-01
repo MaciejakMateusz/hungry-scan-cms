@@ -22,7 +22,7 @@ import {getCategories, setCategories} from "../../../slices/dishesCategoriesSlic
 import {getTranslation} from "../../../locales/langUtils";
 import Select from "react-select";
 import {customSelect} from "../../../styles";
-import {CustomNoOptionsMessage} from "../dishes-categories/form-components/CustomNoOptionsMessage";
+import {CustomNoOptionsMessage} from "../form-components/CustomNoOptionsMessage";
 import {VariantFormDialog} from "./VariantFormDialog";
 import {DecisionDialog} from "../dialog-windows/DecisionDialog";
 import {remove} from "../../../slices/objectRemovalSlice";

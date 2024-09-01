@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import Select from "react-select";
 import {newCustomSelect} from "../../../styles";
-import {CustomNoOptionsMessage} from "../dishes-categories/form-components/CustomNoOptionsMessage";
+import {CustomNoOptionsMessage} from "../form-components/CustomNoOptionsMessage";
 import {useTranslation} from "react-i18next";
 import {setChosenGroup} from "../../../slices/translationsSlice";
 import {useDispatch, useSelector} from "react-redux";

@@ -2,26 +2,33 @@ export const customSelect = {
     control: (provided, state) => ({
         ...provided,
         cursor: 'pointer',
-        borderRadius: '10px',
-        border: 'none',
-        boxShadow: '0 2px 15px 0 #0000001A',
+        borderRadius: '5px',
+        border: '1px solid #EDEFF3',
+        boxShadow: 'none',
         backgroundColor: '#FFF',
         fontStyle: '"Lexend", sans-serif',
-        fontSize: '0.8rem',
-        color: state.isDisabled ? '#ccc' : '#000',
-        width: '270px',
+        fontSize: '13px',
+        color: state.isDisabled ? '#ccc' : '#33353E',
+        width: '100%',
+        maxWidth: '100%',
+        paddingRight: '10px',
+        paddingLeft: '5px',
         '&:hover': {
-            borderColor: '#CCC',
+            border: '1px solid #EDEFF3',
         },
+    }),
+    container: (provided) => ({
+        ...provided,
+        width: '100%'
     }),
     singleValue: (provided) => ({
         ...provided,
         color: '#000',
         maxWidth: '90%'
     }),
-    dropdownIndicator: (provided, state) => ({
+    dropdownIndicator: (provided) => ({
         ...provided,
-        display: state.isDisabled ? 'none' : provided.display,
+        display: 'none',
         padding: '2px',
         position: 'absolute',
         right: '5px',
@@ -34,16 +41,9 @@ export const customSelect = {
             }
         }
     }),
-    indicatorSeparator: (provided, state) => ({
+    indicatorSeparator: (provided) => ({
         ...provided,
-        display: state.isDisabled ? 'none' : provided.display,
-        width: '2px',
-        borderRadius: '2px',
-        height: '20px',
-        backgroundColor: '#888',
-        position: 'absolute',
-        right: '27px',
-        top: '1px',
+        display: 'none'
     }),
     menu: (provided) => ({
         ...provided,
@@ -61,20 +61,20 @@ export const customSelect = {
         fontSize: '0.8rem',
         fontWeight: '400',
         background: state.isSelected ? '#f0f0f0' : '#FFF',
-        color: '#000',
+        color: '#33353E',
         '&:hover': {backgroundColor: '#f0f0f0'}
     }),
     placeholder: (provided, state) => ({
         ...provided,
-        color: state.isDisabled ? '#888' : '#000',
-        fontSize: '0.8rem',
+        color: state.isDisabled ? '#888' : '#33353E',
+        fontSize: '13px',
         fontFamily: '"Lexend", sans-serif'
     }),
     clearIndicator: (provided) => ({
         ...provided,
         position: 'absolute',
         cursor: 'pointer',
-        right: '25px',
+        right: '0',
         '& svg': {
             width: '16px',
             height: '16px',
@@ -83,6 +83,18 @@ export const customSelect = {
                 color: '#000',
             }
         }
+    }),
+    multiValue: (provided) => ({
+        ...provided,
+        background: '#DCD8ED',
+    }),
+    multiValueRemove: (provided) => ({
+        ...provided,
+        color: '#6940C6',
+        ':hover': {
+            backgroundColor: '#DCD8ED',
+            color: '#6940C6',
+        },
     })
 }
 

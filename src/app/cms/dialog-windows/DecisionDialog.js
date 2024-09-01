@@ -9,7 +9,7 @@ export const DecisionDialog = (props) => {
             <div className={'overlay'}></div>
             <div className={'decision-dialog'}>
                 <div className={'decision-dialog-content'}>
-                    <h4>{props.msg} {props.objName ? `"` + getTranslation(props.objName) + '"' : ''}</h4>
+                    <p>{props.msg} {props.objName ? `"` + getTranslation(props.objName) + '"' : ''}</p>
                 </div>
                 <div className={'decision-dialog-footer'}>
                     <button onClick={props.onCancel} className={'general-button cancel'}>{t('cancel')}</button>

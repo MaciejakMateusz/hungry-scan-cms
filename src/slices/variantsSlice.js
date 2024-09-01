@@ -66,17 +66,26 @@ export const postVariantSlice = createSlice(
 export const fetchVariants = createAsyncThunk(
     'variants/fetchVariants',
     async (credentials, {getState, rejectWithValue}) => {
-        const state = getState().variants.view;
-        if (!state.dish) {
+        let state;
+        let dish;
+        if(!credentials.dish) {
+            state = getState().variants.view;
+            dish = state?.dish;
+        } else {
+            dish = credentials.dish
+        }
+
+        if (!dish) {
             return;
         }
+
         const response = await fetch(`${apiHost}/api/cms/variants/item`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${getDecodedJwt()}`,
             },
-            body: state.dish.id
+            body: dish.id
         });
 
         if (!response.ok) {

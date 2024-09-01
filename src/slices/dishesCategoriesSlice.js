@@ -2,6 +2,64 @@ import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
 import {getDecodedJwt} from "../utils";
 
+export const reorderMenuItem = createAsyncThunk(
+    'dishesCategories/reorderDish',
+    async (credentials, {getState, rejectWithValue}) => {
+        const state = getState().dishesCategories.view;
+        const menuItem = state.dish;
+        const response = await fetch(`${apiHost}/api/cms/items/add`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${getDecodedJwt()}`,
+            },
+            body: JSON.stringify({
+                id: menuItem.id,
+                categoryId: menuItem.categoryId,
+                displayOrder: credentials.type === 'increment' ? menuItem.displayOrder + 1 : menuItem.displayOrder - 1,
+                new: menuItem.new,
+                bestseller: menuItem.bestseller,
+                name: menuItem.name,
+                description: menuItem.description,
+                labels: menuItem.labels,
+                allergens: menuItem.allergens,
+                variants: menuItem.variants,
+                additionalIngredients: menuItem.chosenAdditions,
+                price: menuItem.price,
+                imageName: menuItem.imageName,
+                available: menuItem.available,
+            })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            return rejectWithValue(errorData);
+        }
+
+        return await response.json();
+    }
+);
+
+export const reorderMenuItemSlice = createSlice(
+    {
+        name: 'reorderMenuItem',
+        initialState: {
+            isLoading: false,
+        },
+        extraReducers: (builder) => {
+            builder
+                .addCase(reorderMenuItem.pending, state => {
+                    state.isLoading = true;
+                })
+                .addCase(reorderMenuItem.fulfilled, (state) => {
+                    state.isLoading = false;
+                })
+                .addCase(reorderMenuItem.rejected, (state) => {
+                    state.isLoading = false;
+                })
+        }
+    });
+
 export const getCategory = createAsyncThunk(
     'getCategory/getCategory',
     async (credentials, {rejectWithValue}) => {
@@ -189,7 +247,8 @@ export const {
 const dishesCategoriesReducer = combineReducers({
     view: dishesCategoriesSlice.reducer,
     getCategories: getCategoriesSlice.reducer,
-    getCategory: getCategorySlice.reducer
+    getCategory: getCategorySlice.reducer,
+    reorderMenuItem: reorderMenuItemSlice.reducer
 });
 
 export default dishesCategoriesReducer;

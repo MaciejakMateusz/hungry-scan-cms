@@ -15,9 +15,9 @@ import {
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {getTranslation} from "../../../locales/langUtils";
-import {CustomSelect} from "../dishes-categories/form-components/CustomSelect";
-import {NameField} from "../dishes-categories/form-components/NameField";
-import {PriceField} from "../dishes-categories/form-components/PriceField";
+import {CustomSelect} from "../form-components/CustomSelect";
+import {NameField} from "../form-components/NameField";
+import {PriceField} from "../form-components/PriceField";
 
 export const VariantFormDialog = () => {
     const {t} = useTranslation();

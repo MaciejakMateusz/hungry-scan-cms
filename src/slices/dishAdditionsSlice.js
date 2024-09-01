@@ -3,21 +3,15 @@ import {apiHost} from "../apiData";
 import {getDecodedJwt} from "../utils";
 import {getTranslation} from "../locales/langUtils";
 
-export const getIngredients = createAsyncThunk(
-    'fetchIngredients/getIngredients',
-    async (credentials, {rejectWithValue}) => {
-        const requestBody = new Map();
-        requestBody.set("pageSize", credentials.pageSize);
-        requestBody.set("pageNumber", credentials.pageNumber);
-
-        const params = Object.fromEntries(requestBody);
+export const fetchIngredients = createAsyncThunk(
+    'fetchIngredients/fetchIngredients',
+    async (_, {rejectWithValue}) => {
         const response = await fetch(`${apiHost}/api/cms/ingredients`, {
-            method: 'POST',
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${getDecodedJwt()}`
             },
-            body: JSON.stringify(params)
         });
 
         if (!response.ok) {
@@ -25,87 +19,78 @@ export const getIngredients = createAsyncThunk(
             return rejectWithValue(errorData);
         }
 
-        return {json: await response.json(), chosenAdditions: credentials.chosenAdditions};
+        try {
+            return await response.json();
+        } catch (error) {
+            return [];
+        }
     }
 );
 
-export const fetchIngredientsSlice = createSlice(
-    {
-        name: 'getIngredients',
-        initialState: {
-            isLoading: false,
-            ingredients: [],
-            additions: [],
-            pageData: {}
-        },
-        reducers: {
-            addAddition: (state, action) => {
-                state.additions.push(action.payload);
-                state.additions.sort((a, b) => getTranslation(a.name).localeCompare(getTranslation(b.name)));
-                state.ingredients = state.ingredients.filter(i => i.id !== action.payload.id);
-            },
-            removeAddition: (state, action) => {
-                state.additions = state.additions.filter(i => i.id !== action.payload.id);
-                state.ingredients.push(action.payload);
-                state.ingredients.sort((a, b) => getTranslation(a.name).localeCompare(getTranslation(b.name)));
-            },
-            setAdditions: (state, action) => {
-                state.additions = action.payload;
-            },
-            setPageData: (state, action) => {
-                state.pageNumber = action.payload;
-            }
-        },
-        extraReducers: (builder) => {
-            builder
-                .addCase(getIngredients.pending, state => {
-                    state.isLoading = true;
-                })
-                .addCase(getIngredients.fulfilled, (state, action) => {
-                    state.isLoading = false;
-                    state.additions = action.payload.chosenAdditions;
-                    const chosenIds = action.payload.chosenAdditions.map(ingredient => ingredient.id);
-                    const filteredIngredients = action.payload.json.content.filter(ingredient => !chosenIds.includes(ingredient.id));
-                    state.pageData = action.payload.json
-                    state.ingredients = filteredIngredients
-                })
-                .addCase(getIngredients.rejected, (state) => {
-                    state.isLoading = false;
-                })
-        }
-    });
-
-export const dishAdditionsSlice = createSlice({
-    name: 'dishAdditionsData',
+export const fetchIngredientsSlice = createSlice({
+    name: 'fetchIngredients',
     initialState: {
-        filterValue: '',
-        filterExpanded: false
+        isLoading: false,
+        ingredients: [],
+        chosenAdditions: []
     },
     reducers: {
-        setFilterValue: (state, action) => {
-            state.filterValue = action.payload;
+        setChosenAdditions: (state, action) => {
+            const selectedAdditions = action.payload;
+
+            const selectedIds = new Set(selectedAdditions.map(item => item.value.id));
+            const currentIds = new Set(state.chosenAdditions.map(item => item.value.id));
+
+            const removedAdditions = state.chosenAdditions.filter(item => !selectedIds.has(item.value.id));
+            const addedAdditions = selectedAdditions.filter(item => !currentIds.has(item.value.id));
+
+            state.chosenAdditions = selectedAdditions;
+
+            state.ingredients.push(...removedAdditions.map(item => ({
+                value: item.value,
+                label: getTranslation(item.value.name)
+            })));
+
+            state.ingredients = state.ingredients.filter(ingredient => !addedAdditions.find(addition => addition.value.id === ingredient.value.id));
+            state.ingredients.sort((a, b) =>
+                getTranslation(a.value.name).localeCompare(getTranslation(b.value.name))
+            );
         },
-        setFilterExpanded: (state, action) => {
-            state.filterExpanded = action.payload;
+        clearAdditions: (state) => {
+            state.ingredients = [];
+            state.chosenAdditions = [];
         }
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchIngredients.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(fetchIngredients.fulfilled, (state, action) => {
+                state.isLoading = false;
+
+                const formattedIngredients = action.payload.map(ingredient => ({
+                    value: ingredient,
+                    label: getTranslation(ingredient.name)
+                }));
+
+                const chosenAdditionsIds = new Set(state.chosenAdditions.map(item => item.value.id));
+
+                state.ingredients = formattedIngredients.filter(ingredient => !chosenAdditionsIds.has(ingredient.value.id));
+
+                state.ingredients.sort((a, b) =>
+                    getTranslation(a.value.name).localeCompare(getTranslation(b.value.name))
+                );
+            })
+            .addCase(fetchIngredients.rejected, (state) => {
+                state.isLoading = false;
+            });
     }
 });
 
-export const {
-    setFilterValue,
-    setFilterExpanded
-} = dishAdditionsSlice.actions
-
-export const {
-    addAddition,
-    removeAddition,
-    setAdditions,
-    setPageData
-} = fetchIngredientsSlice.actions;
-
+export const {setChosenAdditions, clearAdditions} = fetchIngredientsSlice.actions;
 
 const dishAdditionsReducer = combineReducers({
-    dishAdditionsData: dishAdditionsSlice.reducer,
     fetchIngredients: fetchIngredientsSlice.reducer
 });
 
