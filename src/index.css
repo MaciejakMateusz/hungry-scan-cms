@@ -1433,6 +1433,11 @@ ul {
     margin-bottom: 30px;
 }
 
+.category-container-new.filtered {
+    margin-bottom: 0;
+}
+
+
 .category-container-header {
     height: 50px;
     background: #FFF;

@@ -20,7 +20,7 @@ import {useTranslation} from "react-i18next";
 import {useDispatch} from "react-redux";
 import {DisplayOrderButton} from "./DisplayOrderButton";
 
-export const MenuItemPosition = ({category, menuItem, fetchCategories}) => {
+export const MenuItemPosition = ({category, menuItem, fetchCategories, filtered}) => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
 
@@ -51,12 +51,15 @@ export const MenuItemPosition = ({category, menuItem, fetchCategories}) => {
     }
 
     const renderDisplayOrderButtons = (menuItems, currentPosition) => {
-        if (menuItems.length === 1) {
+        if(filtered) {
+            return (<></>);
+        }
+        if (menuItems?.length === 1) {
             return (<></>);
         }
         if (currentPosition === 1) {
             return (<DisplayOrderButton menuItem={menuItem} direction={'down'} onClick={handleReordering}/>);
-        } else if (currentPosition === menuItems.length) {
+        } else if (currentPosition === menuItems?.length) {
             return (<DisplayOrderButton menuItem={menuItem} direction={'up'} onClick={handleReordering}/>);
         }
         return (
@@ -71,7 +74,7 @@ export const MenuItemPosition = ({category, menuItem, fetchCategories}) => {
         <Fragment>
             <div className={'menu-item-position-container'}>
                 <div className={'display-order-buttons-wrapper'}>
-                    {renderDisplayOrderButtons(category.menuItems, menuItem.displayOrder)}
+                    {renderDisplayOrderButtons(category?.menuItems, menuItem.displayOrder)}
                 </div>
                 <div className={'menu-item-position-image-container'}>
                     {menuItem.imageName ?
@@ -118,7 +121,7 @@ export const MenuItemPosition = ({category, menuItem, fetchCategories}) => {
                     </span>
                 </div>
             </div>
-            {menuItem.displayOrder === category.menuItems.length ? <></> :
+            {menuItem.displayOrder === category?.menuItems.length ? <></> :
                 <div className={'menu-item-position-separator'}/>
             }
         </Fragment>

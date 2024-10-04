@@ -99,7 +99,7 @@ export const DishesCategories = () => {
                                       onSubmit={handleSearchSubmit} onClear={() => dispatch(setFilterValue(''))}/>
                     </div>
                     <ErrorBoundary>
-                        <DishesCategoriesList/>
+                        <DishesCategoriesList filter={executeFilter}/>
                     </ErrorBoundary>
                 </main>
             </div>

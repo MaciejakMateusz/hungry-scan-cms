@@ -30,14 +30,16 @@ export const TranslationRecordsHeader = () => {
             value: 'dishesCategories',
             label: t('dishesCategories')
         }));
-    }, [dispatch, t]);
+    }, []);
 
     return (
         <header className={'translations-vertical-split-header-left'}>
             <Select id={'translation-group'}
                     name={'translation-group'}
                     value={chosenGroup}
+                    placeholder={t('choose')}
                     options={options}
+                    defaultValue={options[0]}
                     onChange={(selected) => dispatch(setChosenGroup(selected))}
                     styles={newCustomSelect}
                     components={{NoOptionsMessage: CustomNoOptionsMessage}}

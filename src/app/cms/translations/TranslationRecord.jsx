@@ -57,7 +57,7 @@ export const TranslationRecord = ({parent, index, record, setActive}) => {
 
     const renderRecord = () => {
         let parentClass = parent;
-        if (parent && chosenGroup.value !== 'dishesCategories') {
+        if (parent && chosenGroup?.value !== 'dishesCategories') {
             parentClass = false;
         }
         const getActiveRecordId = parent ? 'p' + record.id : 'c' + record.id

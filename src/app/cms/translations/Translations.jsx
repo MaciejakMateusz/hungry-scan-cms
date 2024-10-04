@@ -41,7 +41,7 @@ export const Translations = () => {
                 dispatch(setErrorData(error));
             }
         };
-        const groupValue = chosenGroup ? chosenGroup.value : chosenGroup;
+        const groupValue = chosenGroup ? chosenGroup?.value : chosenGroup;
         switch (groupValue) {
             case 'dishesCategories':
                 await fetchGroupData(getCategories);

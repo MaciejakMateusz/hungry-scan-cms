@@ -15,18 +15,18 @@ import {remove} from "../../../slices/objectRemovalSlice";
 import {SuccessMessage} from "../dialog-windows/SuccessMessage";
 import {MenuItemPosition} from "./menu-item/MenuItemPosition";
 import {CategoryPosition} from "./category/CategoryPosition";
+import {FilteredMenuItems} from "./FilteredMenuItems";
 
-export const DishesCategoriesList = () => {
+export const DishesCategoriesList = ({filter}) => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {
         categories,
         categoryForAction,
         menuItemForAction,
-        filteredItems,
         filterValue,
         activeRemovalType
-    } = useSelector(state => state.dishesCategories.view)
+    } = useSelector(state => state.dishesCategories.view);
     const [confirmedRemovalType, setConfirmedRemovalType] = useState(null);
     const [errorData, setErrorData] = useState({});
     const [confirmationTimeoutId, setConfirmationTimeoutId] = useState(null);
@@ -83,7 +83,11 @@ export const DishesCategoriesList = () => {
                 }, 4000);
                 setConfirmationTimeoutId(newConfirmationTimeoutId);
 
-                await fetchCategories();
+                if(filterValue) {
+                    await filter(filterValue)
+                } else {
+                    await fetchCategories()
+                }
             }
         } else if (remove.rejected.match(resultAction)) {
             if ('categories' === actionType) {
@@ -156,9 +160,15 @@ export const DishesCategoriesList = () => {
         ));
     }
 
+    if(spinner) {
+        return spinner;
+    }
+
     return (
         <div className={'scrollable-wrapper'}>
-            {renderCategories()}
+            {filterValue ?
+                <FilteredMenuItems spinner={spinner} fetchCategories={fetchCategories}/> :
+                renderCategories()}
             {activeRemovalType && renderRemovalDialog()}
             {confirmedRemovalType && renderConfirmationDialog()}
             {errorData.exceptionMsg && (<FailureMessage text={errorData.exceptionMsg}/>)}
