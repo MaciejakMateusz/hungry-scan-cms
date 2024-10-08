@@ -16,6 +16,8 @@ import {
     setCategoryId,
     setChosenAllergens,
     setChosenLabels,
+    setCreated,
+    setCreatedBy,
     setDescription,
     setDisplayOrder,
     setErrorData,
@@ -87,6 +89,8 @@ export const EditMenuItemForm = ({executeFilter}) => {
             dispatch(setChosenLabels(dish.labels?.map(label => ({value: label, label: getTranslation(label.name)}))));
             dispatch(setChosenAllergens(dish.allergens?.map(allergen => ({value: allergen, label: getTranslation(allergen.name)}))));
             dispatch(setChosenAdditions(dish.additionalIngredients?.map(addition => ({value: addition, label: getTranslation(addition.name)}))));
+            dispatch(setCreated(dish.created));
+            dispatch(setCreatedBy(dish.createdBy));
         }
         setInitialFormState();
     }, []);

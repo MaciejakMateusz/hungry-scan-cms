@@ -71,6 +71,8 @@ export const postDish = createAsyncThunk(
                 price: formState.price,
                 imageName: formState.fileName,
                 available: formState.available.value,
+                created: formState.created,
+                createdBy: formState.createdBy
             })
         });
 
@@ -305,6 +307,8 @@ export const dishFormSlice = createSlice({
         available: true,
         displayOrder: 0,
         displayOrders: [],
+        created: null,
+        createdBy: null,
         errorMessage: null,
         errorData: {}
     },
@@ -372,6 +376,12 @@ export const dishFormSlice = createSlice({
         setDisplayOrders: (state, action) => {
             state.displayOrders = action.payload;
         },
+        setCreated: (state, action) => {
+            state.created = action.payload;
+        },
+        setCreatedBy: (state, action) => {
+            state.createdBy = action.payload;
+        },
         setErrorMessage: (state, action) => {
             state.errorMessage = action.payload;
         },
@@ -394,6 +404,8 @@ export const dishFormSlice = createSlice({
             state.available = true;
             state.displayOrder = 0;
             state.displayOrders = [];
+            state.created = null;
+            state.createdBy = null;
             state.errorMessage = null;
             state.errorData = {};
         }
@@ -418,6 +430,8 @@ export const {
     setAvailable,
     setDisplayOrder,
     setDisplayOrders,
+    setCreated,
+    setCreatedBy,
     setErrorMessage,
     setErrorData,
     clearForm
