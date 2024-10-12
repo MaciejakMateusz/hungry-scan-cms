@@ -1,6 +1,5 @@
 import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
-import {getDecodedJwt} from "../utils";
 
 export const reorderMenuItem = createAsyncThunk(
     'dishesCategories/reorderDish',
@@ -11,7 +10,6 @@ export const reorderMenuItem = createAsyncThunk(
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${getDecodedJwt()}`,
             },
             body: JSON.stringify({
                 id: menuItem.id,
@@ -28,7 +26,8 @@ export const reorderMenuItem = createAsyncThunk(
                 price: menuItem.price,
                 imageName: menuItem.imageName,
                 available: menuItem.available,
-            })
+            }),
+            credentials: 'include'
         });
 
         if (!response.ok) {
@@ -67,9 +66,9 @@ export const getCategory = createAsyncThunk(
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${getDecodedJwt()}`
             },
-            body: credentials.id
+            body: credentials.id,
+            credentials: 'include'
         });
 
         if (!response.ok) {
@@ -107,8 +106,8 @@ export const getCategories = createAsyncThunk(
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${getDecodedJwt()}`
-            }
+            },
+            credentials: 'include'
         });
 
         if (!response.ok) {

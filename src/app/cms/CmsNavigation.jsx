@@ -9,8 +9,6 @@ import {QrCode} from "./qr-code/QrCode";
 import {Translations} from "./translations/Translations";
 import {AdPopUps} from "./ad-pop-ups/AdPopUps";
 import {Interface} from "./interface/Interface";
-import {getDecodedJwt} from "../../utils";
-import {Navigate} from "react-router-dom";
 import LanguageSwitcher from "../../locales/LanguageSwitcher";
 import {useDispatch, useSelector} from "react-redux";
 import {DecisionDialog} from "./dialog-windows/DecisionDialog";
@@ -25,7 +23,6 @@ export const CmsNavigation = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const [activeView, setActiveView] = useState("dishesCategories")
-    const [redirect, setRedirect] = useState(false);
     const {
         newCategoryFormActive,
         editCategoryFormActive,
@@ -34,13 +31,6 @@ export const CmsNavigation = () => {
     } = useSelector(state => state.dishesCategories.view);
     const [switchViewDialog, setSwitchViewDialog] = useState(null);
     const [isInEditMode, setIsInEditMode] = useState(false);
-
-    useEffect(() => {
-        let jwtCookie = getDecodedJwt();
-        if ('' === jwtCookie) {
-            setRedirect(true);
-        }
-    }, []);
 
     useEffect(() => {
         setIsInEditMode(newCategoryFormActive || editCategoryFormActive || newDishFormActive || editDishFormActive);
@@ -84,10 +74,6 @@ export const CmsNavigation = () => {
                 return <DishesCategories/>;
         }
     };
-
-    if (redirect) {
-        return <Navigate to="/login"/>;
-    }
 
     return (
         <>

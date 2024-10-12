@@ -1,6 +1,5 @@
 import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
-import {getDecodedJwt} from "../utils";
 import {getTranslation} from "../locales/langUtils";
 
 export const fetchIngredients = createAsyncThunk(
@@ -10,8 +9,8 @@ export const fetchIngredients = createAsyncThunk(
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${getDecodedJwt()}`
             },
+            credentials: 'include'
         });
 
         if (!response.ok) {

@@ -13,10 +13,11 @@ export const executeLoginFetch = createAsyncThunk(
             body: JSON.stringify({
                 username: state.username,
                 password: state.password
-            })
+            }),
+            credentials: 'include'
         });
 
-        if(!response.ok) {
+        if (!response.ok) {
             throw new Error('Not authorized');
         }
 
@@ -37,7 +38,8 @@ export const loginFormSlice = createSlice(
             setPassword: (state, action) => {
                 state.password = action.payload
             }
-        }});
+        }
+    });
 
 export const loginFetchSlice = createSlice(
     {
@@ -47,22 +49,19 @@ export const loginFetchSlice = createSlice(
             notAuthorized: false
         },
         extraReducers: (builder) => {
-            builder
-                .addCase(executeLoginFetch.pending, state => {
+            builder.addCase(executeLoginFetch.pending, state => {
                 state.isLoading = true;
                 state.notAuthorized = false;
+            }).addCase(executeLoginFetch.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.notAuthorized = false;
+                window.location.href = `/cms`;
+                console.log('fulfilled login fetch', action.payload);
+            }).addCase(executeLoginFetch.rejected, (state, action) => {
+                state.isLoading = false;
+                state.notAuthorized = true;
+                console.log('rejected login fetch', action.payload);
             })
-                .addCase(executeLoginFetch.fulfilled, (state, action) => {
-                    state.isLoading = false;
-                    state.notAuthorized = false;
-                    const maxAge = 20 * 60 * 60;
-                    document.cookie = `jwt=${encodeURIComponent(JSON.stringify(action.payload))}; path=/; max-age=${maxAge}`;
-                    window.location.href = `/cms`;
-                })
-                .addCase(executeLoginFetch.rejected, state => {
-                    state.isLoading = false;
-                    state.notAuthorized = true;
-                })
         }
     }
 )

@@ -1,6 +1,5 @@
 import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
-import {getDecodedJwt} from "../utils";
 
 export const postAddition = createAsyncThunk(
     'additions/postAddition',
@@ -10,7 +9,6 @@ export const postAddition = createAsyncThunk(
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${getDecodedJwt()}`
             },
             body: JSON.stringify({
                 id: state.id,
@@ -20,7 +18,8 @@ export const postAddition = createAsyncThunk(
                 },
                 price: state.price,
                 available: state.available.value
-            })
+            }),
+            credentials: 'include'
         });
 
         if (!response.ok) {
@@ -73,9 +72,9 @@ export const getIngredients = createAsyncThunk(
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${getDecodedJwt()}`
             },
-            body: JSON.stringify(params)
+            body: JSON.stringify(params),
+            credentials: 'include'
         });
 
         if (!response.ok) {

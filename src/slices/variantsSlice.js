@@ -1,6 +1,5 @@
 import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
-import {getDecodedJwt} from "../utils";
 
 export const postVariant = createAsyncThunk(
     'variants/postVariant',
@@ -11,7 +10,6 @@ export const postVariant = createAsyncThunk(
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${getDecodedJwt()}`
             },
             body: JSON.stringify({
                 id: state.id,
@@ -23,7 +21,8 @@ export const postVariant = createAsyncThunk(
                 },
                 price: state.price,
                 available: state.available.value
-            })
+            }),
+            credentials: 'include'
         });
 
         if (!response.ok) {
@@ -83,9 +82,9 @@ export const fetchVariants = createAsyncThunk(
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${getDecodedJwt()}`,
             },
-            body: dish.id
+            body: dish.id,
+            credentials: 'include'
         });
 
         if (!response.ok) {

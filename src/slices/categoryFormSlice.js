@@ -1,6 +1,5 @@
 import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
-import {getDecodedJwt} from "../utils";
 
 export const postCategory = createAsyncThunk(
     'categoryFetch/postCategory',
@@ -10,7 +9,6 @@ export const postCategory = createAsyncThunk(
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${getDecodedJwt()}`
             },
             body: JSON.stringify({
                 id: state.id,
@@ -21,7 +19,8 @@ export const postCategory = createAsyncThunk(
                 menuItems: state.dishes,
                 available: state.available,
                 displayOrder: state.displayOrder.value
-            })
+            }),
+            credentials: 'include'
         });
 
         if (!response.ok) {
@@ -40,8 +39,8 @@ export const getCategoriesDisplayOrders = createAsyncThunk(
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${getDecodedJwt()}`
-            }
+            },
+            credentials: 'include'
         });
 
         if (!response.ok) {

@@ -1,6 +1,6 @@
 import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
-import {formatPrice, getDecodedJwt} from "../utils";
+import {formatPrice} from "../utils";
 import {getTranslation} from "../locales/langUtils";
 
 export const postImage = createAsyncThunk(
@@ -15,10 +15,8 @@ export const postImage = createAsyncThunk(
 
         const response = await fetch(`${apiHost}/api/cms/images`, {
             method: "POST",
-            headers: {
-                Authorization: `Bearer ${getDecodedJwt()}`,
-            },
-            body: formData
+            body: formData,
+            credentials: 'include'
         });
 
         if (!response.ok) {
@@ -48,7 +46,6 @@ export const postDish = createAsyncThunk(
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${getDecodedJwt()}`,
             },
             body: JSON.stringify({
                 id: formState.id,
@@ -73,7 +70,8 @@ export const postDish = createAsyncThunk(
                 available: formState.available.value,
                 created: formState.created,
                 createdBy: formState.createdBy
-            })
+            }),
+            credentials: 'include'
         });
 
         if (!response.ok) {
@@ -92,8 +90,8 @@ export const getLabels = createAsyncThunk(
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${getDecodedJwt()}`
-            }
+            },
+            credentials: 'include'
         });
 
         if (!response.ok) {
@@ -112,8 +110,8 @@ export const getAllergens = createAsyncThunk(
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${getDecodedJwt()}`
-            }
+            },
+            credentials: 'include'
         });
 
         if (!response.ok) {

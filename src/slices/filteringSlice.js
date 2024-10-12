@@ -1,6 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
-import {getDecodedJwt} from "../utils";
 
 export const filter = createAsyncThunk(
     'filtering/filter',
@@ -11,9 +10,9 @@ export const filter = createAsyncThunk(
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${getDecodedJwt()}`
             },
-            body: value
+            body: value,
+            credentials: 'include'
         });
 
         if (!response.ok) {

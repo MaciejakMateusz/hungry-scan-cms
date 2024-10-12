@@ -1,6 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
-import {getDecodedJwt} from "../utils";
 
 export const remove = createAsyncThunk(
     'objectRemoval/remove',
@@ -11,9 +10,9 @@ export const remove = createAsyncThunk(
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${getDecodedJwt()}`
             },
-            body: JSON.stringify(id)
+            body: JSON.stringify(id),
+            credentials: 'include'
         });
 
         if (!response.ok) {

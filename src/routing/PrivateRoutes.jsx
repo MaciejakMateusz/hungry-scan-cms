@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Navigate, Outlet, useLocation} from 'react-router-dom';
 import {apiHost} from "../apiData";
-import {getDecodedJwt} from "../utils";
 import {LoadingSpinner} from "../app/icons/LoadingSpinner";
 
 export const PrivateRoutes = () => {
@@ -17,8 +16,8 @@ export const PrivateRoutes = () => {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${getDecodedJwt()}`
-                    }
+                    },
+                    credentials: 'include'
                 });
                 setIsAuthorized(response.ok)
             } catch {

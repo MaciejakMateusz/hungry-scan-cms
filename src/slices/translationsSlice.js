@@ -1,6 +1,5 @@
 import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
-import {getDecodedJwt} from "../utils";
 
 export const getAutoTranslation = createAsyncThunk(
     'translations/getAutoTranslations',
@@ -9,14 +8,14 @@ export const getAutoTranslation = createAsyncThunk(
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${getDecodedJwt()}`,
             },
             body: JSON.stringify({
                 text: [credentials.text],
                 source_lang: "PL",
                 target_lang: "EN",
                 context: "Restaurant CMS - Translate names and descriptions for categories, dishes, ingredients, and variants."
-            })
+            }),
+            credentials: 'include'
         });
 
         if (!response.ok) {
@@ -59,9 +58,9 @@ export const postTranslatables = createAsyncThunk(
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${getDecodedJwt()}`,
             },
-            body: JSON.stringify(requestBody)
+            body: JSON.stringify(requestBody),
+            credentials: 'include'
         });
 
         if (!response.ok) {
@@ -104,8 +103,8 @@ export const getAllVariants = createAsyncThunk(
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${getDecodedJwt()}`,
-            }
+            },
+            credentials: 'include'
         });
 
         if (!response.ok) {
@@ -144,8 +143,8 @@ export const getAllIngredients = createAsyncThunk(
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${getDecodedJwt()}`
-            }
+            },
+            credentials: 'include'
         });
 
         if (!response.ok) {
