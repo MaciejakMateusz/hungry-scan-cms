@@ -1,3 +1,7 @@
+export const getInactivityTimeout = () =>{
+    return 10 * 60 * 1000;
+}
+
 export const getCookie = cookieName => {
     let cookie = {};
     document.cookie.split(';').forEach(function(el) {

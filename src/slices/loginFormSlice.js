@@ -1,6 +1,43 @@
 import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
 
+export const executeLogoutFetch = createAsyncThunk(
+    'loginFetch/executeLogoutFetch',
+    async () => {
+        const response = await fetch(`${apiHost}/api/logout`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include'
+        });
+
+        if (!response.ok) {
+            throw new Error('Not authorized');
+        }
+
+        return response.json();
+    });
+
+export const logoutFetchSlice = createSlice(
+    {
+        name: 'logoutFetch',
+        initialState: {
+            isLoading: false,
+        },
+        extraReducers: (builder) => {
+            builder.addCase(executeLogoutFetch.pending, state => {
+                state.isLoading = true;
+            }).addCase(executeLogoutFetch.fulfilled, state => {
+                state.isLoading = false;
+                window.location.href = `/login`;
+            }).addCase(executeLogoutFetch.rejected, state => {
+                state.isLoading = false;
+            })
+        }
+    }
+)
+
 export const executeLoginFetch = createAsyncThunk(
     'loginFetch/executeLoginFetch',
     async (_, {getState}) => {
@@ -52,15 +89,13 @@ export const loginFetchSlice = createSlice(
             builder.addCase(executeLoginFetch.pending, state => {
                 state.isLoading = true;
                 state.notAuthorized = false;
-            }).addCase(executeLoginFetch.fulfilled, (state, action) => {
+            }).addCase(executeLoginFetch.fulfilled, state => {
                 state.isLoading = false;
                 state.notAuthorized = false;
                 window.location.href = `/cms`;
-                console.log('fulfilled login fetch', action.payload);
-            }).addCase(executeLoginFetch.rejected, (state, action) => {
+            }).addCase(executeLoginFetch.rejected, state => {
                 state.isLoading = false;
                 state.notAuthorized = true;
-                console.log('rejected login fetch', action.payload);
             })
         }
     }
@@ -70,7 +105,8 @@ export const {setUsername, setPassword} = loginFormSlice.actions;
 
 const loginReducer = combineReducers({
     loginForm: loginFormSlice.reducer,
-    loginFetch: loginFetchSlice.reducer
+    loginFetch: loginFetchSlice.reducer,
+    logoutFetch: logoutFetchSlice.reducer
 });
 
 export default loginReducer;
