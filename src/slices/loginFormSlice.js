@@ -4,7 +4,7 @@ import {apiHost} from "../apiData";
 export const executeLogoutFetch = createAsyncThunk(
     'loginFetch/executeLogoutFetch',
     async () => {
-        const response = await fetch(`${apiHost}/api/logout`, {
+        const response = await fetch(`${apiHost}/api/user/logout`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -28,9 +28,9 @@ export const logoutFetchSlice = createSlice(
         extraReducers: (builder) => {
             builder.addCase(executeLogoutFetch.pending, state => {
                 state.isLoading = true;
-            }).addCase(executeLogoutFetch.fulfilled, state => {
+            }).addCase(executeLogoutFetch.fulfilled, (state, action) => {
                 state.isLoading = false;
-                window.location.href = `/login`;
+                window.location.href = action.payload.redirectUrl;
             }).addCase(executeLogoutFetch.rejected, state => {
                 state.isLoading = false;
             })
@@ -40,9 +40,9 @@ export const logoutFetchSlice = createSlice(
 
 export const executeLoginFetch = createAsyncThunk(
     'loginFetch/executeLoginFetch',
-    async (_, {getState}) => {
+    async (_, {getState, rejectWithValue}) => {
         const state = getState().login.loginForm;
-        const response = await fetch(`${apiHost}/api/login`, {
+        const response = await fetch(`${apiHost}/api/user/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -54,11 +54,13 @@ export const executeLoginFetch = createAsyncThunk(
             credentials: 'include'
         });
 
+        const data = await response.json();
+
         if (!response.ok) {
-            throw new Error('Not authorized');
+            return rejectWithValue(data);
         }
 
-        return response.json();
+        return data;
     });
 
 export const loginFormSlice = createSlice(
@@ -83,19 +85,21 @@ export const loginFetchSlice = createSlice(
         name: 'loginFetch',
         initialState: {
             isLoading: false,
-            notAuthorized: false
+            notAuthorized: false,
+            errorData: null
         },
         extraReducers: (builder) => {
             builder.addCase(executeLoginFetch.pending, state => {
                 state.isLoading = true;
                 state.notAuthorized = false;
-            }).addCase(executeLoginFetch.fulfilled, state => {
+            }).addCase(executeLoginFetch.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.notAuthorized = false;
-                window.location.href = `/cms`;
-            }).addCase(executeLoginFetch.rejected, state => {
+                window.location.href = action.payload.redirectUrl;
+            }).addCase(executeLoginFetch.rejected, (state, action) => {
                 state.isLoading = false;
                 state.notAuthorized = true;
+                state.errorData = action.payload
             })
         }
     }

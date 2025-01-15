@@ -1,3 +1,13 @@
+export const emailRegex = new RegExp(
+    '^[_a-zA-Z0-9-]+(\\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\\.([a-zA-Z]{2,})$'
+);
+export const passwordRegex = new RegExp(
+    '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\w\\s])(?!.*\\s).{5,60}$'
+);
+export const forenameSurnameRegex = new RegExp(
+    '^[A-Za-z]{2,}$'
+);
+
 export const getInactivityTimeout = () =>{
     return 10 * 60 * 1000;
 }

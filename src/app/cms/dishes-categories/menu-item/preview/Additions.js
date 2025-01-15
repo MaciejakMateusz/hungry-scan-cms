@@ -2,7 +2,7 @@ import React from "react";
 import {useTranslation} from "react-i18next";
 import {useSelector} from "react-redux";
 import {getTranslation} from "../../../../../locales/langUtils";
-import {formatPrice} from "../../../../../utils";
+import {formatPrice} from "../../../../../utils/utils";
 
 export const Additions = () => {
     const {t} = useTranslation();

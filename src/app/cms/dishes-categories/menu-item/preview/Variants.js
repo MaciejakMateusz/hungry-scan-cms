@@ -2,7 +2,7 @@ import React from "react";
 import {useSelector} from "react-redux";
 import {useTranslation} from "react-i18next";
 import {getTranslation} from "../../../../../locales/langUtils";
-import {formatPrice} from "../../../../../utils";
+import {formatPrice} from "../../../../../utils/utils";
 
 export const Variants = () => {
     const {variants} = useSelector(state => state.variants.fetchVariants);

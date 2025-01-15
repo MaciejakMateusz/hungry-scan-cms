@@ -10,9 +10,13 @@ import objectRemovalReducer from "../slices/objectRemovalSlice";
 import filteringReducer from "../slices/filteringSlice";
 import translationsReducer from "../slices/translationsSlice";
 import qrCodesReducer from "../slices/qrCodesSlice";
+import registerReducer from "../slices/registerFormSlice";
+import recoveryReducer from "../slices/recoveryFormSlice";
 
 const rootReducer = combineReducers({
     login: loginReducer,
+    register: registerReducer,
+    recovery: recoveryReducer,
     dishesCategories: dishesCategoriesReducer,
     categoryForm: categoryFormReducer,
     dishForm: dishFormReducer,

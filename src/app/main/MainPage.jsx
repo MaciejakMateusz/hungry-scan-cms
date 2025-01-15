@@ -5,7 +5,7 @@ import {Promo} from "./Promo";
 import {Divider} from "./Divider";
 import {NavMenu} from "./NavMenu";
 
-export const MainPage = () => {
+export const MainPage = ({mode}) => {
 
     useEffect(() => {
         console.log(window.innerWidth)
@@ -20,7 +20,7 @@ export const MainPage = () => {
                 <div className={'main-page-content'}>
                     <Promo/>
                     <Divider/>
-                    <Forms/>
+                    <Forms mode={mode}/>
                 </div>
             </div>
         </>
