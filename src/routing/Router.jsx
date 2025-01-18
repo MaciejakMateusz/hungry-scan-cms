@@ -29,7 +29,7 @@ export const Router = () => {
                 <Route path='/recovery-confirmation' element={<Dialogs activeDialog={'recoveryConfirmation'}/>}/>
                 <Route element={<PrivateRoutes/>}>
                     <Route path='/cms' element={<CmsPage/>}/>
-                    <Route path='/create-restaurant' element={<><p>Stwórz restauracje</p></>}/>
+                    <Route path='/create-restaurant' element={<Forms activeForm={'createRestaurant'}/>}/>
                 </Route>
                 <Route path='*' element={<ErrorPage title={'Nie znaleziono strony'}
                                                     message={'Strona z podanym adresem nie istnieje w tej domenie.'}/>}/>
