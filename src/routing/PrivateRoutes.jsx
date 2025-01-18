@@ -6,6 +6,7 @@ import {LoadingSpinner} from "../app/icons/LoadingSpinner";
 export const PrivateRoutes = () => {
     const location = useLocation();
     const [isAuthorized, setIsAuthorized] = useState(false);
+    const [redirectUrl, setRedirectUrl] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -19,7 +20,7 @@ export const PrivateRoutes = () => {
                     },
                     credentials: 'include'
                 });
-                setIsAuthorized(response.ok)
+                await handleResponse(response);
             } catch {
                 setIsAuthorized(false)
             } finally {
@@ -29,13 +30,29 @@ export const PrivateRoutes = () => {
         authorizeRequest();
     }, [location.pathname]);
 
-    if (isLoading) {
-        return <LoadingSpinner/>;
+    const handleResponse = async response => {
+        console.log("handleResponseR", response)
+        if (response.ok) {
+            console.log("handleResponse-okR", response)
+            setIsAuthorized(true);
+        } else if (response.status === 302) {
+            const body = await response.json();
+            console.log("handleResponse-302R", response)
+            console.log("handleResponse-302B", body)
+            setRedirectUrl(body.redirectUrl);
+        }
     }
 
-    if (isAuthorized) {
-        return <Outlet/>
-    } else {
-        return <Navigate to={"/"}/>
+    if (isLoading) {
+        return (<LoadingSpinner/>);
+    } else if (redirectUrl) {
+        console.log("returns-redirect", redirectUrl)
+        window.location.href = redirectUrl;
+        return;
+    } else if (isAuthorized) {
+        console.log("returns-isAuth", isAuthorized)
+        return (<Outlet/>);
     }
+    console.log("returns-return", "lastReturn to /sign-in")
+    return (<Navigate to={"/sign-in"}/>);
 };

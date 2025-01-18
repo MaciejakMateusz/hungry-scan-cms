@@ -1,26 +1,26 @@
-import React, {useEffect} from "react";
-import {LogoGroup} from "../icons/LogoGroup";
-import {Forms} from "./forms/Forms";
-import {Promo} from "./Promo";
-import {Divider} from "./Divider";
+import React from "react";
 import {NavMenu} from "./NavMenu";
 
-export const MainPage = ({mode}) => {
+export const MainPage = ({activeView}) => {
 
-    useEffect(() => {
-        console.log(window.innerWidth)
-        console.log(window.innerHeight)
-    }, []);
+    const renderActiveView = () => {
+        switch (activeView) {
+            case "home": return (<h1>HOME</h1>);
+            case "ourOffer": return (<h1>OUR OFFER</h1>);
+            case "pricePlans": return (<h1>PRICE PLANS</h1>);
+            case "aboutUs": return (<h1>ABOUT US</h1>);
+            case "contact": return (<h1>CONTACT</h1>);
+            default: return (<h1>HOME</h1>);
+        }
+    }
+
 
     return (
         <>
             <div className={'main-page-grid'}>
-                <LogoGroup/>
                 <NavMenu/>
                 <div className={'main-page-content'}>
-                    <Promo/>
-                    <Divider/>
-                    <Forms mode={mode}/>
+                    {renderActiveView()}
                 </div>
             </div>
         </>

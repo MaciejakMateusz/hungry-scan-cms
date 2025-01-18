@@ -18,6 +18,7 @@ import {
 } from "../../../../utils/passwordValidator";
 import {validateUsername} from "../../../../utils/usernameValidator";
 import {validateForename, validateSurname} from "../../../../utils/forenameSurnameValidator";
+import {BackPurpleIcon} from "../../../icons/BackPurpleIcon";
 
 export const RegisterForm = () => {
     const dispatch = useDispatch();
@@ -45,55 +46,59 @@ export const RegisterForm = () => {
         dispatch(executeRegisterFetch());
     };
 
-
-
     return (
-        <form className={'main-page-login-form'}>
-            <FormField type={'text'}
-                       placeholder={t('forename')}
-                       name={'forename'}
-                       value={forename}
-                       error={errorData?.forename}
-                       hasError={checkForename}
-                       changeHandler={(e) => dispatch(setForename(e.target.value))}/>
-            <FormField type={'text'}
-                       placeholder={t('surname')}
-                       name={'surname'}
-                       value={surname}
-                       error={errorData?.surname}
-                       hasError={checkSurname}
-                       changeHandler={(e) => dispatch(setSurname(e.target.value))}/>
-            <FormField type={'text'}
-                       placeholder={t('email')}
-                       name={'username'}
-                       value={username}
-                       error={errorData?.username}
-                       hasError={checkUsername}
-                       changeHandler={(e) => dispatch(setUsername(e.target.value))}/>
-            <FormField type={'password'}
-                       placeholder={t('password')}
-                       name={'password'}
-                       toggler={() => togglePasswordVisibility('password')}
-                       visible={isPasswordVisible}
-                       value={password}
-                       error={errorData?.password}
-                       hasError={checkPassword}
-                       changeHandler={(e) => dispatch(setPassword(e.target.value))}/>
-            <FormField type={'password'}
-                       placeholder={t('repeatPassword')}
-                       name={'repeatedPassword'}
-                       visible={isPasswordVisible}
-                       value={repeatedPassword}
-                       error={renderRepeatedPasswordMsg(errorData, password, repeatedPassword, t)}
-                       hasError={checkRepeatedPassword}
-                       changeHandler={(e) => dispatch(setRepeatedPassword(e.target.value))}/>
-            <button className={'form-submit-button'} onClick={handleSignUp}>
-                {isLoading ? <LoadingSpinner buttonMode={true}/> : t('registerButton')}
-            </button>
-            <span className={'register-terms-of-use-info'}>
+        <div className={'main-page-dialog'}>
+            <BackPurpleIcon onClick={() => window.location.href = '/sign-in'}/>
+            <h3 className={'register-header'}>{t('signUp')}</h3>
+            <h4 className={'register-subheader'}>Załóż konto w HungryScan</h4>
+            <form className={'main-page-login-form'}>
+                <FormField type={'text'}
+                           placeholder={t('forename')}
+                           name={'forename'}
+                           value={forename}
+                           error={errorData?.forename}
+                           hasError={checkForename}
+                           changeHandler={(e) => dispatch(setForename(e.target.value))}/>
+                <FormField type={'text'}
+                           placeholder={t('surname')}
+                           name={'surname'}
+                           value={surname}
+                           error={errorData?.surname}
+                           hasError={checkSurname}
+                           changeHandler={(e) => dispatch(setSurname(e.target.value))}/>
+                <FormField type={'text'}
+                           placeholder={t('email')}
+                           name={'username'}
+                           value={username}
+                           error={errorData?.username}
+                           hasError={checkUsername}
+                           changeHandler={(e) => dispatch(setUsername(e.target.value))}/>
+                <FormField type={'password'}
+                           placeholder={t('password')}
+                           name={'password'}
+                           toggler={() => togglePasswordVisibility('password')}
+                           visible={isPasswordVisible}
+                           value={password}
+                           error={errorData?.password}
+                           hasError={checkPassword}
+                           changeHandler={(e) => dispatch(setPassword(e.target.value))}/>
+                <FormField type={'password'}
+                           placeholder={t('repeatPassword')}
+                           name={'repeatedPassword'}
+                           toggler={() => togglePasswordVisibility('password')}
+                           visible={isPasswordVisible}
+                           value={repeatedPassword}
+                           error={renderRepeatedPasswordMsg(errorData, password, repeatedPassword, t)}
+                           hasError={checkRepeatedPassword}
+                           changeHandler={(e) => dispatch(setRepeatedPassword(e.target.value))}/>
+                <button className={'form-submit-button'} onClick={handleSignUp}>
+                    {isLoading ? <LoadingSpinner buttonMode={true}/> : t('signUp')}
+                </button>
+                <span className={'register-terms-of-use-info'}>
                 <div>{t('acceptTerms')}</div>
                 <div><a href={'/#'}> {t('termsOfUse')}</a> {t('and')} <a href={'/#'}>{t('privacyPolicy')}</a></div>
             </span>
-        </form>
+            </form>
+        </div>
     );
 }

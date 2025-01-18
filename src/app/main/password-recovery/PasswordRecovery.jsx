@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {executeRecoveryInitFetch, setUsername} from "../../../slices/recoveryFormSlice";
 import {LoadingSpinner} from "../../icons/LoadingSpinner";
 import {validateUsername} from "../../../utils/usernameValidator";
+import {BackPurpleIcon} from "../../icons/BackPurpleIcon";
 
 export const PasswordRecovery = () => {
     const {t} = useTranslation();
@@ -18,21 +19,25 @@ export const PasswordRecovery = () => {
     };
 
     return (
-        <section className={'password-recovery-section'}>
-            <form className={'password-recovery-form'}>
-                <h4 className={"password-recovery-h4"}>Nie pamiętasz hasła?</h4>
-                <p className={"password-recovery-p"}>Wpisz swój e-mail, a my wyślemy Ci link do zmiany hasła.</p>
-                <FormField type={'text'}
-                           placeholder={t('email')}
-                           name={'username'}
-                           value={username}
-                           error={errorData?.username}
-                           validator={() => validateUsername(errorData, username, t)}
-                           changeHandler={(e) => dispatch(setUsername(e.target.value))}/>
-                <button className={'form-submit-button password-recovery'} onClick={handleRecoveryInit}>
-                    {isLoading ? <LoadingSpinner buttonMode={true}/> : t('send')}
-                </button>
-            </form>
-        </section>
+        <div className={'main-page-dialog'}>
+            <BackPurpleIcon onClick={() => window.location.href = '/sign-in'}/>
+            <section className={'password-recovery-section'}>
+                <form>
+                    <h4 className={"password-recovery-h4"}>{t('forgotPassword')}</h4>
+                    <p className={"password-recovery-p"}>{t('forgotPasswordSub')}</p>
+                    <FormField type={'text'}
+                               placeholder={t('email')}
+                               name={'username'}
+                               value={username}
+                               error={errorData?.username}
+                               validator={() => validateUsername(errorData, username, t)}
+                               changeHandler={(e) => dispatch(setUsername(e.target.value))}/>
+                    <button className={'form-submit-button password-recovery'}
+                            onClick={handleRecoveryInit}>
+                        {isLoading ? <LoadingSpinner buttonMode={true}/> : t('send')}
+                    </button>
+                </form>
+            </section>
+        </div>
     );
 }

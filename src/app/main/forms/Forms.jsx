@@ -1,45 +1,30 @@
-import React, {useState} from "react";
-import {LoginRegisterToggle} from "./LoginRegisterToggle";
-import {GoogleIconColor} from "../../icons/GoogleIconColor";
+import React from "react";
 import {LoginForm} from "./login/LoginForm";
 import {RegisterForm} from "./register/RegisterForm";
-import {useTranslation} from "react-i18next";
 import {PasswordRecovery} from "../password-recovery/PasswordRecovery";
 import {NewPassword} from "../password-recovery/NewPassword";
+import {NavMenu} from "../NavMenu";
 
-export const Forms = ({mode}) => {
-    const [activeForm, setActiveForm] = useState('login');
-    const {t} = useTranslation();
+export const Forms = ({activeForm}) => {
 
-    const toggleForm = (formName) => {
-        setActiveForm(formName);
+    const renderActiveForm = () => {
+        switch (activeForm) {
+            case "signIn": return (<LoginForm/>);
+            case "signUp": return (<RegisterForm/>);
+            case "forgotPassword": return (<PasswordRecovery/>);
+            case "newPassword": return (<NewPassword/>);
+            default: return (<LoginForm/>);
+        }
     }
 
-    const renderForms = () => {
-        if (mode === "forgotPassword") {
-            return (<PasswordRecovery/>);
-        } else if (mode === "newPassword") {
-            return (<NewPassword/>);
-        }
-
-        return (
-            <div className={'main-page-forms'}>
-                <div className={'main-page-forms-wrapper'}>
-                    <LoginRegisterToggle toggleForm={toggleForm} activeForm={activeForm}/>
-                    <div className={'use-google-button'}>
-                        <GoogleIconColor/>
-                        <span>{t('useGoogleAccount')}</span>
-                    </div>
-                    <div className={'login-else'}>
-                        <span className={'login-else-line left'}/>
-                        <span>lub</span>
-                        <span className={'login-else-line right'}/>
-                    </div>
-                    {activeForm === 'login' ? <LoginForm/> : <RegisterForm/>}
+    return (
+        <div className={'main-page-grid'}>
+            <NavMenu/>
+            <div className={'main-page-content'}>
+                <div className={'main-page-dialog-wrapper'}>
+                    {renderActiveForm()}
                 </div>
             </div>
-        );
-    }
-
-    return renderForms();
+        </div>
+    );
 }

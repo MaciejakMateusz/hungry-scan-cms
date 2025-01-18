@@ -1,14 +1,14 @@
-::-webkit-scrollbar {
-    width: 8px;
-}
+/*::-webkit-scrollbar {*/
+/*    width: 8px;*/
+/*}*/
 
-::-webkit-scrollbar-track {
-    background: #E2E2E2;
-}
+/*::-webkit-scrollbar-track {*/
+/*    background: #E2E2E2;*/
+/*}*/
 
-::-webkit-scrollbar-thumb {
-    background: #6940C6;
-}
+/*::-webkit-scrollbar-thumb {*/
+/*    background: #6940C6;*/
+/*}*/
 
 *:focus {
     border: none;
@@ -65,7 +65,7 @@ iframe {
     transform: translate(-50%, -50%);
     border-width: 4px;
     border-style: solid;
-    border-color:  rgba(0, 0, 0, 0.2) #FFF #FFF;
+    border-color: rgba(0, 0, 0, 0.2) #FFF #FFF;
     border-image: initial;
     border-radius: 50%;
     width: 0.8rem;
@@ -172,11 +172,11 @@ button {
 }
 
 a {
-    color: #3E424C;
+    color: #6E6E73;
 }
 
 a:visited {
-    color: #3E424C;
+    color: #6E6E73;
 }
 
 a:hover {
@@ -188,97 +188,66 @@ a:hover {
     font-size: 1.1rem;
     display: grid;
     height: 100%;
-    grid-template-rows: 64px 1fr;
+    grid-template-rows: 44px 1fr;
 }
 
 .main-page-menu {
     grid-row: 1;
-    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.15);
     display: flex;
-    padding: 0 16.7vw;
+    padding: 0 8vw;
 }
 
 .main-page-menu-wrapper {
     display: flex;
     align-items: center;
-    justify-content: right;
+    justify-content: space-between;
     width: 100%;
 }
 
 .icon-logo-group {
-    position: fixed;
-    top: 13px;
-    left: 100px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.logo-brand-name {
+    margin-left: 15px;
+    font-weight: 500;
+    font-size: 13px;
 }
 
 .main-page-menu-buttons {
-
+    color: #313131;
+    font-weight: 400;
 }
 
 .main-page-menu-button {
-    padding: 9px 15px;
-    border-radius: 100px;
+    padding: 9px 20px;
     align-items: center;
     text-align: center;
     margin-right: 5px;
+    font-size: 12px;
 }
 
-.main-page-menu-button.active {
-    margin-left: 8px;
-    font-size: 1rem;
-    font-weight: 350;
-    background: #9746FF;
-    color: #FFFFFF;
+.main-page-login-button {
+    font-size: 12px;
+    margin-left: 10px;
+    color: #313131;
+}
+
+.main-page-login-button-group {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
 }
 
 .main-page-content {
     grid-row: 2;
-    display: grid;
-    grid-template-columns: 48% 4% 48%;
-    padding: 30px 16.7vw 0 16.7vw;
-}
-
-.main-page-promo {
-    grid-column: 1;
-    display: flex;
-    justify-content: right;
-    align-items: center;
-    padding-right: 15px;
-}
-
-.promo-wrapper {
-}
-
-.promo-header {
-    display: block;
-    font-size: 2.9rem;
-    font-weight: 500;
-    line-height: 4.1rem;
-    margin-bottom: 40px;
-}
-
-.icon-lightning {
-    margin-right: 10px;
-}
-
-.promo-slogan {
-    display: flex;
-    align-items: center;
-    font-size: 1.5rem;
-    margin-bottom: 5px;
-}
-
-.main-page-middle-divider-wrapper {
-    grid-column: 2;
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.main-page-middle-divider {
-    width: 1px;
-    height: 412px;
-    background: #D9D9D9;
+    background: #F5F5F7;
+    padding: 30px;
 }
 
 .main-page-forms {
@@ -286,11 +255,6 @@ a:hover {
     justify-content: right;
     padding-left: 60px;
     padding-top: 8vh;
-}
-
-.main-page-forms-wrapper {
-    grid-column: 3;
-    width: 100%;
 }
 
 .form-mode {
@@ -364,7 +328,7 @@ a:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 16px 0;
+    margin: 50px 0 20px 0;
     font-weight: 300;
     color: #191D25;
     font-size: 0.9rem;
@@ -373,7 +337,7 @@ a:hover {
 .login-else-line {
     width: 60px;
     height: 1px;
-    background: #1F242D;
+    background: #E2E3E3;
 }
 
 .login-else-line.left {
@@ -384,19 +348,70 @@ a:hover {
     margin-left: 20px;
 }
 
+.main-page-dialog-wrapper {
+    width: 400px;
+    height: fit-content;
+    background: #FFF;
+    border-radius: 20px;
+}
+
+.main-page-dialog {
+    position: relative;
+    padding: 32px 60px;
+}
+
+.main-page-dialog-h4 {
+    font-size: 26px;
+    margin: 20px 0 0 0;
+}
+
+.main-page-dialog-p {
+    color: #6E6E73;
+    font-weight: 300;
+}
+
+.main-page-dialog-wrapper.info {
+    width: 480px;
+}
+
 .main-page-login-form {
+    margin-top: 48px;
+    width: 100%;
+    height: 100%;
 }
 
 .main-page-register-form {
     display: none;
 }
 
+.back-purple-icon {
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.register-header {
+    color: #1D1D1F;
+    font-size: 26px;
+    font-weight: 500;
+    margin: 40px 0 8px 0;
+}
+
+.register-subheader {
+    color: #6E6E73;
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0;
+}
+
 .form-input-wrapper {
     position: relative;
     width: 100%;
     height: 40px;
-    border: 1px solid #DFE1E5;
-    border-radius: 5px;
+    background: #F9F9F9;
+    border-radius: 10px;
     margin-bottom: 12px;
     display: flex;
     justify-content: left;
@@ -420,9 +435,10 @@ a:hover {
     height: 100%;
     width: 100%;
     border: none;
-    border-radius: 5px;
-    padding: 0 22px;
-    color: #1F242D;
+    border-radius: 10px;
+    background: #F9F9F9;
+    padding: 0 18px;
+    color: #6E6E73;
     font-size: 1rem;
     font-weight: 300;
     letter-spacing: 0.5px;
@@ -433,18 +449,23 @@ a:hover {
     padding: 0 12px 0 22px;
 }
 
-.form-field-top-placeholder {
+.form-field-top-placeholder-wrapper {
+    padding: 2px 5px;
+    border-radius: 20%;
+    background: #FFF;
     position: absolute;
     top: -8px;
-    left: 22px;
-    font-size: 0.8rem;
-    font-weight: 300;
-    padding: 1px;
-    background: #FFF;
+    left: 16px;
 }
 
-.form-field-top-placeholder.hidden {
+.form-field-top-placeholder-wrapper.hidden {
     display: none;
+}
+
+.form-field-top-placeholder {
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: #6E6E73;
 }
 
 .main-page-form-field:focus::placeholder {
@@ -452,8 +473,15 @@ a:hover {
 }
 
 .main-page-form-field::placeholder {
-    color: #1F242D;
+    color: #6E6E73;
     font-weight: 300;
+    font-size: 11px;
+}
+
+.pass-reminder {
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .pass-reminder-link {
@@ -467,16 +495,23 @@ a:hover {
 }
 
 .form-submit-button {
-    width: 57%;
-    height: 45px;
-    border-radius: 100px;
+    width: 100%;
+    height: 40px;
+    border-radius: 10px;
     background: #9746FF;
     display: flex;
     justify-content: center;
     align-items: center;
     color: #FFF;
     justify-self: center;
-    margin-bottom: 24px;
+    margin: 20px 0 24px 0;
+    font-size: 13px;
+    font-weight: 300;
+}
+
+.form-submit-button.register-redirect {
+    background: #F5EDFF;
+    color: #9746FF;
 }
 
 .form-submit-button.password-recovery {
@@ -487,6 +522,7 @@ a:hover {
     text-align: center;
     font-size: 0.9rem;
     font-weight: 300;
+    color: #6E6E73;
 }
 
 .login-validation-msg {
@@ -515,30 +551,17 @@ a:hover {
     justify-content: center;
 }
 
-.password-recovery-form {
-    padding-left: 60px;
-}
-
 .password-recovery-h4 {
-    font-size: 1.5rem;
-    font-weight: 400;
-    text-align: center;
+    font-size: 2rem;
+    font-weight: 500;
+    margin: 30px 0 10px 0;
 }
 
 .password-recovery-p {
-    font-weight: 300;
-    text-align: center;
-}
-
-.register-confirmation-thanks-wrapper {
-    grid-column: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.register-confirmation-thanks {
-    text-align: left;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #6E6E73;
+    margin: 0 5px 15px 0;
 }
 
 .confirmation-image-wrapper {
@@ -579,13 +602,14 @@ a:hover {
 .repeat-password-recovery {
     text-align: center;
     font-weight: 300;
-    padding-bottom: 51px;
+    padding-top: 50px;
+    color: #6E6E73;
 }
 
 .activation-resend {
     text-align: center;
     font-weight: 300;
-    padding-bottom: 51px;
+    padding-top: 50px;
     color: #6EC191;
 }
 
@@ -596,7 +620,6 @@ a:hover {
 /* Main Page Styles END */
 
 /* Login Styles */
-
 
 
 /* Login Styles END */

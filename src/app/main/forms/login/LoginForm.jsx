@@ -67,26 +67,43 @@ export const LoginForm = () => {
     }
 
     return (
-        <form className={'main-page-login-form'}>
-            <FormField type={'text'}
-                       placeholder={t('typeEmail')}
-                       name={'username'}
-                       value={username}
-                       changeHandler={(e) => dispatch(setUsername(e.target.value))}/>
-            <FormField type={'password'}
-                       placeholder={t('typePassword')}
-                       name={'password'}
-                       value={password}
-                       toggler={togglePasswordVisibility}
-                       visible={isPasswordVisible}
-                       changeHandler={(e) => dispatch(setPassword(e.target.value))}/>
-            <span className={'pass-reminder-link'}>
-                                    <a href={'/password-recovery'}>{t('recoverPassword')}</a>
-                                </span>
-            <button className={'form-submit-button'} onClick={handleSignIn}>
-                {isLoading ? <LoadingSpinner buttonMode={true}/> : t('logInButton')}
+        <div className={'main-page-dialog'}>
+            <h3 className={'register-header'}>{t('signIn')}</h3>
+            <h4 className={'register-subheader'}>{t('signInSub')}</h4>
+            <form className={'main-page-login-form'}>
+                <FormField type={'text'}
+                           placeholder={t('typeEmail')}
+                           name={'username'}
+                           value={username}
+                           changeHandler={(e) => dispatch(setUsername(e.target.value))}/>
+                <FormField type={'password'}
+                           placeholder={t('typePassword')}
+                           name={'password'}
+                           value={password}
+                           toggler={togglePasswordVisibility}
+                           visible={isPasswordVisible}
+                           changeHandler={(e) => dispatch(setPassword(e.target.value))}/>
+                <button className={'form-submit-button'}
+                        onClick={handleSignIn}>
+                    {isLoading ? <LoadingSpinner buttonMode={true}/> : t('logInButton')}
+                </button>
+                {renderMessage()}
+            </form>
+            <div className={'login-else'}>
+                <span className={'login-else-line left'}/>
+                <span>lub</span>
+                <span className={'login-else-line right'}/>
+            </div>
+            <button className={'form-submit-button register-redirect'}
+                    onClick={() => window.location.href = '/sign-up'}>
+                {t('signUp')}
             </button>
-            {renderMessage()}
-        </form>
+            <div className={'pass-reminder'}>
+                <span className={'pass-reminder-link'}>
+                    <a href={'/password-recovery'}>{t('loginProblems')}</a>
+                </span>
+            </div>
+
+        </div>
     );
 }

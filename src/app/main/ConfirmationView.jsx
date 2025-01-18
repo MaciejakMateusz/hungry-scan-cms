@@ -1,19 +1,13 @@
 import React from "react";
-import {LogoGroup} from "../icons/LogoGroup";
-import {NavMenu} from "./NavMenu";
 import {useTranslation} from "react-i18next";
 
 export const ConfirmationView = (props) => {
     const {t} = useTranslation();
 
-    const goToLogin = () => {
-        window.location.href = '/';
-    }
-
     const renderResendLink = () => {
-        if(!props.link) {
+        if (!props.link) {
             return (<></>);
-        } else if(props.resend) {
+        } else if (props.resend) {
             return (
                 <div className={'activation-resend'}>
                     {t('resendActivation')}
@@ -28,24 +22,17 @@ export const ConfirmationView = (props) => {
     }
 
     return (
-        <div className={'main-page-grid'}>
-            <LogoGroup/>
-            <NavMenu/>
-            <div className={'main-page-content'}>
-                <div className={'register-confirmation-thanks-wrapper'}>
-                    <div className={'register-confirmation-thanks'}>
-                        <h4 className={'promo-header'}>{props.h4}</h4>
-                        <p style={{fontWeight: '300'}}>{props.p}
-                        </p>
-                        {(!props.skipLoginBtn) &&
-                            <div className={'go-login-btn-wrapper'}>
-                                <button className={'go-login-btn'} onClick={() => goToLogin()}>{t('goToLogin')}</button>
-                            </div>
-                        }
-                    </div>
+        <div className={'main-page-dialog info'}>
+            <h4 className={'main-page-dialog-h4'}>{props.h4}</h4>
+            <p className={'main-page-dialog-p'}>{props.p}</p>
+            {(!props.skipLoginBtn) &&
+                <div className={'go-login-btn-wrapper'}>
+                    <button className={'form-submit-button'}
+                            onClick={() => window.location.href = '/sign-in'}>
+                        {t('goToLogin')}
+                    </button>
                 </div>
-                {props.image()}
-            </div>
+            }
             {renderResendLink()}
         </div>
     );

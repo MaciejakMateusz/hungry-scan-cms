@@ -21,6 +21,10 @@ export const getCookie = cookieName => {
     return cookie[cookieName];
 }
 
+export const removeCookie = cookieName => {
+    document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`
+}
+
 export const formatCurrency = (value) => {
     if (!value) return '';
     const parts = value.split('.');

@@ -22,8 +22,11 @@ export const FormField = React.memo(function FormField(props) {
     return (
         <>
             <div className={`form-input-wrapper ${props.hasError ? 'invalid' : ''}`}>
-                <span
-                    className={`form-field-top-placeholder ${topPlaceholder ? '' : 'hidden'}`}>{props.placeholder}</span>
+                <div className={`form-field-top-placeholder-wrapper ${topPlaceholder ? '' : 'hidden'}`}>
+                    <span className={'form-field-top-placeholder'}>
+                        {props.placeholder}
+                    </span>
+                </div>
                 <input type={props.visible ? 'text' : props.type}
                        className={`main-page-form-field ${props.type === 'password' ? 'password' : ''}`}
                        placeholder={props.placeholder}
