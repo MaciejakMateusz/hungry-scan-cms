@@ -12,6 +12,7 @@ import translationsReducer from "../slices/translationsSlice";
 import qrCodesReducer from "../slices/qrCodesSlice";
 import registerReducer from "../slices/registerFormSlice";
 import recoveryReducer from "../slices/recoveryFormSlice";
+import createRestaurantReducer from "../slices/createRestaurantSlice";
 
 const rootReducer = combineReducers({
     login: loginReducer,
@@ -26,7 +27,8 @@ const rootReducer = combineReducers({
     objRemoval: objectRemovalReducer,
     filtering: filteringReducer,
     translations: translationsReducer,
-    qrCodes: qrCodesReducer
+    qrCodes: qrCodesReducer,
+    createRestaurant: createRestaurantReducer
 })
 
 export const store = configureStore({

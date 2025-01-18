@@ -2,18 +2,41 @@ import React from "react";
 import {FormField} from "./forms/FormField";
 import {LoadingSpinner} from "../icons/LoadingSpinner";
 import {useTranslation} from "react-i18next";
-import {executeRegisterFetch} from "../../slices/registerFormSlice";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {
+    executeCreateRestaurantFetch,
+    setAddress,
+    setCity,
+    setName,
+    setPostalCode
+} from "../../slices/createRestaurantSlice";
+import {CreateFirstRestaurantInit} from "./CreateFirstRestaurantInit";
 
 export const CreateFirstRestaurant = () => {
     const dispatch = useDispatch();
     const {t} = useTranslation();
-    const isLoading = '';
+    const {
+        initialized,
+        name,
+        address,
+        postalCode,
+        city
+    } = useSelector(state => state.createRestaurant.createRestaurantForm)
+    const {isLoading, errorData} = useSelector(state => state.createRestaurant.createRestaurantFetch)
+    const checkName = errorData?.name && name.length === 0;
+    const checkAddress = errorData?.address && address.length === 0;
+    const checkPostalCode = errorData?.postalCode && postalCode.length === 0;
+    const checkCity = errorData?.city && city.length === 0;
 
-    const handleSignUp = (e) => {
+    const handleCreateRestaurantFetch = (e) => {
         e.preventDefault();
-        dispatch(executeRegisterFetch());
+        dispatch(executeCreateRestaurantFetch());
     };
+
+
+    if (!initialized) {
+        return (<CreateFirstRestaurantInit/>);
+    }
 
     return (
         <section className={'create-restaurant-view'}>
@@ -24,17 +47,33 @@ export const CreateFirstRestaurant = () => {
                     <form className={'main-page-login-form'}>
                         <FormField type={'text'}
                                    placeholder={t('restaurantName')}
-                                   name={'forename'}/>
+                                   name={'name'}
+                                   value={name}
+                                   error={errorData?.name}
+                                   hasError={checkName}
+                                   changeHandler={(e) => dispatch(setName(e.target.value))}/>
                         <FormField type={'text'}
                                    placeholder={t('address')}
-                                   name={'surname'}/>
+                                   name={'address'}
+                                   value={address}
+                                   error={errorData?.address}
+                                   hasError={checkAddress}
+                                   changeHandler={(e) => dispatch(setAddress(e.target.value))}/>
                         <FormField type={'text'}
                                    placeholder={t('postalCode')}
-                                   name={'username'}/>
-                        <FormField type={'password'}
+                                   name={'postalCode'}
+                                   value={postalCode}
+                                   error={errorData?.postalCode}
+                                   hasError={checkPostalCode}
+                                   changeHandler={(e) => dispatch(setPostalCode(e.target.value))}/>
+                        <FormField type={'text'}
                                    placeholder={t('city')}
-                                   name={'password'}/>
-                        <button className={'form-submit-button'} onClick={handleSignUp}>
+                                   name={'city'}
+                                   value={city}
+                                   error={errorData?.city}
+                                   hasError={checkCity}
+                                   changeHandler={(e) => dispatch(setCity(e.target.value))}/>
+                        <button className={'form-submit-button'} onClick={handleCreateRestaurantFetch}>
                             {isLoading ? <LoadingSpinner buttonMode={true}/> : t('create')}
                         </button>
                     </form>
@@ -45,4 +84,5 @@ export const CreateFirstRestaurant = () => {
             </div>
         </section>
     );
+
 }

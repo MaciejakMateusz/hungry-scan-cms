@@ -31,14 +31,10 @@ export const PrivateRoutes = () => {
     }, [location.pathname]);
 
     const handleResponse = async response => {
-        console.log("handleResponseR", response)
         if (response.ok) {
-            console.log("handleResponse-okR", response)
             setIsAuthorized(true);
         } else if (response.status === 302) {
             const body = await response.json();
-            console.log("handleResponse-302R", response)
-            console.log("handleResponse-302B", body)
             setRedirectUrl(body.redirectUrl);
         }
     }
@@ -46,13 +42,10 @@ export const PrivateRoutes = () => {
     if (isLoading) {
         return (<LoadingSpinner/>);
     } else if (redirectUrl) {
-        console.log("returns-redirect", redirectUrl)
         window.location.href = redirectUrl;
         return;
     } else if (isAuthorized) {
-        console.log("returns-isAuth", isAuthorized)
         return (<Outlet/>);
     }
-    console.log("returns-return", "lastReturn to /sign-in")
     return (<Navigate to={"/sign-in"}/>);
 };

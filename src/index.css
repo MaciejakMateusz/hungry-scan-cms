@@ -360,6 +360,11 @@ a:hover {
     padding: 32px 60px;
 }
 
+.main-page-dialog.create-restaurant {
+    position: relative;
+    padding: 32px 60px 50px 65px;
+}
+
 .main-page-dialog-h4 {
     font-size: 26px;
     margin: 20px 0 0 0;
@@ -372,6 +377,10 @@ a:hover {
 
 .main-page-dialog-wrapper.info {
     width: 480px;
+}
+
+.main-page-dialog-wrapper.create-restaurant {
+    width: fit-content;
 }
 
 .main-page-login-form {
@@ -516,6 +525,11 @@ a:hover {
 
 .form-submit-button.password-recovery {
     margin-top: 25px;
+}
+
+.form-submit-button.create-restaurant {
+    margin-top: 60px;
+    width: 75%;
 }
 
 .register-terms-of-use-info {

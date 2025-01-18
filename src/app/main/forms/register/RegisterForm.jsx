@@ -98,9 +98,7 @@ export const RegisterForm = () => {
                 <span className={'register-terms-of-use-info'}>
                     <div>{t('acceptTerms')}</div>
                     <div>
-                        <a href={'/#'}> {t('termsOfUse')}</a>
-                        {t('and')}
-                        <a href={'/#'}>{t('privacyPolicy')}</a>
+                        <a href={'/#'}> {t('termsOfUse')}</a> {t('and')} <a href={'/#'}>{t('privacyPolicy')}</a>
                     </div>
                 </span>
 
