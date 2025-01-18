@@ -7,6 +7,7 @@ import {CmsPage} from "../app/cms/CmsPage";
 import {MainPage} from "../app/main/MainPage";
 import {Forms} from "../app/main/forms/Forms";
 import {Dialogs} from "../app/main/Dialogs";
+import {CreateFirstRestaurant} from "../app/main/CreateFirstRestaurant";
 
 export const Router = () => {
     //todo do obsługi ścieżka activation-error
@@ -29,7 +30,7 @@ export const Router = () => {
                 <Route path='/recovery-confirmation' element={<Dialogs activeDialog={'recoveryConfirmation'}/>}/>
                 <Route element={<PrivateRoutes/>}>
                     <Route path='/cms' element={<CmsPage/>}/>
-                    <Route path='/create-restaurant' element={<Forms activeForm={'createRestaurant'}/>}/>
+                    <Route path='/create-restaurant' element={<CreateFirstRestaurant/>}/>
                 </Route>
                 <Route path='*' element={<ErrorPage title={'Nie znaleziono strony'}
                                                     message={'Strona z podanym adresem nie istnieje w tej domenie.'}/>}/>

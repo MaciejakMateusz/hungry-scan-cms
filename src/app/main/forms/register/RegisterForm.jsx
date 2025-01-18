@@ -28,7 +28,8 @@ export const RegisterForm = () => {
         surname,
         username,
         password,
-        repeatedPassword} = useSelector(state => state.register.registerForm);
+        repeatedPassword
+    } = useSelector(state => state.register.registerForm);
     const {isLoading, errorData} = useSelector(state => state.register.registerFetch);
     const {t} = useTranslation();
     const checkForename = validateForename(errorData, forename, t);
@@ -50,7 +51,7 @@ export const RegisterForm = () => {
         <div className={'main-page-dialog'}>
             <BackPurpleIcon onClick={() => window.location.href = '/sign-in'}/>
             <h3 className={'register-header'}>{t('signUp')}</h3>
-            <h4 className={'register-subheader'}>Załóż konto w HungryScan</h4>
+            <h4 className={'register-subheader'}>{t('signUpHc')}</h4>
             <form className={'main-page-login-form'}>
                 <FormField type={'text'}
                            placeholder={t('forename')}
@@ -95,9 +96,14 @@ export const RegisterForm = () => {
                     {isLoading ? <LoadingSpinner buttonMode={true}/> : t('signUp')}
                 </button>
                 <span className={'register-terms-of-use-info'}>
-                <div>{t('acceptTerms')}</div>
-                <div><a href={'/#'}> {t('termsOfUse')}</a> {t('and')} <a href={'/#'}>{t('privacyPolicy')}</a></div>
-            </span>
+                    <div>{t('acceptTerms')}</div>
+                    <div>
+                        <a href={'/#'}> {t('termsOfUse')}</a>
+                        {t('and')}
+                        <a href={'/#'}>{t('privacyPolicy')}</a>
+                    </div>
+                </span>
+
             </form>
         </div>
     );
