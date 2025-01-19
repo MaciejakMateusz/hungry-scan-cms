@@ -158,6 +158,30 @@ iframe {
     cursor: pointer;
 }
 
+.standalone-error-view {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #F5F5F7;
+}
+
+.error-code {
+    grid-row: 1;
+    font-size: 6.5rem;
+    color: #1D1D1F;
+    font-weight: 600;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.main-page-dialog-wrapper.error {
+    grid-row: 2;
+    width: 480px;
+}
+
 /* ---- END -----*/
 
 button, input, select, textarea {
@@ -349,10 +373,19 @@ a:hover {
 }
 
 .main-page-dialog-wrapper {
-    width: 400px;
+    max-width: 519px;
+    min-width: 400px;
     height: fit-content;
     background: #FFF;
     border-radius: 20px;
+}
+
+.main-page-dialog-wrapper.info {
+    width: 450px;
+}
+
+.main-page-dialog-wrapper.create-restaurant {
+    width: fit-content;
 }
 
 .main-page-dialog {
@@ -368,19 +401,12 @@ a:hover {
 .main-page-dialog-h4 {
     font-size: 26px;
     margin: 20px 0 0 0;
+    font-weight: 500;
 }
 
 .main-page-dialog-p {
     color: #6E6E73;
-    font-weight: 300;
-}
-
-.main-page-dialog-wrapper.info {
-    width: 480px;
-}
-
-.main-page-dialog-wrapper.create-restaurant {
-    width: fit-content;
+    font-weight: 500;
 }
 
 .main-page-login-form {
@@ -424,7 +450,12 @@ a:hover {
     margin-bottom: 12px;
     display: flex;
     justify-content: left;
+    justify-self: center;
     align-items: center;
+}
+
+.form-input-wrapper.short {
+    width: 70%;
 }
 
 .form-input-wrapper.repeated-password {
@@ -523,13 +554,22 @@ a:hover {
     color: #9746FF;
 }
 
-.form-submit-button.password-recovery {
+.form-submit-button.confirmation {
+    width: 80%;
+}
+
+.form-submit-button.short {
+    width: 70%;
     margin-top: 25px;
 }
 
 .form-submit-button.create-restaurant {
     margin-top: 60px;
-    width: 75%;
+    width: 80%;
+}
+
+.form-submit-button.error {
+    width: 80%;
 }
 
 .register-terms-of-use-info {
@@ -551,12 +591,16 @@ a:hover {
     text-align: center;
 }
 
-.register-validation-msg {
+.form-validation-msg {
     font-size: 0.9rem;
     font-weight: 300;
     color: #EC5858;
     padding: 3px 0 7px 22px;
     display: block;
+}
+
+.form-validation-msg.short {
+    padding: 3px 0 7px 77px;
 }
 
 .password-recovery-section {
@@ -598,7 +642,7 @@ a:hover {
 .go-login-btn-wrapper {
     width: 100%;
     display: flex;
-    justify-content: left;
+    justify-content: center;
 }
 
 .go-login-btn {

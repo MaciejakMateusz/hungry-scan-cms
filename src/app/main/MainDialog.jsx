@@ -1,7 +1,7 @@
 import React from "react";
 import {useTranslation} from "react-i18next";
 
-export const ConfirmationView = (props) => {
+export const MainDialog = (props) => {
     const {t} = useTranslation();
 
     const renderResendLink = () => {
@@ -22,12 +22,12 @@ export const ConfirmationView = (props) => {
     }
 
     return (
-        <div className={'main-page-dialog info'}>
+        <div className={'main-page-dialog'}>
             <h4 className={'main-page-dialog-h4'}>{props.h4}</h4>
             <p className={'main-page-dialog-p'}>{props.p}</p>
             {(!props.skipLoginBtn) &&
                 <div className={'go-login-btn-wrapper'}>
-                    <button className={'form-submit-button'}
+                    <button className={'form-submit-button confirmation'}
                             onClick={() => window.location.href = '/sign-in'}>
                         {t('goToLogin')}
                     </button>

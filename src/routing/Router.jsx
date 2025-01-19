@@ -9,8 +9,11 @@ import {Forms} from "../app/main/forms/Forms";
 import {Dialogs} from "../app/main/Dialogs";
 import {CreateFirstRestaurant} from "../app/main/CreateFirstRestaurant";
 import {Dashboard} from "../app/dashboard/Dashboard";
+import {useTranslation} from "react-i18next";
+import {AnonymousRoutes} from "./AnonymousRoutes";
 
 export const Router = () => {
+    const {t} = useTranslation();
     //todo do obsługi ścieżka activation-error
     return (
         <BrowserRouter>
@@ -20,22 +23,25 @@ export const Router = () => {
                 <Route path='/price-plans' element={<MainPage activeView={'pricePlans'}/>}/>
                 <Route path='/about-us' element={<MainPage activeView={'aboutUs'}/>}/>
                 <Route path='/contact' element={<MainPage activeView={'contact'}/>}/>
-                <Route path='/sign-in' element={<Forms activeForm={'signIn'}/>}/>
-                <Route path='/sign-up' element={<Forms activeForm={'signUp'}/>}/>
-                <Route path='/password-recovery' element={<Forms activeForm={"forgotPassword"}/>}/>
-                <Route path='/new-password' element={<Forms activeForm={"newPassword"}/>}/>
-                <Route path='/activation' element={<Dialogs activeDialog={'activation'}/>}/>
-                <Route path='/activation-error' element={<p>Wystąpił błąd przy aktywacji konta</p>}/>
-                <Route path='/account-activated' element={<Dialogs activeDialog={'accountActivated'}/>}/>
-                <Route path='/recovery-sent' element={<Dialogs activeDialog={'recoverySent'}/>}/>
-                <Route path='/recovery-confirmation' element={<Dialogs activeDialog={'recoveryConfirmation'}/>}/>
+                <Route element={<AnonymousRoutes/>}>
+                    <Route path='/activation' element={<Dialogs activeDialog={'activation'}/>}/>
+                    <Route path='/activation-error' element={<Forms activeForm={'activationError'}/>}/>
+                    <Route path='/account-activated' element={<Dialogs activeDialog={'accountActivated'}/>}/>
+                    <Route path='/sign-in' element={<Forms activeForm={'signIn'}/>}/>
+                    <Route path='/sign-up' element={<Forms activeForm={'signUp'}/>}/>
+                    <Route path='/password-recovery' element={<Forms activeForm={"forgotPassword"}/>}/>
+                    <Route path='/new-password' element={<Forms activeForm={"newPassword"}/>}/>
+                    <Route path='/recovery-sent' element={<Dialogs activeDialog={'recoverySent'}/>}/>
+                    <Route path='/recovery-confirmation' element={<Dialogs activeDialog={'recoveryConfirmation'}/>}/>
+                </Route>
                 <Route element={<PrivateRoutes/>}>
                     <Route path='/cms' element={<CmsPage/>}/>
                     <Route path='/dashboard' element={<Dashboard/>}/>
                     <Route path='/create-restaurant' element={<CreateFirstRestaurant/>}/>
                 </Route>
-                <Route path='*' element={<ErrorPage title={'Nie znaleziono strony'}
-                                                    message={'Strona z podanym adresem nie istnieje w tej domenie.'}/>}/>
+                <Route path='*' element={<ErrorPage code={'404'}
+                                                    h4={t('oops')}
+                                                    p={t('pageNotFound')}/>}/>
             </Routes>
         </BrowserRouter>
     )
