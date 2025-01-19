@@ -1,7 +1,7 @@
 import {useEffect, useState, useRef} from 'react';
 import {useDispatch} from 'react-redux';
 import {executeLogoutFetch} from "../slices/loginFormSlice";
-import {getInactivityTimeout} from "../utils";
+import {getInactivityTimeout} from "../utils/utils";
 
 export const useInactivityTimeout = (timeout) => {
     const [isActive, setIsActive] = useState(true);

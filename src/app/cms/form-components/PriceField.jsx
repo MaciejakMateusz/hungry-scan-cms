@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
-import {formatPrice} from "../../../utils";
+import {formatPrice} from "../../../utils/utils";
 
 export const PriceField = (props) => {
     const {t} = useTranslation();

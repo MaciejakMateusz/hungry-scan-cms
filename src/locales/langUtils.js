@@ -1,5 +1,5 @@
 import i18n from "i18next";
-import {getCookie} from "../utils";
+import {getCookie} from "../utils/utils";
 
 export const getTranslation = (obj) => {
     const lngCookie = getCookie('lng')

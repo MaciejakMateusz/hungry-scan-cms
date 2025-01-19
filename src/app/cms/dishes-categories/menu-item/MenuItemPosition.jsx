@@ -2,7 +2,7 @@ import React, {Fragment} from "react";
 import {imagesPath} from "../../../../apiData";
 import {PlaceholderImgIcon} from "../../../icons/PlaceholderImgIcon";
 import {getTranslation} from "../../../../locales/langUtils";
-import {formatPrice} from "../../../../utils";
+import {formatPrice} from "../../../../utils/utils";
 import {Tooltip} from "../../Tooltip";
 import {ReactSVG} from "react-svg";
 import {EditIconNew} from "../../../icons/EditIconNew";

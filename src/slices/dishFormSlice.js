@@ -1,6 +1,6 @@
 import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
-import {formatPrice} from "../utils";
+import {formatPrice} from "../utils/utils";
 import {getTranslation} from "../locales/langUtils";
 
 export const postImage = createAsyncThunk(
