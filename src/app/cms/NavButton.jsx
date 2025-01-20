@@ -1,11 +1,10 @@
 import React from "react";
 
-export const NavButton = ({name, isActive, onClick}) => {
-
+export const NavButton = (props) => {
     return (
-        <li className={'cms-nav-li'}>
-            <button className={`cms-nav-btn ${isActive ? 'nav-active' : ''}`} onClick={onClick}>
-                {name}
+        <li className={'app-nav-li'} onMouseOver={() => props.setHovered(true)} onMouseLeave={() => props.setHovered(false)}>
+            <button className={`app-nav-btn ${props.isActive ? 'nav-active' : ''}`} onClick={props.onClick}>
+                {props.icon}{props.name}
             </button>
         </li>
     );

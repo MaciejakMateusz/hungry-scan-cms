@@ -14,6 +14,7 @@ import registerReducer from "../slices/registerFormSlice";
 import recoveryReducer from "../slices/recoveryFormSlice";
 import createRestaurantReducer from "../slices/createRestaurantSlice";
 import reactivateReducer from "../slices/reactivateFormSlice";
+import globalParamsReducer from "../slices/globalParamsSlice";
 
 const rootReducer = combineReducers({
     login: loginReducer,
@@ -30,7 +31,8 @@ const rootReducer = combineReducers({
     translations: translationsReducer,
     qrCodes: qrCodesReducer,
     createRestaurant: createRestaurantReducer,
-    reactivate: reactivateReducer
+    reactivate: reactivateReducer,
+    globalParams: globalParamsReducer
 })
 
 export const store = configureStore({

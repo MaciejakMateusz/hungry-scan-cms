@@ -3,7 +3,7 @@ import '../index.css'
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import {PrivateRoutes} from "./PrivateRoutes";
 import {ErrorPage} from "../app/error/ErrorPage";
-import {CmsPage} from "../app/cms/CmsPage";
+import {Cms} from "../app/cms/Cms";
 import {MainPage} from "../app/main/MainPage";
 import {Forms} from "../app/main/forms/Forms";
 import {Dialogs} from "../app/main/Dialogs";
@@ -35,7 +35,7 @@ export const Router = () => {
                     <Route path='/recovery-confirmation' element={<Dialogs activeDialog={'recoveryConfirmation'}/>}/>
                 </Route>
                 <Route element={<PrivateRoutes/>}>
-                    <Route path='/cms' element={<CmsPage/>}/>
+                    <Route path='/cms' element={<Cms/>}/>
                     <Route path='/dashboard' element={<Dashboard/>}/>
                     <Route path='/create-restaurant' element={<CreateFirstRestaurant/>}/>
                 </Route>
