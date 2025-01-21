@@ -101,7 +101,6 @@ export const RegisterForm = () => {
                         <a href={'/#'}> {t('termsOfUse')}</a> {t('and')} <a href={'/#'}>{t('privacyPolicy')}</a>
                     </div>
                 </span>
-
             </form>
         </div>
     );

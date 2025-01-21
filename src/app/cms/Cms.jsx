@@ -1,14 +1,14 @@
 import React from "react";
-import {CmsNavigation} from "./CmsNavigation";
+import {CmsNav} from "./CmsNav";
 import {useInactivityTimeout} from "../../hooks/useInactivityTimeout";
 import {getInactivityTimeout} from "../../utils/utils";
 
-export const CmsPage = () => {
+export const Cms = () => {
     useInactivityTimeout(getInactivityTimeout);
 
     return (
-        <div className={'cms-grid'}>
-            <CmsNavigation/>
+        <div className={'app-grid'}>
+            <CmsNav/>
         </div>
     );
 }

@@ -158,6 +158,30 @@ iframe {
     cursor: pointer;
 }
 
+.standalone-error-view {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #F5F5F7;
+}
+
+.error-code {
+    grid-row: 1;
+    font-size: 6.5rem;
+    color: #1D1D1F;
+    font-weight: 600;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.main-page-dialog-wrapper.error {
+    grid-row: 2;
+    width: 480px;
+}
+
 /* ---- END -----*/
 
 button, input, select, textarea {
@@ -349,10 +373,19 @@ a:hover {
 }
 
 .main-page-dialog-wrapper {
-    width: 400px;
+    max-width: 519px;
+    min-width: 400px;
     height: fit-content;
     background: #FFF;
     border-radius: 20px;
+}
+
+.main-page-dialog-wrapper.info {
+    width: 450px;
+}
+
+.main-page-dialog-wrapper.create-restaurant {
+    width: fit-content;
 }
 
 .main-page-dialog {
@@ -368,19 +401,12 @@ a:hover {
 .main-page-dialog-h4 {
     font-size: 26px;
     margin: 20px 0 0 0;
+    font-weight: 500;
 }
 
 .main-page-dialog-p {
     color: #6E6E73;
-    font-weight: 300;
-}
-
-.main-page-dialog-wrapper.info {
-    width: 480px;
-}
-
-.main-page-dialog-wrapper.create-restaurant {
-    width: fit-content;
+    font-weight: 500;
 }
 
 .main-page-login-form {
@@ -424,7 +450,12 @@ a:hover {
     margin-bottom: 12px;
     display: flex;
     justify-content: left;
+    justify-self: center;
     align-items: center;
+}
+
+.form-input-wrapper.short {
+    width: 70%;
 }
 
 .form-input-wrapper.repeated-password {
@@ -523,13 +554,22 @@ a:hover {
     color: #9746FF;
 }
 
-.form-submit-button.password-recovery {
+.form-submit-button.confirmation {
+    width: 80%;
+}
+
+.form-submit-button.short {
+    width: 70%;
     margin-top: 25px;
 }
 
 .form-submit-button.create-restaurant {
     margin-top: 60px;
-    width: 75%;
+    width: 80%;
+}
+
+.form-submit-button.error {
+    width: 80%;
 }
 
 .register-terms-of-use-info {
@@ -551,12 +591,16 @@ a:hover {
     text-align: center;
 }
 
-.register-validation-msg {
+.form-validation-msg {
     font-size: 0.9rem;
     font-weight: 300;
     color: #EC5858;
     padding: 3px 0 7px 22px;
     display: block;
+}
+
+.form-validation-msg.short {
+    padding: 3px 0 7px 77px;
 }
 
 .password-recovery-section {
@@ -598,7 +642,7 @@ a:hover {
 .go-login-btn-wrapper {
     width: 100%;
     display: flex;
-    justify-content: left;
+    justify-content: center;
 }
 
 .go-login-btn {
@@ -657,11 +701,11 @@ a:hover {
 
 /* Login Styles END */
 
-/* CMS Styles */
+/* App navigation Styles */
 
-.cms-grid {
+.app-grid {
     display: grid;
-    grid-template-columns: 249px 1fr;
+    grid-template-columns: 255px 1fr;
     grid-template-rows: 100%;
     height: 100%;
 }
@@ -671,85 +715,205 @@ ul {
     padding: 0;
 }
 
-.cms-nav-ul {
+.app-nav-ul {
 }
 
-.cms-nav-panel {
+.app-nav-panel {
     grid-column: 1;
     display: grid;
-    grid-template-rows: 10% 83% 7%;
-    background-color: #3E424C;
+    grid-template-rows: 10% 10% 50% 10% 15% 5%;
+    background: #1F242D;
     overflow: hidden;
     position: fixed;
     height: 100vh;
-    width: 249px;
+    width: 255px;
 }
 
-.cms-nav-header {
+.app-nav-header {
     grid-row: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.cms-accordion-button {
-    width: 32px;
-    height: 32px;
-    background-color: #33353E;
-    border: 0;
-    border-radius: 10px;
-    margin-top: 30px;
-    margin-left: 40px;
+.profile-name {
+    color: #FFF;
+    font-size: 1.2rem;
+    margin-right: 20px;
 }
 
-.cms-accordion-button:hover {
+.profile-icon-wrapper {
+    padding: 5px;
     cursor: pointer;
 }
 
-.cms-nav-menu {
+.app-mode-switcher-wrapper {
     grid-row: 2;
-}
-
-.cms-nav-li {
-}
-
-.cms-nav-btn {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+}
+
+.app-mode-switcher {
+    position: relative;
+    width: 75%;
+    height: 37px;
+    background: #191D25;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    color: #93939E;
+    font-weight: 400;
+    line-height: 16px;
+    cursor: pointer;
+}
+
+.app-mode-indicator {
+    position: absolute;
+    height: 27px;
+    top: 5px;
+    color: #93939E;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 400;
+    font-size: 1rem;
+    border-radius: 100px;
+}
+
+.app-mode-indicator.dashboard {
+    left: 33px;
+}
+
+.app-mode-indicator.dashboard.active {
+    left: 6px;
+}
+
+.app-mode-indicator.cms {
+    right: 33px;
+}
+
+.app-mode-indicator.cms.active {
+    right: 6px;
+}
+
+.app-mode-indicator.active {
+    width: 100px;
+    background: #9746FF;
+    color: #FAFAFA;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 400;
+    border-radius: 100px;
+}
+
+.app-nav-menu {
+    grid-row: 3;
+}
+
+.app-nav-li {
+}
+
+.app-nav-btn {
+    display: flex;
+    align-items: center;
+    justify-content: left;
     height: 35px;
     border: none;
     background-color: inherit;
     color: #93939E;
     font-weight: 300;
-    font-size: 0.9rem;
+    font-size: 1rem;
     width: 100%;
     padding-left: 40px;
 }
 
-.cms-nav-btn:hover {
+.app-nav-btn:hover {
     cursor: pointer;
-    color: #FFF;
-    background-color: #33353E;
-}
-
-.lang-switcher {
-    position: absolute;
-    top: 5px;
-    left: 130px;
+    color: #FAFAFA;
+    background-color: #191D25;
 }
 
 .nav-active {
-    color: #FFF;
-    background-color: #33353E;
+    color: #FAFAFA;
+    background-color: #191D25;
     font-weight: 400;
 }
 
-.cms-nav-footer {
-    grid-row: 3;
-    font-size: 0.8rem;
+.nav-btn-icon-wrapper {
+    padding: 0 15px 0 0;
+}
+
+.nav-btn-padded-icon-wrapper {
+    padding: 0 7px 0 0;
+}
+
+.app-nav-logout {
+    grid-row: 4;
+    margin-bottom: 38px;
+}
+
+.app-nav-restaurant-info-wrapper {
+    grid-row: 5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 17px 17px 17px;
+}
+
+.app-nav-restaurant-info-container {
+    display: grid;
+    grid-template-columns: 20% 80%;
+    background: #191D25;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    padding-right: 16px;
+}
+
+.app-nav-restaurant-info-icon {
+    grid-column: 1;
+    display: flex;
+    justify-content: center;
+    padding-top: 16px;
+}
+
+.restaurant-info-name {
+    color: #FAFAFA;
+    font-size: 1rem;
+    display: block;
+    margin-top: 16px;
+    margin-bottom: 8px;
+}
+
+.restaurant-info-address {
     color: #93939E;
-    align-self: center;
-    text-align: center;
+    font-size: 1rem;
+    display: block;
+}
+
+.app-nav-restaurant-info {
+    grid-column: 2;
+}
+
+.app-nav-footer {
+    grid-row: 6;
+    font-size: 0.9rem;
+    background: #191D25;
+    width: 100%;
+    height: 100%;
+    color: #93939E;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-weight: 400;
 }
+
+/* App navigation Styles END */
+
+/* CMS Styles */
 
 .cms-date-time {
     grid-row: 1;

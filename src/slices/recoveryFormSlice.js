@@ -92,11 +92,11 @@ export const executeRecoveryInitFetch = createAsyncThunk(
                 credentials: 'include'
             });
 
-            let data = {}
+            let data = {};
             try {
-                data = await response.json()
+                data = await response.json();
             } catch (error) {
-                return data
+                return data;
             }
 
             if (!response.ok) {

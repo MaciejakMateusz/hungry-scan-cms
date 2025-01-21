@@ -1,9 +1,14 @@
 import React from "react";
+import {useInactivityTimeout} from "../../hooks/useInactivityTimeout";
+import {getInactivityTimeout} from "../../utils/utils";
+import {DashboardNav} from "./DashboardNav";
 
 export const Dashboard = () => {
+    useInactivityTimeout(getInactivityTimeout);
+
     return (
-        <section className={'dashboard-grid'}>
-            <h1>Dash my board</h1>
-        </section>
+        <div className={'app-grid'}>
+            <DashboardNav/>
+        </div>
     );
 }

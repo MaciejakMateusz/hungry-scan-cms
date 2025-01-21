@@ -12,11 +12,26 @@ export const PasswordRecovery = () => {
     const dispatch = useDispatch();
     const {username} = useSelector(state => state.recovery.recoveryInitForm);
     const {isLoading, errorData} = useSelector(state => state.recovery.recoveryInitFetch);
+    const checkUsername = validateUsername(errorData, username ,t);
 
     const handleRecoveryInit = (e) => {
         e.preventDefault();
         dispatch(executeRecoveryInitFetch());
     };
+
+    const renderOtherErrors = () => {
+        if(!errorData) {
+            return (<></>);
+        }
+        if(errorData.status === 500) {
+            return (
+                <div className={'login-validation-msg'}>
+                    <span>{t('somethingWentWrong')}</span>
+                </div>
+
+            );
+        }
+    }
 
     return (
         <div className={'main-page-dialog'}>
@@ -30,12 +45,14 @@ export const PasswordRecovery = () => {
                                name={'username'}
                                value={username}
                                error={errorData?.username}
-                               validator={() => validateUsername(errorData, username, t)}
-                               changeHandler={(e) => dispatch(setUsername(e.target.value))}/>
-                    <button className={'form-submit-button password-recovery'}
+                               hasError={checkUsername}
+                               changeHandler={(e) => dispatch(setUsername(e.target.value))}
+                               customWrapper={'short'}/>
+                    <button className={'form-submit-button short'}
                             onClick={handleRecoveryInit}>
                         {isLoading ? <LoadingSpinner buttonMode={true}/> : t('send')}
                     </button>
+                    {renderOtherErrors()}
                 </form>
             </section>
         </div>

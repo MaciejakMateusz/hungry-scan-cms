@@ -27,7 +27,7 @@ export const Dialogs = ({activeDialog}) => {
         <div className={'main-page-grid'}>
             <NavMenu/>
             <div className={'main-page-content'}>
-                <div className={'main-page-dialog-wrapper info'}>
+                <div className={'main-page-dialog-wrapper'}>
                     {renderActiveForm()}
                 </div>
             </div>

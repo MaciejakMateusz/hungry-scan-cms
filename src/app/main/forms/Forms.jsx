@@ -4,6 +4,7 @@ import {RegisterForm} from "./register/RegisterForm";
 import {PasswordRecovery} from "../password-recovery/PasswordRecovery";
 import {NewPassword} from "../password-recovery/NewPassword";
 import {NavMenu} from "../NavMenu";
+import {ActivationError} from "./register/ActivationError";
 
 export const Forms = ({activeForm}) => {
 
@@ -17,6 +18,8 @@ export const Forms = ({activeForm}) => {
                 return (<PasswordRecovery/>);
             case "newPassword":
                 return (<NewPassword/>);
+            case "activationError":
+                return (<ActivationError/>);
             default:
                 return (<LoginForm/>);
         }

@@ -19,7 +19,7 @@ import {clearView as clearVariantsView} from "../../slices/variantsSlice";
 import {clearView as clearAdditionsView} from "../../slices/additionsSlice";
 import {clearView as clearTranslationsView} from "../../slices/translationsSlice";
 
-export const CmsNavigation = () => {
+export const CmsNav = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const [activeView, setActiveView] = useState("dishesCategories")
@@ -87,14 +87,14 @@ export const CmsNavigation = () => {
                         setActiveView(switchViewDialog);
                     }}/> : <></>
             }
-            <div className={'cms-nav-panel'}>
-                <div className={'cms-nav-header'}>
-                    <button className={'cms-accordion-button'}>
+            <div className={'app-nav-panel'}>
+                <div className={'app-nav-header'}>
+                    <button className={'app-accordion-button'}>
                         <AccordionIcon/>
                     </button>
                 </div>
-                <div className={'cms-nav-menu'}>
-                    <ul className={'cms-nav-ul'}>
+                <div className={'app-nav-menu'}>
+                    <ul className={'app-nav-ul'}>
                         <NavButton isActive={activeView === 'dishesCategories'}
                                    name={t('dishesCategories')}
                                    onClick={() => switchView("dishesCategories")}/>
@@ -120,7 +120,7 @@ export const CmsNavigation = () => {
 
                     </ul>
                 </div>
-                <div className={'cms-nav-footer'}>
+                <div className={'app-nav-footer'}>
                     <span>Powered by HackyBear<sup>&copy;</sup></span>
                 </div>
             </div>
