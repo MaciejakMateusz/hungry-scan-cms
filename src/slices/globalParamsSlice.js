@@ -6,7 +6,7 @@ export const globalParamsSlice = createSlice(
         initialState: {
             activeRestaurant: {},
             activeMenu: {},
-            currentUser: {},
+            userForename: '',
             cmsActive: false
         },
         reducers: {
@@ -16,7 +16,7 @@ export const globalParamsSlice = createSlice(
             setActiveMenu: (state, action) => {
                 state.activeMenu = action.payload;
             },
-            setCurrentUser: (state, action) => {
+            setUserForename: (state, action) => {
                 state.currentUser = action.payload;
             },
             toggleMode: state => {
@@ -25,7 +25,7 @@ export const globalParamsSlice = createSlice(
         }
     });
 
-export const {setActiveRestaurant, setActiveMenu, setCurrentUser, toggleMode} = globalParamsSlice.actions;
+export const {setActiveRestaurant, setActiveMenu, setUserForename, toggleMode} = globalParamsSlice.actions;
 
 const globalParamsReducer = combineReducers({
     globalParams: globalParamsSlice.reducer
