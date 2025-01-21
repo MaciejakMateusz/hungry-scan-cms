@@ -1,27 +1,24 @@
 import React from "react";
 import {useTranslation} from "react-i18next";
 
-export const ErrorPage = ({title, message}) => {
+export const ErrorPage = (props) => {
     const {t} = useTranslation();
 
-    const goBack = () => {
-        window.history.back();
-    }
-
     return (
-        <div className={'card o-hidden border-0 shadow-lg my-5'}>
-            <div className={'card-body p-2'}>
-                <div className="row">
-                    <div className={'col-lg-12'}>
-                        <div className={'p-5'} id={'root'}>
-                            <div className={'text-center'}>
-                                <h1 className={'h4 text-gray-900 mb-4'}>{title}</h1>
-                            </div>
-                            <div className={'user'}>
-                                <p>{message}</p>
-                            </div>
-                            <button className={'btn btn-primary btn-user btn-block'}
-                                    style={{fontSize: '1.1rem'}} onClick={goBack}>{t('back')}
+
+        <div className={'standalone-error-view'}>
+            <div>
+                <div className={'error-code'}>
+                    <span>{props.code}</span>
+                </div>
+                <div className={'main-page-dialog-wrapper error'}>
+                    <div className={'main-page-dialog'}>
+                        <h4 className={'main-page-dialog-h4'}>{props.h4}</h4>
+                        <p className={'main-page-dialog-p'}>{props.p}</p>
+                        <div className={'go-login-btn-wrapper'}>
+                            <button className={'form-submit-button error'}
+                                    onClick={() => window.location.href = '/'}>
+                                {t('mainPage')}
                             </button>
                         </div>
                     </div>

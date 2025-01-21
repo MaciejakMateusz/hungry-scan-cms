@@ -16,12 +16,14 @@ export const FormField = React.memo(function FormField(props) {
     const generateValidationMessage = () => {
         return !props.hasError || !props.error ?
             <></> :
-            <span className={'register-validation-msg'}>{props.error}</span>
+            <span className={`form-validation-msg ${props.customWrapper && props.customWrapper}`}>
+                {props.error}
+            </span>
     }
 
     return (
         <>
-            <div className={`form-input-wrapper ${props.hasError ? 'invalid' : ''}`}>
+            <div className={`form-input-wrapper ${props.hasError ? 'invalid' : ''} ${props.customWrapper && props.customWrapper}`}>
                 <div className={`form-field-top-placeholder-wrapper ${topPlaceholder ? '' : 'hidden'}`}>
                     <span className={'form-field-top-placeholder'}>
                         {props.placeholder}

@@ -1,12 +1,12 @@
 import React from "react";
-import {ConfirmationView} from "../ConfirmationView";
+import {MainDialog} from "../MainDialog";
 import {useTranslation} from "react-i18next";
 
 export const PasswordRecoveryConfirmation = () => {
     const {t} = useTranslation();
 
     return (
-        <ConfirmationView h4={t('passwordChanged')}
-                          p={t('passwordChangedMsg')}/>
+        <MainDialog h4={t('passwordChanged')}
+                    p={t('passwordChangedMsg')}/>
     );
 }
