@@ -6,6 +6,9 @@ that is currently active (it is possible to create different menus for different
 It connects to REST-API:
 https://github.com/MaciejakMateusz/hungry-scan-core
 
+This application also defines what customer mobile webapp will look like:
+https://github.com/MaciejakMateusz/hungry-scan-customer
+
 ## Technologies Used
 - **React** - JS library
 - **Redux** - enables global app state
