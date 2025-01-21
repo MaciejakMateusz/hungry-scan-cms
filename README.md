@@ -3,6 +3,8 @@
 Web application for restaurant owners, allowing them to easily create and manage digital menu. 
 Big highlight of this system is generating QR codes for restaurants that connects customers with digital menu, 
 that is currently active (it is possible to create different menus for different hour/day ranges).
+It connects to REST-API:
+https://github.com/MaciejakMateusz/hungry-scan-core
 
 ## Technologies Used
 - **React** - JS library
