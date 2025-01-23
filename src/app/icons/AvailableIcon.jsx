@@ -4,7 +4,7 @@ export const AvailableIcon = ({width, height, fill}) => {
     const d = {width: width ? width : '35', height: height ? height : '35'};
 
     return (
-        <svg width={d.width} height={d.heigh} viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width={d.width} height={d.height} viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
             <mask id="path-1-outside-1_6_4616" maskUnits="userSpaceOnUse" x="10.9717" y="11.0374" width="13" height="13"
                   fill="black">
                 <rect fill="white" x="10.9717" y="11.0374" width="13" height="13"/>

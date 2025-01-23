@@ -10,7 +10,7 @@ export const forenameSurnameRegex = new RegExp(
 
 export const getInactivityTimeout = () =>{
     return 10 * 60 * 1000;
-}
+};
 
 export const getCookie = cookieName => {
     let cookie = {};
@@ -19,11 +19,11 @@ export const getCookie = cookieName => {
         cookie[key.trim()] = value;
     })
     return cookie[cookieName];
-}
+};
 
 export const removeCookie = cookieName => {
     document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`
-}
+};
 
 export const formatCurrency = (value) => {
     if (!value) return '';
@@ -44,4 +44,4 @@ export const formatPrice = (price, keepDot) => {
         formattedPrice = formattedPrice.replace('.', ',');
     }
     return formattedPrice;
-}
+};

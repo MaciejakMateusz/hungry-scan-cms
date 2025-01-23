@@ -3,14 +3,13 @@ import '../index.css'
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import {PrivateRoutes} from "./PrivateRoutes";
 import {ErrorPage} from "../app/error/ErrorPage";
-import {Cms} from "../app/cms/Cms";
 import {MainPage} from "../app/main/MainPage";
 import {Forms} from "../app/main/forms/Forms";
 import {Dialogs} from "../app/main/Dialogs";
 import {CreateFirstRestaurant} from "../app/main/CreateFirstRestaurant";
-import {Dashboard} from "../app/dashboard/Dashboard";
 import {useTranslation} from "react-i18next";
 import {AnonymousRoutes} from "./AnonymousRoutes";
+import {App} from "../app/hungryscan/App";
 
 export const Router = () => {
     const {t} = useTranslation();
@@ -35,9 +34,8 @@ export const Router = () => {
                     <Route path='/recovery-confirmation' element={<Dialogs activeDialog={'recoveryConfirmation'}/>}/>
                 </Route>
                 <Route element={<PrivateRoutes/>}>
-                    <Route path='/cms' element={<Cms/>}/>
-                    <Route path='/dashboard' element={<Dashboard/>}/>
                     <Route path='/create-restaurant' element={<CreateFirstRestaurant/>}/>
+                    <Route path='/app' element={<App/>}/>
                 </Route>
                 <Route path='*' element={<ErrorPage code={'404'}
                                                     h4={t('oops')}

@@ -5,6 +5,12 @@ import {useDispatch, useSelector} from "react-redux";
 import {executeLoginFetch, setPassword, setUsername} from "../../../../slices/loginFormSlice";
 import {LoadingSpinner} from "../../../icons/LoadingSpinner";
 import {urlParamValue} from "../../../../utils/utils";
+import {
+    setActiveMenu,
+    setActiveRestaurant,
+    setCurrentView,
+    setUserForename
+} from "../../../../slices/globalParamsSlice";
 
 export const LoginForm = () => {
     const dispatch = useDispatch();
@@ -22,9 +28,15 @@ export const LoginForm = () => {
         setIsPasswordVisible((prevState) => !prevState);
     };
 
-    const handleSignIn = (e) => {
+    const handleSignIn = async (e) => {
         e.preventDefault();
-        dispatch(executeLoginFetch());
+        const loginAction = await dispatch(executeLoginFetch());
+        if(executeLoginFetch.fulfilled.match(loginAction)) {
+            dispatch(setCurrentView(loginAction.payload.currentView));
+            dispatch(setActiveRestaurant(loginAction.payload.activeRestaurant));
+            dispatch(setActiveMenu(loginAction.payload.activeMenu));
+            dispatch(setUserForename(loginAction.payload.userForename));
+        }
     };
 
     const renderMessage = () => {
@@ -34,9 +46,10 @@ export const LoginForm = () => {
             return logoutSuccess();
         } else if (notAuthorized) {
             return validationFail(t('invalidCredentials'));
-        } else {
-            return <></>
+        } else if (errorData?.error) {
+            return validationFail(errorData.error);
         }
+        return <></>
     }
 
     const notActivatedMsg = () => {
