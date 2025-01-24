@@ -8,6 +8,7 @@ export const PrivateRoutes = () => {
     const [isAuthorized, setIsAuthorized] = useState(false);
     const [redirectUrl, setRedirectUrl] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [serverDown, setIsServerDown] = useState(false);
 
     useEffect(() => {
         const authorizeRequest = async () => {
@@ -22,9 +23,10 @@ export const PrivateRoutes = () => {
                 });
                 await handleResponse(response);
             } catch {
-                setIsAuthorized(false)
+                setIsAuthorized(false);
+                setIsServerDown(true);
             } finally {
-                setIsLoading(false)
+                setIsLoading(false);
             }
         }
         authorizeRequest();
@@ -46,6 +48,8 @@ export const PrivateRoutes = () => {
         return;
     } else if (isAuthorized) {
         return (<Outlet/>);
+    } else if (serverDown) {
+        return (<Navigate to={"/server-down"}/>);
     }
     return (<Navigate to={"/sign-in"}/>);
 };

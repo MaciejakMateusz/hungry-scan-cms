@@ -34,9 +34,10 @@ export const LoginForm = () => {
             return logoutSuccess();
         } else if (notAuthorized) {
             return validationFail(t('invalidCredentials'));
-        } else {
-            return <></>
+        } else if (errorData?.error) {
+            return validationFail(errorData.error);
         }
+        return <></>
     }
 
     const notActivatedMsg = () => {
