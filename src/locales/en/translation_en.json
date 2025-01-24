@@ -2,6 +2,8 @@
   "oops": "Oops...",
   "pageNotFound": "Looks like we are lost! This page doesn't exist or was moved.",
   "somethingWentWrong": "Something went wrong, try again",
+  "connectionError": "Connection issues",
+  "serverUnderMaintenance": "Server is under maintenance, this will not take long!",
   "mainPage": "Main page",
   "ourOffer": "Our offer",
   "pricePlans": "Price plans",

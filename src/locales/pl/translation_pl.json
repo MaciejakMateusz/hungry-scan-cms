@@ -2,6 +2,8 @@
   "oops": "Oops...",
   "pageNotFound": "Wygląda na to, że zabłądziliśmy! Ta strona nie istnieje lub została przeniesiona.",
   "somethingWentWrong": "Coś poszło nie tak, spróbuj ponownie",
+  "connectionError": "Błąd połączenia",
+  "serverUnderMaintenance": "Serwer jest w trakcie konserwacji, to nie potrwa długo!",
   "mainPage": "Strona główna",
   "ourOffer": "Nasza oferta",
   "pricePlans": "Cennik",

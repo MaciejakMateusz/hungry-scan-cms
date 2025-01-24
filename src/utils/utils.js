@@ -12,6 +12,10 @@ export const getInactivityTimeout = () =>{
     return 10 * 60 * 1000;
 };
 
+export const setCookie = (cookieName, value, expires) => {
+    document.cookie = `${cookieName}=${value}; expires=${expires}; path=/;`
+};
+
 export const getCookie = cookieName => {
     let cookie = {};
     document.cookie.split(';').forEach(function(el) {

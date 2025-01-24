@@ -15,7 +15,7 @@ import {D_CODE_QR, DISHES_CATEGORIES, PACKAGE, STATS, USERS} from "../../../util
 
 export const Dashboard = () => {
     const dispatch = useDispatch();
-    const {currentView, cmsActive} = useSelector(state => state.globalParams.globalParams);
+    const {currentView, cmsActive, userForename} = useSelector(state => state.globalParams.globalParams);
     const [isStatsHovered, setIsStatsHovered] = useState(false);
     const [isQrHovered, setIsQrHovered] = useState(false);
     const [isPackageHovered, setIsPackageHovered] = useState(false);
@@ -51,7 +51,7 @@ export const Dashboard = () => {
         <>
             <div className={'app-nav-panel'}>
                 <div className={'app-nav-header'}>
-                    <span className={'profile-name'}>Witaj, Mateusz!</span><UserProfileWhiteIcon/><NotificationIcon/>
+                    <span className={'profile-name'}>Witaj, {userForename}!</span><UserProfileWhiteIcon/><NotificationIcon/>
                 </div>
                 <div className={'app-mode-switcher-wrapper'}>
                     <div className={'app-mode-switcher'} onClick={() => switchAppMode()}>
