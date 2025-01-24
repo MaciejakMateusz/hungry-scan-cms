@@ -154,6 +154,7 @@ export const dishesCategoriesSlice = createSlice(
             categoryForAction: null,
             menuItemForAction: null,
             activeRemovalType: null,
+            isInEditMode: false,
             category: {},
             dish: {},
             categories: []
@@ -194,6 +195,9 @@ export const dishesCategoriesSlice = createSlice(
             },
             setActiveRemovalType: (state, action) => {
                 state.activeRemovalType = action.payload;
+            },
+            setIsInEditMode: (state, action) => {
+                state.isInEditMode = state.newCategoryFormActive || state.editCategoryFormActive || state.newDishFormActive || state.editDishFormActive || action.payload === true;
             },
             setCategory: (state, action) => {
                 state.category = action.payload;
@@ -237,6 +241,7 @@ export const {
     setCategoryForAction,
     setMenuItemForAction,
     setActiveRemovalType,
+    setIsInEditMode,
     setCategory,
     setDish,
     setCategories,

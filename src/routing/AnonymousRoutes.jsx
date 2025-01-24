@@ -8,6 +8,7 @@ export const AnonymousRoutes = () => {
     const [isAnonymous, setIsAnonymous] = useState(false);
     const [redirectUrl, setRedirectUrl] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [serverDown, setIsServerDown] = useState(false);
 
     useEffect(() => {
         const authorizeRequest = async () => {
@@ -22,9 +23,9 @@ export const AnonymousRoutes = () => {
                 });
                 await handleResponse(response);
             } catch {
-                setIsAnonymous(false)
+                setIsServerDown(true);
             } finally {
-                setIsLoading(false)
+                setIsLoading(false);
             }
         }
         authorizeRequest();
@@ -46,6 +47,8 @@ export const AnonymousRoutes = () => {
         return;
     } else if (isAnonymous) {
         return (<Outlet/>);
+    } else if(serverDown) {
+        return (<Navigate to={"/server-down"}/>);
     }
-    return (<Navigate to={"/dashboard"}/>);
+    return (<Navigate to={"/app"}/>);
 };

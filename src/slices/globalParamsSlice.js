@@ -1,4 +1,5 @@
 import {combineReducers, createSlice} from "@reduxjs/toolkit";
+import {getCookie} from "../utils/utils";
 
 export const globalParamsSlice = createSlice(
     {
@@ -6,8 +7,10 @@ export const globalParamsSlice = createSlice(
         initialState: {
             activeRestaurant: {},
             activeMenu: {},
-            userForename: '',
-            cmsActive: false
+            userForename: getCookie("userForename"),
+            currentView: 'dashboard/stats',
+            cmsActive: false,
+            currentDialog: null,
         },
         reducers: {
             setActiveRestaurant: (state, action) => {
@@ -19,13 +22,22 @@ export const globalParamsSlice = createSlice(
             setUserForename: (state, action) => {
                 state.currentUser = action.payload;
             },
-            toggleMode: state => {
-                state.cmsActive = !state.cmsActive;
+            setCurrentView: (state, action) => {
+                state.currentView = action.payload;
+                state.cmsActive = state.currentView.includes("cms");
+            },
+            setCurrentDialog: (state, action) => {
+                state.currentDialog = action.payload;
             }
         }
     });
 
-export const {setActiveRestaurant, setActiveMenu, setUserForename, toggleMode} = globalParamsSlice.actions;
+export const {
+    setActiveRestaurant,
+    setActiveMenu,
+    setUserForename,
+    setCurrentView,
+    setCurrentDialog} = globalParamsSlice.actions;
 
 const globalParamsReducer = combineReducers({
     globalParams: globalParamsSlice.reducer
