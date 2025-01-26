@@ -184,6 +184,10 @@
   "october": "October",
   "november": "November",
   "december": "December",
+  "download": "Download",
+  "numberScans": "Number of scans",
+  "relatedTo": "in relation to",
+  "previousPeriod": "previous period",
 
   "constraints.NotBlank": "Field cannot be blank",
   "constraints.ForenameSurname": "Field should contain minimum 2 letters and no special characters"

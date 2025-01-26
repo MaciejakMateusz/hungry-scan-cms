@@ -1061,6 +1061,97 @@ ul {
     height: 240px;
 }
 
+.widget-container {
+    padding: 0 20px 0 20px;
+}
+
+.widget-container.qr-code {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 100%;
+}
+
+.qr-code-download-area {
+    grid-column: 1;
+    display: grid;
+    grid-template-rows: 1fr 20%;
+    height: 100%;
+}
+
+.qr-code-info-area {
+    grid-column: 2;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.qr-img-container {
+    grid-row: 1;
+    display: flex;
+    align-items: end;
+    justify-content: center;
+}
+
+.qr-img {
+    height: 140px;
+    width: 140px;
+    object-fit: contain;
+    -o-object-fit: contain;
+}
+
+.qr-img-download-btn {
+    grid-row: 2;
+    padding: 0 17px 0 17px;
+    height: 27px;
+    width: fit-content;
+    border-radius: 100px;
+    background: #E0F3FF;
+    color: #016DFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    justify-self: center;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.qr-img-download-btn:hover{
+    background: #d6eefc;
+    color: #016DFF;
+}
+
+.download-icon {
+    margin-left: 5px;
+}
+
+.number-scans-header {
+    margin: 0 0 12px 0;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.number-scans {
+    margin: 0 0 12px 0;
+    font-size: 2rem;
+    font-weight: 500;
+    text-align: center;
+}
+
+.trending-info {
+    font-size: 1rem;
+}
+
+.trending-info.percent {
+    display: flex;
+    align-items: flex-start;
+    text-align: center;
+}
+
+.trending-up-icon {
+    margin-right: 5px;
+}
+
 /* Dashboard statistics Styles END */
 
 /* React Date Picker Styles */
