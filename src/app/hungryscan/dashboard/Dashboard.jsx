@@ -8,10 +8,12 @@ import {StatsIcon} from "../../icons/StatsIcon";
 import {QrCodeIcon} from "../../icons/QrCodeIcon";
 import {PackageIcon} from "../../icons/PackageIcon";
 import {UsersIcon} from "../../icons/UsersIcon";
-import {LogoutIcon} from "../../icons/LogoutIcon";
+import {DocumentIcon} from "../../icons/DocumentIcon";
 import {executeLogoutFetch} from "../../../slices/loginFormSlice";
 import {RestaurantLocationIcon} from "../../icons/RestaurantLocationIcon";
 import {D_CODE_QR, DISHES_CATEGORIES, PACKAGE, STATS, USERS} from "../../../utils/viewsConstants";
+import {Statistics} from "./stats/Statistics";
+import {DashboardTopper} from "./DashboardTopper";
 
 export const Dashboard = () => {
     const dispatch = useDispatch();
@@ -29,7 +31,7 @@ export const Dashboard = () => {
     const renderMainView = () => {
         switch (currentView) {
             case STATS:
-                return <h1>Stats</h1>;
+                return (<Statistics/>);
             case D_CODE_QR:
                 return <h1>Code QR</h1>;
             case PACKAGE:
@@ -86,7 +88,7 @@ export const Dashboard = () => {
                 <div className={'app-nav-logout'}>
                     <ul className={'app-nav-ul'}>
                         <NavButton name={'Wyloguj się'}
-                                   icon={<LogoutIcon active={isLogoutHovered}/>}
+                                   icon={<DocumentIcon active={isLogoutHovered}/>}
                                    onClick={() => dispatch(executeLogoutFetch())}
                                    setHovered={setIsLogoutHovered}/>
                     </ul>
@@ -108,7 +110,10 @@ export const Dashboard = () => {
                 </div>
             </div>
             <div className={'cms-main'}>
-                {renderMainView()}
+                <section className={'app-base-grid'}>
+                    <DashboardTopper/>
+                    {renderMainView()}
+                </section>
             </div>
         </>
     );

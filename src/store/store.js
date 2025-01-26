@@ -15,6 +15,7 @@ import recoveryReducer from "../slices/recoveryFormSlice";
 import createRestaurantReducer from "../slices/createRestaurantSlice";
 import reactivateReducer from "../slices/reactivateFormSlice";
 import globalParamsReducer from "../slices/globalParamsSlice";
+import statisticsReducer from "../slices/statisticsSlice";
 
 const rootReducer = combineReducers({
     login: loginReducer,
@@ -32,7 +33,8 @@ const rootReducer = combineReducers({
     qrCodes: qrCodesReducer,
     createRestaurant: createRestaurantReducer,
     reactivate: reactivateReducer,
-    globalParams: globalParamsReducer
+    globalParams: globalParamsReducer,
+    statistics: statisticsReducer
 })
 
 export const store = configureStore({

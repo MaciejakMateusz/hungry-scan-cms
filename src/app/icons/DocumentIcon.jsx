@@ -1,9 +1,10 @@
 import React from "react";
 
-export const LogoutIcon = ({active}) => {
-    const color = active ? "#FAFAFA" : "#93939E";
+export const DocumentIcon = ({active, customColor, absolute}) => {
+    const defaultColor = customColor ? customColor : "#93939E";
+    const color = active ? "#FAFAFA" : defaultColor;
     return (
-        <div className={'nav-btn-icon-wrapper'}>
+        <div className={`nav-btn-icon-wrapper ${absolute ? 'absolute' : ''}`}>
             <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g id="4">
                     <g id="Group 1137">

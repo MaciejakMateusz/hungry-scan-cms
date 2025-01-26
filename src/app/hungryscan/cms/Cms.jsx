@@ -32,7 +32,7 @@ import {NotificationIcon} from "../../icons/NotificationIcon";
 export const Cms = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
-    const {currentView, cmsActive} = useSelector(state => state.globalParams.globalParams);
+    const {currentView, cmsActive, userForename} = useSelector(state => state.globalParams.globalParams);
     const {isInEditMode} = useSelector(state => state.dishesCategories.view);
     const [switchViewDialog, setSwitchViewDialog] = useState(null);
 
@@ -93,7 +93,7 @@ export const Cms = () => {
             }
             <div className={'app-nav-panel'}>
                 <div className={'app-nav-header'}>
-                    <span className={'profile-name'}>Witaj, Mateusz!</span><UserProfileWhiteIcon/><NotificationIcon/>
+                    <span className={'profile-name'}>Witaj, {userForename}!</span><UserProfileWhiteIcon/><NotificationIcon/>
                 </div>
                 <div className={'app-mode-switcher-wrapper'}>
                     <div className={'app-mode-switcher'} onClick={() => switchAppMode()}>
