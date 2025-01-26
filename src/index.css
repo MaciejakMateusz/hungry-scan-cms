@@ -722,7 +722,7 @@ ul {
 .app-nav-panel {
     grid-column: 1;
     display: grid;
-    grid-template-rows: 10% 10% 50% 10% 15% 5%;
+    grid-template-rows: 12% 8% 50% 10% 15% 5%;
     background: #1F242D;
     overflow: hidden;
     position: fixed;
@@ -751,7 +751,6 @@ ul {
 .app-mode-switcher-wrapper {
     grid-row: 2;
     display: flex;
-    align-items: center;
     justify-content: center;
 }
 
@@ -932,7 +931,7 @@ ul {
 .app-header {
     grid-row: 1;
     background: #FFF;
-    padding: 0 40px 0 40px;
+    padding: 0 32px 0 32px;
 }
 
 .app-header.dashboard {
@@ -976,11 +975,12 @@ ul {
 }
 
 .statistics-periodic-summary {
-    height: 73px;
-    padding: 0 40px 0 40px;
+    height: 56px;
+    padding: 0 32px 0 32px;
     display: flex;
-    align-items: center;
+    align-items: end;
     justify-content: space-between;
+    margin-bottom: 15px;
 }
 
 .period-mode-wrapper {
@@ -997,7 +997,7 @@ ul {
 }
 
 .period-button {
-    padding: 7px 19px 7px 19px;
+    padding: 7px 17px 7px 17px;
     background: #FFF;
     border-radius: 100px;
     margin-left: 10px;
@@ -1019,9 +1019,51 @@ ul {
     background: #9746FF;
 }
 
-/* React Date Picker Styles */
+.statistics-widgets-layout {
+    display: grid;
+    grid-template-columns: 40% 1fr;
+    gap: 24px;
+    padding: 0 32px 32px 32px;
+}
 
-/* The main container of the date picker popover */
+.widgets-left-col {
+    grid-column: 1;
+}
+
+.widgets-right-col {
+    grid-column: 2;
+}
+
+.statistic-widget {
+    background: #FFF;
+    box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.05);
+}
+
+.statistic-widget.qr-code {
+    width: 100%;
+    height: 240px;
+    margin-bottom: 24px;
+}
+
+.statistic-widget.qr-frequency {
+    width: 100%;
+    height: 368px;
+    margin-bottom: 24px;
+}
+
+.statistic-widget.package {
+    width: 100%;
+    height: 368px;
+}
+
+.statistic-widget.popular-dishes {
+    width: 100%;
+    height: 240px;
+}
+
+/* Dashboard statistics Styles END */
+
+/* React Date Picker Styles */
 
 .calendar-icon {
 }
@@ -1041,25 +1083,22 @@ ul {
     color: #333;
 }
 
-/* The header (month and navigation arrows) */
 .react-datepicker__header {
     background-color: #f3f3f3;
     border-bottom: 1px solid #ddd;
+    font-size: 1rem;
 }
 
-/* The month title (e.g., "styczeń 2025") */
 .react-datepicker__current-month {
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: bold;
 }
 
-/* The day names at the top row (pon, wto, śro, etc.) */
 .react-datepicker__day-names {
     font-size: 12px;
     color: #666;
 }
 
-/* Individual days in the grid */
 .react-datepicker__day {
     font-size: 14px;
     margin: 0.2rem;
@@ -1067,10 +1106,9 @@ ul {
     height: 2rem;
     line-height: 2rem;
     text-align: center;
-    border-radius: 50%; /* For a circular look */
+    border-radius: 10%;
 }
 
-/* Today’s date highlight */
 .react-datepicker__day--today {
     font-weight: bold;
     border: 1px solid #333;
@@ -1094,10 +1132,6 @@ ul {
 }
 
 /* React Date Picker Styles END*/
-
-
-
-/* Dashboard statistics Styles END */
 
 /* CMS Styles */
 

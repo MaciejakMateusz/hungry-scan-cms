@@ -35,11 +35,15 @@ export const Statistics = () => {
                     <PeriodSelectors/>
                 </div>
             </header>
-            <div className={'statistics-grid'}>
-                <div>QR Code block</div>
-                <div>QR frequency block</div>
-                <div>Package block</div>
-                <div>Popular dishes block</div>
+            <div className={'statistics-widgets-layout'}>
+                <div className={'widgets-left-col'}>
+                    <div className={'statistic-widget qr-code'}>QR Code block</div>
+                    <div className={'statistic-widget package'}>Package block</div>
+                </div>
+                <div className={'widgets-right-col'}>
+                    <div className={'statistic-widget qr-frequency'}>QR frequency block</div>
+                    <div className={'statistic-widget popular-dishes'}>Popular dishes block</div>
+                </div>
             </div>
         </div>
     );
