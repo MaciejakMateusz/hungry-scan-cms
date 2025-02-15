@@ -7,12 +7,10 @@ import {chartStyles} from "../../../../../../styles";
 import {CustomNoOptionsMessage} from "../../../../cms/form-components/CustomNoOptionsMessage";
 import {useTranslation} from "react-i18next";
 import debounce from "lodash/debounce";
-import {getTranslation} from "../../../../../../locales/langUtils";
 
 export const PopularDishesWidget = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
-    const {restaurant} = useSelector(state => state.dashboard.view);
     const {
         period,
         chosenYear,
@@ -55,8 +53,8 @@ export const PopularDishesWidget = () => {
                         name={'menu-popular-dishes-selector'}
                         value={chosenMenu}
                         placeholder={t('choose')}
-                        options={restaurant?.value?.menus.map(menu => {return {value: menu.id, label: getTranslation(menu.name)}})}
-                        defaultValue={restaurant?.value?.menus[0]}
+                        options={[]}
+                        defaultValue={undefined}
                         onChange={(selected) => setChosenMenu(selected)}
                         styles={chartStyles}
                         components={{NoOptionsMessage: CustomNoOptionsMessage}}
