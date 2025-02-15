@@ -1,6 +1,6 @@
 import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
-import {setCookie} from "../utils/utils";
+import {removeCookie, setCookie} from "../utils/utils";
 
 export const executeLogoutFetch = createAsyncThunk(
     'loginFetch/executeLogoutFetch',
@@ -31,6 +31,7 @@ export const logoutFetchSlice = createSlice(
                 state.isLoading = true;
             }).addCase(executeLogoutFetch.fulfilled, (state, action) => {
                 state.isLoading = false;
+                removeCookie('userForename');
                 window.location.href = action.payload.redirectUrl;
             }).addCase(executeLogoutFetch.rejected, state => {
                 state.isLoading = false;

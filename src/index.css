@@ -722,12 +722,13 @@ ul {
 .app-nav-panel {
     grid-column: 1;
     display: grid;
-    grid-template-rows: 10% 10% 50% 10% 15% 5%;
+    grid-template-rows: 12% 8% 50% 10% 15% 5%;
     background: #1F242D;
     overflow: hidden;
     position: fixed;
     height: 100vh;
     width: 255px;
+    z-index: 9999;
 }
 
 .app-nav-header {
@@ -751,7 +752,6 @@ ul {
 .app-mode-switcher-wrapper {
     grid-row: 2;
     display: flex;
-    align-items: center;
     justify-content: center;
 }
 
@@ -847,6 +847,13 @@ ul {
     padding: 0 15px 0 0;
 }
 
+.nav-btn-icon-wrapper.absolute {
+    position: absolute;
+    z-index: 2;
+    top: 7px;
+    left: 12px;
+}
+
 .nav-btn-padded-icon-wrapper {
     padding: 0 7px 0 0;
 }
@@ -913,6 +920,359 @@ ul {
 }
 
 /* App navigation Styles END */
+
+/* App base grid Styles */
+
+.app-base-grid {
+    display: grid;
+    grid-template-rows: 64px 1fr;
+    background: #EDEFF3;
+}
+
+.app-header {
+    grid-row: 1;
+    background: #FFF;
+    padding: 0 32px 0 32px;
+}
+
+.app-header.dashboard {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.app-header.cms {
+    display: block;
+}
+
+/* App base grid Styles END */
+
+/* Dashboard Styles */
+
+.app-header-select-wrapper {
+    position: relative;
+    z-index: 1;
+}
+
+.options-button {
+    width: 32px;
+    height: 32px;
+    background: #F5F5F5;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+/* Dashboard Styles END */
+
+/* Dashboard statistics Styles */
+
+.statistics-content {
+    height: 100%;
+    width: 100%;
+}
+
+.statistics-periodic-summary {
+    height: 56px;
+    padding: 0 32px 0 32px;
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.period-mode-wrapper {
+    display: flex;
+}
+
+.period-picker-wrapper {
+    display: flex;
+}
+
+.summary-text {
+    font-size: 1.5rem;
+    margin-right: 10px;
+}
+
+.period-button {
+    padding: 7px 17px 7px 17px;
+    background: #FFF;
+    border-radius: 100px;
+    margin-left: 10px;
+    font-size: 1rem;
+    color: #191D25;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.period-button:hover {
+    color: #FFF;
+    background: #9746FF;
+}
+
+.period-button.active {
+    color: #FFF;
+    background: #9746FF;
+}
+
+.statistics-widgets-layout {
+    display: grid;
+    grid-template-columns: 40% 1fr;
+    gap: 24px;
+    padding: 0 32px 32px 32px;
+}
+
+.widgets-left-col {
+    grid-column: 1;
+}
+
+.widgets-right-col {
+    grid-column: 2;
+}
+
+.statistic-widget {
+    background: #FFF;
+    box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.05);
+}
+
+.statistic-widget.qr-code {
+    width: 100%;
+    height: 240px;
+    margin-bottom: 24px;
+}
+
+.statistic-widget.qr-frequency {
+    width: 100%;
+    height: 368px;
+    margin-bottom: 24px;
+}
+
+.statistic-widget.package {
+    width: 100%;
+    height: 368px;
+}
+
+.statistic-widget.popular-dishes {
+    position: relative;
+    width: 100%;
+    height: 240px;
+}
+
+.widget-container {
+    padding: 0 20px 0 20px;
+}
+
+.widget-container.qr-code {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 100%;
+}
+
+.qr-code-download-area {
+    grid-column: 1;
+    display: grid;
+    grid-template-rows: 1fr 20%;
+    height: 100%;
+}
+
+.qr-code-info-area {
+    grid-column: 2;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.qr-img-container {
+    grid-row: 1;
+    display: flex;
+    align-items: end;
+    justify-content: center;
+}
+
+.qr-img {
+    height: 140px;
+    width: 140px;
+    object-fit: contain;
+    -o-object-fit: contain;
+}
+
+.qr-img-download-btn {
+    grid-row: 2;
+    padding: 0 17px 0 17px;
+    height: 27px;
+    width: fit-content;
+    border-radius: 100px;
+    background: #E0F3FF;
+    color: #016DFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    justify-self: center;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.qr-img-download-btn:hover{
+    background: #d6eefc;
+    color: #016DFF;
+}
+
+.download-icon {
+    margin-left: 5px;
+}
+
+.number-scans-header {
+    margin: 0 0 12px 0;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.number-scans {
+    margin: 0 0 12px 0;
+    font-size: 2rem;
+    font-weight: 500;
+    text-align: center;
+}
+
+.trending-info {
+    font-size: 1rem;
+}
+
+.trending-info.percent {
+    display: flex;
+    align-items: flex-start;
+    text-align: center;
+}
+
+.trending-up-icon {
+    margin-right: 5px;
+}
+
+.qr-frequency-grid {
+    display: grid;
+    grid-template-rows: 20% 1fr;
+    height: 100%;
+}
+
+.qr-frequency-header-wrapper {
+    grid-row: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.qr-frequency-header {
+    text-align: center;
+    font-size: 1rem;
+}
+
+.scan-frequency-p {
+    font-weight: 500;
+    margin: 0 0 5px 0;
+}
+
+.scan-frequency-span {
+    font-weight: 300;
+}
+
+.qr-frequency-chart-container {
+    grid-row: 2;
+    position: relative;
+    padding-left: 29px;
+}
+
+.widget-mode-selector {
+    position: absolute;
+    right: 15px;
+    top: 12px;
+}
+
+.legend-left-axis-name {
+    position: absolute;
+    left: 42px;
+    top: 15px;
+    font-size: 0.8rem;
+    color: #191D25;
+}
+
+/* Dashboard statistics Styles END */
+
+/* React Date Picker Styles */
+
+.calendar-icon {
+}
+
+.react-datepicker-wrapper,
+.react-datepicker__input-container,
+.react-datepicker__input-container input {
+    border-radius: 100px;
+    border: none;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+}
+
+.react-datepicker {
+    font-family: 'Lexend', sans-serif;
+    font-size: 1rem;
+    color: #333;
+}
+
+.react-datepicker__header {
+    background-color: #f3f3f3;
+    border-bottom: 1px solid #ddd;
+    font-size: 1rem;
+}
+
+.react-datepicker__current-month {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.react-datepicker__day-names {
+    font-size: 12px;
+    color: #666;
+}
+
+.react-datepicker__day {
+    font-size: 14px;
+    margin: 0.2rem;
+    width: 2rem;
+    height: 2rem;
+    line-height: 2rem;
+    text-align: center;
+    border-radius: 10%;
+}
+
+.react-datepicker__day--today {
+    font-weight: bold;
+    border: 1px solid #333;
+}
+
+/* Selected day styling */
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected {
+    background-color: #6940C6; /* e.g., Bootstrap primary color */
+    color: #fff;
+}
+
+/* Hide the default focus outline around the calendar popper, if desired */
+.react-datepicker__portal .react-datepicker__day--keyboard-selected:focus {
+    outline: none;
+}
+
+.datepicker-custom-calendar .react-datepicker__day--selected {
+    background-color: #6940C6;
+    color: #fff;
+}
+
+/* React Date Picker Styles END*/
 
 /* CMS Styles */
 
