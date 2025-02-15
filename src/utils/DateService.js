@@ -18,36 +18,54 @@ export class DateService {
         return collection;
     };
 
-    static getMonthsCollection = (year, t) => {
-        const currentMonth = this.#current.getMonth() + 1;
+    static getMonthsCollection = (date, chosenYear, t) => {
+        const currentMonth = this.#current.getMonth();
         const currentYear = this.#current.getFullYear();
+        const beginYear = date.getFullYear()
+        const beginMonth = date.getMonth();
         const collection = [];
-        if(currentYear === year || currentYear === year?.value) {
-            this.#addMonths(currentMonth, collection, t);
+        if (chosenYear?.value === beginYear) {
+            this.#addMonths(beginMonth + 1, 12, collection, t);
+            return collection;
+        } else if (currentYear === chosenYear?.value) {
+            this.#addMonths(1, currentMonth + 1, collection, t);
             return collection;
         }
-        this.#addMonths(12, collection, t);
+        this.#addMonths(1, 12, collection, t);
         return collection;
     }
 
-    static getWeeksCollection = (year, t) => {
-        const currentWeek = this.getISOWeekNumber();
+    static getWeeksCollection = (date, chosenYear, t) => {
+        const currentWeek = this.getCurrentWeekNumber();
         const currentYear = this.#current.getFullYear();
+        const beginYear = date.getFullYear()
+        const beginWeek = this.getWeekNumber(date);
         const collection = [];
-        if(currentYear === year || currentYear === year?.value) {
-            this.#addWeeks(currentWeek, collection, t);
+        if (chosenYear?.value === beginYear) {
+            this.#addWeeks(beginWeek, 52, collection, t);
+            return collection;
+        } else if (currentYear === chosenYear?.value) {
+            this.#addWeeks(1, currentWeek, collection, t);
             return collection;
         }
-        this.#addWeeks(52, collection, t);
+        this.#addWeeks(1, 52, collection, t);
         return collection;
     };
 
-    static getISOWeekNumber = () => {
+    static getCurrentWeekNumber = () => {
         const date = new Date(Date.UTC(this.#current.getFullYear(), this.#current.getMonth(), this.#current.getDate()));
         const dayOfWeek = date.getUTCDay() || 7;
         date.setUTCDate(date.getUTCDate() + 4 - dayOfWeek);
         const yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
         return Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
+    };
+
+    static getWeekNumber = (date) => {
+        const utcDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+        const dayOfWeek = utcDate.getUTCDay() || 7;
+        utcDate.setUTCDate(utcDate.getUTCDate() + 4 - dayOfWeek);
+        const yearStart = new Date(Date.UTC(utcDate.getUTCFullYear(), 0, 1));
+        return Math.ceil((((utcDate - yearStart) / 86400000) + 1) / 7);
     };
 
     static getMonth = (month, t) => {
@@ -81,14 +99,14 @@ export class DateService {
         }
     }
 
-    static #addWeeks = (endWeek, collection, t) => {
-        for (let week = 1; week <= endWeek; week++) {
+    static #addWeeks = (beginWeek, endWeek, collection, t) => {
+        for (let week = beginWeek; week <= endWeek; week++) {
             collection.push({value: week, label: `${week} ${t('week')}`});
         }
     };
 
-    static #addMonths = (endMonth, collection, t) => {
-        for (let month = 1; month <= endMonth; month++) {
+    static #addMonths = (beginMonth, endMonth, collection, t) => {
+        for (let month = beginMonth; month <= endMonth; month++) {
             collection.push({value: month, label: this.getMonth(month, t)});
         }
     };

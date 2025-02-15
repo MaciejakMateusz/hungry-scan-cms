@@ -1,8 +1,8 @@
 import React from "react";
-import {QrWidget} from "./QrWidget";
+import {QrWidget} from "./qr/QrWidget";
 import {PackageWidget} from "./PackageWidget";
-import {QrFrequencyWidget} from "./QrFrequencyWidget";
-import {PopularDishesWidget} from "./PopularDishesWidget";
+import {QrFrequencyWidget} from "./qr-freq/QrFrequencyWidget";
+import {PopularDishesWidget} from "./popular-dishes/PopularDishesWidget";
 
 export const Widgets = () => {
     return (

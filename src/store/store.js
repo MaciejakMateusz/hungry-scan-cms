@@ -16,6 +16,7 @@ import createRestaurantReducer from "../slices/createRestaurantSlice";
 import reactivateReducer from "../slices/reactivateFormSlice";
 import globalParamsReducer from "../slices/globalParamsSlice";
 import statisticsReducer from "../slices/statisticsSlice";
+import dashboardReducer from "../slices/dashboardSlice";
 
 const rootReducer = combineReducers({
     login: loginReducer,
@@ -34,7 +35,8 @@ const rootReducer = combineReducers({
     createRestaurant: createRestaurantReducer,
     reactivate: reactivateReducer,
     globalParams: globalParamsReducer,
-    statistics: statisticsReducer
+    statistics: statisticsReducer,
+    dashboard: dashboardReducer
 })
 
 export const store = configureStore({
