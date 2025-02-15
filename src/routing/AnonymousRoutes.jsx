@@ -14,7 +14,7 @@ export const AnonymousRoutes = () => {
         const authorizeRequest = async () => {
             setIsLoading(true);
             try {
-                const response = await fetch(`${apiHost}/api/auth${location.pathname}`, {
+                const response = await fetch(`${apiHost}/api/auth/anonymous`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
