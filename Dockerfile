@@ -1,9 +1,16 @@
 FROM node:18-alpine AS builder
 
 WORKDIR /app
+
+ARG REACT_APP_CORE_HOST
+
+ENV REACT_APP_CORE_HOST=$REACT_APP_CORE_HOST
+
 COPY package*.json ./
 RUN npm install
+
 COPY . .
+
 RUN npm run build
 
 FROM nginx:stable-alpine
