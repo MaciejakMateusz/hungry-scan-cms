@@ -9,7 +9,7 @@ import {
     setChosenYear,
     setPeriodData
 } from "../../../../slices/statisticsSlice";
-import {dateStyles} from "../../../../styles";
+import {dateStyles} from "../../../../selectStyles";
 import {CustomNoOptionsMessage} from "../../cms/form-components/CustomNoOptionsMessage";
 import DatePicker, {registerLocale} from "react-datepicker";
 import {getLanguage} from "../../../../locales/langUtils";

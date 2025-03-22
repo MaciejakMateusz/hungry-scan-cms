@@ -3,7 +3,7 @@ import {PieChart} from "./PieChart";
 import {useDispatch, useSelector} from "react-redux";
 import {getPopularItemsStats, setChosenMenu} from "../../../../../../slices/statisticsSlice";
 import Select from "react-select";
-import {chartStyles} from "../../../../../../styles";
+import {chartStyles} from "../../../../../../selectStyles";
 import {CustomNoOptionsMessage} from "../../../../cms/form-components/CustomNoOptionsMessage";
 import {useTranslation} from "react-i18next";
 import debounce from "lodash/debounce";

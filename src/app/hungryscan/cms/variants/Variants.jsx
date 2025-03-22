@@ -21,7 +21,7 @@ import {
 import {getCategories, setCategories} from "../../../../slices/dishesCategoriesSlice";
 import {getTranslation} from "../../../../locales/langUtils";
 import Select from "react-select";
-import {customSelect} from "../../../../styles";
+import {customSelect} from "../../../../selectStyles";
 import {CustomNoOptionsMessage} from "../form-components/CustomNoOptionsMessage";
 import {VariantFormDialog} from "./VariantFormDialog";
 import {DecisionDialog} from "../dialog-windows/DecisionDialog";

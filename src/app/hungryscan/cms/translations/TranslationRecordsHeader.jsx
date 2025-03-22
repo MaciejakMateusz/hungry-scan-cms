@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import Select from "react-select";
-import {newCustomSelect} from "../../../../styles";
+import {newCustomSelect} from "../../../../selectStyles";
 import {CustomNoOptionsMessage} from "../form-components/CustomNoOptionsMessage";
 import {useTranslation} from "react-i18next";
 import {setChosenGroup} from "../../../../slices/translationsSlice";

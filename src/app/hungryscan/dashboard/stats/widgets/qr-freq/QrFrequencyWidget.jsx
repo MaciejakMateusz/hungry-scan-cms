@@ -3,7 +3,7 @@ import {BarChart} from "./BarChart";
 import {useTranslation} from "react-i18next";
 import {LineChart} from "./LineChart";
 import Select from "react-select";
-import {chartStyles} from "../../../../../../styles";
+import {chartStyles} from "../../../../../../selectStyles";
 import {CustomNoOptionsMessage} from "../../../../cms/form-components/CustomNoOptionsMessage";
 
 export const QrFrequencyWidget = () => {

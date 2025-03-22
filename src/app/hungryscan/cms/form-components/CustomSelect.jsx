@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import Select from "react-select";
-import {customSelect} from "../../../../styles";
+import {customSelect} from "../../../../selectStyles";
 import {useTranslation} from "react-i18next";
 import {CustomNoOptionsMessage} from "./CustomNoOptionsMessage";
 
