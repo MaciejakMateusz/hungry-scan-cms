@@ -934,16 +934,16 @@ ul {
     background: #FFF;
     padding: 0 32px 0 32px;
     height: 56px;
+    display: flex;
+    align-items: center;
 }
 
 .app-header.dashboard {
-    display: flex;
-    align-items: center;
     justify-content: flex-start;
 }
 
 .app-header.cms {
-    display: block;
+    justify-content: space-between;
 }
 
 /* App base grid Styles END */
@@ -2286,8 +2286,11 @@ ul {
     gap: 10px;
     margin-bottom: 10px;
 }
-
 .flex-wrapper {
+    display: flex;
+}
+
+.flex-wrapper-gapped {
     display: flex;
     gap: 10px;
 }

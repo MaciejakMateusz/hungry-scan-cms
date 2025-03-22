@@ -93,7 +93,7 @@ export const DishesCategories = () => {
                 <main className={'translations-padded-view-container'}>
                     <div className={'functions-header'}>
                         <div className={'section-heading'}>{t('dishesCategories')}</div>
-                        <div className={'flex-wrapper'}>
+                        <div className={'flex-wrapper-gapped'}>
                             <div className={'general-button-new'}
                                  onClick={() => dispatch(setNewCategoryFormActive(true))}>+ &nbsp;{t('newCategory')}
                             </div>
