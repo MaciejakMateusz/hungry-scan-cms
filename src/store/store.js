@@ -17,6 +17,7 @@ import reactivateReducer from "../slices/reactivateFormSlice";
 import globalParamsReducer from "../slices/globalParamsSlice";
 import statisticsReducer from "../slices/statisticsSlice";
 import dashboardReducer from "../slices/dashboardSlice";
+import cmsReducer from "../slices/cmsSlice";
 
 const rootReducer = combineReducers({
     login: loginReducer,
@@ -36,7 +37,8 @@ const rootReducer = combineReducers({
     reactivate: reactivateReducer,
     globalParams: globalParamsReducer,
     statistics: statisticsReducer,
-    dashboard: dashboardReducer
+    dashboard: dashboardReducer,
+    cms: cmsReducer
 })
 
 export const store = configureStore({
