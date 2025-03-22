@@ -77,7 +77,7 @@ export const Translations = () => {
                 <title>CMS - {t("translations")}</title>
             </Helmet>
             {saveSuccess ? <SuccessMessage text={t('saved')}/> : <></>}
-            <div className={'translation-background'}>
+            <div className={'background'}>
                 <main className={'translations-padded-view-container'}>
                     <div className={'translations-vertical-split-grid'}>
                         <TranslationRecordsHeader/>

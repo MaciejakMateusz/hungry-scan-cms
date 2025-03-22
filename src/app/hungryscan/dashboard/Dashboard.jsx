@@ -110,10 +110,8 @@ export const Dashboard = () => {
                 </div>
             </div>
             <div className={'cms-main'}>
-                <section className={'app-base-grid'}>
-                    <DashboardTopper/>
-                    {renderMainView()}
-                </section>
+                <DashboardTopper/>
+                {renderMainView()}
             </div>
         </>
     );

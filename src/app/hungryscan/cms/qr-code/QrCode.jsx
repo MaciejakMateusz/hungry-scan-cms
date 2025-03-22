@@ -28,7 +28,7 @@ export const QrCode = () => {
                                msg={t('shareQr')}/> :
                 <></>
             }
-            <div className={'translation-background'}>
+            <div className={'background'}>
                 <main className={'translations-padded-view-container'}>
                     <div className={'translations-vertical-split-grid'}>
                         <section className={'translations-vertical-split-left qr'}>

@@ -134,7 +134,7 @@ export const EditMenuItemForm = ({executeFilter}) => {
     };
 
     return (
-        <div className={'translation-background'}>
+        <div className={'background'}>
             {errorMessage ? <FormErrorDialog error={errorData} resetMessage={setErrorMessage}/> : null}
             <div className={'translations-padded-view-container'}>
                 <div className={'form-grid'}>

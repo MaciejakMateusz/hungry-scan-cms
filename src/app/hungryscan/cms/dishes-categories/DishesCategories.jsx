@@ -89,7 +89,7 @@ export const DishesCategories = () => {
                 <title>CMS - {t('dishesCategories')}</title>
             </Helmet>
             {submittedSuccessType && renderConfirmationDialog(submittedSuccessType)}
-            <div className={'translation-background'}>
+            <div className={'background'}>
                 <main className={'translations-padded-view-container'}>
                     <div className={'functions-header'}>
                         <div className={'section-heading'}>{t('dishesCategories')}</div>

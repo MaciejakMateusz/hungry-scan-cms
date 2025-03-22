@@ -925,7 +925,7 @@ ul {
 
 .app-base-grid {
     display: grid;
-    grid-template-rows: 64px 1fr;
+    grid-template-rows: 56px 1fr;
     background: #EDEFF3;
 }
 
@@ -933,6 +933,7 @@ ul {
     grid-row: 1;
     background: #FFF;
     padding: 0 32px 0 32px;
+    height: 56px;
 }
 
 .app-header.dashboard {
@@ -1294,6 +1295,7 @@ ul {
 
 .cms-main {
     grid-column: 2;
+    background: #EDEFF3;
 }
 
 /* Dishes and Categories */
@@ -1911,13 +1913,13 @@ ul {
 }
 
 /* NEW UI */
-.translation-background {
-    background-color: #EEE;
+.background {
+    background-color: #EDEFF3;
     font-size: 0.8rem;
 }
 
 .translations-padded-view-container {
-    padding: 50px 40px 30px 40px;
+    padding: 10px 40px 30px 40px;
     height: calc(100% - 80px);
     overflow: hidden;
 }
