@@ -92,12 +92,17 @@ export const DishesCategories = () => {
             <div className={'translation-background'}>
                 <main className={'translations-padded-view-container'}>
                     <div className={'functions-header'}>
-                        <div className={'general-button-new'}
-                             onClick={() => dispatch(setNewCategoryFormActive(true))}>+ &nbsp;{t('newCategory')}</div>
-                        <SearchButton filterExpanded={filterExpanded}
-                                      onExpand={() => dispatch(setFilterExpanded(!filterExpanded))}
-                                      filterValue={filterValue}
-                                      onSubmit={handleSearchSubmit} onClear={() => dispatch(setFilterValue(''))}/>
+                        <div className={'section-heading'}>{t('dishesCategories')}</div>
+                        <div className={'flex-wrapper'}>
+                            <div className={'general-button-new'}
+                                 onClick={() => dispatch(setNewCategoryFormActive(true))}>+ &nbsp;{t('newCategory')}
+                            </div>
+                            <SearchButton filterExpanded={filterExpanded}
+                                          onExpand={() => dispatch(setFilterExpanded(!filterExpanded))}
+                                          filterValue={filterValue}
+                                          onSubmit={handleSearchSubmit} onClear={() => dispatch(setFilterValue(''))}
+                            />
+                        </div>
                     </div>
                     <ErrorBoundary>
                         <DishesCategoriesList filter={executeFilter}/>
