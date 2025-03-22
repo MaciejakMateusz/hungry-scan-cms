@@ -28,6 +28,7 @@ import {
 import {setCurrentDialog, setCurrentView} from "../../../slices/globalParamsSlice";
 import {UserProfileWhiteIcon} from "../../icons/UserProfileWhiteIcon";
 import {NotificationIcon} from "../../icons/NotificationIcon";
+import {CmsTopper} from "./CmsTopper";
 
 export const Cms = () => {
     const {t} = useTranslation();
@@ -131,6 +132,7 @@ export const Cms = () => {
                 </div>
             </div>
             <div className={'cms-main'}>
+                <CmsTopper/>
                 {renderMainView()}
             </div>
         </>
