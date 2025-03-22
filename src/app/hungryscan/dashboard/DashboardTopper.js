@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect} from "react";
 import {DocumentIcon} from "../../icons/DocumentIcon";
 import Select from "react-select";
-import {newCustomSelect} from "../../../selectStyles";
+import {mainSelectIcon} from "../../../selectStyles";
 import {CustomNoOptionsMessage} from "../cms/form-components/CustomNoOptionsMessage";
 import {ThreeDotsIcon} from "../../icons/ThreeDotsIcon";
 import {useTranslation} from "react-i18next";
@@ -42,7 +42,7 @@ export const DashboardTopper = () => {
                         options={restaurants}
                         defaultValue={restaurants && restaurants[0]}
                         onChange={(selected) => dispatch(setRestaurant(selected))}
-                        styles={newCustomSelect}
+                        styles={mainSelectIcon}
                         components={{NoOptionsMessage: CustomNoOptionsMessage}}
                 />
             </div>

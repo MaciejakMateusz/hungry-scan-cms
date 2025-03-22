@@ -98,7 +98,7 @@ export const customSelect = {
     })
 }
 
-export const newCustomSelect = {
+export const mainSelect = {
     control: (provided, state) => ({
         ...provided,
         cursor: 'pointer',
@@ -109,11 +109,11 @@ export const newCustomSelect = {
         fontSize: '1rem',
         fontWeight: '300',
         color: state.isDisabled ? '#ccc' : '#191D25',
-        width: '315px',
+        width: '240px',
         height: '32px',
         minHeight: '32px',
         textAlign: 'left',
-        paddingLeft: '35px',
+        paddingLeft: '5px',
         borderColor: state.isFocused ? 'transparent' : provided.borderColor,
         boxShadow: state.isFocused ? 'none' : provided.boxShadow,
         '&:hover': {
@@ -148,7 +148,7 @@ export const newCustomSelect = {
         ...provided,
         borderRadius: '5px',
         minHeight: '32px',
-        width: '315px'
+        width: '100%'
     }),
     noOptionsMessage: (provided) => ({
         ...provided,
@@ -187,6 +187,15 @@ export const newCustomSelect = {
                 color: '#000',
             }
         }
+    })
+}
+
+export const mainSelectIcon = {
+    ...mainSelect,
+    control: (provided, state) => ({
+        ...mainSelect.control(provided, state),
+        width: '315px',
+        paddingLeft: '35px'
     })
 }
 

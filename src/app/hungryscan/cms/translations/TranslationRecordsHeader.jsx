@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import Select from "react-select";
-import {newCustomSelect} from "../../../../selectStyles";
+import {mainSelect} from "../../../../selectStyles";
 import {CustomNoOptionsMessage} from "../form-components/CustomNoOptionsMessage";
 import {useTranslation} from "react-i18next";
 import {setChosenGroup} from "../../../../slices/translationsSlice";
@@ -41,7 +41,7 @@ export const TranslationRecordsHeader = () => {
                     options={options}
                     defaultValue={options[0]}
                     onChange={(selected) => dispatch(setChosenGroup(selected))}
-                    styles={newCustomSelect}
+                    styles={mainSelect}
                     components={{NoOptionsMessage: CustomNoOptionsMessage}}
             />
             <div className={'translation-record-grid header'}>
