@@ -16,9 +16,16 @@ export const CmsTopper = () => {
     const [menus, setMenus] = useState();
 
     useEffect(() => {
-        const mappedMenus = restaurant?.value.menus.map((m) => ({value: m, label: m.name}));
+        const mappedMenus = [...(restaurant?.value.menus || [])]
+            .sort((a, b) => {
+                if (a.standard === b.standard) {
+                    return a.name.localeCompare(b.name, undefined, { numeric: true });
+                }
+                return a.standard ? -1 : 1;
+            })
+            .map((m) => ({ value: m, label: m.name }));
         setMenus(mappedMenus);
-        if (mappedMenus?.length) {
+        if (mappedMenus?.length >= 1) {
             dispatch(setMenu(mappedMenus[0]));
         }
     }, [dispatch, restaurant]);
