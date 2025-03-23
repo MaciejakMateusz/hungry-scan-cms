@@ -203,6 +203,13 @@
   "fridayShort": "Fri",
   "saturdayShort": "Sat",
   "sundayShort": "Sun",
+  "monday": "Monday",
+  "tuesday": "Tuesday",
+  "wednesday": "Wednesday",
+  "thursday": "Thursday",
+  "friday": "Friday",
+  "saturday": "Saturday",
+  "sunday": "Sunday",
   "download": "Download",
   "numberScans": "Number of scans",
   "relatedTo": "in relation to",
@@ -213,6 +220,8 @@
   "barChart": "Bar chart",
   "unique": "Unique",
   "repeated": "Repeated",
+  "everyday": "Everyday",
+  "selectedCount": "{{count}} selected",
 
   "constraints.NotBlank": "Field cannot be blank",
   "constraints.ForenameSurname": "Field should contain minimum 2 letters and no special characters"
