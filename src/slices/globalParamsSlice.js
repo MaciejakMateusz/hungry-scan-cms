@@ -5,8 +5,10 @@ export const globalParamsSlice = createSlice(
     {
         name: 'globalParams',
         initialState: {
-            activeRestaurant: {},
+            activeRestaurant: null,
+            activeRestaurantId: null,
             activeMenu: null,
+            activeMenuId: null,
             userForename: getCookie("userForename"),
             currentView: 'dashboard/stats',
             cmsActive: false,
@@ -16,8 +18,14 @@ export const globalParamsSlice = createSlice(
             setActiveRestaurant: (state, action) => {
                 state.activeRestaurant = action.payload;
             },
+            setActiveRestaurantId: (state, action) => {
+                state.activeRestaurantId = action.payload;
+            },
             setActiveMenu: (state, action) => {
                 state.activeMenu = action.payload;
+            },
+            setActiveMenuId: (state, action) => {
+                state.activeMenuId = action.payload;
             },
             setUserForename: (state, action) => {
                 state.currentUser = action.payload;
@@ -34,7 +42,9 @@ export const globalParamsSlice = createSlice(
 
 export const {
     setActiveRestaurant,
+    setActiveRestaurantId,
     setActiveMenu,
+    setActiveMenuId,
     setUserForename,
     setCurrentView,
     setCurrentDialog} = globalParamsSlice.actions;
