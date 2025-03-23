@@ -13,6 +13,7 @@ export const MenuScheduler = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {activeMenu} = useSelector(state => state.globalParams.globalParams);
+    const {isInEditMode} = useSelector(state => state.dishesCategories.view);
     const {weekDay, timeFrom, timeTo} = useSelector(state => state.cms.view);
     const weekDays = useWeekDays();
     const scheduleHours = useScheduleHours();
@@ -28,6 +29,7 @@ export const MenuScheduler = () => {
                     value={weekDay}
                     placeholder={t('choose')}
                     isMulti
+                    isDisabled={isInEditMode}
                     closeMenuOnSelect={false}
                     hideSelectedOptions={false}
                     options={weekDays}
@@ -45,6 +47,7 @@ export const MenuScheduler = () => {
                         name={'time-from'}
                         value={timeFrom}
                         placeholder={t('choose')}
+                        isDisabled={isInEditMode}
                         options={scheduleHours}
                         onChange={(selected) => dispatch(setTimeFrom(selected))}
                         styles={mainSelectTime}
@@ -57,6 +60,7 @@ export const MenuScheduler = () => {
                         name={'time-to'}
                         value={timeTo}
                         placeholder={t('choose')}
+                        isDisabled={isInEditMode}
                         options={scheduleHours}
                         onChange={(selected) => dispatch(setTimeTo(selected))}
                         styles={mainSelectTime}

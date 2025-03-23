@@ -5,7 +5,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {executeLoginFetch, setPassword, setUsername} from "../../../../slices/loginFormSlice";
 import {LoadingSpinner} from "../../../icons/LoadingSpinner";
 import {urlParamValue} from "../../../../utils/utils";
-import {setActiveMenuId, setActiveRestaurantId} from "../../../../slices/globalParamsSlice";
 
 export const LoginForm = () => {
     const dispatch = useDispatch();
@@ -23,15 +22,9 @@ export const LoginForm = () => {
         setIsPasswordVisible((prevState) => !prevState);
     };
 
-    const handleSignIn = async (e) => {
+    const handleSignIn = (e) => {
         e.preventDefault();
-        const loginAction = await dispatch(executeLoginFetch());
-        if(executeLoginFetch.fulfilled.match(loginAction)) {
-            console.log(loginAction.payload)
-            dispatch(setActiveMenuId(loginAction.payload.activeMenuId));
-            dispatch(setActiveRestaurantId(loginAction.payload.activeRestaurantId));
-            window.location.href = loginAction.payload.redirectUrl;
-        }
+        dispatch(executeLoginFetch());
     };
 
     const renderMessage = () => {

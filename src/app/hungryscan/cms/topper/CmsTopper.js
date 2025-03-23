@@ -15,13 +15,17 @@ export const CmsTopper = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {restaurant} = useSelector(state => state.dashboard.view);
-    const {activeMenu} = useSelector(state => state.globalParams.globalParams);
+    const {activeMenuId, activeMenu} = useSelector(state => state.globalParams.globalParams);
+    const {isInEditMode} = useSelector(state => state.dishesCategories.view);
     const [menus, setMenus] = useState();
 
     useEffect(() => {
         const mappedMenus = mapMenus();
         setMenus(mappedMenus);
-        if (!activeMenu && mappedMenus?.length >= 1) dispatch(setActiveMenu(mappedMenus[0]));
+        if (!activeMenu && mappedMenus?.length >= 1) {
+            const initialMenu = mappedMenus.find(menu => menu.value.id === activeMenuId);
+            dispatch(setActiveMenu(initialMenu));
+        }
     }, [dispatch, restaurant]);
 
     const mapMenus = useCallback(() => {
@@ -56,13 +60,14 @@ export const CmsTopper = () => {
                             value={activeMenu}
                             placeholder={t('choose')}
                             options={menus}
+                            isDisabled={isInEditMode}
                             defaultValue={menus && menus[0]}
                             onChange={async (selected) => await switchMenu(selected)}
                             styles={mainSelectIcon}
                             components={{NoOptionsMessage: CustomNoOptionsMessage}}
                     />
                 </div>
-                <div className={'options-button'}>
+                <div className={'options-button'} style={isInEditMode ? {cursor: 'not-allowed'} : {}}>
                     <ThreeDotsIcon/>
                 </div>
             </div>

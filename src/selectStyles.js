@@ -120,9 +120,9 @@ export const mainSelect = {
             borderColor: state.isFocused ? 'transparent' : provided['&:hover'].borderColor,
         }
     }),
-    singleValue: (provided) => ({
+    singleValue: (provided, state) => ({
         ...provided,
-        color: '#191D25',
+        color: state.isDisabled ? '#888' : '#191D25',
         maxWidth: '90%'
     }),
     dropdownIndicator: (provided, state) => ({
@@ -212,6 +212,7 @@ export const mainSelectChipless = {
         display: 'none'
     }),
 }
+
 export const mainSelectTime = {
     ...mainSelect,
     control: (provided, state) => ({

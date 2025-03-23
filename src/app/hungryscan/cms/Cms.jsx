@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {NavButton} from "../NavButton";
 import {DishesCategories} from "./dishes-categories/DishesCategories";
@@ -11,7 +11,7 @@ import {Interface} from "./interface/Interface";
 import {useDispatch, useSelector} from "react-redux";
 import {DecisionDialog} from "./dialog-windows/DecisionDialog";
 import {clearForm as clearCategoryForm} from "../../../slices/categoryFormSlice";
-import {clearView as clearDishesCategoriesView} from "../../../slices/dishesCategoriesSlice";
+import {clearView as clearDishesCategoriesView, setIsInEditMode} from "../../../slices/dishesCategoriesSlice";
 import {clearView as clearVariantsView} from "../../../slices/variantsSlice";
 import {clearView as clearAdditionsView} from "../../../slices/additionsSlice";
 import {clearView as clearTranslationsView} from "../../../slices/translationsSlice";
@@ -34,7 +34,12 @@ export const Cms = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {currentView, cmsActive, userForename} = useSelector(state => state.globalParams.globalParams);
-    const {isInEditMode} = useSelector(state => state.dishesCategories.view);
+    const {
+        isInEditMode,
+        newCategoryFormActive,
+        editCategoryFormActive,
+        newDishFormActive,
+        editDishFormActive} = useSelector(state => state.dishesCategories.view);
     const [switchViewDialog, setSwitchViewDialog] = useState(null);
 
     const clearAppState = () => {
@@ -45,6 +50,10 @@ export const Cms = () => {
         dispatch(clearAdditionsView());
         dispatch(clearTranslationsView())
     }
+
+    useEffect(() => {
+        dispatch(setIsInEditMode());
+    }, [dispatch, newCategoryFormActive, editCategoryFormActive, newDishFormActive, editDishFormActive]);
 
     const switchView = (viewName) => {
         if (isInEditMode) {
