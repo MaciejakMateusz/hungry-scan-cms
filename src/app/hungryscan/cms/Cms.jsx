@@ -28,7 +28,7 @@ import {
 import {setCurrentDialog, setCurrentView} from "../../../slices/globalParamsSlice";
 import {UserProfileWhiteIcon} from "../../icons/UserProfileWhiteIcon";
 import {NotificationIcon} from "../../icons/NotificationIcon";
-import {CmsTopper} from "./CmsTopper";
+import {CmsTopper} from "./topper/CmsTopper";
 
 export const Cms = () => {
     const {t} = useTranslation();

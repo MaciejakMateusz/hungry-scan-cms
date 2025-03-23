@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from "react";
-import {DocumentIcon} from "../../icons/DocumentIcon";
+import {DocumentIcon} from "../../../icons/DocumentIcon";
 import Select from "react-select";
-import {mainSelectIcon} from "../../../selectStyles";
-import {CustomNoOptionsMessage} from "./form-components/CustomNoOptionsMessage";
-import {ThreeDotsIcon} from "../../icons/ThreeDotsIcon";
+import {mainSelectIcon} from "../../../../selectStyles";
+import {CustomNoOptionsMessage} from "../form-components/CustomNoOptionsMessage";
+import {ThreeDotsIcon} from "../../../icons/ThreeDotsIcon";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
-import {setMenu} from "../../../slices/cmsSlice";
+import {setMenu} from "../../../../slices/cmsSlice";
+import {MenuScheduler} from "./MenuScheduler";
 
 export const CmsTopper = () => {
     const {t} = useTranslation();
@@ -50,6 +51,7 @@ export const CmsTopper = () => {
                     <ThreeDotsIcon/>
                 </div>
             </div>
+            <MenuScheduler/>
         </header>
     );
 }
