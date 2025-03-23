@@ -163,7 +163,8 @@ export const mainSelect = {
         fontSize: '1rem',
         fontWeight: '300',
         borderRadius: '5px',
-        background: state.isSelected ? '#f0f0f0' : '#FFF',
+        background: state.isSelected ? '#b6b6b6' : null,
+        backgroundColor: state.isFocused ? '#f0f0f0' : null,
         color: '#191D25',
         '&:hover': {backgroundColor: '#f0f0f0'}
     }),
@@ -196,6 +197,26 @@ export const mainSelectIcon = {
         ...mainSelect.control(provided, state),
         width: '315px',
         paddingLeft: '35px'
+    })
+}
+
+export const mainSelectChipless = {
+    ...mainSelect,
+    multiValue: () => ({
+        display: 'none'
+    }),
+    multiValueLabel: () => ({
+        display: 'none'
+    }),
+    multiValueRemove: () => ({
+        display: 'none'
+    }),
+}
+export const mainSelectTime = {
+    ...mainSelect,
+    control: (provided, state) => ({
+        ...mainSelect.control(provided, state),
+        width: '100px'
     })
 }
 
