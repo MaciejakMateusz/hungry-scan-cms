@@ -12,11 +12,12 @@ import {useScheduleHours} from "../../../../hooks/useScheduleHours";
 export const MenuScheduler = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
-    const {menu, weekDay, timeFrom, timeTo} = useSelector(state => state.cms.view);
+    const {activeMenu} = useSelector(state => state.globalParams.globalParams);
+    const {weekDay, timeFrom, timeTo} = useSelector(state => state.cms.view);
     const weekDays = useWeekDays();
     const scheduleHours = useScheduleHours();
 
-    if (menu?.value.standard) {
+    if (activeMenu?.value.standard) {
         return <></>;
     }
 

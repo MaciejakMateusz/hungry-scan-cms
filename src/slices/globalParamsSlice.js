@@ -6,7 +6,7 @@ export const globalParamsSlice = createSlice(
         name: 'globalParams',
         initialState: {
             activeRestaurant: {},
-            activeMenu: {},
+            activeMenu: null,
             userForename: getCookie("userForename"),
             currentView: 'dashboard/stats',
             cmsActive: false,
