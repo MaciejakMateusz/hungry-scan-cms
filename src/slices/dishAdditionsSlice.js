@@ -37,15 +37,15 @@ export const fetchIngredientsSlice = createSlice({
         setChosenAdditions: (state, action) => {
             const selectedAdditions = action.payload;
 
-            const selectedIds = new Set(selectedAdditions.map(item => item.value.id));
-            const currentIds = new Set(state.chosenAdditions.map(item => item.value.id));
+            const selectedIds = new Set(selectedAdditions?.map(item => item.value.id));
+            const currentIds = new Set(state.chosenAdditions?.map(item => item.value.id));
 
-            const removedAdditions = state.chosenAdditions.filter(item => !selectedIds.has(item.value.id));
-            const addedAdditions = selectedAdditions.filter(item => !currentIds.has(item.value.id));
+            const removedAdditions = state.chosenAdditions?.filter(item => !selectedIds.has(item.value.id));
+            const addedAdditions = selectedAdditions?.filter(item => !currentIds.has(item.value.id));
 
             state.chosenAdditions = selectedAdditions;
 
-            state.ingredients.push(...removedAdditions.map(item => ({
+            state.ingredients.push(...removedAdditions?.map(item => ({
                 value: item.value,
                 label: getTranslation(item.value.name)
             })));
@@ -68,12 +68,12 @@ export const fetchIngredientsSlice = createSlice({
             .addCase(fetchIngredients.fulfilled, (state, action) => {
                 state.isLoading = false;
 
-                const formattedIngredients = action.payload.map(ingredient => ({
+                const formattedIngredients = action.payload?.map(ingredient => ({
                     value: ingredient,
                     label: getTranslation(ingredient.name)
                 }));
 
-                const chosenAdditionsIds = new Set(state.chosenAdditions.map(item => item.value.id));
+                const chosenAdditionsIds = new Set(state.chosenAdditions?.map(item => item.value.id));
 
                 state.ingredients = formattedIngredients.filter(ingredient => !chosenAdditionsIds.has(ingredient.value.id));
 

@@ -179,22 +179,22 @@ export const fetchLabelsSlice = createSlice(
             setChosenLabels: (state, action) => {
                 const selectedLabels = action.payload;
 
-                const selectedIds = new Set(selectedLabels.map(item => item.value.id));
-                const currentIds = new Set(state.chosenLabels.map(item => item.value.id));
+                const selectedIds = new Set(selectedLabels?.map(item => item.value.id));
+                const currentIds = new Set(state.chosenLabels?.map(item => item.value.id));
 
-                const removedLabels = state.chosenLabels.filter(item => !selectedIds.has(item.value.id));
-                const addedLabels = selectedLabels.filter(item => !currentIds.has(item.value.id));
+                const removedLabels = state.chosenLabels?.filter(item => !selectedIds.has(item.value.id));
+                const addedLabels = selectedLabels?.filter(item => !currentIds.has(item.value.id));
 
                 state.chosenLabels = selectedLabels;
 
-                state.labels.push(...removedLabels.map(item => ({
+                state.labels.push(...removedLabels?.map(item => ({
                     value: item.value,
                     label: getTranslation(item.value.name)
                 })));
 
-                state.labels = state.labels.filter(label =>
+                state.labels = state.labels?.filter(label =>
                     !addedLabels.find(added => added.value.id === label.value.id));
-                state.labels.sort((a, b) =>
+                state.labels?.sort((a, b) =>
                     getTranslation(a.value.name).localeCompare(getTranslation(b.value.name))
                 );
             },
@@ -211,12 +211,12 @@ export const fetchLabelsSlice = createSlice(
                 .addCase(getLabels.fulfilled, (state, action) => {
                     state.isLoading = false;
 
-                    const formattedLabels = action.payload.map(label => ({
+                    const formattedLabels = action.payload?.map(label => ({
                         value: label,
                         label: getTranslation(label.name)
                     }));
 
-                    const chosenLabelsIds = new Set(state.chosenLabels.map(item => item.value.id));
+                    const chosenLabelsIds = new Set(state.chosenLabels?.map(item => item.value.id));
 
                     state.labels = formattedLabels.filter(label => !chosenLabelsIds.has(label.value.id));
 
@@ -242,22 +242,22 @@ export const fetchAllergensSlice = createSlice(
             setChosenAllergens: (state, action) => {
                 const selectedAllergens = action.payload;
 
-                const selectedIds = new Set(selectedAllergens.map(item => item.value.id));
-                const currentIds = new Set(state.chosenAllergens.map(item => item.value.id));
+                const selectedIds = new Set(selectedAllergens?.map(item => item.value.id));
+                const currentIds = new Set(state.chosenAllergens?.map(item => item.value.id));
 
-                const removedAllergens = state.chosenAllergens.filter(item => !selectedIds.has(item.value.id));
-                const addedAllergens = selectedAllergens.filter(item => !currentIds.has(item.value.id));
+                const removedAllergens = state.chosenAllergens?.filter(item => !selectedIds.has(item.value.id));
+                const addedAllergens = selectedAllergens?.filter(item => !currentIds.has(item.value.id));
 
                 state.chosenAllergens = selectedAllergens;
 
-                state.allergens.push(...removedAllergens.map(item => ({
+                state.allergens.push(...removedAllergens?.map(item => ({
                     value: item.value,
                     label: getTranslation(item.value.name)
                 })));
 
-                state.allergens = state.allergens.filter(allergen =>
+                state.allergens = state.allergens?.filter(allergen =>
                     !addedAllergens.find(added => added.value.id === allergen.value.id));
-                state.allergens.sort((a, b) =>
+                state.allergens?.sort((a, b) =>
                     getTranslation(a.value.name).localeCompare(getTranslation(b.value.name))
                 );
             },
@@ -274,16 +274,16 @@ export const fetchAllergensSlice = createSlice(
                 .addCase(getAllergens.fulfilled, (state, action) => {
                     state.isLoading = false;
 
-                    const formattedAllergens = action.payload.map(allergen => ({
+                    const formattedAllergens = action.payload?.map(allergen => ({
                         value: allergen,
                         label: getTranslation(allergen.name)
                     }));
 
-                    const chosenAllergensIds = new Set(state.chosenAllergens.map(item => item.value.id));
+                    const chosenAllergensIds = new Set(state.chosenAllergens?.map(item => item.value.id));
 
-                    state.allergens = formattedAllergens.filter(allergen =>
+                    state.allergens = formattedAllergens?.filter(allergen =>
                         !chosenAllergensIds.has(allergen.value.id));
-                    state.allergens.sort((a, b) =>
+                    state.allergens?.sort((a, b) =>
                         getTranslation(a.value.name).localeCompare(getTranslation(b.value.name))
                     );
                 })
@@ -328,7 +328,7 @@ export const dishFormSlice = createSlice({
             const category = action.payload;
             state.category = category
             if (category) {
-                const displayOrders = category.menuItems.map(menuItem => menuItem.displayOrder);
+                const displayOrders = category.menuItems?.map(menuItem => menuItem.displayOrder);
                 const additional = displayOrders.length + 1;
                 if (action.payload.isNew || category.id !== state.categoryId) {
                     state.displayOrders = [...displayOrders, additional];
