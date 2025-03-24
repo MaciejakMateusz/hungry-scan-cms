@@ -8,7 +8,10 @@ import {
     setDisplayOrders,
     setDisplayOrderValue, setErrorData, setErrorMessage
 } from "../../../../../slices/categoryFormSlice";
-import {setNewCategoryFormActive, setSubmittedSuccessType} from "../../../../../slices/dishesCategoriesSlice";
+import {
+    setNewCategoryFormActive,
+    setSubmittedSuccessType
+} from "../../../../../slices/dishesCategoriesSlice";
 import {FormErrorDialog} from "../../../../error/FormErrorDialog";
 
 export const NewCategoryForm = () => {

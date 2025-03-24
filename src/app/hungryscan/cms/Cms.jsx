@@ -21,7 +21,8 @@ import {
     ADDITIONS,
     C_CODE_QR,
     DISHES_CATEGORIES,
-    INTERFACE, STATS,
+    INTERFACE,
+    STATS,
     TRANSLATIONS,
     VARIANTS
 } from "../../../utils/viewsConstants";
@@ -40,10 +41,12 @@ export const Cms = () => {
         newCategoryFormActive,
         editCategoryFormActive,
         newDishFormActive,
-        editDishFormActive} = useSelector(state => state.dishesCategories.view);
+        editDishFormActive
+    } = useSelector(state => state.dishesCategories.view);
+    const {categoryForAction, menuItemForAction} = useSelector(state => state.dishesCategories.view);
     const [switchViewDialog, setSwitchViewDialog] = useState(null);
 
-    const clearAppState = () => {
+    const clearCmsState = () => {
         dispatch(clearDishForm());
         dispatch(clearCategoryForm());
         dispatch(clearDishesCategoriesView());
@@ -57,14 +60,14 @@ export const Cms = () => {
     }, [dispatch, newCategoryFormActive, editCategoryFormActive, newDishFormActive, editDishFormActive]);
 
     useEffect(() => {
-        dispatch(fetchActiveMenu())
-    }, [dispatch]);
+        if (!isInEditMode || !categoryForAction || !menuItemForAction) dispatch(fetchActiveMenu());
+    }, [dispatch, isInEditMode, categoryForAction, menuItemForAction]);
 
     const switchView = (viewName) => {
         if (isInEditMode) {
             setSwitchViewDialog(viewName)
         } else {
-            clearAppState();
+            clearCmsState();
             dispatch(setCurrentView(viewName));
         }
     }
@@ -102,13 +105,14 @@ export const Cms = () => {
                     onCancel={() => setSwitchViewDialog(null)}
                     onSubmit={() => {
                         setSwitchViewDialog(null);
-                        clearAppState();
+                        clearCmsState();
                         dispatch(setCurrentDialog(switchViewDialog));
                     }}/> : <></>
             }
             <div className={'app-nav-panel'}>
                 <div className={'app-nav-header'}>
-                    <span className={'profile-name'}>Witaj, {userForename}!</span><UserProfileWhiteIcon/><NotificationIcon/>
+                    <span
+                        className={'profile-name'}>Witaj, {userForename}!</span><UserProfileWhiteIcon/><NotificationIcon/>
                 </div>
                 <div className={'app-mode-switcher-wrapper'}>
                     <div className={'app-mode-switcher'} onClick={() => switchAppMode()}>
