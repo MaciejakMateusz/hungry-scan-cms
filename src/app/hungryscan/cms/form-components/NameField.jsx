@@ -5,14 +5,14 @@ import {InformationTooltip} from "../shared-components/InformationTooltip";
 export const NameField = (props) => {
     const {t} = useTranslation();
     const [isFocused, setIsFocused] = useState(false);
-    const [hasError, setHasError] = useState(props.error.name);
+    const [hasError, setHasError] = useState(props.error?.name);
 
     const resetErrorStyles = () => {
         setHasError(null);
     }
 
     useEffect(() => {
-        setHasError(props.error.name && (!props.value || props.value.length > 255))
+        setHasError(props.error?.name && (!props.value || props.value.length > 255))
     }, [props.error, props.value]);
 
     return (

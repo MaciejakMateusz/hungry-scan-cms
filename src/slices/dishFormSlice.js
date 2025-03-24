@@ -79,7 +79,11 @@ export const postDish = createAsyncThunk(
             return rejectWithValue(errorData);
         }
 
-        return await response.json();
+        try {
+            return await response.json();
+        } catch (error) {
+            return {};
+        }
     }
 );
 

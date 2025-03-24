@@ -5,14 +5,14 @@ import {formatPrice} from "../../../../utils/utils";
 export const PriceField = (props) => {
     const {t} = useTranslation();
     const [isFocused, setIsFocused] = useState(false);
-    const [hasError, setHasError] = useState(props.error.price);
+    const [hasError, setHasError] = useState(props.error?.price);
 
     const resetErrorStyles = () => {
         setHasError(null);
     }
 
     useEffect(() => {
-        setHasError(props.error.price && props.value < 1.00)
+        setHasError(props.error?.price && props.value < 1.00)
     }, [props.error, props.value]);
 
     const handlePriceChange = (e) => {
