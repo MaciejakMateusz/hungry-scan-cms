@@ -6,16 +6,16 @@ import {CustomNoOptionsMessage} from "../form-components/CustomNoOptionsMessage"
 import {ThreeDotsIcon} from "../../../icons/ThreeDotsIcon";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
-import {switchActiveMenu} from "../../../../slices/cmsSlice";
+import {fetchActiveMenu, switchActiveMenu} from "../../../../slices/cmsSlice";
 import {MenuScheduler} from "./MenuScheduler";
-import {getCategories, setCategories} from "../../../../slices/dishesCategoriesSlice";
 import {setActiveMenu} from "../../../../slices/globalParamsSlice";
 
 export const CmsTopper = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {restaurant} = useSelector(state => state.dashboard.view);
-    const {activeMenuId, activeMenu} = useSelector(state => state.globalParams.globalParams);
+    const {activeMenu} = useSelector(state => state.globalParams.globalParams);
+    const {menu} = useSelector(state => state.cms.fetchActiveMenu);
     const {isInEditMode} = useSelector(state => state.dishesCategories.view);
     const [menus, setMenus] = useState();
 
@@ -23,10 +23,10 @@ export const CmsTopper = () => {
         const mappedMenus = mapMenus();
         setMenus(mappedMenus);
         if (!activeMenu && mappedMenus?.length >= 1) {
-            const initialMenu = mappedMenus.find(menu => menu.value.id === activeMenuId);
+            const initialMenu = mappedMenus.find(m => m.value.id === menu?.id);
             dispatch(setActiveMenu(initialMenu));
         }
-    }, [dispatch, restaurant]);
+    }, [dispatch, restaurant, menu]);
 
     const mapMenus = useCallback(() => {
         return [...(restaurant?.value.menus || [])]
@@ -43,10 +43,7 @@ export const CmsTopper = () => {
         const menuAction = await dispatch(switchActiveMenu({menuId: selected?.value.id}));
         if (switchActiveMenu.fulfilled.match(menuAction)) {
             dispatch(setActiveMenu(selected));
-            const categoriesAction = await dispatch(getCategories());
-            if (getCategories.fulfilled.match(categoriesAction)) {
-                dispatch(setCategories(categoriesAction.payload));
-            }
+            dispatch(fetchActiveMenu());
         }
     }
 

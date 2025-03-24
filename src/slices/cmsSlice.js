@@ -1,6 +1,51 @@
 import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
 
+export const fetchActiveMenu = createAsyncThunk(
+    'fetchActiveMenu/fetchActiveMenu',
+    async (_, {rejectWithValue}) => {
+        const response = await fetch(`${apiHost}/api/user/current-menu`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include'
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            return rejectWithValue(errorData);
+        }
+
+        try {
+            return await response.json();
+        } catch (error) {
+            return {};
+        }
+    }
+);
+
+export const fetchActiveMenuSlice = createSlice({
+    name: 'fetchActiveMenu',
+    initialState: {
+        isLoading: false,
+        menu: null,
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchActiveMenu.pending, state => {
+                state.isLoading = true;
+            })
+            .addCase(fetchActiveMenu.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.menu = action.payload;
+            })
+            .addCase(fetchActiveMenu.rejected, (state) => {
+                state.isLoading = false;
+            })
+    }
+});
+
 export const switchActiveMenu = createAsyncThunk(
     'switchActiveMenu/switchActiveMenu',
     async (params, {rejectWithValue}) => {
@@ -78,7 +123,8 @@ export const {setMenu, setWeekDay, setTimeFrom, setTimeTo} = cmsSlice.actions;
 
 const cmsReducer = combineReducers({
     view: cmsSlice.reducer,
-    switchMenu: switchActiveMenuSlice.reducer
+    switchMenu: switchActiveMenuSlice.reducer,
+    fetchActiveMenu: fetchActiveMenuSlice.reducer
 });
 
 export default cmsReducer;

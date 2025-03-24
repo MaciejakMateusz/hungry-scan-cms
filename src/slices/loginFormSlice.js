@@ -100,7 +100,7 @@ export const loginFetchSlice = createSlice(
                 const currentDate = new Date();
                 const expiryDate = currentDate.setMonth(currentDate.getMonth() + 1);
                 setCookie("userForename", action.payload.forename, expiryDate);
-                window.location.href = state.payload.redirectUrl;
+                window.location.href = action.payload.redirectUrl;
             }).addCase(executeLoginFetch.rejected, (state, action) => {
                 state.isLoading = false;
                 state.notAuthorized = true;

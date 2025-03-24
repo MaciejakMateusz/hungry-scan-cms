@@ -29,6 +29,7 @@ import {setCurrentDialog, setCurrentView} from "../../../slices/globalParamsSlic
 import {UserProfileWhiteIcon} from "../../icons/UserProfileWhiteIcon";
 import {NotificationIcon} from "../../icons/NotificationIcon";
 import {CmsTopper} from "./topper/CmsTopper";
+import {fetchActiveMenu} from "../../../slices/cmsSlice";
 
 export const Cms = () => {
     const {t} = useTranslation();
@@ -54,6 +55,10 @@ export const Cms = () => {
     useEffect(() => {
         dispatch(setIsInEditMode());
     }, [dispatch, newCategoryFormActive, editCategoryFormActive, newDishFormActive, editDishFormActive]);
+
+    useEffect(() => {
+        dispatch(fetchActiveMenu())
+    }, [dispatch]);
 
     const switchView = (viewName) => {
         if (isInEditMode) {

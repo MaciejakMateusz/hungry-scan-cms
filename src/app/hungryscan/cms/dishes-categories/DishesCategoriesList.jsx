@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect, useState} from "react";
+import React, {Fragment, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {FailureMessage} from "../dialog-windows/FailureMessage";
@@ -20,12 +20,12 @@ export const DishesCategoriesList = ({filter}) => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {
-        categories,
         categoryForAction,
         menuItemForAction,
         filterValue,
         activeRemovalType
     } = useSelector(state => state.dishesCategories.view);
+    const {menu} = useSelector(state => state.cms.fetchActiveMenu);
     const [confirmedRemovalType, setConfirmedRemovalType] = useState(null);
     const [errorData, setErrorData] = useState({});
     const [confirmationTimeoutId, setConfirmationTimeoutId] = useState(null);
@@ -40,10 +40,6 @@ export const DishesCategoriesList = ({filter}) => {
             dispatch(setCategories(resultAction.payload));
         }
     }
-
-    useEffect(() => {
-        fetchCategories();
-    }, []);
 
     const handleRemoval = async (e) => {
         e.preventDefault();
@@ -145,7 +141,7 @@ export const DishesCategoriesList = ({filter}) => {
     }
 
     const renderCategories = () => {
-        return categories.map(category => (
+        return menu?.categories.map(category => (
             <div key={category.id} className={'category-container-new'}>
                 <CategoryPosition category={category}/>
                 {category.menuItems.length > 1 ? <div className={'menu-item-position-separator'}/> : <></>}
