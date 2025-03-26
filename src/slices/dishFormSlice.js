@@ -177,26 +177,7 @@ export const fetchLabelsSlice = createSlice(
         },
         reducers: {
             setChosenLabels: (state, action) => {
-                const selectedLabels = action.payload;
-
-                const selectedIds = new Set(selectedLabels?.map(item => item.value.id));
-                const currentIds = new Set(state.chosenLabels?.map(item => item.value.id));
-
-                const removedLabels = state.chosenLabels?.filter(item => !selectedIds.has(item.value.id));
-                const addedLabels = selectedLabels?.filter(item => !currentIds.has(item.value.id));
-
-                state.chosenLabels = selectedLabels;
-
-                state.labels.push(...removedLabels?.map(item => ({
-                    value: item.value,
-                    label: getTranslation(item.value.name)
-                })));
-
-                state.labels = state.labels?.filter(label =>
-                    !addedLabels.find(added => added.value.id === label.value.id));
-                state.labels?.sort((a, b) =>
-                    getTranslation(a.value.name).localeCompare(getTranslation(b.value.name))
-                );
+                state.chosenLabels = action.payload;
             },
             clearLabels: (state) => {
                 state.labels = [];
@@ -240,26 +221,7 @@ export const fetchAllergensSlice = createSlice(
         },
         reducers: {
             setChosenAllergens: (state, action) => {
-                const selectedAllergens = action.payload;
-
-                const selectedIds = new Set(selectedAllergens?.map(item => item.value.id));
-                const currentIds = new Set(state.chosenAllergens?.map(item => item.value.id));
-
-                const removedAllergens = state.chosenAllergens?.filter(item => !selectedIds.has(item.value.id));
-                const addedAllergens = selectedAllergens?.filter(item => !currentIds.has(item.value.id));
-
-                state.chosenAllergens = selectedAllergens;
-
-                state.allergens.push(...removedAllergens?.map(item => ({
-                    value: item.value,
-                    label: getTranslation(item.value.name)
-                })));
-
-                state.allergens = state.allergens?.filter(allergen =>
-                    !addedAllergens.find(added => added.value.id === allergen.value.id));
-                state.allergens?.sort((a, b) =>
-                    getTranslation(a.value.name).localeCompare(getTranslation(b.value.name))
-                );
+                state.chosenAllergens = action.payload;
             },
             clearAllergens: (state) => {
                 state.allergens = [];

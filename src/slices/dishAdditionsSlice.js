@@ -35,25 +35,7 @@ export const fetchIngredientsSlice = createSlice({
     },
     reducers: {
         setChosenAdditions: (state, action) => {
-            const selectedAdditions = action.payload;
-
-            const selectedIds = new Set(selectedAdditions?.map(item => item.value.id));
-            const currentIds = new Set(state.chosenAdditions?.map(item => item.value.id));
-
-            const removedAdditions = state.chosenAdditions?.filter(item => !selectedIds.has(item.value.id));
-            const addedAdditions = selectedAdditions?.filter(item => !currentIds.has(item.value.id));
-
-            state.chosenAdditions = selectedAdditions;
-
-            state.ingredients.push(...removedAdditions?.map(item => ({
-                value: item.value,
-                label: getTranslation(item.value.name)
-            })));
-
-            state.ingredients = state.ingredients.filter(ingredient => !addedAdditions.find(addition => addition.value.id === ingredient.value.id));
-            state.ingredients.sort((a, b) =>
-                getTranslation(a.value.name).localeCompare(getTranslation(b.value.name))
-            );
+            state.chosenAdditions = action.payload;
         },
         clearAdditions: (state) => {
             state.ingredients = [];
