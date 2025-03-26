@@ -50,6 +50,7 @@ export const EditMenuItemForm = ({executeFilter}) => {
 
     useEffect(() => {
         const fetchImage = async () => {
+            if(!dish.imageName) return;
             const response = await fetch(`${imagesPath}/${dish.imageName}`);
             if (response.ok) {
                 const blob = await response.blob();
