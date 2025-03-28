@@ -3,6 +3,27 @@ import {apiHost} from "../apiData";
 import {formatPrice} from "../utils/utils";
 import {getTranslation} from "../locales/langUtils";
 
+export const fetchMenuItem = createAsyncThunk(
+    'fetchMenuItem/fetchMenuItem',
+    async ({id}, {rejectWithValue}) => {
+        const response = await fetch(`${apiHost}/api/cms/items/show`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify(id)
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            return rejectWithValue(errorData);
+        }
+
+        return await response.json();
+    }
+);
+
 export const postImage = createAsyncThunk(
     'postImage/postImage',
     async (credentials, {rejectWithValue}) => {
@@ -34,7 +55,7 @@ export const postImage = createAsyncThunk(
 
 export const postDish = createAsyncThunk(
     'postDish/postDish',
-    async (credentials, {getState, rejectWithValue}) => {
+    async (params, {getState, rejectWithValue}) => {
         const formState = getState().dishForm.form;
         const allergensState = getState().dishForm.fetchAllergens;
         const labelsState = getState().dishForm.fetchLabels;
@@ -42,8 +63,8 @@ export const postDish = createAsyncThunk(
         const labels = labelsState.chosenLabels?.map(label => label.value)
         const allergens = allergensState.chosenAllergens?.map(allergen => allergen.value)
         const additions = dishAdditionsState.chosenAdditions?.map(addition => addition.value)
-        const response = await fetch(`${apiHost}/api/cms/items/add`, {
-            method: "POST",
+        const response = await fetch(`${apiHost}/api/cms/items/${params.action}`, {
+            method: params.action === 'add' ? "POST" : "PATCH",
             headers: {
                 "Content-Type": "application/json",
             },
@@ -51,8 +72,8 @@ export const postDish = createAsyncThunk(
                 id: formState.id,
                 categoryId: formState.category && formState.category.id,
                 displayOrder: formState.displayOrder,
-                new: credentials.new,
-                bestseller: credentials.bestseller,
+                new: params.new,
+                bestseller: params.bestseller,
                 name: {
                     defaultTranslation: formState.name,
                     translationEn: ''
@@ -163,6 +184,30 @@ export const postDishSlice = createSlice(
                 })
                 .addCase(postDish.rejected, (state) => {
                     state.isLoading = false;
+                })
+        }
+    });
+
+export const fetchMenuItemSlice = createSlice(
+    {
+        name: 'getLabels',
+        initialState: {
+            isLoading: false,
+            error: null,
+            item: null
+        },
+        extraReducers: (builder) => {
+            builder
+                .addCase(fetchMenuItem.pending, state => {
+                    state.isLoading = true;
+                })
+                .addCase(fetchMenuItem.fulfilled, (state, action) => {
+                    state.isLoading = false;
+                    state.item = action.payload;
+                })
+                .addCase(fetchMenuItem.rejected, (state, action) => {
+                    state.isLoading = false;
+                    state.errorData = action.payload;
                 })
         }
     });
@@ -403,6 +448,7 @@ export const {
 
 const dishFormReducer = combineReducers({
     form: dishFormSlice.reducer,
+    fetchMenuItem: fetchMenuItemSlice.reducer,
     fetchLabels: fetchLabelsSlice.reducer,
     fetchAllergens: fetchAllergensSlice.reducer,
     postImage: postImageSlice,
