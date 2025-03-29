@@ -34,7 +34,7 @@ export const NewCategoryForm = () => {
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
-        const resultAction = await dispatch(postCategory());
+        const resultAction = await dispatch(postCategory({action: "add"}));
         if (postCategory.fulfilled.match(resultAction)) {
             dispatch(setSubmittedSuccessType('category-save'));
             setTimeout(() => {

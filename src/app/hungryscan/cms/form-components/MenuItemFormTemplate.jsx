@@ -52,8 +52,8 @@ export const MenuItemFormTemplate = ({setFile}) => {
                 placeholder={t('choose')}
                 isClearable={true}
                 options={[
-                    {value: t('isNew'), label: t('isNew')},
-                    {value: t('isBestseller'), label: t('isBestseller')}
+                    {value: 'isNew', label: t('isNew')},
+                    {value: 'isBestseller', label: t('isBestseller')}
                 ]}
             />
             <LabelsMultiselect/>

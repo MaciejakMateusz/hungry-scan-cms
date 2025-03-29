@@ -72,8 +72,8 @@ export const postDish = createAsyncThunk(
                 id: formState.id,
                 categoryId: formState.category && formState.category.id,
                 displayOrder: formState.displayOrder,
-                new: params.new,
-                bestseller: params.bestseller,
+                isNew: params.isNew,
+                isBestseller: params.isBestseller,
                 name: {
                     defaultTranslation: formState.name,
                     translationEn: ''
@@ -88,7 +88,7 @@ export const postDish = createAsyncThunk(
                 additionalIngredients: additions,
                 price: formState.price,
                 imageName: formState.fileName,
-                available: formState.available.value,
+                available: formState.available,
                 created: formState.created,
                 createdBy: formState.createdBy
             }),
@@ -194,7 +194,7 @@ export const fetchMenuItemSlice = createSlice(
         initialState: {
             isLoading: false,
             error: null,
-            item: null
+            data: null
         },
         extraReducers: (builder) => {
             builder
@@ -203,7 +203,7 @@ export const fetchMenuItemSlice = createSlice(
                 })
                 .addCase(fetchMenuItem.fulfilled, (state, action) => {
                     state.isLoading = false;
-                    state.item = action.payload;
+                    state.data = action.payload;
                 })
                 .addCase(fetchMenuItem.rejected, (state, action) => {
                     state.isLoading = false;

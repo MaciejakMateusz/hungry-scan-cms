@@ -54,7 +54,7 @@ export const EditCategoryForm = () => {
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
-        const resultAction = await dispatch(postCategory());
+        const resultAction = await dispatch(postCategory({action: "update"}));
         if (postCategory.fulfilled.match(resultAction)) {
             dispatch(setSubmittedSuccessType('category-edit'));
             setTimeout(() => {

@@ -60,7 +60,7 @@ export const NewMenuItemForm = () => {
 
         const newBanner = banner && banner.value === t("isNew");
         const bestsellerBanner = banner && banner.value === t("isBestseller");
-        const dishAction = await dispatch(postDish({new: newBanner, bestseller: bestsellerBanner}));
+        const dishAction = await dispatch(postDish({new: newBanner, bestseller: bestsellerBanner, action: "add"}));
         if(postDish.fulfilled.match(dishAction)) {
             dispatch(setSubmittedSuccessType('dish-save'));
             setTimeout(() => {
