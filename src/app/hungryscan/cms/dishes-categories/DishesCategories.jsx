@@ -15,7 +15,6 @@ import {
     setFilteringActive,
     setFilterValue
 } from "../../../../slices/variantsSlice";
-import {filter} from "../../../../slices/filteringSlice";
 import {setNewCategoryFormActive} from "../../../../slices/dishesCategoriesSlice";
 import ErrorBoundary from "../../../error/ErrorBoundary";
 
@@ -31,6 +30,7 @@ export const DishesCategories = () => {
         editDishFormActive,
         submittedSuccessType
     } = useSelector(state => state.dishesCategories.view)
+    const {menu} = useSelector(state => state.cms.fetchActiveMenu);
 
     useEffect(() => {
         if (!filterExpanded && filterValue !== '') {
@@ -46,16 +46,20 @@ export const DishesCategories = () => {
     }
 
     const executeFilter = async value => {
-        if ('' !== value) {
-            dispatch(setFilteringActive(true));
-            const resultAction = await dispatch(filter({path: 'items', value: value}));
-            if (filter.fulfilled.match(resultAction)) {
-                dispatch(setFilteredItems(resultAction.payload));
-            }
-        } else {
+        if ('' === value) {
             dispatch(setFilteringActive(false));
             dispatch(setFilteredItems(null));
+            return;
         }
+        dispatch(setFilteringActive(true));
+        const categories = menu?.categories;
+        let allItems = [];
+        categories?.forEach(category => {
+            const categoryItems = category.menuItems;
+            allItems.push(...categoryItems);
+        });
+        const filteredItems = allItems.filter(mi => mi.name?.defaultTranslation.toLowerCase().includes(value));
+        dispatch(setFilteredItems(filteredItems));
     }
 
     const renderConfirmationDialog = (type) => {
