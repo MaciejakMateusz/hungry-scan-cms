@@ -18,15 +18,11 @@ import {DashboardTopper} from "./DashboardTopper";
 export const Dashboard = () => {
     const dispatch = useDispatch();
     const {currentView, cmsActive, userForename} = useSelector(state => state.globalParams.globalParams);
-    const [isStatsHovered, setIsStatsHovered] = useState(false);
-    const [isQrHovered, setIsQrHovered] = useState(false);
-    const [isPackageHovered, setIsPackageHovered] = useState(false);
-    const [isUsersHovered, setIsUsersHovered] = useState(false);
     const [isLogoutHovered, setIsLogoutHovered] = useState(false);
-    const statsHoveredOrActive = currentView === STATS || isStatsHovered;
-    const qrHoveredOrActive = currentView === D_CODE_QR || isQrHovered;
-    const packageHoveredOrActive = currentView === PACKAGE || isPackageHovered;
-    const usersHoveredOrActive = currentView === USERS || isUsersHovered;
+    const statsHoveredOrActive = currentView === STATS;
+    const qrHoveredOrActive = currentView === D_CODE_QR;
+    const packageHoveredOrActive = currentView === PACKAGE;
+    const usersHoveredOrActive = currentView === USERS;
 
     const renderMainView = () => {
         switch (currentView) {
@@ -66,23 +62,19 @@ export const Dashboard = () => {
                         <NavButton isActive={currentView === STATS}
                                    name={'Statystyki'}
                                    icon={<StatsIcon active={statsHoveredOrActive}/>}
-                                   onClick={() => dispatch(setCurrentView(STATS))}
-                                   setHovered={setIsStatsHovered}/>
+                                   onClick={() => dispatch(setCurrentView(STATS))}/>
                         <NavButton isActive={currentView === D_CODE_QR}
                                    name={'Kod QR'}
                                    icon={<QrCodeIcon active={qrHoveredOrActive}/>}
-                                   onClick={() => dispatch(setCurrentView(D_CODE_QR))}
-                                   setHovered={setIsQrHovered}/>
+                                   onClick={() => dispatch(setCurrentView(D_CODE_QR))}/>
                         <NavButton isActive={currentView === PACKAGE}
                                    name={'Twój pakiet'}
                                    icon={<PackageIcon active={packageHoveredOrActive}/>}
-                                   onClick={() => dispatch(setCurrentView(PACKAGE))}
-                                   setHovered={setIsPackageHovered}/>
+                                   onClick={() => dispatch(setCurrentView(PACKAGE))}/>
                         <NavButton isActive={currentView === USERS}
                                    name={'Użytkownicy'}
                                    icon={<UsersIcon active={usersHoveredOrActive}/>}
-                                   onClick={() => dispatch(setCurrentView(USERS))}
-                                   setHovered={setIsUsersHovered}/>
+                                   onClick={() => dispatch(setCurrentView(USERS))}/>
                     </ul>
                 </div>
                 <div className={'app-nav-logout'}>
