@@ -116,7 +116,7 @@ export const DishesCategories = () => {
                         </div>
                     </div>
                     <ErrorBoundary>
-                        <DishesCategoriesList filter={executeFilter}/>
+                        <DishesCategoriesList/>
                     </ErrorBoundary>
                 </main>
             </div>

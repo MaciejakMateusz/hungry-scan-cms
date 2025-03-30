@@ -17,7 +17,7 @@ import {
 import {DndContext} from '@dnd-kit/core';
 import {arrayMove, SortableContext} from '@dnd-kit/sortable';
 
-export const DishesCategoriesList = ({filter}) => {
+export const DishesCategoriesList = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {
@@ -73,10 +73,6 @@ export const DishesCategoriesList = ({filter}) => {
                     setConfirmedRemovalType(null);
                 }, 4000);
                 setConfirmationTimeoutId(newConfirmationTimeoutId);
-
-                if(filterValue) {
-                    await filter(filterValue)
-                }
             }
         } else if (remove.rejected.match(resultAction)) {
             if ('categories' === actionType) {
@@ -147,11 +143,11 @@ export const DishesCategoriesList = ({filter}) => {
             displayOrder: index + 1,
         }));
 
-        const newLocalCategories = localCategories.map(cat => {
-            if (cat.id === category.id) {
-                return {...cat, menuItems: newMenuItems};
+        const newLocalCategories = localCategories.map(c => {
+            if (c.id === category.id) {
+                return {...c, menuItems: newMenuItems};
             }
-            return cat;
+            return c;
         });
         setLocalCategories(newLocalCategories);
         await dispatch(updateMenuItemsOrder({menuItems: newMenuItems}));
