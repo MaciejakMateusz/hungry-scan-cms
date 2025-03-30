@@ -29,7 +29,7 @@ export const DishesCategories = () => {
         newDishFormActive,
         editDishFormActive,
         submittedSuccessType
-    } = useSelector(state => state.dishesCategories.view)
+    } = useSelector(state => state.dishesCategories.view);
     const {menu} = useSelector(state => state.cms.fetchActiveMenu);
 
     useEffect(() => {
@@ -39,13 +39,19 @@ export const DishesCategories = () => {
         }
     }, [dispatch, filterExpanded]);
 
+    useEffect(() => {
+        if (filterValue !== '') {
+            executeFilter(filterValue);
+        }
+    }, [menu]);
+
     const handleSearchSubmit = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
         dispatch(setFilterValue(e.target.value));
         await executeFilter(e.target.value);
     }
 
-    const executeFilter = async value => {
+    const executeFilter = value => {
         if ('' === value) {
             dispatch(setFilteringActive(false));
             dispatch(setFilteredItems(null));
@@ -77,14 +83,14 @@ export const DishesCategories = () => {
         }
     }
 
-    if(newCategoryFormActive) {
+    if (newCategoryFormActive) {
         return (<NewCategoryForm/>);
-    } else if(editCategoryFormActive) {
+    } else if (editCategoryFormActive) {
         return (<EditCategoryForm/>);
-    } else if(newDishFormActive) {
+    } else if (newDishFormActive) {
         return (<NewMenuItemForm/>);
-    } else if(editDishFormActive) {
-        return (<EditMenuItemForm executeFilter={executeFilter}/>);
+    } else if (editDishFormActive) {
+        return (<EditMenuItemForm/>);
     }
 
     return (
@@ -104,7 +110,8 @@ export const DishesCategories = () => {
                             <SearchButton filterExpanded={filterExpanded}
                                           onExpand={() => dispatch(setFilterExpanded(!filterExpanded))}
                                           filterValue={filterValue}
-                                          onSubmit={handleSearchSubmit} onClear={() => dispatch(setFilterValue(''))}
+                                          onSubmit={handleSearchSubmit}
+                                          onClear={() => dispatch(setFilterValue(''))}
                             />
                         </div>
                     </div>

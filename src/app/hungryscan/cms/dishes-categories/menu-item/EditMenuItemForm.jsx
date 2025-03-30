@@ -36,10 +36,10 @@ import {imagesPath} from "../../../../../apiData";
 import {MenuItemMobilePreview} from "./MenuItemMobilePreview";
 import {clearAdditions, fetchIngredients, setChosenAdditions} from "../../../../../slices/dishAdditionsSlice";
 
-export const EditMenuItemForm = ({executeFilter}) => {
+export const EditMenuItemForm = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
-    const {category, dish, filterValue} = useSelector(state => state.dishesCategories.view);
+    const {category, dish} = useSelector(state => state.dishesCategories.view);
     const {data} = useSelector(state => state.dishForm.fetchMenuItem);
     const item = data?.menuItemFormDTO
     const [file, setFile] = useState(null);
@@ -137,7 +137,6 @@ export const EditMenuItemForm = ({executeFilter}) => {
             }, 4000);
             dispatch(setEditDishFormActive(false));
             dispatch(clearForm());
-            executeFilter(filterValue);
         } else if (postDish.rejected.match(dishAction)) {
             dispatch(setErrorData(dishAction.payload));
             dispatch(setErrorMessage(dishAction.payload));
