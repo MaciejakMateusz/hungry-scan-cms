@@ -14,7 +14,7 @@ import {
     setFilterExpanded,
     setFilteringActive,
     setFilterValue
-} from "../../../../slices/variantsSlice";
+} from "../../../../slices/dishesCategoriesSlice";
 import {setNewCategoryFormActive} from "../../../../slices/dishesCategoriesSlice";
 import ErrorBoundary from "../../../error/ErrorBoundary";
 
