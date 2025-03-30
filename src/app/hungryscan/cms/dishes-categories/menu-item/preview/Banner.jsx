@@ -1,15 +1,15 @@
 import React from "react";
-import {useTranslation} from "react-i18next";
 import {useSelector} from "react-redux";
 
 export const Banner = () => {
-    const {t} = useTranslation();
     const {fileName, banner} = useSelector(state => state.dishForm.form);
+    const bannerValue = banner?.value;
+    const bannerLabel = banner?.label;
 
-    if (banner?.value === t('isBestseller')) {
-        return (<span className={`details-banner ${!fileName ? 'no-image' : ''}`}>{t('bannerBestseller')}</span>);
-    } else if (banner?.value === t('isNew')) {
-        return (<span className={`details-banner ${!fileName ? 'no-image' : ''}`}>{t('bannerNew')}</span>);
+    if (bannerValue === 'isBestseller') {
+        return (<span className={`details-banner ${!fileName ? 'no-image' : ''}`}>{bannerLabel}</span>);
+    } else if (bannerValue === 'isNew') {
+        return (<span className={`details-banner ${!fileName ? 'no-image' : ''}`}>{bannerLabel}</span>);
     }
 
     return (<></>);
