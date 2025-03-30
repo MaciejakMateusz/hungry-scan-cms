@@ -352,17 +352,11 @@ export const dishFormSlice = createSlice({
         clearFileName: state => {
             state.fileName = null;
         },
-        setAdditionalIngredients: (state, action) => {
-            state.additionalIngredients = action.payload;
-        },
         setAvailable: (state, action) => {
             state.available = action.payload;
         },
         setDisplayOrder: (state, action) => {
             state.displayOrder = action.payload || 0;
-        },
-        setDisplayOrders: (state, action) => {
-            state.displayOrders = action.payload;
         },
         setCreated: (state, action) => {
             state.created = action.payload;
@@ -388,7 +382,6 @@ export const dishFormSlice = createSlice({
             state.fileName = null;
             state.chosenLabels = [];
             state.chosenAllergens = [];
-            state.additionalIngredients = [];
             state.available = true;
             state.displayOrder = 0;
             state.displayOrders = [];
@@ -414,10 +407,8 @@ export const {
     setPrice,
     setFileName,
     clearFileName,
-    setAdditionalIngredients,
     setAvailable,
     setDisplayOrder,
-    setDisplayOrders,
     setCreated,
     setCreatedBy,
     setErrorMessage,

@@ -4,9 +4,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {getTranslation} from "../../../../../locales/langUtils";
 import {MenuItemFormTemplate} from "../../form-components/MenuItemFormTemplate";
 import {
-    clearAllergens,
-    clearForm,
-    clearLabels,
     fetchMenuItem,
     getAllergens,
     getLabels,
@@ -34,12 +31,14 @@ import {setEditDishFormActive, setSubmittedSuccessType} from "../../../../../sli
 import {FormErrorDialog} from "../../../../error/FormErrorDialog";
 import {imagesPath} from "../../../../../apiData";
 import {MenuItemMobilePreview} from "./MenuItemMobilePreview";
-import {clearAdditions, fetchIngredients, setChosenAdditions} from "../../../../../slices/dishAdditionsSlice";
+import {fetchIngredients, setChosenAdditions} from "../../../../../slices/dishAdditionsSlice";
+import {useClearForm} from "../../../../../hooks/useClearForm";
 
 export const EditMenuItemForm = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {category, dish} = useSelector(state => state.dishesCategories.view);
+    const clearForm = useClearForm();
     const {data} = useSelector(state => state.dishForm.fetchMenuItem);
     const item = data?.menuItemFormDTO
     const [file, setFile] = useState(null);
@@ -107,10 +106,7 @@ export const EditMenuItemForm = () => {
     }, [dispatch, item]);
 
     const handleFormDiscard = () => {
-        dispatch(clearForm());
-        dispatch(clearAllergens());
-        dispatch(clearAdditions());
-        dispatch(clearLabels());
+        clearForm();
         dispatch(setEditDishFormActive(false));
     }
 
@@ -136,7 +132,7 @@ export const EditMenuItemForm = () => {
                 dispatch(setSubmittedSuccessType(null));
             }, 4000);
             dispatch(setEditDishFormActive(false));
-            dispatch(clearForm());
+            clearForm();
         } else if (postDish.rejected.match(dishAction)) {
             dispatch(setErrorData(dishAction.payload));
             dispatch(setErrorMessage(dishAction.payload));

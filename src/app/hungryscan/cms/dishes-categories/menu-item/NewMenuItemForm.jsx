@@ -4,26 +4,26 @@ import {useDispatch, useSelector} from "react-redux";
 import {getTranslation} from "../../../../../locales/langUtils";
 import {MenuItemFormTemplate} from "../../form-components/MenuItemFormTemplate";
 import {
-    clearAllergens,
-    clearForm, clearLabels, getAllergens, getLabels,
+    getAllergens,
+    getLabels,
     postDish,
-    postImage, setCategory,
+    postImage,
+    setCategory,
     setErrorData,
     setErrorMessage,
     setFileName
 } from "../../../../../slices/dishFormSlice";
-import {
-    setNewDishFormActive,
-    setSubmittedSuccessType
-} from "../../../../../slices/dishesCategoriesSlice";
+import {setNewDishFormActive, setSubmittedSuccessType} from "../../../../../slices/dishesCategoriesSlice";
 import {FormErrorDialog} from "../../../../error/FormErrorDialog";
 import {MenuItemMobilePreview} from "./MenuItemMobilePreview";
-import {clearAdditions, fetchIngredients} from "../../../../../slices/dishAdditionsSlice";
+import {fetchIngredients} from "../../../../../slices/dishAdditionsSlice";
+import {useClearForm} from "../../../../../hooks/useClearForm";
 
 export const NewMenuItemForm = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {category} = useSelector(state => state.dishesCategories.view);
+    const clearForm = useClearForm();
     const [file, setFile] = useState(null);
     const {
         banner,
@@ -39,10 +39,7 @@ export const NewMenuItemForm = () => {
     }, []);
 
     const handleFormDiscard = () => {
-        dispatch(clearForm());
-        dispatch(clearAllergens());
-        dispatch(clearAdditions());
-        dispatch(clearLabels());
+        clearForm();
         dispatch(setNewDishFormActive(false));
     }
 
@@ -51,9 +48,9 @@ export const NewMenuItemForm = () => {
         setErrorMessage(null);
 
         const imageAction = await dispatch(postImage({file: file}));
-        if(postImage.fulfilled.match(imageAction)) {
+        if (postImage.fulfilled.match(imageAction)) {
             dispatch(setFileName(file && file.name));
-        } else if(postImage.rejected.match(imageAction)) {
+        } else if (postImage.rejected.match(imageAction)) {
             dispatch(setErrorData(imageAction.payload));
             dispatch(setErrorMessage(imageAction.payload));
         }
@@ -61,14 +58,14 @@ export const NewMenuItemForm = () => {
         const newBanner = banner && banner.value === t("isNew");
         const bestsellerBanner = banner && banner.value === t("isBestseller");
         const dishAction = await dispatch(postDish({new: newBanner, bestseller: bestsellerBanner, action: "add"}));
-        if(postDish.fulfilled.match(dishAction)) {
+        if (postDish.fulfilled.match(dishAction)) {
             dispatch(setSubmittedSuccessType('dish-save'));
             setTimeout(() => {
                 dispatch(setSubmittedSuccessType(null));
             }, 4000);
             dispatch(setNewDishFormActive(false));
-            dispatch(clearForm());
-        } else if(postDish.rejected.match(dishAction)) {
+            clearForm();
+        } else if (postDish.rejected.match(dishAction)) {
             dispatch(setErrorData(dishAction.payload));
             dispatch(setErrorMessage(dishAction.payload));
         }
