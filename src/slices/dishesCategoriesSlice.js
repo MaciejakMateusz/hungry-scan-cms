@@ -1,32 +1,15 @@
 import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
 
-export const reorderMenuItem = createAsyncThunk(
-    'dishesCategories/reorderDish',
-    async (credentials, {getState, rejectWithValue}) => {
-        const state = getState().dishesCategories.view;
-        const menuItem = state.dish;
-        const response = await fetch(`${apiHost}/api/cms/items/add`, {
-            method: "POST",
+export const updateMenuItemsOrder = createAsyncThunk(
+    'updateMenuItemsOrder/updateMenuItemsOrder',
+    async (params, {rejectWithValue}) => {
+        const response = await fetch(`${apiHost}/api/cms/items/display-orders`, {
+            method: 'PATCH',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                id: menuItem.id,
-                categoryId: menuItem.categoryId,
-                displayOrder: credentials.type === 'increment' ? menuItem.displayOrder + 1 : menuItem.displayOrder - 1,
-                new: menuItem.new,
-                bestseller: menuItem.bestseller,
-                name: menuItem.name,
-                description: menuItem.description,
-                labels: menuItem.labels,
-                allergens: menuItem.allergens,
-                variants: menuItem.variants,
-                additionalIngredients: menuItem.chosenAdditions,
-                price: menuItem.price,
-                imageName: menuItem.imageName,
-                available: menuItem.available,
-            }),
+            body: JSON.stringify(params.menuItems),
             credentials: 'include'
         });
 
@@ -35,29 +18,32 @@ export const reorderMenuItem = createAsyncThunk(
             return rejectWithValue(errorData);
         }
 
-        return await response.json();
+        try {
+            return await response.json();
+        } catch (error) {
+            return {};
+        }
     }
 );
 
-export const reorderMenuItemSlice = createSlice(
-    {
-        name: 'reorderMenuItem',
-        initialState: {
-            isLoading: false,
-        },
-        extraReducers: (builder) => {
-            builder
-                .addCase(reorderMenuItem.pending, state => {
-                    state.isLoading = true;
-                })
-                .addCase(reorderMenuItem.fulfilled, (state) => {
-                    state.isLoading = false;
-                })
-                .addCase(reorderMenuItem.rejected, (state) => {
-                    state.isLoading = false;
-                })
-        }
-    });
+export const updateMenuItemsOrderSlice = createSlice({
+    name: 'updateMenuItemsOrder',
+    initialState: {
+        isLoading: false,
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(updateMenuItemsOrder.pending, state => {
+                state.isLoading = true;
+            })
+            .addCase(updateMenuItemsOrder.fulfilled, state => {
+                state.isLoading = false;
+            })
+            .addCase(updateMenuItemsOrder.rejected, (state) => {
+                state.isLoading = false;
+            })
+    }
+})
 
 export const getCategory = createAsyncThunk(
     'getCategory/getCategory',
@@ -252,7 +238,7 @@ const dishesCategoriesReducer = combineReducers({
     view: dishesCategoriesSlice.reducer,
     getCategories: getCategoriesSlice.reducer,
     getCategory: getCategorySlice.reducer,
-    reorderMenuItem: reorderMenuItemSlice.reducer
+    updateMenuItemsOrder: updateMenuItemsOrderSlice.reducer
 });
 
 export default dishesCategoriesReducer;

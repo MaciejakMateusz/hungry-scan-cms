@@ -8,7 +8,6 @@ import {ReactSVG} from "react-svg";
 import {EditIconNew} from "../../../../icons/EditIconNew";
 import {
     getCategory,
-    reorderMenuItem,
     setActiveRemovalType,
     setCategory,
     setDish,
@@ -18,75 +17,68 @@ import {
 import {DeleteIconNew} from "../../../../icons/DeleteIconNew";
 import {useTranslation} from "react-i18next";
 import {useDispatch} from "react-redux";
-import {DisplayOrderButton} from "./DisplayOrderButton";
+import {DragAndDropIcon} from "../../../../icons/DragAndDropIcon";
+import {useSortable} from '@dnd-kit/sortable';
+import {CSS} from '@dnd-kit/utilities';
 
-export const MenuItemPosition = ({category, menuItem, fetchCategories, filtered}) => {
+export const MenuItemPosition = ({id, category, menuItem, filtered}) => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
 
+    const {attributes, listeners, setNodeRef, transform, transition} = useSortable({id});
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+    };
 
     const getCategoryData = async id => {
-        const resultAction = await dispatch(getCategory({id: id}));
+        const resultAction = await dispatch(getCategory({id}));
         if (getCategory.fulfilled.match(resultAction)) {
-            return resultAction.payload.category;
+            return resultAction.payload.categoryFormDTO;
         }
         return null;
-    }
+    };
 
     const handleEditClick = async (category, menuItem) => {
         if (category) {
-            dispatch(setCategory(category))
+            dispatch(setCategory(category));
         } else {
             const categoryData = await getCategoryData(menuItem.categoryId);
             dispatch(setCategory(categoryData));
         }
         dispatch(setDish(menuItem));
         dispatch(setEditDishFormActive(true));
-    }
-
-    const handleReordering = async (menuItem, type) => {
-        dispatch(setDish(menuItem));
-        dispatch(reorderMenuItem({type: type}));
-        await fetchCategories();
-    }
-
-    const renderDisplayOrderButtons = (menuItems, currentPosition) => {
-        if(filtered) {
-            return (<></>);
-        }
-        if (menuItems?.length === 1) {
-            return (<></>);
-        }
-        if (currentPosition === 1) {
-            return (<DisplayOrderButton menuItem={menuItem} direction={'down'} onClick={handleReordering}/>);
-        } else if (currentPosition === menuItems?.length) {
-            return (<DisplayOrderButton menuItem={menuItem} direction={'up'} onClick={handleReordering}/>);
-        }
-        return (
-            <>
-                <DisplayOrderButton menuItem={menuItem} direction={'up'} onClick={handleReordering}/>
-                <DisplayOrderButton menuItem={menuItem} direction={'down'} onClick={handleReordering}/>
-            </>
-        );
-    }
+    };
 
     return (
         <Fragment>
-            <div className={'menu-item-position-container'}>
-                <div className={'display-order-buttons-wrapper'}>
-                    {renderDisplayOrderButtons(category?.menuItems, menuItem.displayOrder)}
-                </div>
+            <div ref={setNodeRef}
+                 style={style}
+                 className={'menu-item-position-container'}>
+                {!filtered ?
+                    <div className={'drag-and-drop-wrapper'} {...listeners} {...attributes}>
+                        <DragAndDropIcon/>
+                    </div> :
+                    <div className={'drag-and-drop-wrapper disabled'}>
+                        <DragAndDropIcon disabled={true}/>
+                    </div>
+                }
                 <div className={'menu-item-position-image-container'}>
-                    {menuItem.imageName ?
+                    {menuItem.imageName ? (
                         <img className={'menu-item-position-image'}
                              alt={'Menu item preview'}
-                             src={`${imagesPath}/${menuItem.imageName}`}/> :
-                        <PlaceholderImgIcon/>}
+                             src={`${imagesPath}/${menuItem.imageName}`}/>
+                    ) : (
+                        <PlaceholderImgIcon/>
+                    )}
                 </div>
                 <div className={'menu-item-position-text-container'}>
-                    <span className={'menu-item-position-name'}>{getTranslation(menuItem.name)}</span>
-                    <span
-                        className={'menu-item-position-description'}>{getTranslation(menuItem.description)}</span>
+                    <span className={'menu-item-position-name'}>
+                        {getTranslation(menuItem.name)}
+                    </span>
+                    <span className={'menu-item-position-description'}>
+                        {getTranslation(menuItem.description)}
+                    </span>
                 </div>
                 <div className={'menu-item-position-price'}>
                     {formatPrice(menuItem.price)} zł
@@ -97,14 +89,12 @@ export const MenuItemPosition = ({category, menuItem, fetchCategories, filtered}
                 </div>
                 <div className={'menu-item-position-allergens-container'}>
                     {menuItem.allergens?.map(allergen => (
-                        <Tooltip key={allergen.id}
-                                 content={getTranslation(allergen.description)}>
+                        <Tooltip key={allergen.id} content={getTranslation(allergen.description)}>
                             <ReactSVG src={`${process.env.PUBLIC_URL}/theme/preview-icons/${allergen.iconName}`}/>
                         </Tooltip>
                     ))}
                     {menuItem.labels?.map(label => (
-                        <Tooltip key={label.id}
-                                 content={getTranslation(label.name)}>
+                        <Tooltip key={label.id} content={getTranslation(label.name)}>
                             <ReactSVG src={`${process.env.PUBLIC_URL}/theme/preview-icons/${label.iconName}`}/>
                         </Tooltip>
                     ))}
@@ -121,9 +111,9 @@ export const MenuItemPosition = ({category, menuItem, fetchCategories, filtered}
                     </span>
                 </div>
             </div>
-            {menuItem.displayOrder === category?.menuItems.length ? <></> :
+            {menuItem.displayOrder === category?.menuItems.length ? null :
                 <div className={'menu-item-position-separator'}/>
             }
         </Fragment>
     );
-}
+};

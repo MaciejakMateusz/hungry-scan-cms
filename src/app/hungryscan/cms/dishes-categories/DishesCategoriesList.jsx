@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {FailureMessage} from "../dialog-windows/FailureMessage";
@@ -8,13 +8,14 @@ import {MenuItemPosition} from "./menu-item/MenuItemPosition";
 import {CategoryPosition} from "./category/CategoryPosition";
 import {FilteredMenuItems} from "./FilteredMenuItems";
 import {remove} from "../../../../slices/objectRemovalSlice";
-import {LoadingSpinner} from "../../../icons/LoadingSpinner";
 import {
-    getCategories,
     setActiveRemovalType,
-    setCategories,
-    setCategoryForAction, setMenuItemForAction
+    setCategoryForAction,
+    setMenuItemForAction,
+    updateMenuItemsOrder
 } from "../../../../slices/dishesCategoriesSlice";
+import {DndContext} from '@dnd-kit/core';
+import {arrayMove, SortableContext} from '@dnd-kit/sortable';
 
 export const DishesCategoriesList = ({filter}) => {
     const {t} = useTranslation();
@@ -30,16 +31,13 @@ export const DishesCategoriesList = ({filter}) => {
     const [errorData, setErrorData] = useState({});
     const [confirmationTimeoutId, setConfirmationTimeoutId] = useState(null);
     const [errorTimeoutId, setErrorTimeoutId] = useState(null);
-    const [spinner, setSpinner] = useState(null);
+    const [localCategories, setLocalCategories] = useState([]);
 
-    const fetchCategories = async () => {
-        setSpinner(<LoadingSpinner/>);
-        const resultAction = await dispatch(getCategories());
-        if (getCategories.fulfilled.match(resultAction)) {
-            setSpinner(null);
-            dispatch(setCategories(resultAction.payload));
+    useEffect(() => {
+        if (menu?.categories) {
+            setLocalCategories(menu.categories);
         }
-    }
+    }, [menu]);
 
     const handleRemoval = async (e) => {
         e.preventDefault();
@@ -62,8 +60,6 @@ export const DishesCategoriesList = ({filter}) => {
                     setConfirmedRemovalType(null);
                 }, 4000);
                 setConfirmationTimeoutId(newConfirmationTimeoutId);
-
-                await fetchCategories();
             } else {
                 dispatch(setActiveRemovalType(null));
                 dispatch(setMenuItemForAction(null));
@@ -80,8 +76,6 @@ export const DishesCategoriesList = ({filter}) => {
 
                 if(filterValue) {
                     await filter(filterValue)
-                } else {
-                    await fetchCategories()
                 }
             }
         } else if (remove.rejected.match(resultAction)) {
@@ -140,29 +134,57 @@ export const DishesCategoriesList = ({filter}) => {
         }
     }
 
-    const renderCategories = () => {
-        return menu?.categories.map(category => (
-            <div key={category.id} className={'category-container-new'}>
-                <CategoryPosition category={category}/>
-                {category.menuItems.length > 1 ? <div className={'menu-item-position-separator'}/> : <></>}
-                {category.menuItems.map(menuItem => (
-                    <MenuItemPosition key={`${menuItem.id}-${menuItem.displayOrder}`}
-                                      category={category}
-                                      menuItem={menuItem}
-                                      fetchCategories={fetchCategories}/>
-                ))}
-            </div>
-        ));
-    }
+    const handleDragEnd = async (event, category) => {
+        const {active, over} = event;
+        if (!over || active.id === over.id) return;
 
-    if(spinner) {
-        return spinner;
-    }
+        const oldIndex = category.menuItems.findIndex(item => item.id.toString() === active.id);
+        const newIndex = category.menuItems.findIndex(item => item.id.toString() === over.id);
+
+        const newMenuItemsOrdered = arrayMove(category.menuItems, oldIndex, newIndex);
+        const newMenuItems = newMenuItemsOrdered.map((item, index) => ({
+            ...item,
+            displayOrder: index + 1,
+        }));
+
+        const newLocalCategories = localCategories.map(cat => {
+            if (cat.id === category.id) {
+                return {...cat, menuItems: newMenuItems};
+            }
+            return cat;
+        });
+        setLocalCategories(newLocalCategories);
+        await dispatch(updateMenuItemsOrder({menuItems: newMenuItems}));
+    };
+
+    const renderCategories = () => {
+        return localCategories?.map(category => {
+            const menuItemIds = category.menuItems.map(item => item.id.toString());
+            return (
+                <div key={category.id} className={'category-container-new'}>
+                    <CategoryPosition category={category}/>
+                    {category.menuItems.length > 1 && <div className={'menu-item-position-separator'}/>}
+                    <DndContext onDragEnd={(event) => handleDragEnd(event, category)}>
+                        <SortableContext items={menuItemIds}>
+                            {category.menuItems.map(menuItem => (
+                                <MenuItemPosition
+                                    key={`${menuItem.id}-${menuItem.displayOrder}`}
+                                    id={menuItem.id.toString()}
+                                    category={category}
+                                    menuItem={menuItem}
+                                />
+                            ))}
+                        </SortableContext>
+                    </DndContext>
+                </div>
+            );
+        });
+    };
 
     return (
         <div className={'scrollable-wrapper'}>
             {filterValue ?
-                <FilteredMenuItems spinner={spinner} fetchCategories={fetchCategories}/> :
+                <FilteredMenuItems/> :
                 renderCategories()}
             {activeRemovalType && renderRemovalDialog()}
             {confirmedRemovalType && renderConfirmationDialog()}

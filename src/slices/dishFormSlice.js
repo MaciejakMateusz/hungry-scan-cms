@@ -332,28 +332,7 @@ export const dishFormSlice = createSlice({
             state.description = action.payload;
         },
         setCategory: (state, action) => {
-            const category = action.payload;
-            state.category = category
-            if (category) {
-                const displayOrders = category.menuItems?.map(menuItem => menuItem.displayOrder);
-                const additional = displayOrders.length + 1;
-                if (action.payload.isNew || category.id !== state.categoryId) {
-                    state.displayOrders = [...displayOrders, additional];
-                    state.displayOrder = additional;
-                } else {
-                    if (displayOrders.length === 0) {
-                        state.displayOrders = [1];
-                        state.displayOrder = 1;
-                    } else {
-                        state.displayOrders = displayOrders;
-                        state.displayOrder = displayOrders.length;
-                    }
-                }
-            } else {
-                state.category = null;
-                state.displayOrder = 0;
-                state.displayOrders = [];
-            }
+            state.category = action.payload;
         },
         setCategoryId: (state, action) => {
             state.categoryId = action.payload;
