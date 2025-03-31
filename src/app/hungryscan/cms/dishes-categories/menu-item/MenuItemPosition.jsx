@@ -25,11 +25,13 @@ export const MenuItemPosition = ({id, category, menuItem, filtered}) => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
 
-    const {attributes, listeners, setNodeRef, transform, transition} = useSortable({id});
+    const {attributes, listeners, setNodeRef, transform, transition, isDragging} = useSortable({id});
     const style = {
         transform: CSS.Transform.toString(transform),
         transition,
+        zIndex: isDragging ? 999 : 'auto'
     };
+
 
     const getCategoryData = async id => {
         const resultAction = await dispatch(getCategory({id}));
