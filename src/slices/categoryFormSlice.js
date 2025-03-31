@@ -87,15 +87,6 @@ export const categoryFormSlice = createSlice({
         setDisplayOrder: (state, action) => {
             state.displayOrder = action.payload;
         },
-        setDisplayOrderValue: (state, action) => {
-            state.displayOrder.label = action.payload;
-        },
-        setDisplayOrderLabel: (state, action) => {
-            state.displayOrder.label = action.payload;
-        },
-        setDisplayOrders: (state, action) => {
-            state.displayOrders = action.payload;
-        },
         setErrorMessage: (state, action) => {
             state.errorMessage = action.payload;
         },
@@ -122,9 +113,6 @@ export const {
     setDishes,
     setAvailable,
     setDisplayOrder,
-    setDisplayOrderValue,
-    setDisplayOrderLabel,
-    setDisplayOrders,
     setErrorMessage,
     setErrorData,
     clearForm
