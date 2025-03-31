@@ -36,26 +36,6 @@ export const postCategory = createAsyncThunk(
     }
 );
 
-export const getCategoriesDisplayOrders = createAsyncThunk(
-    'categoryFetch/getCategoriesDisplayOrders',
-    async (_, {rejectWithValue}) => {
-        const response = await fetch(`${apiHost}/api/cms/categories/display-orders`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            credentials: 'include'
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            return rejectWithValue(errorData);
-        }
-
-        return await response.json();
-    }
-);
-
 export const categoryFetchSlice = createSlice(
     {
         name: 'categoryFetch',
@@ -71,26 +51,6 @@ export const categoryFetchSlice = createSlice(
                     state.isLoading = false;
                 })
                 .addCase(postCategory.rejected, (state) => {
-                    state.isLoading = false;
-                })
-        }
-    });
-
-export const displayOrdersFetchSlice = createSlice(
-    {
-        name: 'getCategoriesDisplayOrders',
-        initialState: {
-            isLoading: false
-        },
-        extraReducers: (builder) => {
-            builder
-                .addCase(getCategoriesDisplayOrders.pending, state => {
-                    state.isLoading = true;
-                })
-                .addCase(getCategoriesDisplayOrders.fulfilled, (state) => {
-                    state.isLoading = false;
-                })
-                .addCase(getCategoriesDisplayOrders.rejected, (state) => {
                     state.isLoading = false;
                 })
         }
@@ -172,8 +132,7 @@ export const {
 
 const categoryFormReducer = combineReducers({
     form: categoryFormSlice.reducer,
-    categoryFetch: categoryFetchSlice.reducer,
-    getCategoriesDisplayOrders: displayOrdersFetchSlice.reducer
+    categoryFetch: categoryFetchSlice.reducer
 });
 
 export default categoryFormReducer;

@@ -4,12 +4,10 @@ import {CategoryFormTemplate} from "./CategoryFormTemplate";
 import {useDispatch, useSelector} from "react-redux";
 import {
     clearForm,
-    getCategoriesDisplayOrders,
     postCategory,
     setAvailable,
     setDishes,
     setDisplayOrder,
-    setDisplayOrders,
     setErrorData,
     setErrorMessage,
     setId,
@@ -27,16 +25,6 @@ export const EditCategoryForm = () => {
     const dispatch = useDispatch();
     const {category} = useSelector(state => state.dishesCategories.view);
     const {errorData, errorMessage} = useSelector(state => state.categoryForm.form);
-
-    useEffect(() => {
-        const prepareDisplayOrders = async () => {
-            const resultAction = await dispatch(getCategoriesDisplayOrders());
-            if (getCategoriesDisplayOrders.fulfilled.match(resultAction)) {
-                dispatch(setDisplayOrders(resultAction.payload));
-            }
-        }
-        prepareDisplayOrders();
-    }, [dispatch]);
 
     useEffect(() => {
         const setFormInitialState = () => {

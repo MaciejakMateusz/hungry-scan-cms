@@ -1,12 +1,9 @@
-import React, {useEffect} from "react";
+import React from "react";
 import {useTranslation} from "react-i18next";
 import {CategoryFormTemplate} from "./CategoryFormTemplate";
 import {useDispatch, useSelector} from "react-redux";
-import {
-    clearForm,
-    getCategoriesDisplayOrders, postCategory, setDisplayOrderLabel,
-    setDisplayOrders,
-    setDisplayOrderValue, setErrorData, setErrorMessage
+import {clearForm, postCategory,
+    setErrorData, setErrorMessage
 } from "../../../../../slices/categoryFormSlice";
 import {
     setNewCategoryFormActive,
@@ -18,19 +15,6 @@ export const NewCategoryForm = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {errorData, errorMessage} = useSelector(state => state.categoryForm.form);
-
-    useEffect(() => {
-        const prepareDisplayOrders = async () => {
-            const resultAction = await dispatch(getCategoriesDisplayOrders());
-            if (getCategoriesDisplayOrders.fulfilled.match(resultAction)) {
-                dispatch(setDisplayOrders([...resultAction.payload, resultAction.payload.length + 1]));
-                const initialDisplayOrder = resultAction.payload.length + 1;
-                dispatch(setDisplayOrderValue(initialDisplayOrder));
-                dispatch(setDisplayOrderLabel(initialDisplayOrder));
-            }
-        }
-        prepareDisplayOrders();
-    }, [dispatch, t]);
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
