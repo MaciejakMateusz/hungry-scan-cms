@@ -1,4 +1,4 @@
-import {clearAllergens, clearForm, clearLabels} from "../slices/dishFormSlice";
+import {clearAllergens, clearBanners, clearForm, clearLabels} from "../slices/dishFormSlice";
 import {clearAdditions} from "../slices/dishAdditionsSlice";
 import {useDispatch} from "react-redux";
 
@@ -9,5 +9,6 @@ export const useClearForm = () => {
         dispatch(clearAllergens());
         dispatch(clearAdditions());
         dispatch(clearLabels());
+        dispatch(clearBanners());
     };
 }

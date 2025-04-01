@@ -1,6 +1,5 @@
 import React from "react";
 import {useTranslation} from "react-i18next";
-import {CustomSelect} from "./CustomSelect";
 import {NameField} from "./NameField";
 import {DescriptionField} from "./DescriptionField";
 import {AllergensMultiselect} from "./AllergensMultiselect";
@@ -10,14 +9,8 @@ import {PriceField} from "./PriceField";
 import {FileUploadField} from "./FileUploadField";
 import {useDispatch, useSelector} from "react-redux";
 import {LogicalToggleField} from "./LogicalToggleField";
-import {
-    setAvailable,
-    setBanner,
-    setDescription,
-    setFileName,
-    setName,
-    setPrice
-} from "../../../../slices/dishFormSlice";
+import {setAvailable, setDescription, setFileName, setName, setPrice} from "../../../../slices/dishFormSlice";
+import {BannersMultiselect} from "./BannersMultiselect";
 
 export const MenuItemFormTemplate = ({setFile}) => {
     const {t} = useTranslation();
@@ -25,7 +18,6 @@ export const MenuItemFormTemplate = ({setFile}) => {
     const {
         name,
         description,
-        banner,
         price,
         available,
         errorData,
@@ -43,19 +35,7 @@ export const MenuItemFormTemplate = ({setFile}) => {
                               error={errorData}/>
             <FileUploadField setFile={setFile}
                              setFileName={(e) => dispatch(setFileName(e))}/>
-            <CustomSelect
-                id={'dish-banner'}
-                name={'banner'}
-                labelName={t('banner')}
-                value={banner}
-                onChange={(selected) => dispatch(setBanner(selected))}
-                placeholder={t('choose')}
-                isClearable={true}
-                options={[
-                    {value: 'isNew', label: t('isNew')},
-                    {value: 'isBestseller', label: t('isBestseller')}
-                ]}
-            />
+            <BannersMultiselect/>
             <LabelsMultiselect/>
             <AdditionsMultiselect/>
             <AllergensMultiselect/>

@@ -6,14 +6,15 @@ import {MenuItemFormTemplate} from "../../form-components/MenuItemFormTemplate";
 import {
     fetchMenuItem,
     getAllergens,
+    getBanners,
     getLabels,
     postDish,
     postImage,
     setAvailable,
-    setBanner,
     setCategory,
     setCategoryId,
     setChosenAllergens,
+    setChosenBanners,
     setChosenLabels,
     setCreated,
     setCreatedBy,
@@ -42,11 +43,7 @@ export const EditMenuItemForm = () => {
     const {data} = useSelector(state => state.dishForm.fetchMenuItem);
     const item = data?.menuItemFormDTO
     const [file, setFile] = useState(null);
-    const {
-        banner,
-        errorMessage,
-        errorData
-    } = useSelector(state => state.dishForm.form);
+    const {errorMessage, errorData} = useSelector(state => state.dishForm.form);
 
     useEffect(() => {
         dispatch(fetchMenuItem({id: dish?.id}));
@@ -69,18 +66,12 @@ export const EditMenuItemForm = () => {
     useEffect(() => {
         const setInitialFormState = () => {
             if (!item) return;
-            let dishBanner = null;
-            if (item.isBestseller) {
-                dishBanner = {value: 'isBestseller', label: t('isBestseller')};
-            } else if (item.new) {
-                dishBanner = {value: 'isNew', label: t('isNew')};
-            }
 
             dispatch(fetchIngredients());
             dispatch(getAllergens());
             dispatch(getLabels());
+            dispatch(getBanners());
 
-            dispatch(setBanner(dishBanner));
             dispatch(setCategoryId(item.categoryId));
             dispatch(setCategory(category));
             dispatch(setDisplayOrder(item.displayOrder));
@@ -90,7 +81,14 @@ export const EditMenuItemForm = () => {
             dispatch(setVariants(item.variants));
             dispatch(setPrice(item.price.toFixed(2)));
             dispatch(setAvailable(item.available));
-            dispatch(setChosenLabels(item.labels?.map(label => ({value: label, label: getTranslation(label.name)}))));
+            dispatch(setChosenBanners(item.banners?.map(banner => ({
+                value: banner,
+                label: getTranslation(banner.name)
+            }))));
+            dispatch(setChosenLabels(item.labels?.map(label => ({
+                value: label,
+                label: getTranslation(label.name)
+            }))));
             dispatch(setChosenAllergens(item.allergens?.map(allergen => ({
                 value: allergen,
                 label: getTranslation(allergen.name)
@@ -123,9 +121,7 @@ export const EditMenuItemForm = () => {
             return;
         }
 
-        const newBanner = banner?.value === 'isNew';
-        const bestsellerBanner = banner?.value === 'isBestseller';
-        const dishAction = await dispatch(postDish({isNew: newBanner, isBestseller: bestsellerBanner, action: "update"}));
+        const dishAction = await dispatch(postDish({action: "update"}));
         if (postDish.fulfilled.match(dishAction)) {
             dispatch(setSubmittedSuccessType('dish-edit'));
             setTimeout(() => {

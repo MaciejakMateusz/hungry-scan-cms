@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {getTranslation} from "../../../../../locales/langUtils";
 import {MenuItemFormTemplate} from "../../form-components/MenuItemFormTemplate";
 import {
-    getAllergens,
+    getAllergens, getBanners,
     getLabels,
     postDish,
     postImage,
@@ -26,7 +26,6 @@ export const NewMenuItemForm = () => {
     const clearForm = useClearForm();
     const [file, setFile] = useState(null);
     const {
-        banner,
         errorMessage,
         errorData,
     } = useSelector(state => state.dishForm.form);
@@ -36,6 +35,7 @@ export const NewMenuItemForm = () => {
         dispatch(fetchIngredients());
         dispatch(getAllergens());
         dispatch(getLabels());
+        dispatch(getBanners());
     }, []);
 
     const handleFormDiscard = () => {
@@ -55,9 +55,7 @@ export const NewMenuItemForm = () => {
             dispatch(setErrorMessage(imageAction.payload));
         }
 
-        const newBanner = banner && banner.value === t("isNew");
-        const bestsellerBanner = banner && banner.value === t("isBestseller");
-        const dishAction = await dispatch(postDish({new: newBanner, bestseller: bestsellerBanner, action: "add"}));
+        const dishAction = await dispatch(postDish({action: "add"}));
         if (postDish.fulfilled.match(dishAction)) {
             dispatch(setSubmittedSuccessType('dish-save'));
             setTimeout(() => {
