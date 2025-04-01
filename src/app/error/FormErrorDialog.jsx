@@ -52,11 +52,19 @@ export const FormErrorDialog = ({ error, resetMessage }) => {
                         </p>
                     </div>
                 );
+            case 'exceptionMsg':
+                return (
+                    <div key={key} className={'error-field-wrapper'}>
+                        <p className={'error-field-key'}>
+                            {t('error')}: <span className={'error-field-value'}>{error[key]}</span>
+                        </p>
+                    </div>
+                );
             default:
                 return (
                     <div key={key} className={'error-field-wrapper'}>
                         <p className={'error-field-key'}>
-                            {key}: <span className={'error-field-value'}>{error[key]}</span>
+                            {t('error')}: <span className={'error-field-value'}>{error[key]}</span>
                         </p>
                     </div>
                 );

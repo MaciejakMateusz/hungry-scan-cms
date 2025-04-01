@@ -44,7 +44,7 @@ export const PriceField = (props) => {
         <div className={'form-field-wrapper'}>
             <div className={'form-field-container'}>
                 <label htmlFor={props.id} className="form-label">
-                    {t('price')} *
+                    {props.priceLabel || t('price')} *
                 </label>
                 <span className={'price-input-wrapper'}>
                     <input type={'text'}

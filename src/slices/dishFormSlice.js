@@ -88,6 +88,7 @@ export const postDish = createAsyncThunk(
                 variants: formState.variants,
                 additionalIngredients: additions,
                 price: formState.price,
+                promoPrice: formState.promoPrice,
                 imageName: formState.fileName,
                 available: formState.available,
                 created: formState.created,
@@ -358,6 +359,7 @@ export const dishFormSlice = createSlice({
         banners: [],
         variants: [],
         price: formatPrice(0, true),
+        promoPrice: formatPrice(0, true),
         fileName: null,
         additionalIngredients: [],
         available: true,
@@ -389,6 +391,9 @@ export const dishFormSlice = createSlice({
         },
         setPrice: (state, action) => {
             state.price = action.payload;
+        },
+        setPromoPrice: (state, action) => {
+            state.promoPrice = action.payload;
         },
         setFileName: (state, action) => {
             state.fileName = action.payload;
@@ -448,6 +453,7 @@ export const {
     setCategoryId,
     setVariants,
     setPrice,
+    setPromoPrice,
     setFileName,
     clearFileName,
     setAvailable,

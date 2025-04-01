@@ -1370,6 +1370,11 @@ ul {
     height: 130px;
 }
 
+.form-price-fields-wrapper {
+    display: flex;
+    gap: 15px;
+}
+
 .form-field-wrapper {
     display: flex;
     justify-content: left;

@@ -9,7 +9,14 @@ import {PriceField} from "./PriceField";
 import {FileUploadField} from "./FileUploadField";
 import {useDispatch, useSelector} from "react-redux";
 import {LogicalToggleField} from "./LogicalToggleField";
-import {setAvailable, setDescription, setFileName, setName, setPrice} from "../../../../slices/dishFormSlice";
+import {
+    setAvailable,
+    setDescription,
+    setFileName,
+    setName,
+    setPrice,
+    setPromoPrice
+} from "../../../../slices/dishFormSlice";
 import {BannersMultiselect} from "./BannersMultiselect";
 
 export const MenuItemFormTemplate = ({setFile}) => {
@@ -19,9 +26,12 @@ export const MenuItemFormTemplate = ({setFile}) => {
         name,
         description,
         price,
+        promoPrice,
         available,
         errorData,
     } = useSelector(state => state.dishForm.form);
+    const {chosenBanners} = useSelector(state => state.dishForm.fetchBanners);
+    const displayPromoPrice = chosenBanners?.filter(b => b.value.id === 'promo').length !== 0;
 
     return (
         <>
@@ -39,10 +49,18 @@ export const MenuItemFormTemplate = ({setFile}) => {
             <LabelsMultiselect/>
             <AdditionsMultiselect/>
             <AllergensMultiselect/>
-            <PriceField id={'dish-price'}
-                        value={price}
-                        setPrice={(e) => dispatch(setPrice(e))}
-                        error={errorData}/>
+            <div className={'form-price-fields-wrapper'}>
+                <PriceField id={'dish-price'}
+                            value={price}
+                            setPrice={(e) => dispatch(setPrice(e))}
+                            error={errorData}/>
+                {displayPromoPrice &&
+                    <PriceField id={'dish-price'}
+                                value={promoPrice}
+                                setPrice={(e) => dispatch(setPromoPrice(e))}
+                                priceLabel={t('promoPrice')}/>
+                }
+            </div>
             <LogicalToggleField id={'available'}
                                 name={t('availability')}
                                 value={available}
