@@ -10,6 +10,9 @@ export const Banner = () => {
     }
 
     return (chosenBanners.map(banner => (
-        <span className={`details-banner ${!fileName ? 'no-image' : ''}`}>{banner.label}</span>
+        <span key={banner.value.id}
+              className={`details-banner ${!fileName ? 'no-image' : ''}`}>
+            {banner.label}
+        </span>
     )));
 }
