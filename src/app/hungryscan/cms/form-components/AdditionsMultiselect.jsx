@@ -4,11 +4,13 @@ import {useDispatch, useSelector} from "react-redux";
 import {CustomSelect} from "./CustomSelect";
 import {setChosenAdditions} from "../../../../slices/dishAdditionsSlice";
 import makeAnimated from 'react-select/animated';
+import {useMergeUniqueOptions} from "../../../../hooks/useMergeUniqueOptions";
 
 export const AdditionsMultiselect = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {ingredients, chosenAdditions} = useSelector(state => state.dishAdditions.fetchIngredients);
+    const mergedOptions = useMergeUniqueOptions({chosenOptions: chosenAdditions, options: ingredients});
     const animatedComponents = makeAnimated();
 
     return (
@@ -19,7 +21,7 @@ export const AdditionsMultiselect = () => {
                       onChange={(selected) => dispatch(setChosenAdditions(selected))}
                       value={chosenAdditions}
                       placeholder={t('choose')}
-                      options={ingredients}
+                      options={mergedOptions}
                       isClearable={true}
                       isMulti={true}
                       menuPlacement={'top'}

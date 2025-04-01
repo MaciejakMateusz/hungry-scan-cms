@@ -257,16 +257,10 @@ export const fetchBannersSlice = createSlice(
                 })
                 .addCase(getBanners.fulfilled, (state, action) => {
                     state.isLoading = false;
-
-                    const formattedBanners = action.payload?.map(banner => ({
+                    state.banners = action.payload?.map(banner => ({
                         value: banner,
                         label: getTranslation(banner.name)
                     }));
-
-                    const chosenBannersIds = new Set(state.chosenBanners?.map(item => item.value.id));
-
-                    state.banners = formattedBanners.filter(label => !chosenBannersIds.has(label.value.id));
-
                     state.banners.sort((a, b) =>
                         getTranslation(a.value.name).localeCompare(getTranslation(b.value.name))
                     );
@@ -301,16 +295,10 @@ export const fetchLabelsSlice = createSlice(
                 })
                 .addCase(getLabels.fulfilled, (state, action) => {
                     state.isLoading = false;
-
-                    const formattedLabels = action.payload?.map(label => ({
+                    state.labels = action.payload?.map(label => ({
                         value: label,
                         label: getTranslation(label.name)
                     }));
-
-                    const chosenLabelsIds = new Set(state.chosenLabels?.map(item => item.value.id));
-
-                    state.labels = formattedLabels.filter(label => !chosenLabelsIds.has(label.value.id));
-
                     state.labels.sort((a, b) =>
                         getTranslation(a.value.name).localeCompare(getTranslation(b.value.name))
                     );
@@ -345,16 +333,10 @@ export const fetchAllergensSlice = createSlice(
                 })
                 .addCase(getAllergens.fulfilled, (state, action) => {
                     state.isLoading = false;
-
-                    const formattedAllergens = action.payload?.map(allergen => ({
+                    state.allergens = action.payload?.map(allergen => ({
                         value: allergen,
                         label: getTranslation(allergen.name)
                     }));
-
-                    const chosenAllergensIds = new Set(state.chosenAllergens?.map(item => item.value.id));
-
-                    state.allergens = formattedAllergens?.filter(allergen =>
-                        !chosenAllergensIds.has(allergen.value.id));
                     state.allergens?.sort((a, b) =>
                         getTranslation(a.value.name).localeCompare(getTranslation(b.value.name))
                     );

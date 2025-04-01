@@ -49,16 +49,10 @@ export const fetchIngredientsSlice = createSlice({
             })
             .addCase(fetchIngredients.fulfilled, (state, action) => {
                 state.isLoading = false;
-
-                const formattedIngredients = action.payload?.map(ingredient => ({
+                state.ingredients = action.payload?.map(ingredient => ({
                     value: ingredient,
                     label: getTranslation(ingredient.name)
                 }));
-
-                const chosenAdditionsIds = new Set(state.chosenAdditions?.map(item => item.value.id));
-
-                state.ingredients = formattedIngredients.filter(ingredient => !chosenAdditionsIds.has(ingredient.value.id));
-
                 state.ingredients.sort((a, b) =>
                     getTranslation(a.value.name).localeCompare(getTranslation(b.value.name))
                 );
