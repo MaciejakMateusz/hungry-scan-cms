@@ -59,10 +59,12 @@ export const postDish = createAsyncThunk(
         const formState = getState().dishForm.form;
         const allergensState = getState().dishForm.fetchAllergens;
         const labelsState = getState().dishForm.fetchLabels;
+        const bannersState = getState().dishForm.fetchBanners;
         const dishAdditionsState = getState().dishAdditions.fetchIngredients;
-        const labels = labelsState.chosenLabels?.map(label => label.value)
-        const allergens = allergensState.chosenAllergens?.map(allergen => allergen.value)
-        const additions = dishAdditionsState.chosenAdditions?.map(addition => addition.value)
+        const banners = bannersState.chosenBanners?.map(banner => banner.value);
+        const labels = labelsState.chosenLabels?.map(label => label.value);
+        const allergens = allergensState.chosenAllergens?.map(allergen => allergen.value);
+        const additions = dishAdditionsState.chosenAdditions?.map(addition => addition.value);
         const response = await fetch(`${apiHost}/api/cms/items/${params.action}`, {
             method: params.action === 'add' ? "POST" : "PATCH",
             headers: {
@@ -72,8 +74,6 @@ export const postDish = createAsyncThunk(
                 id: formState.id,
                 categoryId: formState.category && formState.category.id,
                 displayOrder: formState.displayOrder,
-                isNew: params.isNew,
-                isBestseller: params.isBestseller,
                 name: {
                     defaultTranslation: formState.name,
                     translationEn: ''
@@ -82,6 +82,7 @@ export const postDish = createAsyncThunk(
                     defaultTranslation: formState.description,
                     translationEn: ''
                 },
+                banners: banners,
                 labels: labels,
                 allergens: allergens,
                 variants: formState.variants,
@@ -105,6 +106,26 @@ export const postDish = createAsyncThunk(
         } catch (error) {
             return {};
         }
+    }
+);
+
+export const getBanners = createAsyncThunk(
+    'fetchBanners/fetchBanners',
+    async (_, {rejectWithValue}) => {
+        const response = await fetch(`${apiHost}/api/cms/banners`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include'
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            return rejectWithValue(errorData);
+        }
+
+        return await response.json();
     }
 );
 
@@ -212,6 +233,50 @@ export const fetchMenuItemSlice = createSlice(
         }
     });
 
+export const fetchBannersSlice = createSlice(
+    {
+        name: 'getBanners',
+        initialState: {
+            isLoading: false,
+            banners: [],
+            chosenBanners: []
+        },
+        reducers: {
+            setChosenBanners: (state, action) => {
+                state.chosenBanners = action.payload;
+            },
+            clearBanners: (state) => {
+                state.labels = [];
+                state.chosenLabels = [];
+            }
+        },
+        extraReducers: (builder) => {
+            builder
+                .addCase(getBanners.pending, state => {
+                    state.isLoading = true;
+                })
+                .addCase(getBanners.fulfilled, (state, action) => {
+                    state.isLoading = false;
+
+                    const formattedBanners = action.payload?.map(banner => ({
+                        value: banner,
+                        label: getTranslation(banner.name)
+                    }));
+
+                    const chosenBannersIds = new Set(state.chosenBanners?.map(item => item.value.id));
+
+                    state.banners = formattedBanners.filter(label => !chosenBannersIds.has(label.value.id));
+
+                    state.banners.sort((a, b) =>
+                        getTranslation(a.value.name).localeCompare(getTranslation(b.value.name))
+                    );
+                })
+                .addCase(getBanners.rejected, (state) => {
+                    state.isLoading = false;
+                })
+        }
+    });
+
 export const fetchLabelsSlice = createSlice(
     {
         name: 'getLabels',
@@ -308,7 +373,7 @@ export const dishFormSlice = createSlice({
         description: '',
         category: null,
         categoryId: null,
-        banner: '',
+        banners: [],
         variants: [],
         price: formatPrice(0, true),
         fileName: null,
@@ -337,9 +402,6 @@ export const dishFormSlice = createSlice({
         setCategoryId: (state, action) => {
             state.categoryId = action.payload;
         },
-        setBanner: (state, action) => {
-            state.banner = action.payload || null;
-        },
         setVariants: (state, action) => {
             state.variants = action.payload;
         },
@@ -356,7 +418,7 @@ export const dishFormSlice = createSlice({
             state.available = action.payload;
         },
         setDisplayOrder: (state, action) => {
-            state.displayOrder = action.payload || 0;
+            state.displayOrder = action.payload;
         },
         setCreated: (state, action) => {
             state.created = action.payload;
@@ -375,7 +437,6 @@ export const dishFormSlice = createSlice({
             state.name = '';
             state.description = '';
             state.category = null;
-            state.banner = '';
             state.variants = [];
             state.price = formatPrice(0, true);
             state.file = {};
@@ -393,6 +454,7 @@ export const dishFormSlice = createSlice({
     }
 });
 
+export const {setChosenBanners, clearBanners} = fetchBannersSlice.actions;
 export const {setChosenLabels, clearLabels} = fetchLabelsSlice.actions;
 export const {setChosenAllergens, clearAllergens} = fetchAllergensSlice.actions;
 
@@ -402,7 +464,6 @@ export const {
     setDescription,
     setCategory,
     setCategoryId,
-    setBanner,
     setVariants,
     setPrice,
     setFileName,
@@ -419,6 +480,7 @@ export const {
 const dishFormReducer = combineReducers({
     form: dishFormSlice.reducer,
     fetchMenuItem: fetchMenuItemSlice.reducer,
+    fetchBanners: fetchBannersSlice.reducer,
     fetchLabels: fetchLabelsSlice.reducer,
     fetchAllergens: fetchAllergensSlice.reducer,
     postImage: postImageSlice,
