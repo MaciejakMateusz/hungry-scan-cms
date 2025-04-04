@@ -11,7 +11,7 @@ export const FormErrorDialog = ({ error, resetMessage }) => {
 
     const handleClose = () => {
         setOpen(false);
-        resetMessage(null);  // Reset the error message in the parent component
+        resetMessage(null);
     };
 
     if (!open) {
