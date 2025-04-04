@@ -1,6 +1,50 @@
 import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
 
+export const updateCategoriesOrder = createAsyncThunk(
+    'updateCategoriesOrder/updateCategoriesOrder',
+    async (params, {rejectWithValue}) => {
+        const response = await fetch(`${apiHost}/api/cms/categories/display-orders`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(params.categories),
+            credentials: 'include'
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            return rejectWithValue(errorData);
+        }
+
+        try {
+            return await response.json();
+        } catch (error) {
+            return {};
+        }
+    }
+);
+
+export const updateCategoriesOrderSlice = createSlice({
+    name: 'updateCategoriesOrder',
+    initialState: {
+        isLoading: false,
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(updateMenuItemsOrder.pending, state => {
+                state.isLoading = true;
+            })
+            .addCase(updateMenuItemsOrder.fulfilled, state => {
+                state.isLoading = false;
+            })
+            .addCase(updateMenuItemsOrder.rejected, (state) => {
+                state.isLoading = false;
+            })
+    }
+})
+
 export const updateMenuItemsOrder = createAsyncThunk(
     'updateMenuItemsOrder/updateMenuItemsOrder',
     async (params, {rejectWithValue}) => {
@@ -134,6 +178,7 @@ export const dishesCategoriesSlice = createSlice(
             filterExpanded: false,
             newCategoryFormActive: false,
             editCategoryFormActive: false,
+            reorderCategoriesDialogActive: false,
             newDishFormActive: false,
             editDishFormActive: false,
             submittedSuccessType: null,
@@ -163,6 +208,9 @@ export const dishesCategoriesSlice = createSlice(
             },
             setEditCategoryFormActive: (state, action) => {
                 state.editCategoryFormActive = action.payload;
+            },
+            setReorderCategoriesDialogActive: (state, action) => {
+                state.reorderCategoriesDialogActive = action.payload;
             },
             setNewDishFormActive: (state, action) => {
                 state.newDishFormActive = action.payload;
@@ -221,6 +269,7 @@ export const {
     setFilterExpanded,
     setNewCategoryFormActive,
     setEditCategoryFormActive,
+    setReorderCategoriesDialogActive,
     setNewDishFormActive,
     setEditDishFormActive,
     setSubmittedSuccessType,
@@ -238,7 +287,8 @@ const dishesCategoriesReducer = combineReducers({
     view: dishesCategoriesSlice.reducer,
     getCategories: getCategoriesSlice.reducer,
     getCategory: getCategorySlice.reducer,
-    updateMenuItemsOrder: updateMenuItemsOrderSlice.reducer
+    updateMenuItemsOrder: updateMenuItemsOrderSlice.reducer,
+    updateCategoriesOrder: updateCategoriesOrderSlice.reducer
 });
 
 export default dishesCategoriesReducer;
