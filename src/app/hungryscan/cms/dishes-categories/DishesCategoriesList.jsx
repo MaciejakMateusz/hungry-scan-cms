@@ -16,12 +16,14 @@ import {
 } from "../../../../slices/dishesCategoriesSlice";
 import {DndContext} from '@dnd-kit/core';
 import {arrayMove, SortableContext} from '@dnd-kit/sortable';
+import {ReorderCategoriesDialog} from "../dialog-windows/ReorderCategoriesDialog";
 
 export const DishesCategoriesList = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {
         categoryForAction,
+        reorderCategoriesDialogActive,
         menuItemForAction,
         filterValue,
         activeRemovalType
@@ -122,6 +124,10 @@ export const DishesCategoriesList = () => {
                                onCancel={discardDeletion}/>
     };
 
+    const renderReorderCategoriesDialog = () => {
+        return <ReorderCategoriesDialog/>
+    };
+
     const renderConfirmationDialog = () => {
         if (confirmedRemovalType === 'category') {
             return (<SuccessMessage text={t('categoryRemovalSuccess')}/>);
@@ -184,6 +190,7 @@ export const DishesCategoriesList = () => {
                 renderCategories()}
             {activeRemovalType && renderRemovalDialog()}
             {confirmedRemovalType && renderConfirmationDialog()}
+            {reorderCategoriesDialogActive && renderReorderCategoriesDialog()}
             {errorData.exceptionMsg && (<FailureMessage text={errorData.exceptionMsg}/>)}
         </div>
     );
