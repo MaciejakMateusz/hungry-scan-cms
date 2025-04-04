@@ -2338,7 +2338,6 @@ ul {
     margin-bottom: 0;
 }
 
-
 .category-container-header {
     height: 50px;
     background: #FFF;
@@ -2352,6 +2351,33 @@ ul {
 .category-info {
     display: flex;
     gap: 15px;
+}
+
+
+
+.reordering-dialog {
+    position: fixed;
+    top: 25%;
+    left: 45%;
+    background-color: #FFF;
+    padding: 12px;
+    width: 25vw;
+    height: fit-content;
+    max-height: 50%;
+    border: 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    font-size: 13px;
+    overflow-y: auto;
+}
+
+.reordering-dialog-content {
+
+}
+
+.reordering-dialog-footer {
+    display: flex;
+    justify-content: flex-end;
 }
 
 .new-dish-button {
