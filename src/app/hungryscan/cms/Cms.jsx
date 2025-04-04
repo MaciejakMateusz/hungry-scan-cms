@@ -40,6 +40,7 @@ export const Cms = () => {
         isInEditMode,
         newCategoryFormActive,
         editCategoryFormActive,
+        reorderCategoriesDialogActive,
         newDishFormActive,
         editDishFormActive
     } = useSelector(state => state.dishesCategories.view);
@@ -57,11 +58,13 @@ export const Cms = () => {
 
     useEffect(() => {
         dispatch(setIsInEditMode());
-    }, [dispatch, newCategoryFormActive, editCategoryFormActive, newDishFormActive, editDishFormActive]);
+    }, [dispatch, newCategoryFormActive, editCategoryFormActive, newDishFormActive, editDishFormActive, reorderCategoriesDialogActive]);
 
     useEffect(() => {
-        if (!isInEditMode || !categoryForAction || !menuItemForAction) dispatch(fetchActiveMenu());
-    }, [dispatch, isInEditMode, categoryForAction, menuItemForAction]);
+        if (!isInEditMode || !categoryForAction || !menuItemForAction || !reorderCategoriesDialogActive) {
+            dispatch(fetchActiveMenu());
+        }
+    }, [dispatch, isInEditMode, categoryForAction, menuItemForAction, reorderCategoriesDialogActive]);
 
     const switchView = (viewName) => {
         if (isInEditMode) {
