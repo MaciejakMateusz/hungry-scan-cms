@@ -18,6 +18,7 @@ import {DashboardTopper} from "./DashboardTopper";
 export const Dashboard = () => {
     const dispatch = useDispatch();
     const {currentView, cmsActive, userForename} = useSelector(state => state.globalParams.globalParams);
+    const {restaurant} = useSelector(state => state.dashboard.view);
     const [isLogoutHovered, setIsLogoutHovered] = useState(false);
     const statsHoveredOrActive = currentView === STATS;
     const qrHoveredOrActive = currentView === D_CODE_QR;
@@ -91,9 +92,11 @@ export const Dashboard = () => {
                             <RestaurantLocationIcon/>
                         </div>
                         <div className={'app-nav-restaurant-info'}>
-                            <span className={'restaurant-info-name'}>Dom Retro Pivnica</span>
-                            <span className={'restaurant-info-address'}>ul. Kamienna 55 </span>
-                            <span className={'restaurant-info-address'}>Katowice</span>
+                            <div>
+                                <span className={'restaurant-info-name'}>{restaurant?.label}</span>
+                                <span className={'restaurant-info-address'}>{restaurant?.value.address}</span>
+                                <span className={'restaurant-info-address'}>{restaurant?.value.city}</span>
+                            </div>
                         </div>
                     </div>
                 </div>

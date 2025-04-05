@@ -892,7 +892,6 @@ ul {
     color: #FAFAFA;
     font-size: 1rem;
     display: block;
-    margin-top: 16px;
     margin-bottom: 8px;
 }
 
@@ -904,6 +903,8 @@ ul {
 
 .app-nav-restaurant-info {
     grid-column: 2;
+    display: flex;
+    align-items: center;
 }
 
 .app-nav-footer {
