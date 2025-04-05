@@ -26,10 +26,10 @@ export const ReorderCategoriesDialog = () => {
         dispatch(setReorderCategoriesDialogActive(false));
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        dispatch(updateCategoriesOrder({categories: categories}));
-        dispatch(setReorderCategoriesDialogActive(false));
+        await dispatch(updateCategoriesOrder({categories: categories}));
+        await dispatch(setReorderCategoriesDialogActive(false));
     }
 
     const handleDragEnd = async event => {
