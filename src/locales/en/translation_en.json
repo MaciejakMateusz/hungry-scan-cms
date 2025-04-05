@@ -121,6 +121,7 @@
   "noVariantsInDish": "Dish does not contain any variants",
   "error": "Error",
   "errorOccurred": "An error occurred",
+  "internalServerError": "Internal server error, contact the administrator.",
   "close": "Close",
   "errorSummary": "Details",
   "noCreatedIngr": "No created ingredients",

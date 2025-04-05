@@ -123,6 +123,7 @@
   "noVariantsInDish": "Danie nie posiada wariantów",
   "error": "Błąd",
   "errorOccurred": "Wystąpił błąd",
+  "internalServerError": "Wewnętrzny błąd serwera, skontaktuj się z administratorem.",
   "close": "Zamknij",
   "errorSummary": "Szczegóły",
   "noCreatedIngr": "Brak utworzonych dodatków",

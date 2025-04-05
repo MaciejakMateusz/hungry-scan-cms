@@ -27,6 +27,7 @@ export const CreateFirstRestaurant = () => {
     const checkAddress = errorData?.address && address.length === 0;
     const checkPostalCode = errorData?.postalCode && postalCode.length === 0;
     const checkCity = errorData?.city && city.length === 0;
+    const is500Error = errorData?.status === 500
 
     const handleCreateRestaurantFetch = (e) => {
         e.preventDefault();
@@ -76,6 +77,7 @@ export const CreateFirstRestaurant = () => {
                         <button className={'form-submit-button'} onClick={handleCreateRestaurantFetch}>
                             {isLoading ? <LoadingSpinner buttonMode={true}/> : t('create')}
                         </button>
+                        {is500Error && <p className={'form-validation-msg'}>{t('internalServerError')}</p>}
                     </form>
                     <span className={'change-restaurant-data-info '}>
                         {t('changeRestaurantDataInfo')}
