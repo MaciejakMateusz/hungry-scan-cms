@@ -4,7 +4,7 @@ import React from "react";
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
 
-export const ReorderCategoryPosition = ({id, category}) => {
+export const ReorderCategoryPosition = ({id, category, currentOrder}) => {
     const {attributes, listeners, setNodeRef, transform, transition, isDragging} = useSortable({id});
     const dndStyle = {
         transform: CSS.Transform.toString(transform),
@@ -17,8 +17,8 @@ export const ReorderCategoryPosition = ({id, category}) => {
             <div className={'category-info'}>
                 <div className={'drag-and-drop-wrapper'} {...listeners} {...attributes}>
                     <DragAndDropIcon/>
+                    {currentOrder}. {getTranslation(category.name)}
                 </div>
-                {getTranslation(category.name)}
             </div>
         </div>
     );

@@ -56,10 +56,11 @@ export const ReorderCategoriesDialog = () => {
                     <p>Reorder categories</p>
                     <DndContext onDragEnd={(e) => handleDragEnd(e)}>
                         <SortableContext items={categories.map(c => c.id.toString())}>
-                            {categories.map(category => (
+                            {categories.map((category, index) => (
                                 <ReorderCategoryPosition key={`${category.id}-${category.displayOrder}`}
                                                          id={category.id.toString()}
-                                                         category={category}/>
+                                                         category={category}
+                                                         currentOrder={index + 1}/>
                             ))}
                         </SortableContext>
                     </DndContext>
