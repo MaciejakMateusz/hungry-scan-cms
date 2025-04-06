@@ -197,7 +197,12 @@ export const mainSelectIcon = {
         ...mainSelect.control(provided, state),
         width: '315px',
         paddingLeft: '35px'
-    })
+    }),
+    menu: (provided) => ({
+        ...mainSelect.menu(provided),
+        borderBottomLeftRadius: '20px',
+        borderBottomRightRadius: '20px'
+    }),
 }
 
 export const mainSelectChipless = {

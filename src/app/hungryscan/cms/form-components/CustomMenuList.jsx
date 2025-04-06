@@ -1,17 +1,23 @@
 import React from 'react';
 import {components} from 'react-select';
-import {useTranslation} from "react-i18next";
 
 export const CustomMenuList = (props) => {
-    const {t} = useTranslation();
     const {
         children,
-        selectProps: {onAddMenu}
+        selectProps: {onAdd, buttonText}
     } = props;
 
     return (
-        <components.MenuList {...props}>
-            {children}
+        <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            height: '100%',
+        }}>
+            <div style={{flexGrow: 1, overflowY: 'auto',}}>
+                <components.MenuList {...props}>
+                    {children}
+                </components.MenuList>
+            </div>
             <div style={{
                 padding: '10px',
                 textAlign: 'center',
@@ -19,13 +25,13 @@ export const CustomMenuList = (props) => {
                 cursor: 'pointer',
                 color: '#fff',
                 backgroundColor: '#9746FF',
-                borderBottomLeftRadius: '5px',
-                borderBottomRightRadius: '5px',
-                fontWeight: 500
+                fontWeight: 500,
+                borderBottomLeftRadius: '20px',
+                borderBottomRightRadius: '20px',
             }}
-                 onClick={onAddMenu}>
-                + {t('addMenu')}
+                 onClick={onAdd}>
+                + {buttonText}
             </div>
-        </components.MenuList>
+        </div>
     );
 };

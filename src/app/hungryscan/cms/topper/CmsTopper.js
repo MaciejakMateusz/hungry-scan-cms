@@ -35,7 +35,7 @@ export const CmsTopper = () => {
             }
         }, [dispatch]
     );
-    
+
     useEffect(() => {
         if (!menuFormActive) {
             getRestaurant();
@@ -76,21 +76,22 @@ export const CmsTopper = () => {
             <div className={'flex-wrapper'}>
                 <div className={'app-header-select-wrapper'}>
                     <DocumentIcon customColor={"#9746FF"} absolute={true}/>
-                    <Select
-                        id={'cms-menu'}
-                        name={'cms-menu'}
-                        value={activeMenu}
-                        placeholder={t('choose')}
-                        options={menus}
-                        isDisabled={isInEditMode}
-                        defaultValue={menus && menus[0]}
-                        onChange={async (selected) => await switchMenu(selected)}
-                        styles={mainSelectIcon}
-                        components={{
-                            NoOptionsMessage: CustomNoOptionsMessage,
-                            MenuList: CustomMenuList
-                        }}
-                        onAddMenu={() => dispatch(setMenuFormActive(true))}
+                    <Select id={'cms-menu'}
+                            name={'cms-menu'}
+                            value={activeMenu}
+                            placeholder={t('choose')}
+                            options={menus}
+                            isDisabled={isInEditMode}
+                            isSearchable={false}
+                            defaultValue={menus && menus[0]}
+                            onChange={async (selected) => await switchMenu(selected)}
+                            styles={mainSelectIcon}
+                            components={{
+                                NoOptionsMessage: CustomNoOptionsMessage,
+                                MenuList: CustomMenuList
+                            }}
+                            onAdd={() => dispatch(setMenuFormActive(true))}
+                            buttonText={t('addMenu')}
                     />
                 </div>
                 <div className={'options-button'} style={isInEditMode ? {cursor: 'not-allowed'} : {}}>
