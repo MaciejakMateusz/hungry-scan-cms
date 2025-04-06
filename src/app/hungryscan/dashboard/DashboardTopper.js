@@ -7,12 +7,16 @@ import {ThreeDotsIcon} from "../../icons/ThreeDotsIcon";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {getCurrentRestaurant, getUserRestaurants, setRestaurant} from "../../../slices/dashboardSlice";
+import {CustomMenuList} from "../cms/form-components/CustomMenuList";
+import {setRestaurantFormActive, switchRestaurant} from "../../../slices/restaurantSlice";
+import {RestaurantFormDialog} from "../cms/restaurant/RestaurantFormDialog";
 
 export const DashboardTopper = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {restaurants} = useSelector(state => state.dashboard.getRestaurants);
     const {restaurant} = useSelector(state => state.dashboard.view);
+    const {restaurantFormActive} = useSelector(state => state.restaurant.form);
 
     const getRestaurant = useCallback(
         async () => {
@@ -34,8 +38,20 @@ export const DashboardTopper = () => {
         dispatch(getUserRestaurants());
     }, [dispatch]);
 
+    useEffect(() => {
+        if (!restaurantFormActive) dispatch(getUserRestaurants());
+    }, [dispatch, restaurantFormActive]);
+
+    const handleRestaurantSwitch = async (selected) => {
+        const resultAction = await dispatch(switchRestaurant({restaurantId: selected?.value.id}));
+        if (switchRestaurant.fulfilled.match(resultAction)) {
+            await getRestaurant();
+        }
+    }
+
     return (
         <header className={'app-header dashboard'}>
+            {restaurantFormActive && <RestaurantFormDialog/>}
             <div className={'app-header-select-wrapper'}>
                 <DocumentIcon customColor={"#9746FF"} absolute={true}/>
                 <Select id={'dashboard-restaurant'}
@@ -44,9 +60,15 @@ export const DashboardTopper = () => {
                         placeholder={t('choose')}
                         options={restaurants}
                         defaultValue={restaurants && restaurants[0]}
-                        onChange={(selected) => dispatch(setRestaurant(selected))}
+                        isSearchable={false}
+                        onChange={(selected) => handleRestaurantSwitch(selected)}
                         styles={mainSelectIcon}
-                        components={{NoOptionsMessage: CustomNoOptionsMessage}}
+                        components={{
+                            NoOptionsMessage: CustomNoOptionsMessage,
+                            MenuList: CustomMenuList
+                        }}
+                        onAdd={() => dispatch(setRestaurantFormActive(true))}
+                        buttonText={t('addRestaurant')}
                 />
             </div>
             <div className={'options-button'}>

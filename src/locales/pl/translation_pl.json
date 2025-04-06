@@ -229,6 +229,8 @@
   "selectedCount": "Wybrano {{count}}",
   "addMenu": "Dodaj menu",
   "editMenu": "Edytuj menu",
+  "addRestaurant": "Dodaj restaurację",
+  "editRestaurant": "Edytuj restaurację",
 
   "constraints.NotBlank": "Pole nie może być puste",
   "constraints.ForenameSurname": "Pole powinno mieć minimum dwa znaki i zawierać tylko litery"
