@@ -6,30 +6,33 @@ import {CustomNoOptionsMessage} from "../cms/form-components/CustomNoOptionsMess
 import {ThreeDotsIcon} from "../../icons/ThreeDotsIcon";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
-import {getUserRestaurants, setRestaurant} from "../../../slices/dashboardSlice";
+import {getCurrentRestaurant, getUserRestaurants, setRestaurant} from "../../../slices/dashboardSlice";
 
 export const DashboardTopper = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
-    const {restaurants} = useSelector(state => state.dashboard.restaurants);
+    const {restaurants} = useSelector(state => state.dashboard.getRestaurants);
     const {restaurant} = useSelector(state => state.dashboard.view);
 
-
-    const getRestaurantsData = useCallback(
+    const getRestaurant = useCallback(
         async () => {
-            const resultAction = await dispatch(getUserRestaurants());
-            if (getUserRestaurants.fulfilled.match(resultAction)) {
+            const resultAction = await dispatch(getCurrentRestaurant());
+            if (getCurrentRestaurant.fulfilled.match(resultAction)) {
                 dispatch(setRestaurant({
-                    value: resultAction.payload[0],
-                    label: resultAction.payload[0].name
+                    value: resultAction.payload,
+                    label: resultAction.payload?.name
                 }))
             }
         }, [dispatch]
-    ) 
-    
+    );
+
     useEffect(() => {
-        getRestaurantsData();
-    }, [dispatch, getRestaurantsData]);
+        getRestaurant();
+    }, [dispatch, getRestaurant]);
+
+    useEffect(() => {
+        dispatch(getUserRestaurants());
+    }, [dispatch]);
 
     return (
         <header className={'app-header dashboard'}>
