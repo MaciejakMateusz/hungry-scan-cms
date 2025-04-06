@@ -12,7 +12,7 @@ import translationsReducer from "../slices/translationsSlice";
 import qrCodesReducer from "../slices/qrCodesSlice";
 import registerReducer from "../slices/registerFormSlice";
 import recoveryReducer from "../slices/recoveryFormSlice";
-import createRestaurantReducer from "../slices/createRestaurantSlice";
+import createRestaurantReducer from "../slices/restaurantSlice";
 import reactivateReducer from "../slices/reactivateFormSlice";
 import globalParamsReducer from "../slices/globalParamsSlice";
 import statisticsReducer from "../slices/statisticsSlice";
@@ -34,7 +34,7 @@ const rootReducer = combineReducers({
     filtering: filteringReducer,
     translations: translationsReducer,
     qrCodes: qrCodesReducer,
-    createRestaurant: createRestaurantReducer,
+    restaurant: createRestaurantReducer,
     reactivate: reactivateReducer,
     globalParams: globalParamsReducer,
     statistics: statisticsReducer,

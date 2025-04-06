@@ -39,7 +39,7 @@ export const MenuFormDialog = ({isEditForm}) => {
     const handleFormDiscard = async () => {
         await dispatch(setMenuFormActive(false));
         dispatch(clearForm());
-        dispatch(setErrorData({}));
+        dispatch(setErrorData(null));
     }
 
     return (

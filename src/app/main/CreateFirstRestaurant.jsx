@@ -4,12 +4,12 @@ import {LoadingSpinner} from "../icons/LoadingSpinner";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    executeCreateRestaurantFetch,
+    createInitialRestaurant,
     setAddress,
     setCity,
     setName,
     setPostalCode
-} from "../../slices/createRestaurantSlice";
+} from "../../slices/restaurantSlice";
 import {CreateFirstRestaurantInit} from "./CreateFirstRestaurantInit";
 
 export const CreateFirstRestaurant = () => {
@@ -21,19 +21,18 @@ export const CreateFirstRestaurant = () => {
         address,
         postalCode,
         city
-    } = useSelector(state => state.createRestaurant.createRestaurantForm)
-    const {isLoading, errorData} = useSelector(state => state.createRestaurant.createRestaurantFetch)
+    } = useSelector(state => state.restaurant.form)
+    const {isLoading, errorData} = useSelector(state => state.restaurant.postInitial)
     const checkName = errorData?.name && name.length === 0;
     const checkAddress = errorData?.address && address.length === 0;
     const checkPostalCode = errorData?.postalCode && postalCode.length === 0;
     const checkCity = errorData?.city && city.length === 0;
     const is500Error = errorData?.status === 500
 
-    const handleCreateRestaurantFetch = (e) => {
+    const handleInitialRestaurantCreation = (e) => {
         e.preventDefault();
-        dispatch(executeCreateRestaurantFetch());
+        dispatch(createInitialRestaurant());
     };
-
 
     if (!initialized) {
         return (<CreateFirstRestaurantInit/>);
@@ -74,7 +73,7 @@ export const CreateFirstRestaurant = () => {
                                    error={errorData?.city}
                                    hasError={checkCity}
                                    changeHandler={(e) => dispatch(setCity(e.target.value))}/>
-                        <button className={'form-submit-button'} onClick={handleCreateRestaurantFetch}>
+                        <button className={'form-submit-button'} onClick={handleInitialRestaurantCreation}>
                             {isLoading ? <LoadingSpinner buttonMode={true}/> : t('create')}
                         </button>
                         {is500Error && <p className={'form-validation-msg'}>{t('internalServerError')}</p>}

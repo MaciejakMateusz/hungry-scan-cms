@@ -1,7 +1,7 @@
 import React from "react";
 import {useTranslation} from "react-i18next";
 import {useDispatch} from "react-redux";
-import {setInitialized} from "../../slices/createRestaurantSlice";
+import {setInitialized} from "../../slices/restaurantSlice";
 
 export const CreateFirstRestaurantInit = () => {
     const dispatch = useDispatch();

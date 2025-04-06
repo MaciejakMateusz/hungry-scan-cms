@@ -50,7 +50,7 @@ export const switchActiveMenu = createAsyncThunk(
     'switchActiveMenu/switchActiveMenu',
     async (params, {rejectWithValue}) => {
         const menuId = params.menuId;
-        if (!params.menuId) return;
+        if (!menuId) return;
         const response = await fetch(`${apiHost}/api/user/menu`, {
             method: 'PATCH',
             headers: {
