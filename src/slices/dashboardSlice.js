@@ -1,6 +1,45 @@
 import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
 
+export const getCurrentRestaurant = createAsyncThunk(
+    'getCurrentRestaurant/getCurrentRestaurant',
+    async (_, {rejectWithValue}) => {
+        const response = await fetch(`${apiHost}/api/cms/restaurants/current`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include'
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            return rejectWithValue(errorData);
+        }
+
+        return await response.json();
+    }
+);
+
+export const getCurrentRestaurantSlice = createSlice({
+    name: 'getCurrentRestaurant',
+    initialState: {
+        isLoading: false
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(getCurrentRestaurant.pending, state => {
+                state.isLoading = true;
+            })
+            .addCase(getCurrentRestaurant.fulfilled, (state) => {
+                state.isLoading = false;
+            })
+            .addCase(getCurrentRestaurant.rejected, (state) => {
+                state.isLoading = false;
+            })
+    }
+});
+
 export const getUserRestaurants = createAsyncThunk(
     'getUserRestaurants/getUserRestaurants',
     async (_, {rejectWithValue}) => {
@@ -62,7 +101,8 @@ export const {setRestaurant} = dashboardSlice.actions;
 
 const dashboardReducer = combineReducers({
     view: dashboardSlice.reducer,
-    restaurants: getUserRestaurantsSlice.reducer
+    getRestaurants: getUserRestaurantsSlice.reducer,
+    getRestaurant: getCurrentRestaurantSlice.reducer
 });
 
 export default dashboardReducer;
