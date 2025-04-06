@@ -225,6 +225,8 @@
   "repeated": "Repeated",
   "everyday": "Everyday",
   "selectedCount": "{{count}} selected",
+  "addMenu": "Add menu",
+  "editMenu": "Edit menu",
 
   "constraints.NotBlank": "Field cannot be blank",
   "constraints.ForenameSurname": "Field should contain minimum 2 letters and no special characters"

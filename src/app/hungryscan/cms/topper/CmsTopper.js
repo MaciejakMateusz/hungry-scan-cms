@@ -9,6 +9,9 @@ import {useDispatch, useSelector} from "react-redux";
 import {fetchActiveMenu, switchActiveMenu} from "../../../../slices/cmsSlice";
 import {MenuScheduler} from "./MenuScheduler";
 import {setActiveMenu} from "../../../../slices/globalParamsSlice";
+import {CustomMenuList} from "../form-components/CustomMenuList";
+import {MenuFormDialog} from "../menu/MenuFormDialog";
+import {setAddMenuFormActive} from "../../../../slices/menuSlice";
 
 export const CmsTopper = () => {
     const {t} = useTranslation();
@@ -17,6 +20,7 @@ export const CmsTopper = () => {
     const {activeMenu} = useSelector(state => state.globalParams.globalParams);
     const {menu} = useSelector(state => state.cms.fetchActiveMenu);
     const {isInEditMode} = useSelector(state => state.dishesCategories.view);
+    const {addMenuFormActive} = useSelector(state => state.menu.form);
     const [menus, setMenus] = useState();
 
     useEffect(() => {
@@ -49,19 +53,25 @@ export const CmsTopper = () => {
 
     return (
         <header className={'app-header cms'}>
+            {addMenuFormActive && <MenuFormDialog/>}
             <div className={'flex-wrapper'}>
                 <div className={'app-header-select-wrapper'}>
                     <DocumentIcon customColor={"#9746FF"} absolute={true}/>
-                    <Select id={'cms-menu'}
-                            name={'cms-menu'}
-                            value={activeMenu}
-                            placeholder={t('choose')}
-                            options={menus}
-                            isDisabled={isInEditMode}
-                            defaultValue={menus && menus[0]}
-                            onChange={async (selected) => await switchMenu(selected)}
-                            styles={mainSelectIcon}
-                            components={{NoOptionsMessage: CustomNoOptionsMessage}}
+                    <Select
+                        id={'cms-menu'}
+                        name={'cms-menu'}
+                        value={activeMenu}
+                        placeholder={t('choose')}
+                        options={menus}
+                        isDisabled={isInEditMode}
+                        defaultValue={menus && menus[0]}
+                        onChange={async (selected) => await switchMenu(selected)}
+                        styles={mainSelectIcon}
+                        components={{
+                            NoOptionsMessage: CustomNoOptionsMessage,
+                            MenuList: CustomMenuList
+                        }}
+                        onAddMenu={() => dispatch(setAddMenuFormActive(true))}
                     />
                 </div>
                 <div className={'options-button'} style={isInEditMode ? {cursor: 'not-allowed'} : {}}>
