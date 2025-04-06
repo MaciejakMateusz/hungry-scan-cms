@@ -6,7 +6,7 @@ import {
     clearForm,
     fetchMenu,
     postMenu,
-    setAddMenuFormActive,
+    setMenuFormActive,
     setErrorData,
     setName
 } from "../../../../slices/menuSlice";
@@ -31,14 +31,14 @@ export const MenuFormDialog = ({isEditForm}) => {
         e.preventDefault();
         const resultAction = await dispatch(postMenu({menu: {id: menu?.id, name: name}}));
         if (postMenu.fulfilled.match(resultAction)) {
-            dispatch(setAddMenuFormActive(false));
+            await dispatch(setMenuFormActive(false));
             dispatch(clearForm());
         }
     }
 
-    const handleFormDiscard = () => {
+    const handleFormDiscard = async () => {
+        await dispatch(setMenuFormActive(false));
         dispatch(clearForm());
-        dispatch(setAddMenuFormActive(false));
         dispatch(setErrorData({}));
     }
 

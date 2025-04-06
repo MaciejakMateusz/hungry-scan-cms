@@ -102,12 +102,12 @@ export const menuSLice = createSlice(
     {
         name: 'form',
         initialState: {
-            addMenuFormActive: false,
+            menuFormActive: false,
             name: ''
         },
         reducers: {
-            setAddMenuFormActive: (state, action) => {
-                state.addMenuFormActive = action.payload;
+            setMenuFormActive: (state, action) => {
+                state.menuFormActive = action.payload;
             },
             setName: (state, action) => {
                 state.name = action.payload;
@@ -118,7 +118,7 @@ export const menuSLice = createSlice(
         }
     });
 
-export const {setAddMenuFormActive, setName, clearForm} = menuSLice.actions;
+export const {setMenuFormActive, setName, clearForm} = menuSLice.actions;
 export const {setErrorData} = postMenuSlice.actions;
 
 const menuReducer = combineReducers({

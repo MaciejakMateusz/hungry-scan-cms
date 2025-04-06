@@ -11,7 +11,8 @@ import {MenuScheduler} from "./MenuScheduler";
 import {setActiveMenu} from "../../../../slices/globalParamsSlice";
 import {CustomMenuList} from "../form-components/CustomMenuList";
 import {MenuFormDialog} from "../menu/MenuFormDialog";
-import {setAddMenuFormActive} from "../../../../slices/menuSlice";
+import {setMenuFormActive} from "../../../../slices/menuSlice";
+import {getCurrentRestaurant, setRestaurant} from "../../../../slices/dashboardSlice";
 
 export const CmsTopper = () => {
     const {t} = useTranslation();
@@ -20,13 +21,31 @@ export const CmsTopper = () => {
     const {activeMenu} = useSelector(state => state.globalParams.globalParams);
     const {menu} = useSelector(state => state.cms.fetchActiveMenu);
     const {isInEditMode} = useSelector(state => state.dishesCategories.view);
-    const {addMenuFormActive} = useSelector(state => state.menu.form);
+    const {menuFormActive} = useSelector(state => state.menu.form);
     const [menus, setMenus] = useState();
+
+    const getRestaurant = useCallback(
+        async () => {
+            const resultAction = await dispatch(getCurrentRestaurant());
+            if (getCurrentRestaurant.fulfilled.match(resultAction)) {
+                dispatch(setRestaurant({
+                    value: resultAction.payload,
+                    label: resultAction.payload?.name
+                }))
+            }
+        }, [dispatch]
+    );
+    
+    useEffect(() => {
+        if (!menuFormActive) {
+            getRestaurant();
+        }
+    }, [getRestaurant, menuFormActive]);
 
     useEffect(() => {
         const mappedMenus = mapMenus();
         setMenus(mappedMenus);
-        if (!activeMenu && mappedMenus?.length >= 1) {
+        if (mappedMenus?.length >= 1) {
             const initialMenu = mappedMenus.find(m => m.value.id === menu?.id);
             dispatch(setActiveMenu(initialMenu));
         }
@@ -53,7 +72,7 @@ export const CmsTopper = () => {
 
     return (
         <header className={'app-header cms'}>
-            {addMenuFormActive && <MenuFormDialog/>}
+            {menuFormActive && <MenuFormDialog/>}
             <div className={'flex-wrapper'}>
                 <div className={'app-header-select-wrapper'}>
                     <DocumentIcon customColor={"#9746FF"} absolute={true}/>
@@ -71,7 +90,7 @@ export const CmsTopper = () => {
                             NoOptionsMessage: CustomNoOptionsMessage,
                             MenuList: CustomMenuList
                         }}
-                        onAddMenu={() => dispatch(setAddMenuFormActive(true))}
+                        onAddMenu={() => dispatch(setMenuFormActive(true))}
                     />
                 </div>
                 <div className={'options-button'} style={isInEditMode ? {cursor: 'not-allowed'} : {}}>
