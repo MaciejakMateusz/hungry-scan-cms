@@ -97,8 +97,10 @@
   "unavailableDish": "Unavailable",
   "confirmCategoryRemoval": "Confirm category removal",
   "confirmDishRemoval": "Confirm dish removal",
+  "confirmMenuRemoval": "Confirm menu removal",
   "categoryRemovalSuccess": "Category removed successfully",
   "dishRemovalSuccess": "Dish removed successfully",
+  "menuRemovalSuccess": "Menu removed successfully",
   "choose": "Choose",
   "category": "Category",
   "price": "Price",
@@ -229,6 +231,9 @@
   "editMenu": "Edit menu",
   "addRestaurant": "Add restaurant",
   "editRestaurant": "Edit restaurant",
+  "rename": "Rename",
+  "duplicate": "Duplicate",
+  "details": "Details",
 
   "constraints.NotBlank": "Field cannot be blank",
   "constraints.ForenameSurname": "Field should contain minimum 2 letters and no special characters"

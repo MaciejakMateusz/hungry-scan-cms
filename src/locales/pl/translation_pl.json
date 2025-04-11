@@ -99,8 +99,10 @@
   "unavailableDish": "Niedostępne",
   "confirmCategoryRemoval": "Potwierdź usunięcie kategorii",
   "confirmDishRemoval": "Potwierdź usunięcie dania",
+  "confirmMenuRemoval": "Potwierdź usunięcie menu",
   "categoryRemovalSuccess": "Kategoria została usunięta pomyślnie",
   "dishRemovalSuccess": "Danie zostało usunięte pomyślnie",
+  "menuRemovalSuccess": "Menu zostało usunięte pomyślnie",
   "choose": "Wybierz",
   "category": "Kategoria",
   "price": "Cena",
@@ -231,6 +233,9 @@
   "editMenu": "Edytuj menu",
   "addRestaurant": "Dodaj restaurację",
   "editRestaurant": "Edytuj restaurację",
+  "rename": "Zmień nazwę",
+  "duplicate": "Duplikuj",
+  "details": "Szczegóły",
 
   "constraints.NotBlank": "Pole nie może być puste",
   "constraints.ForenameSurname": "Pole powinno mieć minimum dwa znaki i zawierać tylko litery"
