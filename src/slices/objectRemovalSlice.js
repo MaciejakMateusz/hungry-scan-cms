@@ -3,9 +3,9 @@ import {apiHost} from "../apiData";
 
 export const remove = createAsyncThunk(
     'objectRemoval/remove',
-    async (credentials, {rejectWithValue}) => {
-        const id = credentials.id;
-        const path = credentials.path;
+    async (params, {rejectWithValue}) => {
+        const id = params.id;
+        const path = params.path;
         const response = await fetch(`${apiHost}/api/cms/${path}/delete`, {
             method: 'DELETE',
             headers: {
