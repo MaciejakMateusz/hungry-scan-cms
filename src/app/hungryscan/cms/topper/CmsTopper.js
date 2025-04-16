@@ -11,8 +11,14 @@ import {MenuScheduler} from "./MenuScheduler";
 import {setActiveMenu} from "../../../../slices/globalParamsSlice";
 import {CustomMenuList} from "../form-components/CustomMenuList";
 import {MenuFormDialog} from "../menu/MenuFormDialog";
-import {setMenuFormActive} from "../../../../slices/menuSlice";
+import {setContextMenuActive, setContextMenuDetailsActive, setMenuFormActive} from "../../../../slices/menuSlice";
 import {getCurrentRestaurant, setRestaurant} from "../../../../slices/dashboardSlice";
+import {ContextMenu} from "../shared-components/ContextMenu";
+import {useMenuContextPositions} from "../../../../hooks/useMenuContextPositions";
+import {remove} from "../../../../slices/objectRemovalSlice";
+import {setActiveRemovalType} from "../../../../slices/dishesCategoriesSlice";
+import {DecisionDialog} from "../dialog-windows/DecisionDialog";
+import {SuccessMessage} from "../dialog-windows/SuccessMessage";
 
 export const CmsTopper = () => {
     const {t} = useTranslation();
@@ -20,9 +26,12 @@ export const CmsTopper = () => {
     const {restaurant} = useSelector(state => state.dashboard.view);
     const {activeMenu} = useSelector(state => state.globalParams.globalParams);
     const {menu} = useSelector(state => state.cms.fetchActiveMenu);
-    const {isInEditMode} = useSelector(state => state.dishesCategories.view);
-    const {menuFormActive} = useSelector(state => state.menu.form);
-    const [menus, setMenus] = useState();
+    const {isInEditMode, activeRemovalType} = useSelector(state => state.dishesCategories.view);
+    const {menuFormActive, contextMenuActive} = useSelector(state => state.menu.form);
+    const [menus, setMenus] = useState([]);
+    const contextMenuPositions = useMenuContextPositions();
+    const [isMenuRemoved, setIsMenuRemoved] = useState(null);
+    const [confirmationTimeoutId, setConfirmationTimeoutId] = useState(null);
 
     const getRestaurant = useCallback(
         async () => {
@@ -70,9 +79,34 @@ export const CmsTopper = () => {
         }
     }
 
+    const handleMenuRemoval = async (e) => {
+        e.preventDefault();
+        const resultAction = await dispatch(remove({id: menu.id, path: 'menus'}));
+        if (remove.fulfilled.match(resultAction)) {
+            await getRestaurant()
+            dispatch(setActiveRemovalType(null));
+            dispatch(setActiveMenu(menus[0]));
+            dispatch(fetchActiveMenu());
+            setIsMenuRemoved(true);
+
+            if (confirmationTimeoutId) {
+                clearTimeout(confirmationTimeoutId);
+            }
+
+            const newConfirmationTimeoutId = setTimeout(() => {
+                setIsMenuRemoved(null);
+            }, 4000);
+            setConfirmationTimeoutId(newConfirmationTimeoutId);
+        }
+    }
+
     return (
         <header className={'app-header cms'}>
             {menuFormActive && <MenuFormDialog/>}
+            {'menu' === activeRemovalType && <DecisionDialog msg={t('confirmMenuRemoval')}
+                                                             objName={menu.name}
+                                                             onCancel={() => dispatch(setActiveRemovalType(null))}
+                                                             onSubmit={handleMenuRemoval}/>}
             <div className={'flex-wrapper'}>
                 <div className={'app-header-select-wrapper'}>
                     <DocumentIcon customColor={"#9746FF"} absolute={true}/>
@@ -94,10 +128,24 @@ export const CmsTopper = () => {
                             buttonText={t('addMenu')}
                     />
                 </div>
-                <div className={'options-button'} style={isInEditMode ? {cursor: 'not-allowed'} : {}}>
-                    <ThreeDotsIcon/>
+                <div className={'relative-container'}>
+                    <div className={'options-button'}
+                         style={isInEditMode ? {cursor: 'not-allowed'} : {}}
+                         tabIndex={-1}
+                         onClick={() => {
+                             dispatch(setContextMenuActive(!contextMenuActive));
+                             dispatch(setContextMenuDetailsActive(false));
+                         }}
+                         onBlur={() => {
+                             setTimeout(() => dispatch(setContextMenuActive(false)), 100);
+                             dispatch(setContextMenuDetailsActive(false));
+                         }}>
+                        <ThreeDotsIcon/>
+                    </div>
+                    {contextMenuActive && <ContextMenu positions={contextMenuPositions} obj={menu}/>}
                 </div>
             </div>
+            {isMenuRemoved && <SuccessMessage text={t('menuRemovalSuccess')}/>}
             <MenuScheduler/>
         </header>
     );

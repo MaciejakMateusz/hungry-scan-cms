@@ -2,14 +2,8 @@ import React, {useEffect} from "react";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {NameField} from "../form-components/NameField";
-import {
-    clearForm,
-    fetchMenu,
-    postMenu,
-    setMenuFormActive,
-    setErrorData,
-    setName
-} from "../../../../slices/menuSlice";
+import {clearForm, fetchMenu, postMenu, setErrorData, setMenuFormActive, setName} from "../../../../slices/menuSlice";
+import {fetchActiveMenu} from "../../../../slices/cmsSlice";
 
 export const MenuFormDialog = ({isEditForm}) => {
     const {t} = useTranslation();
@@ -31,6 +25,7 @@ export const MenuFormDialog = ({isEditForm}) => {
         e.preventDefault();
         const resultAction = await dispatch(postMenu({menu: {id: menu?.id, name: name}}));
         if (postMenu.fulfilled.match(resultAction)) {
+            await dispatch(fetchActiveMenu());
             await dispatch(setMenuFormActive(false));
             dispatch(clearForm());
         }

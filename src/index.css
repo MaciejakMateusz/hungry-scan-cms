@@ -2508,6 +2508,69 @@ ul {
     overflow: hidden;
 }
 
+.relative-container {
+    position: relative;
+}
+
+.context-menu-container {
+    position: relative;
+}
+
+.context-menu {
+    z-index: 9999;
+    position: absolute;
+    left: 40px;
+    top: 40px;
+    padding: 5px 20px 5px 20px;
+    box-sizing: border-box;
+    box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.10);
+    min-width: 150px;
+    width: fit-content;
+    height: fit-content;
+    border-radius: 10px;
+    background: #FFFFFF;
+}
+
+.context-menu.details {
+    left: 160px;
+    top: 0;
+}
+
+.context-menu-position, .context-menu-detail {
+    padding: 7px 0 7px 0;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    text-wrap: nowrap;
+}
+
+.context-menu-detail {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+.context-menu-detail-value {
+    color: #707070;
+}
+
+.context-menu-position:hover {
+    cursor: pointer;
+}
+
+.context-menu-position.properties {
+    margin-top: 10px;
+}
+
+.context-menu-position.properties:hover {
+    cursor: unset;
+}
+
 /* SEARCH BUTTON */
 .search-initial-circle {
     background: #FFF;

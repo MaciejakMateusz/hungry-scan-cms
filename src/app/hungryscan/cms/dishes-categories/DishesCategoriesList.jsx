@@ -116,6 +116,7 @@ export const DishesCategoriesList = () => {
     };
 
     const renderRemovalDialog = () => {
+        if(!['category', 'dish'].includes(activeRemovalType)) return;
         const msg = activeRemovalType === 'category' ? t('confirmCategoryRemoval') : t('confirmDishRemoval');
         const objName = activeRemovalType === 'category' ? categoryForAction.name : menuItemForAction.name;
         return <DecisionDialog msg={msg}

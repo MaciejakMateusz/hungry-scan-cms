@@ -4,9 +4,9 @@ import {getCookie} from "../utils/utils";
 export const getTranslation = (obj) => {
     const currentLang = getLanguage();
     if(currentLang === 'en') {
-        return obj.translationEn || obj.defaultTranslation;
+        return obj.translationEn || obj.defaultTranslation || obj;
     }
-    return obj.defaultTranslation;
+    return obj.defaultTranslation || obj;
 }
 
 export const getLanguage = () => {

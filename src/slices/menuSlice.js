@@ -103,22 +103,36 @@ export const menuSLice = createSlice(
         name: 'form',
         initialState: {
             menuFormActive: false,
+            contextMenuActive: false,
+            contextMenuDetailsActive: false,
             name: ''
         },
         reducers: {
             setMenuFormActive: (state, action) => {
                 state.menuFormActive = action.payload;
             },
+            setContextMenuActive: (state, action) => {
+                state.contextMenuActive = action.payload;
+            },
+            setContextMenuDetailsActive: (state, action) => {
+                state.contextMenuDetailsActive = action.payload;
+            },
             setName: (state, action) => {
                 state.name = action.payload;
             },
             clearForm: (state) => {
-                state.name = ''
+                state.name = '';
             }
         }
     });
 
-export const {setMenuFormActive, setName, clearForm} = menuSLice.actions;
+export const {
+    setMenuFormActive,
+    setContextMenuActive,
+    setContextMenuDetailsActive,
+    setName,
+    clearForm
+} = menuSLice.actions;
 export const {setErrorData} = postMenuSlice.actions;
 
 const menuReducer = combineReducers({
