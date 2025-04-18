@@ -27,7 +27,7 @@ export const CmsTopper = () => {
     const {activeMenu} = useSelector(state => state.globalParams.globalParams);
     const {menu} = useSelector(state => state.cms.fetchActiveMenu);
     const {isInEditMode, activeRemovalType} = useSelector(state => state.dishesCategories.view);
-    const {menuFormActive, contextMenuActive} = useSelector(state => state.menu.form);
+    const {menuFormActive, contextMenuActive, contextMenuDetailsActive} = useSelector(state => state.menu.form);
     const [menus, setMenus] = useState([]);
     const contextMenuPositions = useMenuContextPositions();
     const [isMenuRemoved, setIsMenuRemoved] = useState(null);
@@ -142,7 +142,11 @@ export const CmsTopper = () => {
                          }}>
                         <ThreeDotsIcon/>
                     </div>
-                    {contextMenuActive && <ContextMenu positions={contextMenuPositions} obj={menu}/>}
+                    {contextMenuActive &&
+                        <ContextMenu
+                            positions={contextMenuPositions}
+                            obj={menu}
+                            detailsActive={contextMenuDetailsActive}/>}
                 </div>
             </div>
             {isMenuRemoved && <SuccessMessage text={t('menuRemovalSuccess')}/>}

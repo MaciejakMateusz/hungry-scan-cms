@@ -1,8 +1,6 @@
-import {useSelector} from "react-redux";
 import {ContextMenuDetails} from "./ContextMenuDetails";
 
-export const ContextMenu = ({positions, obj}) => {
-    const {contextMenuDetailsActive} = useSelector(state => state.menu.form);
+export const ContextMenu = ({positions, obj, detailsActive}) => {
 
     const renderPosition = (p) => {
         if(obj?.standard && p.id === 'remove') return;
@@ -27,7 +25,7 @@ export const ContextMenu = ({positions, obj}) => {
             <div className={'context-menu-wrapper'}>
                 {positions.map((p) => renderPosition(p))}
             </div>
-            {contextMenuDetailsActive && <ContextMenuDetails obj={obj}/>}
+            {detailsActive && <ContextMenuDetails obj={obj}/>}
         </div>
     );
 }
