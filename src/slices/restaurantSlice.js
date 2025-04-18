@@ -177,6 +177,9 @@ export const formSlice = createSlice(
         name: 'form',
         initialState: {
             restaurantFormActive: false,
+            restaurantContextMenuActive: false,
+            contextMenuDetailsActive: false,
+            removalActive: false,
             initialized: false,
             name: '',
             address: '',
@@ -186,6 +189,15 @@ export const formSlice = createSlice(
         reducers: {
             setRestaurantFormActive: (state, action) => {
                 state.restaurantFormActive = action.payload;
+            },
+            setRestaurantContextMenuActive: (state, action) => {
+                state.restaurantContextMenuActive = action.payload;
+            },
+            setContextMenuDetailsActive: (state, action) => {
+                state.contextMenuDetailsActive = action.payload;
+            },
+            setRemovalActive: (state, action) => {
+                state.removalActive = action.payload;
             },
             setInitialized: (state, action) => {
                 state.initialized = action.payload;
@@ -213,6 +225,9 @@ export const formSlice = createSlice(
 
 export const {
     setRestaurantFormActive,
+    setRestaurantContextMenuActive,
+    setContextMenuDetailsActive,
+    setRemovalActive,
     setInitialized,
     setName,
     setAddress,
