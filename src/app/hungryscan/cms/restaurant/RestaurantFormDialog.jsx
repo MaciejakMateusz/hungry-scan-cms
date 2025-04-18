@@ -20,7 +20,6 @@ export const RestaurantFormDialog = ({isEditForm}) => {
     const {name, address, postalCode, city} = useSelector(state => state.restaurant.form);
     const {errorData} = useSelector(state => state.restaurant.post);
 
-
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         const resultAction = await dispatch(postRestaurant({action: isEditForm ? 'update' : 'add'}));

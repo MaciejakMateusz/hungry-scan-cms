@@ -101,6 +101,7 @@
   "categoryRemovalSuccess": "Category removed successfully",
   "dishRemovalSuccess": "Dish removed successfully",
   "menuRemovalSuccess": "Menu removed successfully",
+  "restaurantRemovalSuccess": "Restaurant removed successfully",
   "choose": "Choose",
   "category": "Category",
   "price": "Price",
