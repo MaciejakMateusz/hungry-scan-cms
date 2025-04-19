@@ -7,20 +7,14 @@ import {setContextMenuDetailsActive, setRemovalActive} from "../slices/restauran
 export const useRestaurantContextPositions = () => {
     const {t} = useTranslation();
     const {contextMenuDetailsActive} = useSelector(state => state.restaurant.form);
+    const {restaurants} = useSelector(state => state.dashboard.getRestaurants);
     const dispatch = useDispatch();
-
-    return [
+    const rawPositions = [
         {
-            id: 'rename',
-            name: t('rename'),
+            id: 'edit',
+            name: t('edit'),
             icon: <EditIcon width={'25'} height={'25'}/>,
-            handler: () => console.log("rename")
-        },
-        {
-            id: 'duplicate',
-            name: t('duplicate'),
-            icon: <EditIcon width={'25'} height={'25'}/>,
-            handler: () => console.log("copy")
+            handler: () => console.log("edit")
         },
         {
             id: 'remove',
@@ -35,4 +29,13 @@ export const useRestaurantContextPositions = () => {
             handler: () => dispatch(setContextMenuDetailsActive(!contextMenuDetailsActive)),
             details: true
         }];
+
+    const getPreparedPositions = () => {
+        if(restaurants?.length === 1) {
+            return rawPositions.filter(p => p.id !== 'remove');
+        }
+        return rawPositions;
+    }
+
+    return getPreparedPositions();
 }
