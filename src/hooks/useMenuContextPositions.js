@@ -8,9 +8,9 @@ import {setActiveRemovalType} from "../slices/dishesCategoriesSlice";
 export const useMenuContextPositions = () => {
     const {t} = useTranslation();
     const {contextMenuDetailsActive} = useSelector(state => state.menu.form);
+    const {menu} = useSelector(state => state.cms.fetchActiveMenu);
     const dispatch = useDispatch();
-
-    return [
+    const rawPositions = [
         {
             id: 'rename',
             name: t('rename'),
@@ -36,4 +36,13 @@ export const useMenuContextPositions = () => {
             handler: () => dispatch(setContextMenuDetailsActive(!contextMenuDetailsActive)),
             details: true
         }];
+
+    const getPreparedPositions = () => {
+        if (menu?.standard) {
+            return rawPositions.filter(p => p.id !== 'remove');
+        }
+        return rawPositions;
+    }
+
+    return getPreparedPositions();
 }

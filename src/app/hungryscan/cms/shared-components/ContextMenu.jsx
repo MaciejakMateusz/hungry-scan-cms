@@ -3,7 +3,6 @@ import {ContextMenuDetails} from "./ContextMenuDetails";
 export const ContextMenu = ({positions, obj, detailsActive}) => {
 
     const renderPosition = (p) => {
-        if(obj?.standard && p.id === 'remove') return;
         if (p.details) {
             return (
                 <div key={p.id}
