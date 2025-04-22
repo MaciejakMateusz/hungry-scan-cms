@@ -1,6 +1,51 @@
 import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
 
+export const duplicateMenu = createAsyncThunk(
+    'fetchActiveMenu/fetchActiveMenu',
+    async (_, {rejectWithValue}) => {
+        const response = await fetch(`${apiHost}/api/cms/menus/duplicate`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include'
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            return rejectWithValue(errorData);
+        }
+
+        try {
+            return await response.json();
+        } catch (error) {
+            return {};
+        }
+    }
+);
+
+export const duplicateMenuSlice = createSlice({
+    name: 'fetchActiveMenu',
+    initialState: {
+        isLoading: false,
+        errorData: null,
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(duplicateMenu.pending, state => {
+                state.isLoading = true;
+            })
+            .addCase(duplicateMenu.fulfilled, state => {
+                state.isLoading = false;
+            })
+            .addCase(duplicateMenu.rejected, (state, action) => {
+                state.isLoading = false;
+                state.errorData = action.payload;
+            })
+    }
+});
+
 export const fetchActiveMenu = createAsyncThunk(
     'fetchActiveMenu/fetchActiveMenu',
     async (_, {rejectWithValue}) => {
@@ -120,7 +165,8 @@ export const {setWeekDay, setTimeFrom, setTimeTo} = cmsSlice.actions;
 const cmsReducer = combineReducers({
     view: cmsSlice.reducer,
     switchMenu: switchActiveMenuSlice.reducer,
-    fetchActiveMenu: fetchActiveMenuSlice.reducer
+    fetchActiveMenu: fetchActiveMenuSlice.reducer,
+    duplicateMenu: duplicateMenuSlice.reducer
 });
 
 export default cmsReducer;
