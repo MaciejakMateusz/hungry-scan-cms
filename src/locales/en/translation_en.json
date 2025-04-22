@@ -236,6 +236,9 @@
   "duplicate": "Duplicate",
   "details": "Details",
   "edit": "Edit",
+  "newMenuCreated": "Menu created successfully",
+  "newRestaurantCreated": "Restaurant created successfully",
+  "menuDuplicated": "Menu duplicated successfully",
 
   "constraints.NotBlank": "Field cannot be blank",
   "constraints.ForenameSurname": "Field should contain minimum 2 letters and no special characters"
