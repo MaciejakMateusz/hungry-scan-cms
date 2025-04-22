@@ -247,8 +247,8 @@ export const fetchBannersSlice = createSlice(
                 state.chosenBanners = action.payload;
             },
             clearBanners: (state) => {
-                state.labels = [];
-                state.chosenLabels = [];
+                state.banners = [];
+                state.chosenBanners = [];
             }
         },
         extraReducers: (builder) => {
