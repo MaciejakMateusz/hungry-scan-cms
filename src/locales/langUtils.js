@@ -2,12 +2,24 @@ import i18n from "i18next";
 import {getCookie} from "../utils/utils";
 
 export const getTranslation = (obj) => {
-    const currentLang = getLanguage();
-    if(currentLang === 'en') {
-        return obj.translationEn || obj.defaultTranslation || obj;
+    if (typeof obj === 'string') {
+        return obj;
     }
-    return obj.defaultTranslation || obj;
-}
+
+    if (!obj) {
+        return '';
+    }
+
+    const lang = getLanguage();
+    if (lang === 'en' && obj.translationEn) {
+        return obj.translationEn;
+    }
+    if (obj.defaultTranslation) {
+        return obj.defaultTranslation;
+    }
+
+    return '';
+};
 
 export const getLanguage = () => {
     const lngCookie = getCookie('lng');
