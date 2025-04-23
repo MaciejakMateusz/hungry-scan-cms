@@ -105,6 +105,8 @@ export const menuSLice = createSlice(
             menuFormActive: false,
             contextMenuActive: false,
             contextMenuDetailsActive: false,
+            newMenuCreated: false,
+            menuDuplicated: false,
             name: ''
         },
         reducers: {
@@ -116,6 +118,12 @@ export const menuSLice = createSlice(
             },
             setContextMenuDetailsActive: (state, action) => {
                 state.contextMenuDetailsActive = action.payload;
+            },
+            setNewMenuCreated: (state, action) => {
+                state.newMenuCreated = action.payload;
+            },
+            setMenuDuplicated: (state, action) => {
+                state.menuDuplicated = action.payload;
             },
             setName: (state, action) => {
                 state.name = action.payload;
@@ -130,6 +138,8 @@ export const {
     setMenuFormActive,
     setContextMenuActive,
     setContextMenuDetailsActive,
+    setNewMenuCreated,
+    setMenuDuplicated,
     setName,
     clearForm
 } = menuSLice.actions;

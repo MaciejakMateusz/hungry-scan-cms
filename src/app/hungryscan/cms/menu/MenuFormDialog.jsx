@@ -1,8 +1,16 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {NameField} from "../form-components/NameField";
-import {clearForm, fetchMenu, postMenu, setErrorData, setMenuFormActive, setName} from "../../../../slices/menuSlice";
+import {
+    clearForm,
+    fetchMenu,
+    postMenu,
+    setErrorData,
+    setMenuFormActive,
+    setName,
+    setNewMenuCreated
+} from "../../../../slices/menuSlice";
 import {fetchActiveMenu} from "../../../../slices/cmsSlice";
 
 export const MenuFormDialog = ({isEditForm}) => {
@@ -11,6 +19,7 @@ export const MenuFormDialog = ({isEditForm}) => {
     const {menu} = useSelector(state => state.menu.fetchMenu);
     const {name} = useSelector(state => state.menu.form);
     const {errorData} = useSelector(state => state.menu.postMenu);
+    const [confirmationTimeoutId, setConfirmationTimeoutId] = useState(null);
 
     useEffect(() => {
         dispatch(fetchMenu());
@@ -28,6 +37,16 @@ export const MenuFormDialog = ({isEditForm}) => {
             await dispatch(fetchActiveMenu());
             await dispatch(setMenuFormActive(false));
             dispatch(clearForm());
+            dispatch(setNewMenuCreated(true));
+
+            if (confirmationTimeoutId) {
+                clearTimeout(confirmationTimeoutId);
+            }
+
+            const newConfirmationTimeoutId = setTimeout(() => {
+                dispatch(setNewMenuCreated(false))
+            }, 4000);
+            setConfirmationTimeoutId(newConfirmationTimeoutId);
         }
     }
 

@@ -31,6 +31,7 @@ export const DashboardTopper = () => {
         restaurantFormActive,
         restaurantContextMenuActive,
         contextMenuDetailsActive,
+        newRestaurantCreated,
         removalActive
     } = useSelector(state => state.restaurant.form);
     const contextMenuPositions = useRestaurantContextPositions();
@@ -128,6 +129,7 @@ export const DashboardTopper = () => {
                                  detailsActive={contextMenuDetailsActive}/>}
             </div>
             {isRestaurantRemoved && <SuccessMessage text={t('restaurantRemovalSuccess')}/>}
+            {newRestaurantCreated && <SuccessMessage text={t('newRestaurantCreated')}/>}
         </header>
     );
 }

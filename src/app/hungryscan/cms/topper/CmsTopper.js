@@ -27,7 +27,13 @@ export const CmsTopper = () => {
     const {activeMenu} = useSelector(state => state.globalParams.globalParams);
     const {menu} = useSelector(state => state.cms.fetchActiveMenu);
     const {isInEditMode, activeRemovalType} = useSelector(state => state.dishesCategories.view);
-    const {menuFormActive, contextMenuActive, contextMenuDetailsActive} = useSelector(state => state.menu.form);
+    const {
+        menuFormActive,
+        contextMenuActive,
+        contextMenuDetailsActive,
+        newMenuCreated,
+        menuDuplicated
+    } = useSelector(state => state.menu.form);
     const [menus, setMenus] = useState([]);
     const contextMenuPositions = useMenuContextPositions();
     const [isMenuRemoved, setIsMenuRemoved] = useState(null);
@@ -150,6 +156,8 @@ export const CmsTopper = () => {
                 </div>
             </div>
             {isMenuRemoved && <SuccessMessage text={t('menuRemovalSuccess')}/>}
+            {newMenuCreated && <SuccessMessage text={t('newMenuCreated')}/>}
+            {menuDuplicated && <SuccessMessage text={t('menuDuplicated')}/>}
             <MenuScheduler/>
         </header>
     );
