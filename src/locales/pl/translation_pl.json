@@ -241,6 +241,7 @@
   "newMenuCreated": "Menu utworzone pomyślnie",
   "newRestaurantCreated": "Restauracja utworzona pomyślnie",
   "menuDuplicated": "Menu skopiowane pomyślnie",
+  "menuUpdated": "Menu zaktualizowane pomyślnie",
 
   "constraints.NotBlank": "Pole nie może być puste",
   "constraints.ForenameSurname": "Pole powinno mieć minimum dwa znaki i zawierać tylko litery"
