@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {NameField} from "../form-components/NameField";
@@ -14,13 +14,14 @@ import {
 } from "../../../../slices/restaurantSlice";
 import {clearForm} from "../../../../slices/menuSlice";
 import {CustomTextField} from "../form-components/CustomTextField";
+import {useConfirmationMessage} from "../../../../hooks/useConfirmationMessage";
 
 export const RestaurantFormDialog = ({isEditForm}) => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {name, address, postalCode, city} = useSelector(state => state.restaurant.form);
     const {errorData} = useSelector(state => state.restaurant.post);
-    const [confirmationTimeoutId, setConfirmationTimeoutId] = useState(null);
+    const renderConfirmation = useConfirmationMessage(setNewRestaurantCreated);
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
@@ -28,16 +29,7 @@ export const RestaurantFormDialog = ({isEditForm}) => {
         if (postRestaurant.fulfilled.match(resultAction)) {
             await dispatch(setRestaurantFormActive(false));
             dispatch(clearForm());
-            dispatch(setNewRestaurantCreated(true));
-
-            if (confirmationTimeoutId) {
-                clearTimeout(confirmationTimeoutId);
-            }
-
-            const newConfirmationTimeoutId = setTimeout(() => {
-                dispatch(setNewRestaurantCreated(false))
-            }, 4000);
-            setConfirmationTimeoutId(newConfirmationTimeoutId);
+            renderConfirmation();
         }
     }
 
