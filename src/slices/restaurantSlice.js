@@ -180,6 +180,7 @@ export const formSlice = createSlice(
             restaurantContextMenuActive: false,
             contextMenuDetailsActive: false,
             newRestaurantCreated: false,
+            restaurantRemoved: false,
             removalActive: false,
             initialized: false,
             name: '',
@@ -199,6 +200,9 @@ export const formSlice = createSlice(
             },
             setNewRestaurantCreated: (state, action) => {
                 state.newRestaurantCreated = action.payload;
+            },
+            setRestaurantRemoved: (state, action) => {
+                state.restaurantRemoved = action.payload;
             },
             setRemovalActive: (state, action) => {
                 state.removalActive = action.payload;
@@ -232,6 +236,7 @@ export const {
     setRestaurantContextMenuActive,
     setContextMenuDetailsActive,
     setNewRestaurantCreated,
+    setRestaurantRemoved,
     setRemovalActive,
     setInitialized,
     setName,

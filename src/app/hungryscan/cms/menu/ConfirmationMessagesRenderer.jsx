@@ -1,0 +1,26 @@
+import {SuccessMessage} from "../dialog-windows/SuccessMessage";
+import React from "react";
+import {useTranslation} from "react-i18next";
+import {useSelector} from "react-redux";
+
+export const ConfirmationMessagesRenderer = () => {
+    const {t} = useTranslation();
+    const {
+        newMenuCreated,
+        menuDuplicated,
+        menuUpdated,
+        menuRemoved
+    } = useSelector(state => state.menu.form);
+    const {restaurantRemoved, newRestaurantCreated} = useSelector(state => state.restaurant.form);
+
+    return (
+        <>
+            {restaurantRemoved && <SuccessMessage text={t('restaurantRemovalSuccess')}/>}
+            {newRestaurantCreated && <SuccessMessage text={t('newRestaurantCreated')}/>}
+            {menuRemoved && <SuccessMessage text={t('menuRemovalSuccess')}/>}
+            {newMenuCreated && <SuccessMessage text={t('newMenuCreated')}/>}
+            {menuDuplicated && <SuccessMessage text={t('menuDuplicated')}/>}
+            {menuUpdated && <SuccessMessage text={t('menuUpdated')}/>}
+        </>
+    );
+}

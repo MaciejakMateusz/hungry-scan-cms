@@ -12,7 +12,7 @@ import {
     setContextMenuDetailsActive,
     setRemovalActive,
     setRestaurantContextMenuActive,
-    setRestaurantFormActive,
+    setRestaurantFormActive, setRestaurantRemoved,
     switchRestaurant
 } from "../../../slices/restaurantSlice";
 import {RestaurantFormDialog} from "../cms/restaurant/RestaurantFormDialog";
@@ -20,7 +20,6 @@ import {ContextMenu} from "../cms/shared-components/ContextMenu";
 import {useRestaurantContextPositions} from "../../../hooks/useRestaurantContextPositions";
 import {DecisionDialog} from "../cms/dialog-windows/DecisionDialog";
 import {remove} from "../../../slices/objectRemovalSlice";
-import {SuccessMessage} from "../cms/dialog-windows/SuccessMessage";
 
 export const DashboardTopper = () => {
     const {t} = useTranslation();
@@ -31,11 +30,9 @@ export const DashboardTopper = () => {
         restaurantFormActive,
         restaurantContextMenuActive,
         contextMenuDetailsActive,
-        newRestaurantCreated,
         removalActive
     } = useSelector(state => state.restaurant.form);
     const contextMenuPositions = useRestaurantContextPositions();
-    const [isRestaurantRemoved, setIsRestaurantRemoved] = useState(null);
     const [confirmationTimeoutId, setConfirmationTimeoutId] = useState(null);
 
     const getRestaurant = useCallback(
@@ -71,14 +68,14 @@ export const DashboardTopper = () => {
             await getRestaurant()
             dispatch(setRemovalActive(false));
             dispatch(getUserRestaurants());
-            setIsRestaurantRemoved(true);
+            dispatch(setRestaurantRemoved(true));
 
             if (confirmationTimeoutId) {
                 clearTimeout(confirmationTimeoutId);
             }
 
             const newConfirmationTimeoutId = setTimeout(() => {
-                setIsRestaurantRemoved(null);
+                dispatch(setRestaurantRemoved(false));
             }, 4000);
             setConfirmationTimeoutId(newConfirmationTimeoutId);
         }
@@ -128,8 +125,6 @@ export const DashboardTopper = () => {
                                  obj={restaurant.value}
                                  detailsActive={contextMenuDetailsActive}/>}
             </div>
-            {isRestaurantRemoved && <SuccessMessage text={t('restaurantRemovalSuccess')}/>}
-            {newRestaurantCreated && <SuccessMessage text={t('newRestaurantCreated')}/>}
         </header>
     );
 }
