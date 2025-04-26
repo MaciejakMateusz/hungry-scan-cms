@@ -1,6 +1,57 @@
 import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
 
+export const updateMenu = createAsyncThunk(
+    'updateMenu/updateMenu',
+    async (params, {rejectWithValue}) => {
+        const response = await fetch(`${apiHost}/api/cms/menus/update`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(params.menu),
+            credentials: 'include'
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            return rejectWithValue(errorData);
+        }
+
+        try {
+            return await response.json();
+        } catch (error) {
+            return {};
+        }
+    }
+);
+
+export const updateMenuSlice = createSlice({
+    name: 'updateMenu',
+    initialState: {
+        isLoading: false,
+        errorData: null
+    },
+    reducers: {
+        setErrorData: (state, action) => {
+            state.errorData = action.payload;
+        }
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(updateMenu.pending, state => {
+                state.isLoading = true;
+            })
+            .addCase(updateMenu.fulfilled, (state) => {
+                state.isLoading = false;
+            })
+            .addCase(updateMenu.rejected, (state, action) => {
+                state.isLoading = false;
+                state.errorData = action.payload;
+            })
+    }
+});
+
 export const postMenu = createAsyncThunk(
     'postMenu/postMenu',
     async (params, {rejectWithValue}) => {
@@ -102,16 +153,22 @@ export const menuSLice = createSlice(
     {
         name: 'form',
         initialState: {
-            menuFormActive: false,
+            newMenuFormActive: false,
+            editMenuFormActive: false,
             contextMenuActive: false,
             contextMenuDetailsActive: false,
             newMenuCreated: false,
+            menuUpdated: false,
+            menuRemoved: false,
             menuDuplicated: false,
             name: ''
         },
         reducers: {
-            setMenuFormActive: (state, action) => {
-                state.menuFormActive = action.payload;
+            setNewMenuFormActive: (state, action) => {
+                state.newMenuFormActive = action.payload;
+            },
+            setEditMenuFormActive: (state, action) => {
+                state.editMenuFormActive = action.payload;
             },
             setContextMenuActive: (state, action) => {
                 state.contextMenuActive = action.payload;
@@ -121,6 +178,12 @@ export const menuSLice = createSlice(
             },
             setNewMenuCreated: (state, action) => {
                 state.newMenuCreated = action.payload;
+            },
+            setMenuUpdated: (state, action) => {
+                state.menuUpdated = action.payload;
+            },
+            setMenuRemoved: (state, action) => {
+                state.menuRemoved = action.payload;
             },
             setMenuDuplicated: (state, action) => {
                 state.menuDuplicated = action.payload;
@@ -135,11 +198,14 @@ export const menuSLice = createSlice(
     });
 
 export const {
-    setMenuFormActive,
+    setNewMenuFormActive,
+    setEditMenuFormActive,
     setContextMenuActive,
     setContextMenuDetailsActive,
     setNewMenuCreated,
+    setMenuUpdated,
     setMenuDuplicated,
+    setMenuRemoved,
     setName,
     clearForm
 } = menuSLice.actions;
@@ -148,7 +214,8 @@ export const {setErrorData} = postMenuSlice.actions;
 const menuReducer = combineReducers({
     form: menuSLice.reducer,
     fetchMenu: fetchMenuSlice.reducer,
-    postMenu: postMenuSlice.reducer
+    postMenu: postMenuSlice.reducer,
+    updateMenu: updateMenuSlice.reducer
 });
 
 export default menuReducer;

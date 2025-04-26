@@ -1,7 +1,7 @@
 import {useTranslation} from "react-i18next";
 import {EditIcon} from "../app/icons/EditIcon";
 import {DeleteIcon} from "../app/icons/DeleteIcon";
-import {setContextMenuDetailsActive, setMenuDuplicated} from "../slices/menuSlice";
+import {setContextMenuDetailsActive, setEditMenuFormActive, setMenuDuplicated} from "../slices/menuSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {setActiveRemovalType} from "../slices/dishesCategoriesSlice";
 import {duplicateMenu, fetchActiveMenu} from "../slices/cmsSlice";
@@ -50,7 +50,7 @@ export const useMenuContextPositions = () => {
             id: 'rename',
             name: t('rename'),
             icon: <EditIcon width={'25'} height={'25'}/>,
-            handler: () => console.log("rename")
+            handler: () => dispatch(setEditMenuFormActive(true))
         },
         {
             id: 'duplicate',

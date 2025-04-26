@@ -10,15 +10,21 @@ import {fetchActiveMenu, switchActiveMenu} from "../../../../slices/cmsSlice";
 import {MenuScheduler} from "./MenuScheduler";
 import {setActiveMenu} from "../../../../slices/globalParamsSlice";
 import {CustomMenuList} from "../form-components/CustomMenuList";
-import {MenuFormDialog} from "../menu/MenuFormDialog";
-import {setContextMenuActive, setContextMenuDetailsActive, setMenuFormActive} from "../../../../slices/menuSlice";
+import {NewMenuFormDialog} from "../menu/NewMenuFormDialog";
+import {
+    setContextMenuActive,
+    setContextMenuDetailsActive,
+    setMenuRemoved,
+    setNewMenuFormActive
+} from "../../../../slices/menuSlice";
 import {getCurrentRestaurant, setRestaurant} from "../../../../slices/dashboardSlice";
 import {ContextMenu} from "../shared-components/ContextMenu";
 import {useMenuContextPositions} from "../../../../hooks/useMenuContextPositions";
 import {remove} from "../../../../slices/objectRemovalSlice";
 import {setActiveRemovalType} from "../../../../slices/dishesCategoriesSlice";
 import {DecisionDialog} from "../dialog-windows/DecisionDialog";
-import {SuccessMessage} from "../dialog-windows/SuccessMessage";
+import {EditMenuFormDialog} from "../menu/EditMenuFormDialog";
+import {useConfirmationMessage} from "../../../../hooks/useConfirmationMessage";
 
 export const CmsTopper = () => {
     const {t} = useTranslation();
@@ -28,16 +34,14 @@ export const CmsTopper = () => {
     const {menu} = useSelector(state => state.cms.fetchActiveMenu);
     const {isInEditMode, activeRemovalType} = useSelector(state => state.dishesCategories.view);
     const {
-        menuFormActive,
+        newMenuFormActive,
+        editMenuFormActive,
         contextMenuActive,
-        contextMenuDetailsActive,
-        newMenuCreated,
-        menuDuplicated
+        contextMenuDetailsActive
     } = useSelector(state => state.menu.form);
     const [menus, setMenus] = useState([]);
     const contextMenuPositions = useMenuContextPositions();
-    const [isMenuRemoved, setIsMenuRemoved] = useState(null);
-    const [confirmationTimeoutId, setConfirmationTimeoutId] = useState(null);
+    const renderConfirmation = useConfirmationMessage(setMenuRemoved);
 
     const getRestaurant = useCallback(
         async () => {
@@ -52,10 +56,10 @@ export const CmsTopper = () => {
     );
 
     useEffect(() => {
-        if (!menuFormActive) {
+        if (!newMenuFormActive || !editMenuFormActive) {
             getRestaurant();
         }
-    }, [getRestaurant, menuFormActive]);
+    }, [getRestaurant, newMenuFormActive, editMenuFormActive]);
 
     useEffect(() => {
         const mappedMenus = mapMenus();
@@ -93,22 +97,14 @@ export const CmsTopper = () => {
             dispatch(setActiveRemovalType(null));
             dispatch(setActiveMenu(menus[0]));
             dispatch(fetchActiveMenu());
-            setIsMenuRemoved(true);
-
-            if (confirmationTimeoutId) {
-                clearTimeout(confirmationTimeoutId);
-            }
-
-            const newConfirmationTimeoutId = setTimeout(() => {
-                setIsMenuRemoved(null);
-            }, 4000);
-            setConfirmationTimeoutId(newConfirmationTimeoutId);
+            renderConfirmation();
         }
     }
 
     return (
         <header className={'app-header cms'}>
-            {menuFormActive && <MenuFormDialog/>}
+            {newMenuFormActive && <NewMenuFormDialog/>}
+            {editMenuFormActive && <EditMenuFormDialog/>}
             {'menu' === activeRemovalType && <DecisionDialog msg={t('confirmMenuRemoval')}
                                                              objName={menu.name}
                                                              onCancel={() => dispatch(setActiveRemovalType(null))}
@@ -130,7 +126,7 @@ export const CmsTopper = () => {
                                 NoOptionsMessage: CustomNoOptionsMessage,
                                 MenuList: CustomMenuList
                             }}
-                            onAdd={() => dispatch(setMenuFormActive(true))}
+                            onAdd={() => dispatch(setNewMenuFormActive(true))}
                             buttonText={t('addMenu')}
                     />
                 </div>
@@ -155,9 +151,6 @@ export const CmsTopper = () => {
                             detailsActive={contextMenuDetailsActive}/>}
                 </div>
             </div>
-            {isMenuRemoved && <SuccessMessage text={t('menuRemovalSuccess')}/>}
-            {newMenuCreated && <SuccessMessage text={t('newMenuCreated')}/>}
-            {menuDuplicated && <SuccessMessage text={t('menuDuplicated')}/>}
             <MenuScheduler/>
         </header>
     );
