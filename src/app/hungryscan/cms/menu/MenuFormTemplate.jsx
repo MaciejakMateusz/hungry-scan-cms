@@ -14,9 +14,7 @@ export const MenuFormTemplate = ({formHeader, discardHandler, submitHandler, err
             <div className={'overlay'}></div>
             <div className={'variant-form-dialog '}>
                 <div className={'variant-form-dialog-content'}>
-                    <h4>
-                        {t('addMenu')}
-                    </h4>
+                    <h4>{formHeader}</h4>
                     <NameField id={'menu-name'}
                                value={name}
                                onChange={(e) => dispatch(setName(e))}
