@@ -60,15 +60,22 @@ export const postRestaurant = createAsyncThunk(
         try {
             const state = getState().restaurant.form;
             const response = await fetch(`${apiHost}/api/cms/restaurants/${params.action}`, {
-                method: 'POST',
+                method: params.action === 'add' ? 'POST' : 'PATCH',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
+                    id: state.id,
                     name: state.name,
                     address: state.address,
                     postalCode: state.postalCode,
-                    city: state.city
+                    city: state.city,
+                    settings: {
+                        id: state.settings.id,
+                        restaurantId: state.settings.restaurantId,
+                        openingTime: state.settings.openingTime.value,
+                        closingTime: state.settings.closingTime.value
+                    }
                 }),
                 credentials: 'include'
             });
@@ -176,21 +183,34 @@ export const formSlice = createSlice(
     {
         name: 'form',
         initialState: {
-            restaurantFormActive: false,
+            newRestaurantFormActive: false,
+            editRestaurantFormActive: false,
             restaurantContextMenuActive: false,
             contextMenuDetailsActive: false,
             newRestaurantCreated: false,
+            restaurantUpdated: false,
             restaurantRemoved: false,
             removalActive: false,
             initialized: false,
+            id: null,
             name: '',
             address: '',
             postalCode: '',
-            city: ''
+            city: '',
+            settings: {
+                id: null,
+                restaurantId: null,
+                openingTime: null,
+                closingTime: null,
+            },
+            errorMessage: null
         },
         reducers: {
-            setRestaurantFormActive: (state, action) => {
-                state.restaurantFormActive = action.payload;
+            setNewRestaurantFormActive: (state, action) => {
+                state.newRestaurantFormActive = action.payload;
+            },
+            setEditRestaurantFormActive: (state, action) => {
+                state.editRestaurantFormActive = action.payload;
             },
             setRestaurantContextMenuActive: (state, action) => {
                 state.restaurantContextMenuActive = action.payload;
@@ -201,6 +221,9 @@ export const formSlice = createSlice(
             setNewRestaurantCreated: (state, action) => {
                 state.newRestaurantCreated = action.payload;
             },
+            setRestaurantUpdated: (state, action) => {
+                state.restaurantUpdated = action.payload;
+            },
             setRestaurantRemoved: (state, action) => {
                 state.restaurantRemoved = action.payload;
             },
@@ -209,6 +232,9 @@ export const formSlice = createSlice(
             },
             setInitialized: (state, action) => {
                 state.initialized = action.payload;
+            },
+            setId: (state, action) => {
+                state.id = action.payload
             },
             setName: (state, action) => {
                 state.name = action.payload
@@ -222,27 +248,56 @@ export const formSlice = createSlice(
             setCity: (state, action) => {
                 state.city = action.payload
             },
+            setSettingsId: (state, action) => {
+                state.settings.id = action.payload;
+            },
+            setSettingsRestaurantId: (state, action) => {
+                state.settings.restaurantId = action.payload;
+            },
+            setOpeningTime: (state, action) => {
+                state.settings.openingTime = action.payload;
+            },
+            setClosingTime: (state, action) => {
+                state.settings.closingTime = action.payload;
+            },
+            setErrorMessage: (state, action) => {
+                state.errorMessage = action.payload;
+            },
             clearForm: state => {
                 state.name = '';
                 state.address = '';
                 state.postalCode = '';
                 state.city = '';
+                state.settings = {
+                    id: null,
+                    restaurantId: null,
+                    openingTime: null,
+                    closingTime: null,
+                };
             }
         }
     });
 
 export const {
-    setRestaurantFormActive,
+    setNewRestaurantFormActive,
+    setEditRestaurantFormActive,
     setRestaurantContextMenuActive,
     setContextMenuDetailsActive,
     setNewRestaurantCreated,
+    setRestaurantUpdated,
     setRestaurantRemoved,
     setRemovalActive,
     setInitialized,
+    setId,
     setName,
     setAddress,
     setPostalCode,
     setCity,
+    setSettingsId,
+    setSettingsRestaurantId,
+    setOpeningTime,
+    setClosingTime,
+    setErrorMessage,
     clearForm
 } = formSlice.actions;
 
