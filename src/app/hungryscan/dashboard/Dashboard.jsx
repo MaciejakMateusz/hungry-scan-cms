@@ -14,10 +14,13 @@ import {RestaurantLocationIcon} from "../../icons/RestaurantLocationIcon";
 import {D_CODE_QR, DISHES_CATEGORIES, PACKAGE, STATS, USERS} from "../../../utils/viewsConstants";
 import {Statistics} from "./stats/Statistics";
 import {DashboardTopper} from "./DashboardTopper";
+import {NewRestaurantForm} from "./restaurant/NewRestaurantForm";
+import {EditRestaurantForm} from "./restaurant/EditRestaurantForm";
 
 export const Dashboard = () => {
     const dispatch = useDispatch();
     const {currentView, cmsActive, userForename} = useSelector(state => state.globalParams.globalParams);
+    const {newRestaurantFormActive, editRestaurantFormActive} = useSelector(state => state.restaurant.form);
     const {restaurant} = useSelector(state => state.dashboard.view);
     const [isLogoutHovered, setIsLogoutHovered] = useState(false);
     const statsHoveredOrActive = currentView === STATS;
@@ -26,6 +29,12 @@ export const Dashboard = () => {
     const usersHoveredOrActive = currentView === USERS;
 
     const renderMainView = () => {
+        if (newRestaurantFormActive) {
+            return (<NewRestaurantForm/>);
+        } else if (editRestaurantFormActive) {
+            return (<EditRestaurantForm/>);
+        }
+
         switch (currentView) {
             case STATS:
                 return (<Statistics/>);
@@ -50,7 +59,8 @@ export const Dashboard = () => {
         <>
             <div className={'app-nav-panel'}>
                 <div className={'app-nav-header'}>
-                    <span className={'profile-name'}>Witaj, {userForename}!</span><UserProfileWhiteIcon/><NotificationIcon/>
+                    <span
+                        className={'profile-name'}>Witaj, {userForename}!</span><UserProfileWhiteIcon/><NotificationIcon/>
                 </div>
                 <div className={'app-mode-switcher-wrapper'}>
                     <div className={'app-mode-switcher'} onClick={() => switchAppMode()}>
