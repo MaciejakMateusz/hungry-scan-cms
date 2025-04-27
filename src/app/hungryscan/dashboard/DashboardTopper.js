@@ -10,12 +10,12 @@ import {getCurrentRestaurant, getUserRestaurants, setRestaurant} from "../../../
 import {CustomMenuList} from "../cms/form-components/CustomMenuList";
 import {
     setContextMenuDetailsActive,
+    setNewRestaurantFormActive,
     setRemovalActive,
     setRestaurantContextMenuActive,
-    setRestaurantFormActive, setRestaurantRemoved,
+    setRestaurantRemoved,
     switchRestaurant
 } from "../../../slices/restaurantSlice";
-import {RestaurantFormDialog} from "../cms/restaurant/RestaurantFormDialog";
 import {ContextMenu} from "../cms/shared-components/ContextMenu";
 import {useRestaurantContextPositions} from "../../../hooks/useRestaurantContextPositions";
 import {DecisionDialog} from "../cms/dialog-windows/DecisionDialog";
@@ -27,7 +27,8 @@ export const DashboardTopper = () => {
     const {restaurants} = useSelector(state => state.dashboard.getRestaurants);
     const {restaurant} = useSelector(state => state.dashboard.view);
     const {
-        restaurantFormActive,
+        newRestaurantFormActive,
+        editRestaurantFormActive,
         restaurantContextMenuActive,
         contextMenuDetailsActive,
         removalActive
@@ -48,11 +49,11 @@ export const DashboardTopper = () => {
     );
 
     useEffect(() => {
-        if (!restaurantFormActive) {
+        if (!newRestaurantFormActive || !editRestaurantFormActive) {
             dispatch(getUserRestaurants());
             getRestaurant();
         }
-    }, [dispatch, getRestaurant, restaurantFormActive]);
+    }, [dispatch, getRestaurant, newRestaurantFormActive, editRestaurantFormActive]);
 
     const handleRestaurantSwitch = async (selected) => {
         const resultAction = await dispatch(switchRestaurant({restaurantId: selected?.value.id}));
@@ -83,11 +84,10 @@ export const DashboardTopper = () => {
 
     return (
         <header className={'app-header dashboard'}>
-            {restaurantFormActive && <RestaurantFormDialog/>}
             {removalActive && <DecisionDialog msg={t('confirmMenuRemoval')}
-                                                             objName={restaurant?.value.name}
-                                                             onCancel={() => dispatch(setRemovalActive(false))}
-                                                             onSubmit={handleRestaurantRemoval}/>}
+                                              objName={restaurant?.value.name}
+                                              onCancel={() => dispatch(setRemovalActive(false))}
+                                              onSubmit={handleRestaurantRemoval}/>}
             <div className={'app-header-select-wrapper'}>
                 <DocumentIcon customColor={"#9746FF"} absolute={true}/>
                 <Select id={'dashboard-restaurant'}
@@ -103,7 +103,7 @@ export const DashboardTopper = () => {
                             NoOptionsMessage: CustomNoOptionsMessage,
                             MenuList: CustomMenuList
                         }}
-                        onAdd={() => dispatch(setRestaurantFormActive(true))}
+                        onAdd={() => dispatch(setNewRestaurantFormActive(true))}
                         buttonText={t('addRestaurant')}
                 />
             </div>
