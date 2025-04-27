@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import {DocumentIcon} from "../../icons/DocumentIcon";
 import Select from "react-select";
 import {mainSelectIcon} from "../../../selectStyles";
@@ -24,6 +24,7 @@ import {remove} from "../../../slices/objectRemovalSlice";
 export const DashboardTopper = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
+    const selectRef = useRef();
     const {restaurants} = useSelector(state => state.dashboard.getRestaurants);
     const {restaurant} = useSelector(state => state.dashboard.view);
     const {
@@ -33,6 +34,7 @@ export const DashboardTopper = () => {
         contextMenuDetailsActive,
         removalActive
     } = useSelector(state => state.restaurant.form);
+    const controlDisabled = newRestaurantFormActive || editRestaurantFormActive;
     const contextMenuPositions = useRestaurantContextPositions();
     const [confirmationTimeoutId, setConfirmationTimeoutId] = useState(null);
 
@@ -91,12 +93,14 @@ export const DashboardTopper = () => {
             <div className={'app-header-select-wrapper'}>
                 <DocumentIcon customColor={"#9746FF"} absolute={true}/>
                 <Select id={'dashboard-restaurant'}
+                        ref={selectRef}
                         name={'dashboard-restaurant'}
                         value={restaurant}
                         placeholder={t('choose')}
                         options={restaurants}
                         defaultValue={restaurants && restaurants[0]}
                         isSearchable={false}
+                        isDisabled={controlDisabled}
                         onChange={(selected) => handleRestaurantSwitch(selected)}
                         styles={mainSelectIcon}
                         components={{
@@ -105,12 +109,15 @@ export const DashboardTopper = () => {
                         }}
                         onAdd={() => dispatch(setNewRestaurantFormActive(true))}
                         buttonText={t('addRestaurant')}
+                        selectRef={selectRef}
                 />
             </div>
             <div className={'relative-container'}>
                 <div className={'options-button'}
+                     style={controlDisabled ? {cursor: 'not-allowed'} : {}}
                      tabIndex={-1}
                      onClick={() => {
+                         if (controlDisabled) return;
                          dispatch(setRestaurantContextMenuActive(!restaurantContextMenuActive));
                          dispatch(setContextMenuDetailsActive(false));
                      }}
