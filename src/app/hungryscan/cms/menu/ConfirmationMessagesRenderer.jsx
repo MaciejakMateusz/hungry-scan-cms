@@ -11,12 +11,16 @@ export const ConfirmationMessagesRenderer = () => {
         menuUpdated,
         menuRemoved
     } = useSelector(state => state.menu.form);
-    const {restaurantRemoved, newRestaurantCreated} = useSelector(state => state.restaurant.form);
+    const {
+        restaurantRemoved,
+        newRestaurantCreated,
+        restaurantUpdated} = useSelector(state => state.restaurant.form);
 
     return (
         <>
             {restaurantRemoved && <SuccessMessage text={t('restaurantRemovalSuccess')}/>}
             {newRestaurantCreated && <SuccessMessage text={t('newRestaurantCreated')}/>}
+            {restaurantUpdated && <SuccessMessage text={t('restaurantUpdated')}/>}
             {menuRemoved && <SuccessMessage text={t('menuRemovalSuccess')}/>}
             {newMenuCreated && <SuccessMessage text={t('newMenuCreated')}/>}
             {menuDuplicated && <SuccessMessage text={t('menuDuplicated')}/>}
