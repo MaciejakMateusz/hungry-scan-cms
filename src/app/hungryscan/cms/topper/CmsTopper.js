@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import {DocumentIcon} from "../../../icons/DocumentIcon";
 import Select from "react-select";
 import {mainSelectIcon} from "../../../../selectStyles";
@@ -29,6 +29,7 @@ import {useConfirmationMessage} from "../../../../hooks/useConfirmationMessage";
 export const CmsTopper = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
+    const selectRef = useRef();
     const {restaurant} = useSelector(state => state.dashboard.view);
     const {activeMenu} = useSelector(state => state.globalParams.globalParams);
     const {menu} = useSelector(state => state.cms.fetchActiveMenu);
@@ -113,6 +114,7 @@ export const CmsTopper = () => {
                 <div className={'app-header-select-wrapper'}>
                     <DocumentIcon customColor={"#9746FF"} absolute={true}/>
                     <Select id={'cms-menu'}
+                            ref={selectRef}
                             name={'cms-menu'}
                             value={activeMenu}
                             placeholder={t('choose')}
@@ -128,6 +130,7 @@ export const CmsTopper = () => {
                             }}
                             onAdd={() => dispatch(setNewMenuFormActive(true))}
                             buttonText={t('addMenu')}
+                            selectRef={selectRef}
                     />
                 </div>
                 <div className={'relative-container'}>
@@ -135,6 +138,7 @@ export const CmsTopper = () => {
                          style={isInEditMode ? {cursor: 'not-allowed'} : {}}
                          tabIndex={-1}
                          onClick={() => {
+                             if (isInEditMode) return;
                              dispatch(setContextMenuActive(!contextMenuActive));
                              dispatch(setContextMenuDetailsActive(false));
                          }}
