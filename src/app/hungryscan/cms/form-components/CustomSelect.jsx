@@ -3,6 +3,7 @@ import Select from "react-select";
 import {customSelect} from "../../../../selectStyles";
 import {useTranslation} from "react-i18next";
 import {CustomNoOptionsMessage} from "./CustomNoOptionsMessage";
+import {InformationTooltip} from "../shared-components/InformationTooltip";
 
 export const CustomSelect = (props) => {
     const {t} = useTranslation();
@@ -33,6 +34,7 @@ export const CustomSelect = (props) => {
         <div className={'form-field-wrapper'}>
             <div className={'form-field-container'}>
                 <label htmlFor={props.id} className={'form-label'}>
+                    {props.info && <InformationTooltip text={props.info}/>}
                     {props.labelName} {props.isOptional ?
                     <span className={'form-optional'}>{t('optional')}:</span> : ''}
                 </label>
