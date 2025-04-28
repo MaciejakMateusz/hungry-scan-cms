@@ -1,6 +1,57 @@
 import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
 
+export const updatePlans = createAsyncThunk(
+    'updatePlans/updatePlans',
+    async (params, {rejectWithValue}) => {
+        const response = await fetch(`${apiHost}/api/cms/menus/update-plans`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(params.menus),
+            credentials: 'include'
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            return rejectWithValue(errorData);
+        }
+
+        try {
+            return await response.json();
+        } catch (error) {
+            return {};
+        }
+    }
+);
+
+export const updatePlansSlice = createSlice({
+    name: 'updatePlans',
+    initialState: {
+        isLoading: false,
+        errorData: null
+    },
+    reducers: {
+        setErrorData: (state, action) => {
+            state.errorData = action.payload;
+        }
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(updatePlans.pending, state => {
+                state.isLoading = true;
+            })
+            .addCase(updatePlans.fulfilled, (state) => {
+                state.isLoading = false;
+            })
+            .addCase(updatePlans.rejected, (state, action) => {
+                state.isLoading = false;
+                state.errorData = action.payload;
+            })
+    }
+});
+
 export const updateMenu = createAsyncThunk(
     'updateMenu/updateMenu',
     async (params, {rejectWithValue}) => {
@@ -215,7 +266,8 @@ const menuReducer = combineReducers({
     form: menuSLice.reducer,
     fetchMenu: fetchMenuSlice.reducer,
     postMenu: postMenuSlice.reducer,
-    updateMenu: updateMenuSlice.reducer
+    updateMenu: updateMenuSlice.reducer,
+    updatePlans: updatePlansSlice.reducer
 });
 
 export default menuReducer;
