@@ -2707,6 +2707,18 @@ ul {
     border-bottom-right-radius: 20px;
 }
 
+.form-dialog-header {
+    margin-bottom: 25px;
+}
+
+.schedules-config-position {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    gap: 15px;
+}
+
 .form-grid {
     display: grid;
     grid-template-columns: 1fr max-content;
