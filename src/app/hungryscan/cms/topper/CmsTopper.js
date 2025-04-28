@@ -6,8 +6,7 @@ import {CustomNoOptionsMessage} from "../form-components/CustomNoOptionsMessage"
 import {ThreeDotsIcon} from "../../../icons/ThreeDotsIcon";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchActiveMenu, switchActiveMenu} from "../../../../slices/cmsSlice";
-import {MenuScheduler} from "./MenuScheduler";
+import {fetchActiveMenu, setSchedulerActive, switchActiveMenu} from "../../../../slices/cmsSlice";
 import {setActiveMenu} from "../../../../slices/globalParamsSlice";
 import {CustomMenuList} from "../form-components/CustomMenuList";
 import {NewMenuFormDialog} from "../menu/NewMenuFormDialog";
@@ -25,6 +24,7 @@ import {setActiveRemovalType} from "../../../../slices/dishesCategoriesSlice";
 import {DecisionDialog} from "../dialog-windows/DecisionDialog";
 import {EditMenuFormDialog} from "../menu/EditMenuFormDialog";
 import {useConfirmationMessage} from "../../../../hooks/useConfirmationMessage";
+import {SchedulesConfigurator} from "../menu/SchedulesConfigurator";
 
 export const CmsTopper = () => {
     const {t} = useTranslation();
@@ -34,6 +34,7 @@ export const CmsTopper = () => {
     const {activeMenu} = useSelector(state => state.globalParams.globalParams);
     const {menu} = useSelector(state => state.cms.fetchActiveMenu);
     const {isInEditMode, activeRemovalType} = useSelector(state => state.dishesCategories.view);
+    const {schedulerActive} = useSelector(state => state.cms.view);
     const {
         newMenuFormActive,
         editMenuFormActive,
@@ -155,7 +156,11 @@ export const CmsTopper = () => {
                             detailsActive={contextMenuDetailsActive}/>}
                 </div>
             </div>
-            <MenuScheduler/>
+            <button className={'general-button'}
+                    onClick={() => dispatch(setSchedulerActive(true))}>
+                Konfiguruj harmonogramy
+            </button>
+            {schedulerActive && <SchedulesConfigurator/>}
         </header>
     );
 }
