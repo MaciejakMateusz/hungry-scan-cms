@@ -9,7 +9,8 @@ export const ConfirmationMessagesRenderer = () => {
         newMenuCreated,
         menuDuplicated,
         menuUpdated,
-        menuRemoved
+        menuRemoved,
+        plansUpdated
     } = useSelector(state => state.menu.form);
     const {
         restaurantRemoved,
@@ -25,6 +26,7 @@ export const ConfirmationMessagesRenderer = () => {
             {newMenuCreated && <SuccessMessage text={t('newMenuCreated')}/>}
             {menuDuplicated && <SuccessMessage text={t('menuDuplicated')}/>}
             {menuUpdated && <SuccessMessage text={t('menuUpdated')}/>}
+            {plansUpdated && <SuccessMessage text={t('plansUpdated')}/>}
         </>
     );
 }

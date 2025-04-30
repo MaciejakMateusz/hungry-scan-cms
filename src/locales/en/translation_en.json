@@ -241,6 +241,7 @@
   "restaurantUpdated": "Restaurant updated successfully",
   "menuDuplicated": "Menu duplicated successfully",
   "menuUpdated": "Menu updated successfully",
+  "planUpdated": "Menus schedule updated successfully",
 
   "constraints.NotBlank": "Field cannot be blank",
   "constraints.ForenameSurname": "Field should contain minimum 2 letters and no special characters"
