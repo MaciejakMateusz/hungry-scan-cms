@@ -243,7 +243,7 @@
   "restaurantUpdated": "Restauracja zaktualizowana pomyślnie",
   "menuDuplicated": "Menu skopiowane pomyślnie",
   "menuUpdated": "Menu zaktualizowane pomyślnie",
-  "planUpdated": "Harmonogram menu zaktualizowany pomyślnie",
+  "plansUpdated": "Harmonogram zaktualizowany pomyślnie",
 
   "constraints.NotBlank": "Pole nie może być puste",
   "constraints.ForenameSurname": "Pole powinno mieć minimum dwa znaki i zawierać tylko litery"
