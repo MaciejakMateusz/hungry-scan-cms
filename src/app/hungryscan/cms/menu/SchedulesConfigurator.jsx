@@ -3,12 +3,14 @@ import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {MenuScheduler} from "../topper/MenuScheduler";
 import {setSchedulerActive} from "../../../../slices/cmsSlice";
-import {updatePlans} from "../../../../slices/menuSlice";
+import {setPlansUpdated, updatePlans} from "../../../../slices/menuSlice";
+import {useConfirmationMessage} from "../../../../hooks/useConfirmationMessage";
 
 export const SchedulesConfigurator = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {restaurant} = useSelector((state) => state.dashboard.view);
+    const renderConfirmation = useConfirmationMessage(setPlansUpdated);
 
     const initialMenus = useMemo(() => {
         return [...(restaurant?.value.menus || [])]
@@ -80,6 +82,7 @@ export const SchedulesConfigurator = () => {
         const resultAction = await dispatch(updatePlans({menus: preparedMenus}));
         if (updatePlans.fulfilled.match(resultAction)) {
             dispatch(setSchedulerActive(false));
+            renderConfirmation();
         }
     };
 
