@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {DocumentIcon} from "../../icons/DocumentIcon";
 import Select from "react-select";
 import {mainSelectIcon} from "../../../selectStyles";
@@ -6,7 +6,7 @@ import {CustomNoOptionsMessage} from "../cms/form-components/CustomNoOptionsMess
 import {ThreeDotsIcon} from "../../icons/ThreeDotsIcon";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
-import {getCurrentRestaurant, getUserRestaurants, setRestaurant} from "../../../slices/dashboardSlice";
+import {getUserRestaurants} from "../../../slices/dashboardSlice";
 import {CustomMenuList} from "../cms/form-components/CustomMenuList";
 import {
     setContextMenuDetailsActive,
@@ -20,6 +20,7 @@ import {ContextMenu} from "../cms/shared-components/ContextMenu";
 import {useRestaurantContextPositions} from "../../../hooks/useRestaurantContextPositions";
 import {DecisionDialog} from "../cms/dialog-windows/DecisionDialog";
 import {remove} from "../../../slices/objectRemovalSlice";
+import {useFetchCurrentRestaurant} from "../../../hooks/useFetchCurrentRestaurant";
 
 export const DashboardTopper = () => {
     const {t} = useTranslation();
@@ -37,18 +38,7 @@ export const DashboardTopper = () => {
     const controlDisabled = newRestaurantFormActive || editRestaurantFormActive;
     const contextMenuPositions = useRestaurantContextPositions();
     const [confirmationTimeoutId, setConfirmationTimeoutId] = useState(null);
-
-    const getRestaurant = useCallback(
-        async () => {
-            const resultAction = await dispatch(getCurrentRestaurant());
-            if (getCurrentRestaurant.fulfilled.match(resultAction)) {
-                dispatch(setRestaurant({
-                    value: resultAction.payload,
-                    label: resultAction.payload?.name
-                }))
-            }
-        }, [dispatch]
-    );
+    const getRestaurant = useFetchCurrentRestaurant();
 
     useEffect(() => {
         if (!newRestaurantFormActive || !editRestaurantFormActive) {

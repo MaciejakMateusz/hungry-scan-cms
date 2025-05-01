@@ -16,7 +16,6 @@ import {
     setMenuRemoved,
     setNewMenuFormActive
 } from "../../../../slices/menuSlice";
-import {getCurrentRestaurant, setRestaurant} from "../../../../slices/dashboardSlice";
 import {ContextMenu} from "../shared-components/ContextMenu";
 import {useMenuContextPositions} from "../../../../hooks/useMenuContextPositions";
 import {remove} from "../../../../slices/objectRemovalSlice";
@@ -25,6 +24,7 @@ import {DecisionDialog} from "../dialog-windows/DecisionDialog";
 import {EditMenuFormDialog} from "../menu/EditMenuFormDialog";
 import {useConfirmationMessage} from "../../../../hooks/useConfirmationMessage";
 import {SchedulesConfigurator} from "../menu/SchedulesConfigurator";
+import {useFetchCurrentRestaurant} from "../../../../hooks/useFetchCurrentRestaurant";
 
 export const CmsTopper = () => {
     const {t} = useTranslation();
@@ -44,18 +44,7 @@ export const CmsTopper = () => {
     const [menus, setMenus] = useState([]);
     const contextMenuPositions = useMenuContextPositions();
     const renderConfirmation = useConfirmationMessage(setMenuRemoved);
-
-    const getRestaurant = useCallback(
-        async () => {
-            const resultAction = await dispatch(getCurrentRestaurant());
-            if (getCurrentRestaurant.fulfilled.match(resultAction)) {
-                dispatch(setRestaurant({
-                    value: resultAction.payload,
-                    label: resultAction.payload?.name
-                }))
-            }
-        }, [dispatch]
-    );
+    const getRestaurant = useFetchCurrentRestaurant();
 
     useEffect(() => {
         if (!newMenuFormActive || !editMenuFormActive) {

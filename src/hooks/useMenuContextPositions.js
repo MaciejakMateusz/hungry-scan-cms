@@ -5,8 +5,8 @@ import {setContextMenuDetailsActive, setEditMenuFormActive, setMenuDuplicated} f
 import {useDispatch, useSelector} from "react-redux";
 import {setActiveRemovalType} from "../slices/dishesCategoriesSlice";
 import {duplicateMenu, fetchActiveMenu} from "../slices/cmsSlice";
-import {useCallback, useState} from "react";
-import {getCurrentRestaurant, setRestaurant} from "../slices/dashboardSlice";
+import {useState} from "react";
+import {useFetchCurrentRestaurant} from "./useFetchCurrentRestaurant";
 
 export const useMenuContextPositions = () => {
     const {t} = useTranslation();
@@ -14,18 +14,7 @@ export const useMenuContextPositions = () => {
     const {contextMenuDetailsActive} = useSelector(state => state.menu.form);
     const {menu} = useSelector(state => state.cms.fetchActiveMenu);
     const [confirmationTimeoutId, setConfirmationTimeoutId] = useState(null);
-
-    const getRestaurant = useCallback(
-        async () => {
-            const resultAction = await dispatch(getCurrentRestaurant());
-            if (getCurrentRestaurant.fulfilled.match(resultAction)) {
-                dispatch(setRestaurant({
-                    value: resultAction.payload,
-                    label: resultAction.payload?.name
-                }))
-            }
-        }, [dispatch]
-    );
+    const getRestaurant = useFetchCurrentRestaurant();
 
     const handleDuplication = async () => {
         const resultAction = await dispatch(duplicateMenu());

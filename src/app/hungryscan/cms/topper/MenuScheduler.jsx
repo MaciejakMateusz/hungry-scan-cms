@@ -13,7 +13,6 @@ export const MenuScheduler = ({menu, onPlanChange}) => {
     const {isInEditMode} = useSelector(state => state.dishesCategories.view);
     const weekDays = useWeekDays();
     const scheduleHours = useScheduleHours();
-
     const plan = menu.plan;
 
     const updatePlan = (patch) => {
