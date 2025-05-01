@@ -5,12 +5,15 @@ import {MenuScheduler} from "../topper/MenuScheduler";
 import {setSchedulerActive} from "../../../../slices/cmsSlice";
 import {setPlansUpdated, updatePlans} from "../../../../slices/menuSlice";
 import {useConfirmationMessage} from "../../../../hooks/useConfirmationMessage";
+import {formatHHMM} from "../../../../utils/utils";
+import {useFetchCurrentRestaurant} from "../../../../hooks/useFetchCurrentRestaurant";
 
 export const SchedulesConfigurator = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {restaurant} = useSelector((state) => state.dashboard.view);
     const renderConfirmation = useConfirmationMessage(setPlansUpdated);
+    const getRestaurant = useFetchCurrentRestaurant();
 
     const initialMenus = useMemo(() => {
         return [...(restaurant?.value.menus || [])]
@@ -20,8 +23,37 @@ export const SchedulesConfigurator = () => {
                     : a.standard
                         ? -1
                         : 1
-            );
-    }, [restaurant]);
+            )
+            .map(m => {
+                if (m.standard || m.plan === {}) {
+                    return {
+                        id: m.id,
+                        name: m.name,
+                        plan: {},
+                        standard: true
+                    };
+                }
+                const plan = {
+                    weekDay: [],
+                    startTime: null,
+                    endTime: null
+                };
+                const weekDays = Object.keys(m.plan);
+                plan.weekDay = weekDays.map(w => ({value: w, label: t(w.toLowerCase())}));
+                const planValues = Object.values(m.plan)
+                const isoStartTime = `1970-01-01T${planValues[0].startTime}`;
+                const startTime = new Date(isoStartTime);
+                plan.startTime = {value: startTime, label: formatHHMM(startTime)};
+                const isoEndTime = `1970-01-01T${planValues[0].endTime}`;
+                const endTime = new Date(isoEndTime);
+                plan.endTime = {value: endTime, label: formatHHMM(endTime)};
+
+                return {
+                    ...m,
+                    plan: plan,
+                };
+            });
+    }, [restaurant.value.menus, t]);
 
     const [menusConfig, setMenusConfig] = useState(initialMenus);
 
@@ -30,50 +62,38 @@ export const SchedulesConfigurator = () => {
     }, [initialMenus]);
 
     const handlePlanChange = (menuId, newPlan) => {
-        setMenusConfig((prev) =>
-            prev.map((m) =>
-                m.id === menuId ? {
-                        ...m,
-                        plan: newPlan,
-                    }
-                    : m
-            )
-        );
+        setMenusConfig(prev => prev.map((m) => m.id === menuId ? {...m, plan: newPlan} : m));
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const preparedMenus = menusConfig.map(menu => {
-            if (menu.standard) {
+        const preparedMenus = menusConfig.map(m => {
+            if (m.standard) {
                 return {
-                    id: menu.id,
-                    name: menu.name,
+                    id: m.id,
+                    name: m.name,
                     plan: {},
                     standard: true
                 };
             }
 
             const plan = {};
-            menu.plan.weekDay.forEach(({value}) => {
-                const dayKey = value.toUpperCase();
+            m.plan.weekDay.forEach(({value}) => {
+                const dayKey = value;
 
-                const s = menu.plan.startTime.value instanceof Date
-                    ? menu.plan.startTime.value
-                    : new Date(menu.plan.startTime.value);
-                const e = menu.plan.endTime.value instanceof Date
-                    ? menu.plan.endTime.value
-                    : new Date(menu.plan.endTime.value);
+                const start = m.plan.startTime.value;
+                const end = m.plan.endTime.value;
 
                 plan[dayKey] = {
-                    startTime: [s.getHours(), s.getMinutes()],
-                    endTime: [e.getHours(), e.getMinutes()]
+                    startTime: [start.getHours(), start.getMinutes()],
+                    endTime: [end.getHours(), end.getMinutes()]
                 };
             });
 
             return {
-                id: menu.id,
-                name: menu.name,
+                id: m.id,
+                name: m.name,
                 plan,
                 standard: false
             };
@@ -81,6 +101,7 @@ export const SchedulesConfigurator = () => {
 
         const resultAction = await dispatch(updatePlans({menus: preparedMenus}));
         if (updatePlans.fulfilled.match(resultAction)) {
+            await getRestaurant();
             dispatch(setSchedulerActive(false));
             renderConfirmation();
         }
