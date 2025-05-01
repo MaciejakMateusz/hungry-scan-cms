@@ -53,6 +53,7 @@
   "accountNotActivated": "This account is not yet activated, check your email or ",
   "resendActivationLink": "resend activation link again",
   "invalidCredentials": "Invalid email or password, try again",
+  "logout": "Log out",
   "logoutSuccess": "Logged out successfully",
   "loginProblems": "Sign in issues?",
   "recoverPassword": "Forgot password?",
@@ -242,6 +243,7 @@
   "menuDuplicated": "Menu duplicated successfully",
   "menuUpdated": "Menu updated successfully",
   "plansUpdated": "Schedule updated successfully",
+  "welcome": "Welcome",
 
   "constraints.NotBlank": "Field cannot be blank",
   "constraints.ForenameSurname": "Field should contain minimum 2 letters and no special characters"

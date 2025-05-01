@@ -22,20 +22,18 @@ import {
     C_CODE_QR,
     DISHES_CATEGORIES,
     INTERFACE,
-    STATS,
     TRANSLATIONS,
     VARIANTS
 } from "../../../utils/viewsConstants";
 import {setCurrentDialog, setCurrentView} from "../../../slices/globalParamsSlice";
-import {UserProfileWhiteIcon} from "../../icons/UserProfileWhiteIcon";
-import {NotificationIcon} from "../../icons/NotificationIcon";
 import {CmsTopper} from "./topper/CmsTopper";
 import {fetchActiveMenu} from "../../../slices/cmsSlice";
+import {NavPanel} from "../NavPanel";
 
 export const Cms = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
-    const {currentView, cmsActive, userForename} = useSelector(state => state.globalParams.globalParams);
+    const {currentView} = useSelector(state => state.globalParams.globalParams);
     const {
         isInEditMode,
         newCategoryFormActive,
@@ -96,9 +94,29 @@ export const Cms = () => {
         }
     };
 
-    const switchAppMode = () => {
-        cmsActive ? dispatch(setCurrentView(STATS)) : dispatch(setCurrentView(DISHES_CATEGORIES));
-    }
+    const navElements = [
+        <NavButton isActive={currentView === DISHES_CATEGORIES}
+                   name={t('dishesCategories')}
+                   onClick={() => switchView(DISHES_CATEGORIES)}/>,
+        <NavButton isActive={currentView === VARIANTS}
+                   name={t('variants')}
+                   onClick={() => switchView(VARIANTS)}/>,
+        <NavButton isActive={currentView === ADDITIONS}
+                   name={t('additions')}
+                   onClick={() => switchView(ADDITIONS)}/>,
+        <NavButton isActive={currentView === C_CODE_QR}
+                   name={t('qrCode')}
+                   onClick={() => switchView(C_CODE_QR)}/>,
+        <NavButton isActive={currentView === TRANSLATIONS}
+                   name={t('translations')}
+                   onClick={() => switchView(TRANSLATIONS)}/>,
+        <NavButton isActive={currentView === AD_POP_UPS}
+                   name={t('adPopUps')}
+                   onClick={() => switchView(AD_POP_UPS)}/>,
+        <NavButton isActive={currentView === INTERFACE}
+                   name={t('interface')}
+                   onClick={() => switchView(INTERFACE)}/>
+    ];
 
     return (
         <>
@@ -112,46 +130,7 @@ export const Cms = () => {
                         dispatch(setCurrentDialog(switchViewDialog));
                     }}/> : <></>
             }
-            <div className={'app-nav-panel'}>
-                <div className={'app-nav-header'}>
-                    <span
-                        className={'profile-name'}>Witaj, {userForename}!</span><UserProfileWhiteIcon/><NotificationIcon/>
-                </div>
-                <div className={'app-mode-switcher-wrapper'}>
-                    <div className={'app-mode-switcher'} onClick={() => switchAppMode()}>
-                        <span className={`app-mode-indicator dashboard ${cmsActive ? '' : 'active'}`}>Pulpit</span>
-                        <span className={`app-mode-indicator cms ${cmsActive ? 'active' : ''}`}>CMS</span>
-                    </div>
-                </div>
-                <div className={'app-nav-menu'}>
-                    <ul className={'app-nav-ul'}>
-                        <NavButton isActive={currentView === DISHES_CATEGORIES}
-                                   name={t('dishesCategories')}
-                                   onClick={() => switchView(DISHES_CATEGORIES)}/>
-                        <NavButton isActive={currentView === VARIANTS}
-                                   name={t('variants')}
-                                   onClick={() => switchView(VARIANTS)}/>
-                        <NavButton isActive={currentView === ADDITIONS}
-                                   name={t('additions')}
-                                   onClick={() => switchView(ADDITIONS)}/>
-                        <NavButton isActive={currentView === C_CODE_QR}
-                                   name={t('qrCode')}
-                                   onClick={() => switchView(C_CODE_QR)}/>
-                        <NavButton isActive={currentView === TRANSLATIONS}
-                                   name={t('translations')}
-                                   onClick={() => switchView(TRANSLATIONS)}/>
-                        <NavButton isActive={currentView === AD_POP_UPS}
-                                   name={t('adPopUps')}
-                                   onClick={() => switchView(AD_POP_UPS)}/>
-                        <NavButton isActive={currentView === INTERFACE}
-                                   name={t('interface')}
-                                   onClick={() => switchView(INTERFACE)}/>
-                    </ul>
-                </div>
-                <div className={'app-nav-footer'}>
-                    <span>Powered by HackyBear&copy;</span>
-                </div>
-            </div>
+            <NavPanel children={navElements}/>
             <div className={'cms-main'}>
                 <CmsTopper/>
                 {renderMainView()}
