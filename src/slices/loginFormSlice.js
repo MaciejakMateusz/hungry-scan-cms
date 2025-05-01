@@ -90,6 +90,11 @@ export const loginFetchSlice = createSlice(
             notAuthorized: false,
             errorData: null
         },
+        reducers: {
+            setErrorData: (state, action) => {
+                state.errorData = action.payload;
+            }
+        },
         extraReducers: (builder) => {
             builder.addCase(executeLoginFetch.pending, state => {
                 state.isLoading = true;
@@ -111,6 +116,7 @@ export const loginFetchSlice = createSlice(
 )
 
 export const {setUsername, setPassword} = loginFormSlice.actions;
+export const {setErrorData} = loginFetchSlice.actions;
 
 const loginReducer = combineReducers({
     loginForm: loginFormSlice.reducer,

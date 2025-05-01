@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {FormField} from "../FormField";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
-import {executeLoginFetch, setPassword, setUsername} from "../../../../slices/loginFormSlice";
+import {executeLoginFetch, setErrorData, setPassword, setUsername} from "../../../../slices/loginFormSlice";
 import {LoadingSpinner} from "../../../icons/LoadingSpinner";
 import {urlParamValue} from "../../../../utils/utils";
 
@@ -24,6 +24,7 @@ export const LoginForm = () => {
 
     const handleSignIn = (e) => {
         e.preventDefault();
+        dispatch(setErrorData(null));
         dispatch(executeLoginFetch());
     };
 
