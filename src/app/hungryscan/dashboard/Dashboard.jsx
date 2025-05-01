@@ -44,19 +44,23 @@ export const Dashboard = () => {
     };
 
     const navElements = [
-        <NavButton isActive={currentView === STATS}
+        <NavButton key={STATS}
+                   isActive={currentView === STATS}
                    name={'Statystyki'}
                    icon={<StatsIcon active={statsHoveredOrActive}/>}
                    onClick={() => dispatch(setCurrentView(STATS))}/>,
-        <NavButton isActive={currentView === D_CODE_QR}
+        <NavButton key={D_CODE_QR}
+                   isActive={currentView === D_CODE_QR}
                    name={'Kod QR'}
                    icon={<QrCodeIcon active={qrHoveredOrActive}/>}
                    onClick={() => dispatch(setCurrentView(D_CODE_QR))}/>,
-        <NavButton isActive={currentView === PACKAGE}
+        <NavButton key={PACKAGE}
+                   isActive={currentView === PACKAGE}
                    name={'Twój pakiet'}
                    icon={<PackageIcon active={packageHoveredOrActive}/>}
                    onClick={() => dispatch(setCurrentView(PACKAGE))}/>,
-        <NavButton isActive={currentView === USERS}
+        <NavButton key={USERS}
+                   isActive={currentView === USERS}
                    name={'Użytkownicy'}
                    icon={<UsersIcon active={usersHoveredOrActive}/>}
                    onClick={() => dispatch(setCurrentView(USERS))}/>

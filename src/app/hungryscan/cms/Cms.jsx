@@ -95,25 +95,32 @@ export const Cms = () => {
     };
 
     const navElements = [
-        <NavButton isActive={currentView === DISHES_CATEGORIES}
+        <NavButton key={DISHES_CATEGORIES}
+                   isActive={currentView === DISHES_CATEGORIES}
                    name={t('dishesCategories')}
                    onClick={() => switchView(DISHES_CATEGORIES)}/>,
-        <NavButton isActive={currentView === VARIANTS}
+        <NavButton key={VARIANTS}
+                   isActive={currentView === VARIANTS}
                    name={t('variants')}
                    onClick={() => switchView(VARIANTS)}/>,
-        <NavButton isActive={currentView === ADDITIONS}
+        <NavButton key={ADDITIONS}
+                   isActive={currentView === ADDITIONS}
                    name={t('additions')}
                    onClick={() => switchView(ADDITIONS)}/>,
-        <NavButton isActive={currentView === C_CODE_QR}
+        <NavButton key={C_CODE_QR}
+                   isActive={currentView === C_CODE_QR}
                    name={t('qrCode')}
                    onClick={() => switchView(C_CODE_QR)}/>,
-        <NavButton isActive={currentView === TRANSLATIONS}
+        <NavButton key={TRANSLATIONS}
+                   isActive={currentView === TRANSLATIONS}
                    name={t('translations')}
                    onClick={() => switchView(TRANSLATIONS)}/>,
-        <NavButton isActive={currentView === AD_POP_UPS}
+        <NavButton key={AD_POP_UPS}
+                   isActive={currentView === AD_POP_UPS}
                    name={t('adPopUps')}
                    onClick={() => switchView(AD_POP_UPS)}/>,
-        <NavButton isActive={currentView === INTERFACE}
+        <NavButton key={INTERFACE}
+                   isActive={currentView === INTERFACE}
                    name={t('interface')}
                    onClick={() => switchView(INTERFACE)}/>
     ];
