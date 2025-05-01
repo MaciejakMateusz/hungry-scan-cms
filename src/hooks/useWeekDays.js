@@ -4,31 +4,31 @@ export const useWeekDays = () => {
     const { t } = useTranslation();
     return [
         {
-            value: 'monday',
+            value: 'MONDAY',
             label: t('monday')
         },
         {
-            value: 'tuesday',
+            value: 'TUESDAY',
             label: t('tuesday')
         },
         {
-            value: 'wednesday',
+            value: 'WEDNESDAY',
             label: t('wednesday')
         },
         {
-            value: 'thursday',
+            value: 'THURSDAY',
             label: t('thursday')
         },
         {
-            value: 'friday',
+            value: 'FRIDAY',
             label: t('friday')
         },
         {
-            value: 'saturday',
+            value: 'SATURDAY',
             label: t('saturday')
         },
         {
-            value: 'sunday',
+            value: 'SUNDAY',
             label: t('sunday')
         }
     ];
