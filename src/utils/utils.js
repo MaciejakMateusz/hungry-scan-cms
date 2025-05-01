@@ -8,7 +8,7 @@ export const forenameSurnameRegex = new RegExp(
     '^[A-Za-z]{2,}$'
 );
 
-export const getInactivityTimeout = () =>{
+export const getInactivityTimeout = () => {
     return 10 * 60 * 1000;
 };
 
@@ -18,8 +18,8 @@ export const setCookie = (cookieName, value, expires) => {
 
 export const getCookie = cookieName => {
     let cookie = {};
-    document.cookie.split(';').forEach(function(el) {
-        let [key,value] = el.split('=');
+    document.cookie.split(';').forEach(function (el) {
+        let [key, value] = el.split('=');
         cookie[key.trim()] = value;
     })
     return cookie[cookieName];
@@ -36,6 +36,12 @@ export const formatCurrency = (value) => {
     return parts.join('.');
 };
 
+export const formatHHMM = date => {
+    const h = date.getHours().toString().padStart(2, '0');
+    const m = date.getMinutes().toString().padStart(2, '0');
+    return `${h}:${m}`;
+}
+
 export const urlParamValue = param => {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
@@ -44,7 +50,7 @@ export const urlParamValue = param => {
 
 export const formatPrice = (price, keepDot) => {
     let formattedPrice = price.toFixed(2);
-    if(!keepDot) {
+    if (!keepDot) {
         formattedPrice = formattedPrice.replace('.', ',');
     }
     return formattedPrice;
