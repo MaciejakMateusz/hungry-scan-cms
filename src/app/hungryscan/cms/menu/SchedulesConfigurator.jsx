@@ -27,10 +27,8 @@ export const SchedulesConfigurator = () => {
             .map(m => {
                 if (m.standard || m.plan === {}) {
                     return {
-                        id: m.id,
-                        name: m.name,
+                        ...m,
                         plan: {},
-                        standard: true
                     };
                 }
                 const plan = {
@@ -39,15 +37,18 @@ export const SchedulesConfigurator = () => {
                     endTime: null
                 };
                 const weekDays = Object.keys(m.plan);
-                plan.weekDay = weekDays.map(w => ({value: w, label: t(w.toLowerCase())}));
-                const planValues = Object.values(m.plan)
-                const isoStartTime = `1970-01-01T${planValues[0].startTime}`;
-                const startTime = new Date(isoStartTime);
-                plan.startTime = {value: startTime, label: formatHHMM(startTime)};
-                const isoEndTime = `1970-01-01T${planValues[0].endTime}`;
-                const endTime = new Date(isoEndTime);
-                plan.endTime = {value: endTime, label: formatHHMM(endTime)};
-
+                if (weekDays.length !== 0) {
+                    plan.weekDay = weekDays.map(w => ({value: w, label: t(w.toLowerCase())}));
+                }
+                const planValues = Object.values(m.plan);
+                if (planValues.length !== 0) {
+                    const isoStartTime = `1970-01-01T${planValues[0].startTime}`;
+                    const startTime = new Date(isoStartTime);
+                    plan.startTime = {value: startTime, label: formatHHMM(startTime)};
+                    const isoEndTime = `1970-01-01T${planValues[0].endTime}`;
+                    const endTime = new Date(isoEndTime);
+                    plan.endTime = {value: endTime, label: formatHHMM(endTime)};
+                }
                 return {
                     ...m,
                     plan: plan,
@@ -72,6 +73,7 @@ export const SchedulesConfigurator = () => {
             if (m.standard) {
                 return {
                     id: m.id,
+                    restaurantId: m.restaurantId,
                     name: m.name,
                     plan: {},
                     standard: true
@@ -93,6 +95,7 @@ export const SchedulesConfigurator = () => {
 
             return {
                 id: m.id,
+                restaurantId: m.restaurantId,
                 name: m.name,
                 plan,
                 standard: false
