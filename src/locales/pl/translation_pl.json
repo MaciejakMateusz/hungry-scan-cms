@@ -246,6 +246,8 @@
   "menuUpdated": "Menu zaktualizowane pomyślnie",
   "plansUpdated": "Harmonogram zaktualizowany pomyślnie",
   "welcome": "Witaj",
+  "switchStandard": "Ustaw jako standardowe",
+  "standardSwitched": "Standardowe menu zmienione",
 
   "constraints.NotBlank": "Pole nie może być puste",
   "constraints.ForenameSurname": "Pole powinno mieć minimum dwa znaki i zawierać tylko litery"

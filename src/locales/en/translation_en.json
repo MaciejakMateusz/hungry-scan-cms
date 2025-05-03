@@ -244,6 +244,8 @@
   "menuUpdated": "Menu updated successfully",
   "plansUpdated": "Schedule updated successfully",
   "welcome": "Welcome",
+  "switchStandard": "Set as standard",
+  "standardSwitched": "Standard menu switched",
 
   "constraints.NotBlank": "Field cannot be blank",
   "constraints.ForenameSurname": "Field should contain minimum 2 letters and no special characters"
