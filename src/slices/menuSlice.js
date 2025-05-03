@@ -1,6 +1,56 @@
 import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
 
+export const switchStandard = createAsyncThunk(
+    'switchStandard/switchStandard',
+    async (params, {rejectWithValue}) => {
+        const response = await fetch(`${apiHost}/api/cms/menus/switch-standard`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include'
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            return rejectWithValue(errorData);
+        }
+
+        try {
+            return await response.json();
+        } catch (error) {
+            return {};
+        }
+    }
+);
+
+export const switchStandardSlice = createSlice({
+    name: 'switchStandard',
+    initialState: {
+        isLoading: false,
+        errorData: null
+    },
+    reducers: {
+        setErrorData: (state, action) => {
+            state.errorData = action.payload;
+        }
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(switchStandard.pending, state => {
+                state.isLoading = true;
+            })
+            .addCase(switchStandard.fulfilled, (state) => {
+                state.isLoading = false;
+            })
+            .addCase(switchStandard.rejected, (state, action) => {
+                state.isLoading = false;
+                state.errorData = action.payload;
+            })
+    }
+});
+
 export const updatePlans = createAsyncThunk(
     'updatePlans/updatePlans',
     async (params, {rejectWithValue}) => {
@@ -212,6 +262,7 @@ export const menuSLice = createSlice(
             menuUpdated: false,
             menuRemoved: false,
             menuDuplicated: false,
+            standardSwitched: false,
             plansUpdated: false,
             name: ''
         },
@@ -240,6 +291,9 @@ export const menuSLice = createSlice(
             setMenuDuplicated: (state, action) => {
                 state.menuDuplicated = action.payload;
             },
+            setStandardSwitched: (state, action) => {
+                state.standardSwitched = action.payload;
+            },
             setPlansUpdated: (state, action) => {
                 state.plansUpdated = action.payload;
             },
@@ -261,6 +315,7 @@ export const {
     setMenuUpdated,
     setMenuRemoved,
     setMenuDuplicated,
+    setStandardSwitched,
     setPlansUpdated,
     setName,
     clearForm
@@ -272,7 +327,8 @@ const menuReducer = combineReducers({
     fetchMenu: fetchMenuSlice.reducer,
     postMenu: postMenuSlice.reducer,
     updateMenu: updateMenuSlice.reducer,
-    updatePlans: updatePlansSlice.reducer
+    updatePlans: updatePlansSlice.reducer,
+    switchStandard: switchStandardSlice.reducer
 });
 
 export default menuReducer;
