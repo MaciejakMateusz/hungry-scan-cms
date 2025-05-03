@@ -1,38 +1,45 @@
 import {useTranslation} from "react-i18next";
 import {EditIcon} from "../app/icons/EditIcon";
 import {DeleteIcon} from "../app/icons/DeleteIcon";
-import {setContextMenuDetailsActive, setEditMenuFormActive, setMenuDuplicated} from "../slices/menuSlice";
+import {
+    setContextMenuDetailsActive,
+    setEditMenuFormActive,
+    setMenuDuplicated, setStandardSwitched,
+    switchStandard
+} from "../slices/menuSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {setActiveRemovalType} from "../slices/dishesCategoriesSlice";
 import {duplicateMenu, fetchActiveMenu} from "../slices/cmsSlice";
-import {useState} from "react";
 import {useFetchCurrentRestaurant} from "./useFetchCurrentRestaurant";
+import {useConfirmationMessage} from "./useConfirmationMessage";
 
 export const useMenuContextPositions = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {contextMenuDetailsActive} = useSelector(state => state.menu.form);
     const {menu} = useSelector(state => state.cms.fetchActiveMenu);
-    const [confirmationTimeoutId, setConfirmationTimeoutId] = useState(null);
     const getRestaurant = useFetchCurrentRestaurant();
+    const confirmDuplication = useConfirmationMessage(setMenuDuplicated);
+    const confirmStandardSwitched = useConfirmationMessage(setStandardSwitched);
+
+    const handleSwitchStandard = async () => {
+        const resultAction = await dispatch(switchStandard());
+        if (switchStandard.fulfilled.match(resultAction)) {
+            await dispatch(switchStandard());
+            await getRestaurant();
+            await dispatch(fetchActiveMenu());
+            confirmStandardSwitched();
+        }
+    };
 
     const handleDuplication = async () => {
         const resultAction = await dispatch(duplicateMenu());
-        if(duplicateMenu.fulfilled.match(resultAction)) {
+        if (duplicateMenu.fulfilled.match(resultAction)) {
             await getRestaurant();
             await dispatch(fetchActiveMenu());
-            await dispatch(setMenuDuplicated(true));
-
-            if (confirmationTimeoutId) {
-                clearTimeout(confirmationTimeoutId);
-            }
-
-            const newConfirmationTimeoutId = setTimeout(() => {
-                dispatch(setMenuDuplicated(false))
-            }, 4000);
-            setConfirmationTimeoutId(newConfirmationTimeoutId);
+            confirmDuplication();
         }
-    }
+    };
 
     const rawPositions = [
         {
@@ -42,11 +49,16 @@ export const useMenuContextPositions = () => {
             handler: () => dispatch(setEditMenuFormActive(true))
         },
         {
+            id: 'switchStandard',
+            name: t('switchStandard'),
+            icon: <EditIcon width={'25'} height={'25'}/>,
+            handler: () => handleSwitchStandard()
+        },
+        {
             id: 'duplicate',
             name: t('duplicate'),
             icon: <EditIcon width={'25'} height={'25'}/>,
             handler: () => handleDuplication()
-
         },
         {
             id: 'remove',
@@ -62,12 +74,12 @@ export const useMenuContextPositions = () => {
             details: true
         }];
 
-    const getPreparedPositions = () => {
+    const getFilteredPositions = () => {
         if (menu?.standard) {
-            return rawPositions.filter(p => p.id !== 'remove');
+            return rawPositions.filter(p => p.id !== 'remove' && p.id !== 'switchStandard');
         }
         return rawPositions;
-    }
+    };
 
-    return getPreparedPositions();
+    return getFilteredPositions();
 }
