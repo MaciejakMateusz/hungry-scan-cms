@@ -26,7 +26,7 @@ export const VariantFormDialog = () => {
     const [displayOrders, setDisplayOrders] = useState([1]);
 
     useEffect(() => {
-        if (variants.length > 0) {
+        if (variants?.length > 0) {
             const displayOrders = variants.map(variant => variant.displayOrder)
             if(isNewVariant) {
                 const additional = variants.length + 1;
