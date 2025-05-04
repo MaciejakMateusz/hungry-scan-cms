@@ -2370,6 +2370,7 @@ ul {
     z-index: 9999;
     font-size: 13px;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .reordering-dialog-content {

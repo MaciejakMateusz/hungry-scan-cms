@@ -4,9 +4,7 @@ import {NavButton} from "../NavButton";
 import {DishesCategories} from "./dishes-categories/DishesCategories";
 import {Variants} from "./variants/Variants";
 import {Additions} from "./additions/Additions";
-import {QrCode} from "./qr-code/QrCode";
 import {Translations} from "./translations/Translations";
-import {AdPopUps} from "./ad-pop-ups/AdPopUps";
 import {Interface} from "./interface/Interface";
 import {useDispatch, useSelector} from "react-redux";
 import {DecisionDialog} from "./dialog-windows/DecisionDialog";
@@ -16,15 +14,7 @@ import {clearView as clearVariantsView} from "../../../slices/variantsSlice";
 import {clearView as clearAdditionsView} from "../../../slices/additionsSlice";
 import {clearView as clearTranslationsView} from "../../../slices/translationsSlice";
 import {clearForm as clearDishForm} from "../../../slices/dishFormSlice";
-import {
-    AD_POP_UPS,
-    ADDITIONS,
-    C_CODE_QR,
-    DISHES_CATEGORIES,
-    INTERFACE,
-    TRANSLATIONS,
-    VARIANTS
-} from "../../../utils/viewsConstants";
+import {ADDITIONS, DISHES_CATEGORIES, INTERFACE, TRANSLATIONS, VARIANTS} from "../../../utils/viewsConstants";
 import {setCurrentDialog, setCurrentView} from "../../../slices/globalParamsSlice";
 import {CmsTopper} from "./topper/CmsTopper";
 import {fetchActiveMenu} from "../../../slices/cmsSlice";
@@ -81,12 +71,8 @@ export const Cms = () => {
                 return <Variants/>;
             case ADDITIONS:
                 return <Additions/>;
-            case C_CODE_QR:
-                return <QrCode/>;
             case TRANSLATIONS:
                 return <Translations/>;
-            case AD_POP_UPS:
-                return <AdPopUps/>;
             case INTERFACE:
                 return <Interface/>;
             default:
@@ -107,18 +93,10 @@ export const Cms = () => {
                    isActive={currentView === ADDITIONS}
                    name={t('additions')}
                    onClick={() => switchView(ADDITIONS)}/>,
-        <NavButton key={C_CODE_QR}
-                   isActive={currentView === C_CODE_QR}
-                   name={t('qrCode')}
-                   onClick={() => switchView(C_CODE_QR)}/>,
         <NavButton key={TRANSLATIONS}
                    isActive={currentView === TRANSLATIONS}
                    name={t('translations')}
                    onClick={() => switchView(TRANSLATIONS)}/>,
-        <NavButton key={AD_POP_UPS}
-                   isActive={currentView === AD_POP_UPS}
-                   name={t('adPopUps')}
-                   onClick={() => switchView(AD_POP_UPS)}/>,
         <NavButton key={INTERFACE}
                    isActive={currentView === INTERFACE}
                    name={t('interface')}
