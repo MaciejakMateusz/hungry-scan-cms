@@ -24,89 +24,53 @@ export const fetchMenuItem = createAsyncThunk(
     }
 );
 
-export const postImage = createAsyncThunk(
-    'postImage/postImage',
-    async (credentials, {rejectWithValue}) => {
-        if (!credentials.file) {
-            return;
-        }
-
-        const formData = new FormData();
-        formData.append("file", credentials.file);
-
-        const response = await fetch(`${apiHost}/api/cms/images`, {
-            method: "POST",
-            body: formData,
-            credentials: 'include'
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json().catch(() => null);
-            return rejectWithValue(errorData || {message: 'Failed to upload image'});
-        }
-
-        try {
-            return await response.json();
-        } catch (error) {
-            return {};
-        }
-    }
-);
-
 export const postDish = createAsyncThunk(
     'postDish/postDish',
-    async (params, {getState, rejectWithValue}) => {
-        const formState = getState().dishForm.form;
-        const allergensState = getState().dishForm.fetchAllergens;
-        const labelsState = getState().dishForm.fetchLabels;
-        const bannersState = getState().dishForm.fetchBanners;
-        const dishAdditionsState = getState().dishAdditions.fetchIngredients;
-        const banners = bannersState.chosenBanners?.map(banner => banner.value);
-        const labels = labelsState.chosenLabels?.map(label => label.value);
-        const allergens = allergensState.chosenAllergens?.map(allergen => allergen.value);
-        const additions = dishAdditionsState.chosenAdditions?.map(addition => addition.value);
-        const response = await fetch(`${apiHost}/api/cms/items/${params.action}`, {
-            method: params.action === 'add' ? "POST" : "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                id: formState.id,
-                categoryId: formState.category && formState.category.id,
-                displayOrder: formState.displayOrder,
-                name: {
-                    defaultTranslation: formState.name,
-                    translationEn: ''
-                },
-                description: {
-                    defaultTranslation: formState.description,
-                    translationEn: ''
-                },
-                banners: banners,
-                labels: labels,
-                allergens: allergens,
-                variants: formState.variants,
-                additionalIngredients: additions,
-                price: formState.price,
-                promoPrice: formState.promoPrice,
-                imageName: formState.fileName,
-                available: formState.available,
-                created: formState.created,
-                createdBy: formState.createdBy
-            }),
-            credentials: 'include'
+    async ({action, file}, {getState, rejectWithValue}) => {
+        const s = getState();
+        const form = s.dishForm.form;
+        const payload = {
+            id: form.id,
+            categoryId: form.category?.id,
+            displayOrder: form.displayOrder,
+            name: {defaultTranslation: form.name, translationEn: ""},
+            description: {defaultTranslation: form.description, translationEn: ""},
+            price: form.price,
+            promoPrice: form.promoPrice,
+            available: form.available,
+            created: form.created,
+            createdBy: form.createdBy,
+            variants: form.variants,
+            banners: s.dishForm.fetchBanners.chosenBanners.map(b => b.value),
+            labels: s.dishForm.fetchLabels.chosenLabels.map(l => l.value),
+            allergens: s.dishForm.fetchAllergens.chosenAllergens.map(a => a.value),
+            additionalIngredients:
+                s.dishAdditions.fetchIngredients.chosenAdditions.map(i => i.value)
+        };
+
+
+        const menuItemBlob = new Blob(
+            [JSON.stringify(payload)],
+            {type: "application/json"}
+        );
+        const fd = new FormData();
+        fd.append("menuItem", menuItemBlob);
+        fd.append("image", file);
+
+        const res = await fetch(`${apiHost}/api/cms/items/${action}`, {
+            method: action === 'add' ? 'POST' : 'PATCH',
+            credentials: 'include',
+            body: fd
         });
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            return rejectWithValue(errorData);
+        if (!res.ok) {
+            const err = await res.json();
+            return rejectWithValue(err);
         }
 
-        try {
-            return await response.json();
-        } catch (error) {
-            return {};
-        }
+
+        return await res.json().catch(() => {
+        });
     }
 );
 
@@ -169,26 +133,6 @@ export const getAllergens = createAsyncThunk(
         return await response.json();
     }
 );
-
-export const postImageSlice = createSlice(
-    {
-        name: 'postImage',
-        initialState: {
-            isLoading: false
-        },
-        extraReducers: (builder) => {
-            builder
-                .addCase(postImage.pending, state => {
-                    state.isLoading = true;
-                })
-                .addCase(postImage.fulfilled, (state) => {
-                    state.isLoading = false;
-                })
-                .addCase(postImage.rejected, (state) => {
-                    state.isLoading = false;
-                })
-        }
-    });
 
 export const postDishSlice = createSlice(
     {
@@ -471,7 +415,6 @@ const dishFormReducer = combineReducers({
     fetchBanners: fetchBannersSlice.reducer,
     fetchLabels: fetchLabelsSlice.reducer,
     fetchAllergens: fetchAllergensSlice.reducer,
-    postImage: postImageSlice,
     postDish: postDishSlice
 });
 
