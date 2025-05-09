@@ -4,14 +4,13 @@ import {useDispatch, useSelector} from "react-redux";
 import {getTranslation} from "../../../../../locales/langUtils";
 import {MenuItemFormTemplate} from "../../form-components/MenuItemFormTemplate";
 import {
-    getAllergens, getBanners,
+    getAllergens,
+    getBanners,
     getLabels,
     postDish,
-    postImage,
     setCategory,
     setErrorData,
-    setErrorMessage,
-    setFileName
+    setErrorMessage
 } from "../../../../../slices/dishFormSlice";
 import {setNewDishFormActive, setSubmittedSuccessType} from "../../../../../slices/dishesCategoriesSlice";
 import {FormErrorDialog} from "../../../../error/FormErrorDialog";
@@ -47,15 +46,7 @@ export const NewMenuItemForm = () => {
         e.preventDefault();
         setErrorMessage(null);
 
-        const imageAction = await dispatch(postImage({file: file}));
-        if (postImage.fulfilled.match(imageAction)) {
-            dispatch(setFileName(file && file.name));
-        } else if (postImage.rejected.match(imageAction)) {
-            dispatch(setErrorData(imageAction.payload));
-            dispatch(setErrorMessage(imageAction.payload));
-        }
-
-        const dishAction = await dispatch(postDish({action: "add"}));
+        const dishAction = await dispatch(postDish({action: "add", file: file}));
         if (postDish.fulfilled.match(dishAction)) {
             dispatch(setSubmittedSuccessType('dish-save'));
             setTimeout(() => {
@@ -90,7 +81,7 @@ export const NewMenuItemForm = () => {
                             </div>
                         </form>
                     </div>
-                    <MenuItemMobilePreview/>
+                    <MenuItemMobilePreview image={file}/>
                 </div>
             </div>
         </div>
