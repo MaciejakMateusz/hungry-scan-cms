@@ -9,7 +9,6 @@ import {
     getBanners,
     getLabels,
     postDish,
-    postImage,
     setAvailable,
     setCategory,
     setCategoryId,
@@ -22,7 +21,6 @@ import {
     setDisplayOrder,
     setErrorData,
     setErrorMessage,
-    setFileName,
     setId,
     setName,
     setPrice,
@@ -30,7 +28,6 @@ import {
 } from "../../../../../slices/dishFormSlice";
 import {setEditDishFormActive, setSubmittedSuccessType} from "../../../../../slices/dishesCategoriesSlice";
 import {FormErrorDialog} from "../../../../error/FormErrorDialog";
-import {imagesPath} from "../../../../../apiData";
 import {MenuItemMobilePreview} from "./MenuItemMobilePreview";
 import {fetchIngredients, setChosenAdditions} from "../../../../../slices/dishAdditionsSlice";
 import {useClearForm} from "../../../../../hooks/useClearForm";
@@ -50,20 +47,6 @@ export const EditMenuItemForm = () => {
     }, [dispatch, dish]);
 
     useEffect(() => {
-        const fetchImage = async () => {
-            if (!item?.imageName) return;
-            const response = await fetch(`${imagesPath}/${item.imageName}`);
-            if (response.ok) {
-                const blob = await response.blob();
-                const file = new File([blob], item.imageName, {type: blob.type});
-                setFile(file);
-                dispatch(setFileName(file.name));
-            }
-        };
-        fetchImage().catch(error => console.log(error));
-    }, [item, dispatch]);
-
-    useEffect(() => {
         const setInitialFormState = () => {
             if (!item) return;
 
@@ -72,10 +55,10 @@ export const EditMenuItemForm = () => {
             dispatch(getLabels());
             dispatch(getBanners());
 
+            dispatch(setId(item.id));
             dispatch(setCategoryId(item.categoryId));
             dispatch(setCategory(category));
             dispatch(setDisplayOrder(item.displayOrder));
-            dispatch(setId(item.id));
             dispatch(setName(item.name.defaultTranslation));
             dispatch(setDescription(item.description.defaultTranslation));
             dispatch(setVariants(item.variants));
@@ -112,16 +95,7 @@ export const EditMenuItemForm = () => {
         e.preventDefault();
         setErrorMessage(null);
 
-        const imageAction = await dispatch(postImage({file: file}));
-        if (postImage.fulfilled.match(imageAction)) {
-            dispatch(setFileName(file && file.name));
-        } else if (postImage.rejected.match(imageAction)) {
-            dispatch(setErrorData(imageAction.payload));
-            dispatch(setErrorMessage(imageAction.payload));
-            return;
-        }
-
-        const dishAction = await dispatch(postDish({action: "update"}));
+        const dishAction = await dispatch(postDish({action: "update", file: file}));
         if (postDish.fulfilled.match(dishAction)) {
             dispatch(setSubmittedSuccessType('dish-edit'));
             setTimeout(() => {
@@ -156,7 +130,7 @@ export const EditMenuItemForm = () => {
                             </div>
                         </form>
                     </div>
-                    <MenuItemMobilePreview/>
+                    <MenuItemMobilePreview image={file}/>
                 </div>
             </div>
         </div>
