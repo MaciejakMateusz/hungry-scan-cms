@@ -1,5 +1,5 @@
 import React, {Fragment} from "react";
-import {imagesPath} from "../../../../../apiData";
+import {s3BucketUrl} from "../../../../../apiData";
 import {PlaceholderImgIcon} from "../../../../icons/PlaceholderImgIcon";
 import {getTranslation} from "../../../../../locales/langUtils";
 import {formatPrice} from "../../../../../utils/utils";
@@ -20,18 +20,23 @@ import {useDispatch} from "react-redux";
 import {DragAndDropIcon} from "../../../../icons/DragAndDropIcon";
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
+import {Img} from "react-image";
 
 export const MenuItemPosition = ({id, category, menuItem, filtered}) => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
-
-    const {attributes, listeners, setNodeRef, transform, transition, isDragging} = useSortable({id});
+    const {
+        attributes,
+        listeners,
+        setNodeRef,
+        transform,
+        transition,
+        isDragging} = useSortable({id});
     const style = {
         transform: CSS.Transform.toString(transform),
         transition,
         zIndex: isDragging ? 999 : 'auto'
     };
-
 
     const getCategoryData = async id => {
         const resultAction = await dispatch(getCategory({id}));
@@ -66,13 +71,11 @@ export const MenuItemPosition = ({id, category, menuItem, filtered}) => {
                     </div>
                 }
                 <div className={'menu-item-position-image-container'}>
-                    {menuItem.imageName ? (
-                        <img className={'menu-item-position-image'}
-                             alt={'Menu item preview'}
-                             src={`${imagesPath}/${menuItem.imageName}`}/>
-                    ) : (
-                        <PlaceholderImgIcon/>
-                    )}
+                    <Img className={'menu-item-position-image'}
+                         alt={'Menu item preview'}
+                         src={`${s3BucketUrl}/${menuItem.id}?t=${menuItem.updated}`}
+                         unloader={<PlaceholderImgIcon/>}
+                    />
                 </div>
                 <div className={'menu-item-position-text-container'}>
                     <span className={'menu-item-position-name'}>
