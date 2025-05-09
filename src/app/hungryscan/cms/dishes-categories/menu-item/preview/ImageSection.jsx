@@ -1,29 +1,53 @@
-import React from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {useSelector} from "react-redux";
 import {Img} from "react-image";
 import {ArrowLeftIcon} from "../../../../../icons/ArrowLeftIcon";
-import {imagesPath} from "../../../../../../apiData";
+import {s3BucketUrl} from "../../../../../../apiData";
 
-export const ImageSection = () => {
-    const {fileName} = useSelector(state => state.dishForm.form);
+export const ImageSection = ({image}) => {
+    const {id} = useSelector(state => state.dishForm.form);
+    const [shouldRender, setShouldRender] = useState(() => Boolean(image));
+
+    useEffect(() => {
+        if (image || id) {
+            setShouldRender(true);
+        } else {
+            setShouldRender(false);
+        }
+    }, [image, id]);
+
+    const objectUrl = useMemo(() => image && URL.createObjectURL(image), [image]);
+
+    useEffect(() => {
+        return () => {
+            if (objectUrl) URL.revokeObjectURL(objectUrl);
+        };
+    }, [objectUrl]);
+
+    if (!shouldRender) return (<></>);
 
     const renderImage = () => {
-        if (!fileName) {
-            return (<></>);
-        }
-        return (
-            <div className={'details-image-container'}>
-                <Img src={`${imagesPath}/${fileName}`}
-                     className={'details-image'}
-                />
-            </div>
-        );
+        return image ? (
+            <img src={objectUrl}
+                 alt="Preview"
+                 className="details-image"
+            />
+        ) : (
+            <Img src={`${s3BucketUrl}/${id}`}
+                 className="details-image"
+                 onError={() => setShouldRender(false)}
+            />
+        )
     }
 
     return (
-        <section className={'details-image-section'}>
-            <button className={'return-button'}><ArrowLeftIcon/></button>
-            {renderImage()}
+        <section className="details-image-section">
+            <button className="return-button">
+                <ArrowLeftIcon/>
+            </button>
+            <div className="details-image-container">
+                {renderImage()}
+            </div>
         </section>
     );
-}
+};
