@@ -16,6 +16,7 @@ import {
     getIngredients,
     setErrorData
 } from "../../../../slices/additionsSlice";
+import {getTranslation} from "../../../../locales/langUtils";
 
 export const AdditionFormDialog = (props) => {
     const {t} = useTranslation();
@@ -27,7 +28,7 @@ export const AdditionFormDialog = (props) => {
     useEffect(() => {
         if(!isNewAddition) {
             dispatch(setId(addition.id))
-            dispatch(setName(addition.name.defaultTranslation))
+            dispatch(setName(getTranslation(addition.name)))
             dispatch(setPrice(addition.price.toFixed(2)))
             dispatch(setAvailable({
                 value: addition.available,

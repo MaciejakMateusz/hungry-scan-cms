@@ -6,6 +6,7 @@ import {s3BucketUrl} from "../../../../../../apiData";
 
 export const ImageSection = ({image}) => {
     const {id} = useSelector(state => state.dishForm.form);
+    const {dish} = useSelector(state => state.dishesCategories.view);
     const [shouldRender, setShouldRender] = useState(() => Boolean(image));
 
     useEffect(() => {
@@ -33,7 +34,7 @@ export const ImageSection = ({image}) => {
                  className="details-image"
             />
         ) : (
-            <Img src={`${s3BucketUrl}/${id}`}
+            <Img src={`${s3BucketUrl}/${id}?t=${dish.updated}`}
                  className="details-image"
                  onError={() => setShouldRender(false)}
             />

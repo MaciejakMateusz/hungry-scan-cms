@@ -17,6 +17,7 @@ import {
 } from "../../../../slices/dishesCategoriesSlice";
 import {setNewCategoryFormActive} from "../../../../slices/dishesCategoriesSlice";
 import ErrorBoundary from "../../../error/ErrorBoundary";
+import {getTranslation} from "../../../../locales/langUtils";
 
 export const DishesCategories = () => {
     const {t} = useTranslation();
@@ -64,7 +65,9 @@ export const DishesCategories = () => {
             const categoryItems = category.menuItems;
             allItems.push(...categoryItems);
         });
-        const filteredItems = allItems.filter(mi => mi.name?.defaultTranslation.toLowerCase().includes(value));
+        const filteredItems = allItems.filter(mi =>
+            getTranslation(mi.name).toLowerCase().includes(value)
+        );
         dispatch(setFilteredItems(filteredItems));
     }
 

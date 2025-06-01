@@ -46,9 +46,9 @@ export const TranslationsEditor = ({fetchRecords}) => {
 
         return (
             <>
-                <OriginalTranslation value={activeRecord?.description.defaultTranslation} type={t('description')}/>
+                <OriginalTranslation value={activeRecord?.description.pl} type={t('description')}/>
                 <TranslateToField
-                    value={activeRecord?.description.translationEn ? activeRecord.description.translationEn : ''}
+                    value={activeRecord?.description.en ? activeRecord.description.en : ''}
                     renderButton={true}
                     type={t('description')}/>
             </>
@@ -58,8 +58,8 @@ export const TranslationsEditor = ({fetchRecords}) => {
     return (
         <section className={'translations-vertical-split-right'}>
             <form className={'translation-wrapper'} onSubmit={handleTranslatablesSubmit}>
-                <OriginalTranslation value={activeRecord?.name.defaultTranslation} type={t('name')}/>
-                <TranslateToField value={activeRecord?.name.translationEn ? activeRecord.name.translationEn : ''}
+                <OriginalTranslation value={activeRecord?.name.pl} type={t('name')}/>
+                <TranslateToField value={activeRecord?.name.en ? activeRecord.name.en : ''}
                                   renderButton={!hasDescription}
                                   type={t('name')}/>
                 {renderDescriptionTranslatable()}

@@ -13,8 +13,8 @@ export const postCategory = createAsyncThunk(
             body: JSON.stringify({
                 id: state.id,
                 name: {
-                    defaultTranslation: state.name,
-                    translationEn: ''
+                    pl: state.name,
+                    en: ''
                 },
                 menuItems: state.dishes,
                 available: state.available,

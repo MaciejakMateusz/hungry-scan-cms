@@ -13,8 +13,8 @@ export const postAddition = createAsyncThunk(
             body: JSON.stringify({
                 id: state.id,
                 name: {
-                    defaultTranslation: state.name,
-                    translationEn: ''
+                    pl: state.name,
+                    en: ''
                 },
                 price: state.price,
                 available: state.available.value

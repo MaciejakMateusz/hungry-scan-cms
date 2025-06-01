@@ -29,7 +29,7 @@ export const EditCategoryForm = () => {
     useEffect(() => {
         const setFormInitialState = () => {
             dispatch(setId(category.id));
-            dispatch(setName(category.name.defaultTranslation));
+            dispatch(setName(getTranslation(category.name)));
             dispatch(setDishes(category.menuItems))
             dispatch(setAvailable(category.available));
             dispatch(setDisplayOrder({

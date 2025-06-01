@@ -40,14 +40,14 @@ export const TranslationRecord = ({parent, index, record, setActive}) => {
         let isNameTranslated = true;
         let isDescriptionTranslated = true;
         if (record.name) {
-            const nameDefTrans = record.name.defaultTranslation ? record.name.defaultTranslation.length > 0 : false;
-            const nameEnTrans = record.name.translationEn ? record.name.translationEn.length > 0 : false;
-            isNameTranslated = nameDefTrans && nameEnTrans;
+            const namePl = record.name.pl ? record.name.pl.length > 0 : false;
+            const nameEn = record.name.en ? record.name.en.length > 0 : false;
+            isNameTranslated = namePl && nameEn;
         }
         if (record.description) {
-            const descriptionDefTrans = record.description.defaultTranslation ? record.description.defaultTranslation.length > 0 : false;
-            const descriptionEnTrans = record.description.translationEn ? record.description.translationEn.length > 0 : false;
-            isDescriptionTranslated = descriptionDefTrans && descriptionEnTrans;
+            const descriptionPl = record.description.pl ? record.description.pl.length > 0 : false;
+            const descriptionEn = record.description.en ? record.description.en.length > 0 : false;
+            isDescriptionTranslated = descriptionPl && descriptionEn;
         }
         const isFullyTranslated = isNameTranslated && isDescriptionTranslated;
         return (

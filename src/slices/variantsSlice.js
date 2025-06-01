@@ -16,8 +16,8 @@ export const postVariant = createAsyncThunk(
                 menuItem: viewState.dish,
                 displayOrder: state.displayOrder.value,
                 name: {
-                    defaultTranslation: state.name,
-                    translationEn: ''
+                    pl: state.name,
+                    en: ''
                 },
                 price: state.price,
                 available: state.available.value

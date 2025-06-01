@@ -44,7 +44,7 @@ export const VariantFormDialog = () => {
         if(!isNewVariant) {
             dispatch(setId(variant.id))
             dispatch(setDisplayOrder({value: variant.displayOrder, label: variant.displayOrder}))
-            dispatch(setName(variant.name.defaultTranslation))
+            dispatch(setName(getTranslation(variant.name)))
             dispatch(setPrice(variant.price.toFixed(2)))
             dispatch(setAvailable({
                 value: variant.available,

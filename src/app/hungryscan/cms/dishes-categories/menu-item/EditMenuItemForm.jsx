@@ -24,6 +24,7 @@ import {
     setId,
     setName,
     setPrice,
+    setPromoPrice,
     setVariants
 } from "../../../../../slices/dishFormSlice";
 import {setEditDishFormActive, setSubmittedSuccessType} from "../../../../../slices/dishesCategoriesSlice";
@@ -59,10 +60,11 @@ export const EditMenuItemForm = () => {
             dispatch(setCategoryId(item.categoryId));
             dispatch(setCategory(category));
             dispatch(setDisplayOrder(item.displayOrder));
-            dispatch(setName(item.name.defaultTranslation));
-            dispatch(setDescription(item.description.defaultTranslation));
+            dispatch(setName(getTranslation(item.name)));
+            dispatch(setDescription(getTranslation(item.description)));
             dispatch(setVariants(item.variants));
             dispatch(setPrice(item.price.toFixed(2)));
+            dispatch(setPromoPrice(item.promoPrice?.toFixed(2)));
             dispatch(setAvailable(item.available));
             dispatch(setChosenBanners(item.banners?.map(banner => ({
                 value: banner,

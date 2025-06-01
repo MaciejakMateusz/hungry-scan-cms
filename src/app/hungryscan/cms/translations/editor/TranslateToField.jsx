@@ -27,10 +27,10 @@ export const TranslateToField = ({value, renderButton, type}) => {
     const handleFieldTranslation = async () => {
         let textToTranslate;
         if (t('name') === type) {
-            textToTranslate = activeRecord.name.defaultTranslation;
+            textToTranslate = activeRecord.name.pl;
             setLoadingType('name');
         } else {
-            textToTranslate = activeRecord.description?.defaultTranslation;
+            textToTranslate = activeRecord.description?.pl;
             setLoadingType('description');
         }
         const resultAction = await dispatch(getAutoTranslation({text: textToTranslate}));

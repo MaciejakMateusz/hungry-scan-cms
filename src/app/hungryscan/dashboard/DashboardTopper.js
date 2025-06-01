@@ -112,7 +112,7 @@ export const DashboardTopper = () => {
                          dispatch(setContextMenuDetailsActive(false));
                      }}
                      onBlur={() => {
-                         setTimeout(() => dispatch(setRestaurantContextMenuActive(false)), 100);
+                         setTimeout(() => dispatch(setRestaurantContextMenuActive(false)), 150);
                          dispatch(setContextMenuDetailsActive(false));
                      }}>
                     <ThreeDotsIcon/>
