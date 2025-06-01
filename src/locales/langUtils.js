@@ -11,14 +11,16 @@ export const getTranslation = (obj) => {
     }
 
     const lang = getLanguage();
-    if (lang === 'en' && obj.translationEn) {
-        return obj.translationEn;
+    switch (lang) {
+        case 'pl': return obj.pl;
+        case 'pl-PL': return obj.pl;
+        case 'en': return obj.en ? obj.en : obj.pl;
+        case 'fr': return obj.fr ? obj.fr : obj.pl;
+        case 'de': return obj.de ? obj.de : obj.pl;
+        case 'es': return obj.es ? obj.es : obj.pl;
+        case 'uk': return obj.uk ? obj.uk : obj.pl;
+        default: return '';
     }
-    if (obj.defaultTranslation) {
-        return obj.defaultTranslation;
-    }
-
-    return '';
 };
 
 export const getLanguage = () => {
