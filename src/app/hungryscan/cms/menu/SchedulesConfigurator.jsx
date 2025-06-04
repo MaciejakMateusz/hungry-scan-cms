@@ -1,12 +1,13 @@
 import React, {useEffect, useMemo, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
-import {MenuScheduler} from "../topper/MenuScheduler";
+import timeGridPlugin from '@fullcalendar/timegrid';
 import {setSchedulerActive} from "../../../../slices/cmsSlice";
 import {setPlansUpdated, updatePlans} from "../../../../slices/menuSlice";
 import {useConfirmationMessage} from "../../../../hooks/useConfirmationMessage";
 import {formatHHMM} from "../../../../utils/utils";
 import {useFetchCurrentRestaurant} from "../../../../hooks/useFetchCurrentRestaurant";
+import FullCalendar from "@fullcalendar/react";
 
 export const SchedulesConfigurator = () => {
     const {t} = useTranslation();
@@ -14,6 +15,7 @@ export const SchedulesConfigurator = () => {
     const {restaurant} = useSelector((state) => state.dashboard.view);
     const renderConfirmation = useConfirmationMessage(setPlansUpdated);
     const getRestaurant = useFetchCurrentRestaurant();
+    const restaurantSettings = restaurant?.value?.settings;
 
     const initialMenus = useMemo(() => {
         return [...(restaurant?.value.menus || [])]
@@ -114,21 +116,23 @@ export const SchedulesConfigurator = () => {
         <>
             <div className="overlay"/>
             <div className="variant-form-dialog" style={{left: "35vw"}}>
-                <div className="variant-form-dialog-content">
-                    <h4 className="form-dialog-header">Konfiguruj harmonogramy menu</h4>
-                    {menusConfig.map((menu) => (
-                        <div key={menu.id} className="schedules-config-position">
-                            <div>{menu.name}</div>
-                            {!menu.standard ? (
-                                <MenuScheduler
-                                    menu={menu}
-                                    onPlanChange={(plan) => handlePlanChange(menu.id, plan)}
-                                />
-                            ) : (
-                                "Menu główne"
-                            )}
-                        </div>
-                    ))}
+                <div className={'scheduler-container'} style={{width: '400px'}}>
+                    <FullCalendar plugins={[timeGridPlugin]}
+                                  initialView="timeGridWeek"
+                                  initialDate="2020-01-06"
+                                  headerToolbar={false}
+                                  allDaySlot={false}
+                                  editable={true}
+                                  selectable={true}
+                                  firstDay={1}
+                                  slotMinTime={restaurantSettings.openingTime}
+                                  slotMaxTime={restaurantSettings.closingTime}
+                                  navLinks={false}
+                                  events={[
+                                      {id: 1, title: 'Menu1', start: '2020-01-06T12:00:00', end: '2020-01-06T15:00:00'},
+                                      {id: 2, title: 'Menu2', start: '2020-01-07T13:00:00', end: '2020-01-07T18:00:00'},
+                                  ]}
+                    />
                 </div>
                 <div className="variant-dialog-footer">
                     <button
