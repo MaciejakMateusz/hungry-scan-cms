@@ -18,6 +18,7 @@ import {
 import {setNewCategoryFormActive} from "../../../../slices/dishesCategoriesSlice";
 import ErrorBoundary from "../../../error/ErrorBoundary";
 import {getTranslation} from "../../../../locales/langUtils";
+import {Scheduler} from "../menu/scheduler/Scheduler";
 
 export const DishesCategories = () => {
     const {t} = useTranslation();
@@ -31,6 +32,7 @@ export const DishesCategories = () => {
         editDishFormActive,
         submittedSuccessType
     } = useSelector(state => state.dishesCategories.view);
+    const {schedulerActive} = useSelector(state => state.cms.view);
     const {menu} = useSelector(state => state.cms.fetchActiveMenu);
 
     useEffect(() => {
@@ -86,7 +88,9 @@ export const DishesCategories = () => {
         }
     }
 
-    if (newCategoryFormActive) {
+    if (schedulerActive) {
+        return <Scheduler/>
+    } else if (newCategoryFormActive) {
         return (<NewCategoryForm/>);
     } else if (editCategoryFormActive) {
         return (<EditCategoryForm/>);

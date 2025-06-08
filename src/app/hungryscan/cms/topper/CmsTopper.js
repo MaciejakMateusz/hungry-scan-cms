@@ -23,7 +23,6 @@ import {setActiveRemovalType} from "../../../../slices/dishesCategoriesSlice";
 import {DecisionDialog} from "../dialog-windows/DecisionDialog";
 import {EditMenuFormDialog} from "../menu/EditMenuFormDialog";
 import {useConfirmationMessage} from "../../../../hooks/useConfirmationMessage";
-import {SchedulesConfigurator} from "../menu/SchedulesConfigurator";
 import {useFetchCurrentRestaurant} from "../../../../hooks/useFetchCurrentRestaurant";
 
 export const CmsTopper = () => {
@@ -34,7 +33,6 @@ export const CmsTopper = () => {
     const {activeMenu} = useSelector(state => state.globalParams.globalParams);
     const {menu} = useSelector(state => state.cms.fetchActiveMenu);
     const {isInEditMode, activeRemovalType} = useSelector(state => state.dishesCategories.view);
-    const {schedulerActive} = useSelector(state => state.cms.view);
     const {
         newMenuFormActive,
         editMenuFormActive,
@@ -149,7 +147,6 @@ export const CmsTopper = () => {
                     onClick={() => dispatch(setSchedulerActive(true))}>
                 Konfiguruj harmonogramy
             </button>
-            {schedulerActive && <SchedulesConfigurator/>}
         </header>
     );
 }
