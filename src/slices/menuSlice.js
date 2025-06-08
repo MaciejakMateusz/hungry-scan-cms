@@ -1,5 +1,6 @@
 import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
+import {cleanseAndGroupMenuPlans} from "../utils/schedulerUtils";
 
 export const switchStandard = createAsyncThunk(
     'switchStandard/switchStandard',
@@ -54,12 +55,13 @@ export const switchStandardSlice = createSlice({
 export const updatePlans = createAsyncThunk(
     'updatePlans/updatePlans',
     async (params, {rejectWithValue}) => {
+        const menus = cleanseAndGroupMenuPlans(params.menus);
         const response = await fetch(`${apiHost}/api/cms/menus/update-plans`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(params.menus),
+            body: JSON.stringify(menus),
             credentials: 'include'
         });
 

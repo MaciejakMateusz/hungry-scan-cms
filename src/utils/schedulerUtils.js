@@ -120,3 +120,36 @@ const groupMenus = menus => {
         return accumulator;
     }, []);
 }
+
+export const cleanseAndGroupMenuPlans = menus => {
+    return menus.map(menu => {
+        const flatPlans = menu.plan.map(menuPlan => ({
+            id: null,
+            menuId: menuPlan.menuId,
+            dayOfWeek: menuPlan.dayOfWeek,
+            timeRanges: menuPlan.timeRanges
+        }));
+
+        const grouped = {};
+        flatPlans.forEach(plan => {
+            const key = `${plan.menuId}-${plan.dayOfWeek}`;
+            if (!grouped[key]) {
+                grouped[key] = {
+                    id: plan.id,
+                    menuId: plan.menuId,
+                    dayOfWeek: plan.dayOfWeek,
+                    timeRanges: [...plan.timeRanges]
+                };
+            } else {
+                grouped[key].timeRanges.push(...plan.timeRanges);
+            }
+        });
+
+        const groupedPlans = Object.values(grouped);
+
+        return {
+            ...menu,
+            plan: groupedPlans
+        };
+    });
+}
