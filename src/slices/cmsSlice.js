@@ -143,28 +143,16 @@ export const cmsSlice = createSlice(
     {
         name: 'view',
         initialState: {
-            weekDay: null,
-            timeFrom: null,
-            timeTo: null,
             schedulerActive: false
         },
         reducers: {
-            setWeekDay: (state, action) => {
-                state.weekDay = action.payload;
-            },
-            setTimeFrom: (state, action) => {
-                state.timeFrom = action.payload;
-            },
-            setTimeTo: (state, action) => {
-                state.timeTo = action.payload;
-            },
             setSchedulerActive: (state, action) => {
                 state.schedulerActive = action.payload;
             }
         }
     });
 
-export const {setWeekDay, setTimeFrom, setTimeTo, setSchedulerActive} = cmsSlice.actions;
+export const {setSchedulerActive} = cmsSlice.actions;
 
 const cmsReducer = combineReducers({
     view: cmsSlice.reducer,
