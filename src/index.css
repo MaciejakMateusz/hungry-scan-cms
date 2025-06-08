@@ -2779,6 +2779,71 @@ ul {
     top: -11px;
 }
 
+.scheduler-wrapper {
+    padding: 10px 40px 30px 40px;
+}
+
+.scheduler-flex {
+    display: flex;
+    gap: 15px;
+}
+
+.scheduler-control-panel {
+    position: relative;
+    width: 30%;
+    background: #FFF;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+.external-events {
+    margin-bottom: 20px;
+}
+
+.external-event {
+    margin-bottom: 5px;
+    padding: 5px 8px;
+    border-radius: 5px;
+    background: #3788d8;
+    color: #FFF;
+    cursor: grab;
+}
+
+.external-event:active {
+    cursor: grabbing;
+}
+
+.scheduler-control-panel-footer {
+    display: flex;
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+}
+
+.scheduler-container {
+    width: 70%;
+    background: #FFF;
+}
+
+.scheduler-trash {
+    width: 100%;
+    height: 50px;
+    border-radius: 10px;
+    border: 1px solid grey;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.scheduler-trash:hover {
+    color: orangered;
+}
+
+.scheduler-button {
+    margin-top: 10px;
+}
+
 /*TOGGLE SWITCH*/
 
 /* Container for the toggle switch */
