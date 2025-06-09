@@ -1,16 +1,9 @@
 import React from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {
-    setAddress,
-    setCity,
-    setClosingTime,
-    setName,
-    setOpeningTime,
-    setPostalCode
-} from "../../../../slices/restaurantSlice";
+import {setAddress, setCity, setName, setPostalCode} from "../../../../slices/restaurantSlice";
 import {NameField} from "../../cms/form-components/NameField";
 import {CustomTextField} from "../../cms/form-components/CustomTextField";
-import {TimeField} from "../../cms/form-components/TimeField";
+import {OperatingHoursFieldsSet} from "./OperatingHoursFieldsSet";
 
 export const RestaurantFormTemplate = () => {
     const dispatch = useDispatch();
@@ -18,8 +11,8 @@ export const RestaurantFormTemplate = () => {
         name,
         address,
         postalCode,
-        city,
-        settings} = useSelector(state => state.restaurant.form);
+        city
+    } = useSelector(state => state.restaurant.form);
     const {errorData} = useSelector(state => state.restaurant.post);
 
     return (
@@ -53,22 +46,8 @@ export const RestaurantFormTemplate = () => {
                              placeholder={'Wpisz miasto'}
                              label={'Miasto'}
             />
-            <p>Ustawienia:</p>
             <div>
-                <TimeField name={'openingTime'}
-                           value={settings.openingTime}
-                           onChange={setOpeningTime}
-                           label={'Godzina otwarcia'}
-                           info={'Godziny otwarcia ułatwią zaplanowanie harmonogramu menu'}
-                           error={errorData?.openingTime}
-                />
-                <TimeField name={'closingTime'}
-                           value={settings.closingTime}
-                           onChange={setClosingTime}
-                           label={'Godzina zamknięcia'}
-                           info={'Godziny otwarcia ułatwią zaplanowanie harmonogramu menu'}
-                           error={errorData?.closingTime}
-                />
+                <OperatingHoursFieldsSet/>
                 {errorData?.settings && <span className={'form-validation-msg'}>{errorData?.settings}</span>}
             </div>
 
