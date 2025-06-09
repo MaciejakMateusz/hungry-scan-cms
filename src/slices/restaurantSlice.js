@@ -200,8 +200,17 @@ export const formSlice = createSlice(
             settings: {
                 id: null,
                 restaurantId: null,
+                operatingHours: {
+                    MONDAY: {startTime: null, endTime: null, available: true},
+                    TUESDAY: {startTime: null, endTime: null, available: true},
+                    WEDNESDAY: {startTime: null, endTime: null, available: true},
+                    THURSDAY: {startTime: null, endTime: null, available: true},
+                    FRIDAY: {startTime: null, endTime: null, available: true},
+                    SATURDAY: {startTime: null, endTime: null, available: true},
+                    SUNDAY: {startTime: null, endTime: null, available: true}
+                },
                 openingTime: null,
-                closingTime: null,
+                closingTime: null
             },
             errorMessage: null
         },
@@ -260,6 +269,69 @@ export const formSlice = createSlice(
             setClosingTime: (state, action) => {
                 state.settings.closingTime = action.payload;
             },
+            setMondayOpeningTime: (state, action) => {
+                state.settings.operatingHours.MONDAY.startTime = action.payload;
+            },
+            setMondayClosingTime: (state, action) => {
+                state.settings.operatingHours.MONDAY.endTime = action.payload;
+            },
+            setMondayAvailable: (state, action) => {
+                state.settings.operatingHours.MONDAY.available = action.payload;
+            },
+            setTuesdayOpeningTime: (state, action) => {
+                state.settings.operatingHours.TUESDAY.startTime = action.payload;
+            },
+            setTuesdayClosingTime: (state, action) => {
+                state.settings.operatingHours.TUESDAY.endTime = action.payload;
+            },
+            setTuesdayAvailable: (state, action) => {
+                state.settings.operatingHours.TUESDAY.available = action.payload;
+            },
+            setWednesdayOpeningTime: (state, action) => {
+                state.settings.operatingHours.WEDNESDAY.startTime = action.payload;
+            },
+            setWednesdayClosingTime: (state, action) => {
+                state.settings.operatingHours.WEDNESDAY.endTime = action.payload;
+            },
+            setWednesdayAvailable: (state, action) => {
+                state.settings.operatingHours.WEDNESDAY.available = action.payload;
+            },
+            setThursdayOpeningTime: (state, action) => {
+                state.settings.operatingHours.THURSDAY.startTime = action.payload;
+            },
+            setThursdayClosingTime: (state, action) => {
+                state.settings.operatingHours.THURSDAY.endTime = action.payload;
+            },
+            setThursdayAvailable: (state, action) => {
+                state.settings.operatingHours.THURSDAY.available = action.payload;
+            },
+            setFridayOpeningTime: (state, action) => {
+                state.settings.operatingHours.FRIDAY.startTime = action.payload;
+            },
+            setFridayClosingTime: (state, action) => {
+                state.settings.operatingHours.FRIDAY.endTime = action.payload;
+            },
+            setFridayAvailable: (state, action) => {
+                state.settings.operatingHours.FRIDAY.available = action.payload;
+            },
+            setSaturdayOpeningTime: (state, action) => {
+                state.settings.operatingHours.SATURDAY.startTime = action.payload;
+            },
+            setSaturdayClosingTime: (state, action) => {
+                state.settings.operatingHours.SATURDAY.endTime = action.payload;
+            },
+            setSaturdayAvailable: (state, action) => {
+                state.settings.operatingHours.SATURDAY.available = action.payload;
+            },
+            setSundayOpeningTime: (state, action) => {
+                state.settings.operatingHours.SUNDAY.startTime = action.payload;
+            },
+            setSundayClosingTime: (state, action) => {
+                state.settings.operatingHours.SUNDAY.endTime = action.payload;
+            },
+            setSundayAvailable: (state, action) => {
+                state.settings.operatingHours.SUNDAY.available = action.payload;
+            },
             setErrorMessage: (state, action) => {
                 state.errorMessage = action.payload;
             },
@@ -297,6 +369,27 @@ export const {
     setSettingsRestaurantId,
     setOpeningTime,
     setClosingTime,
+    setMondayOpeningTime,
+    setMondayClosingTime,
+    setMondayAvailable,
+    setTuesdayOpeningTime,
+    setTuesdayClosingTime,
+    setTuesdayAvailable,
+    setWednesdayOpeningTime,
+    setWednesdayClosingTime,
+    setWednesdayAvailable,
+    setThursdayOpeningTime,
+    setThursdayClosingTime,
+    setThursdayAvailable,
+    setFridayOpeningTime,
+    setFridayClosingTime,
+    setFridayAvailable,
+    setSaturdayOpeningTime,
+    setSaturdayClosingTime,
+    setSaturdayAvailable,
+    setSundayOpeningTime,
+    setSundayClosingTime,
+    setSundayAvailable,
     setErrorMessage,
     clearForm
 } = formSlice.actions;
