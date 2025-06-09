@@ -7,13 +7,30 @@ import {
     clearForm,
     postRestaurant,
     setAddress,
-    setCity, setClosingTime,
+    setCity,
     setEditRestaurantFormActive,
     setErrorData,
-    setErrorMessage, setId,
-    setName, setOpeningTime,
+    setErrorMessage, setFridayAvailable,
+    setFridayClosingTime,
+    setFridayOpeningTime,
+    setId, setMondayAvailable,
+    setMondayClosingTime,
+    setMondayOpeningTime,
+    setName,
     setPostalCode,
-    setRestaurantUpdated, setSettingsId, setSettingsRestaurantId,
+    setRestaurantUpdated, setSaturdayAvailable,
+    setSaturdayClosingTime,
+    setSaturdayOpeningTime,
+    setSettingsId,
+    setSettingsRestaurantId, setSundayAvailable,
+    setSundayClosingTime,
+    setSundayOpeningTime, setThursdayAvailable,
+    setThursdayClosingTime,
+    setThursdayOpeningTime, setTuesdayAvailable,
+    setTuesdayClosingTime,
+    setTuesdayOpeningTime, setWednesdayAvailable,
+    setWednesdayClosingTime,
+    setWednesdayOpeningTime,
 } from "../../../../slices/restaurantSlice";
 import {useConfirmationMessage} from "../../../../hooks/useConfirmationMessage";
 
@@ -38,21 +55,121 @@ export const EditRestaurantForm = () => {
             dispatch(setCity(restaurantValue.city));
             dispatch(setSettingsId(restaurantValue.settings.id));
             dispatch(setSettingsRestaurantId(restaurantValue.id));
-            const openingTimeRaw = restaurantValue.settings.openingTime;
-            const openingTimeLabel = openingTimeRaw.substring(0, openingTimeRaw.length - 3)
-            const closingTimeRaw = restaurantValue.settings.closingTime;
-            const closingTimeLabel = closingTimeRaw.substring(0, closingTimeRaw.length - 3)
-            dispatch(setOpeningTime({
-                value: openingTimeRaw,
-                label: openingTimeLabel
+
+            const operatingHours = restaurantValue.settings.operatingHours;
+
+            const mondayOpeningTime = operatingHours.MONDAY.startTime;
+            const mondayOpeningTimeLabel = parseOperatingTimeToLabel(mondayOpeningTime);
+            dispatch(setMondayOpeningTime({
+                value: mondayOpeningTime,
+                label: mondayOpeningTimeLabel
             }));
-            dispatch(setClosingTime({
-                value: closingTimeRaw,
-                label: closingTimeLabel
+
+            const mondayClosingTime = operatingHours.MONDAY.endTime;
+            const mondayClosingTimeLabel = parseOperatingTimeToLabel(mondayClosingTime);
+            dispatch(setMondayClosingTime({
+                value: mondayClosingTime,
+                label: mondayClosingTimeLabel
             }));
+            dispatch(setMondayAvailable(operatingHours.MONDAY.available));
+
+            const tuesdayOpeningTime = operatingHours.TUESDAY.startTime;
+            const tuesdayOpeningTimeLabel = parseOperatingTimeToLabel(tuesdayOpeningTime);
+            dispatch(setTuesdayOpeningTime({
+                value: tuesdayOpeningTime,
+                label: tuesdayOpeningTimeLabel
+            }));
+
+            const tuesdayClosingTime = operatingHours.TUESDAY.endTime;
+            const tuesdayClosingTimeLabel = parseOperatingTimeToLabel(tuesdayClosingTime);
+            dispatch(setTuesdayClosingTime({
+                value: tuesdayClosingTime,
+                label: tuesdayClosingTimeLabel
+            }));
+            dispatch(setTuesdayAvailable(operatingHours.TUESDAY.available));
+
+            const wednesdayOpeningTime = operatingHours.WEDNESDAY.startTime;
+            const wednesdayOpeningTimeLabel = parseOperatingTimeToLabel(wednesdayOpeningTime);
+            dispatch(setWednesdayOpeningTime({
+                value: wednesdayOpeningTime,
+                label: wednesdayOpeningTimeLabel
+            }));
+
+            const wednesdayClosingTime = operatingHours.WEDNESDAY.endTime;
+            const wednesdayClosingTimeLabel = parseOperatingTimeToLabel(wednesdayClosingTime);
+            dispatch(setWednesdayClosingTime({
+                value: wednesdayClosingTime,
+                label: wednesdayClosingTimeLabel
+            }));
+            dispatch(setWednesdayAvailable(operatingHours.WEDNESDAY.available));
+
+            const thursdayOpeningTime = operatingHours.THURSDAY.startTime;
+            const thursdayOpeningTimeLabel = parseOperatingTimeToLabel(thursdayOpeningTime);
+            dispatch(setThursdayOpeningTime({
+                value: thursdayOpeningTime,
+                label: thursdayOpeningTimeLabel
+            }));
+
+            const thursdayClosingTime = operatingHours.THURSDAY.endTime;
+            const thursdayClosingTimeLabel = parseOperatingTimeToLabel(thursdayClosingTime);
+            dispatch(setThursdayClosingTime({
+                value: thursdayClosingTime,
+                label: thursdayClosingTimeLabel
+            }));
+            dispatch(setThursdayAvailable(operatingHours.THURSDAY.available));
+
+            const fridayOpeningTime = operatingHours.FRIDAY.startTime;
+            const fridayOpeningTimeLabel = parseOperatingTimeToLabel(fridayOpeningTime);
+            dispatch(setFridayOpeningTime({
+                value: fridayOpeningTime,
+                label: fridayOpeningTimeLabel
+            }));
+
+            const fridayClosingTime = operatingHours.FRIDAY.endTime;
+            const fridayClosingTimeLabel = parseOperatingTimeToLabel(fridayClosingTime);
+            dispatch(setFridayClosingTime({
+                value: fridayClosingTime,
+                label: fridayClosingTimeLabel
+            }));
+            dispatch(setFridayAvailable(operatingHours.FRIDAY.available));
+
+            const saturdayOpeningTime = operatingHours.SATURDAY.startTime;
+            const saturdayOpeningTimeLabel = parseOperatingTimeToLabel(saturdayOpeningTime);
+            dispatch(setSaturdayOpeningTime({
+                value: saturdayOpeningTime,
+                label: saturdayOpeningTimeLabel
+            }));
+
+            const saturdayClosingTime = operatingHours.SATURDAY.endTime;
+            const saturdayClosingTimeLabel = parseOperatingTimeToLabel(saturdayClosingTime);
+            dispatch(setSaturdayClosingTime({
+                value: saturdayClosingTime,
+                label: saturdayClosingTimeLabel
+            }));
+            dispatch(setSaturdayAvailable(operatingHours.SATURDAY.available));
+
+            const sundayOpeningTime = operatingHours.SUNDAY.startTime;
+            const sundayOpeningTimeLabel = parseOperatingTimeToLabel(sundayOpeningTime);
+            dispatch(setSundayOpeningTime({
+                value: sundayOpeningTime,
+                label: sundayOpeningTimeLabel,
+            }));
+
+            const sundayClosingTime = operatingHours.SUNDAY.endTime;
+            const sundayClosingTimeLabel = parseOperatingTimeToLabel(sundayClosingTime);
+            dispatch(setSundayClosingTime({
+                value: sundayClosingTime,
+                label: sundayClosingTimeLabel
+            }));
+            dispatch(setSundayAvailable(operatingHours.SUNDAY.available));
         }
         fillForm();
     }, [restaurant, dispatch]);
+
+    const parseOperatingTimeToLabel = time => {
+        if (!time) return null;
+        return time.substring(0, time.length - 3)
+    }
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
