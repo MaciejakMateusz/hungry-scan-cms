@@ -8,14 +8,54 @@ import {generateUUID} from "../../../../../utils/utils";
 import {
     getDayOfWeek,
     getLocalTimeFromDate,
-    parseEventsToMenus, parseMenusToEvents,
+    parseEventsToMenus,
+    parseMenusToEvents,
     toLocalISOString
 } from "../../../../../utils/schedulerUtils";
 
 export const SchedulerCalendar = ({menusConfig, setMenusConfig, externalRef, trashRef}) => {
     const {restaurant} = useSelector((state) => state.dashboard.view);
     const restaurantSettings = restaurant?.value?.settings;
-    const {openingTime, closingTime} = restaurantSettings;
+
+    const businessHours = useMemo(() => {
+        const dayMap = {
+            MONDAY: 1,
+            TUESDAY: 2,
+            WEDNESDAY: 3,
+            THURSDAY: 4,
+            FRIDAY: 5,
+            SATURDAY: 6,
+            SUNDAY: 0,
+        };
+
+        return Object.entries(restaurantSettings?.operatingHours ?? {})
+            .flatMap(([dayName, {available, startTime, endTime}]) => {
+                if (!available || !startTime || !endTime) return [];
+
+                const dayNum = dayMap[dayName];
+
+                if (endTime > startTime) {
+                    return {
+                        daysOfWeek: [dayNum],
+                        startTime,
+                        endTime
+                    };
+                }
+
+                return [
+                    {
+                        daysOfWeek: [dayNum],
+                        startTime,
+                        endTime: '24:00:00'
+                    },
+                    {
+                        daysOfWeek: [(dayNum + 1) % 7],
+                        startTime: '00:00:00',
+                        endTime
+                    }
+                ];
+            });
+    }, [restaurantSettings?.operatingHours]);
 
     const events = useMemo(() => {
         return parseMenusToEvents(menusConfig);
@@ -32,32 +72,9 @@ export const SchedulerCalendar = ({menusConfig, setMenusConfig, externalRef, tra
                     extendedProps: ev.extendedProps
                 }));
 
-            const menusFromEvents = parseEventsToMenus(allEvents);
-            const newMenusConfig = menusConfig.map((m) => {
-                const updated = menusFromEvents.find(u => String(u.id) === String(m.id));
-                if (!updated) return m;
-                const plan = updated.plan.map(p => {
-                    return ({
-                        id: p.id,
-                        menuId: Number(p.menuId),
-                        dayOfWeek: p.dayOfWeek,
-                        timeRanges: [
-                            {
-                                startTime: p.startTime,
-                                endTime: p.endTime
-                            }
-                        ]
-                    });
-                });
-
-                return {
-                    ...m,
-                    plan
-                };
-            });
-            setMenusConfig(newMenusConfig);
+            setMenusConfig(prevState => parseEventsToMenus(allEvents, prevState));
         },
-        [menusConfig, setMenusConfig]
+        [setMenusConfig]
     );
 
     const handleEventChange = useCallback(
@@ -126,13 +143,9 @@ export const SchedulerCalendar = ({menusConfig, setMenusConfig, externalRef, tra
                           editable={true}
                           selectable={true}
                           firstDay={1}
-                          slotMinTime={openingTime}
-                          slotMaxTime={closingTime}
-                          businessHours={{
-                              daysOfWeek: [1, 2, 3, 4, 5, 6, 0],
-                              startTime: openingTime,
-                              endTime: closingTime
-                          }}
+                          slotMinTime={'00:00'}
+                          slotMaxTime={'24:00'}
+                          businessHours={businessHours}
                           eventConstraint={'businessHours'}
                           navLinks={false}
                           events={events}
