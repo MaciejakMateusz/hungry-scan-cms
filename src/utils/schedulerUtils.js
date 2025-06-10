@@ -1,4 +1,5 @@
 import {generateUUID} from "./utils";
+import {useCallback} from "react";
 
 export const WEEK_DAYS = [
     "MONDAY", "TUESDAY", "WEDNESDAY",
@@ -67,7 +68,7 @@ export const parseMenusToEvents = menus => {
                     id: generateUUID(),
                     title: menu.name,
                     start: joinDateTime(date, timeRange.startTime),
-                    end: joinDateTime(date, timeRange.endTime),
+                    end: joinDateTime(date, timeRange.endTime === '00:00:00' ? '24:00:00' : timeRange.endTime),
                     extendedProps: {
                         menuId: menu.id,
                         standard: menu.standard
@@ -80,9 +81,9 @@ export const parseMenusToEvents = menus => {
     return schedulerEvents;
 }
 
-export const parseEventsToMenus = events => {
-    const menus = parseMenus(events)
-    return groupMenus(menus);
+export const parseEventsToMenus = (events, menusConfig) => {
+    const menus = groupMenus(parseMenus(events));
+    return syncWithMenusConfig(menus, menusConfig)
 }
 
 const parseMenus = events => {
@@ -121,6 +122,29 @@ const groupMenus = menus => {
     }, []);
 }
 
+const syncWithMenusConfig = (menusFromEvents, menusConfig) => menusConfig.map(m => {
+    const updated = menusFromEvents.find(u => String(u.id) === String(m.id));
+    if (!updated) return {...m, plan: []};
+    const plan = updated.plan.map(p => {
+        return ({
+            id: p.id,
+            menuId: Number(p.menuId),
+            dayOfWeek: p.dayOfWeek,
+            timeRanges: [
+                {
+                    startTime: p.startTime,
+                    endTime: p.endTime
+                }
+            ]
+        });
+    });
+
+    return {
+        ...m,
+        plan
+    };
+});
+
 export const cleanseAndGroupMenuPlans = menus => {
     return menus.map(menu => {
         const flatPlans = menu.plan.map(menuPlan => ({
@@ -133,15 +157,19 @@ export const cleanseAndGroupMenuPlans = menus => {
         const grouped = {};
         flatPlans.forEach(plan => {
             const key = `${plan.menuId}-${plan.dayOfWeek}`;
+            const cleansedTimeRanges = plan.timeRanges.map(timeRange => ({
+                ...timeRange,
+                endTime: timeRange.endTime === '24:00:00' ? '00:00:00' : timeRange.endTime
+            }));
             if (!grouped[key]) {
                 grouped[key] = {
                     id: plan.id,
                     menuId: plan.menuId,
                     dayOfWeek: plan.dayOfWeek,
-                    timeRanges: [...plan.timeRanges]
+                    timeRanges: [...cleansedTimeRanges]
                 };
             } else {
-                grouped[key].timeRanges.push(...plan.timeRanges);
+                grouped[key].timeRanges.push(...cleansedTimeRanges);
             }
         });
 
@@ -152,4 +180,102 @@ export const cleanseAndGroupMenuPlans = menus => {
             plan: groupedPlans
         };
     });
+}
+
+export const fillGapsWithStandard = (setMenusConfig, operatingHours) => {
+    setMenusConfig(prevMenus => {
+        const standardMenu = prevMenus.find(m => m.standard);
+        if (!standardMenu) return prevMenus;
+
+        const segmentsByDay = createDaySegments(operatingHours);
+        const rangesByDay = createDayRanges(prevMenus);
+        const gapPlans = computeGapPlans(rangesByDay, segmentsByDay, standardMenu);
+
+        return prevMenus.map(menu =>
+            menu.id === standardMenu.id
+                ? {...menu, plan: gapPlans}
+                : menu
+        );
+    });
+};
+
+const createDaySegments = operatingHours => {
+    const segmentsByDay = WEEK_DAYS.reduce((acc, day) => {
+        acc[day] = [];
+        return acc;
+    }, {});
+
+    WEEK_DAYS.forEach((day, idx) => {
+        const oh = operatingHours[day];
+        if (!oh?.available || !oh.startTime || !oh.endTime) return;
+
+        const {startTime, endTime} = oh;
+        if (endTime > startTime) {
+            segmentsByDay[day].push({start: startTime, end: endTime});
+        } else {
+            segmentsByDay[day].push({start: startTime, end: '24:00:00'});
+            const nextDay = WEEK_DAYS[(idx + 1) % WEEK_DAYS.length];
+            segmentsByDay[nextDay].push({start: '00:00:00', end: endTime});
+        }
+    });
+    return segmentsByDay;
+}
+
+const createDayRanges = (prevMenus) => {
+    const rangesByDay = WEEK_DAYS.reduce((acc, day) => {
+        acc[day] = [];
+        return acc;
+    }, {});
+
+    prevMenus.forEach(menu => {
+        if (!menu.standard) {
+            menu.plan?.forEach(({dayOfWeek, timeRanges}) => {
+                timeRanges.forEach(({startTime, endTime}) => {
+                    rangesByDay[dayOfWeek].push({start: startTime, end: endTime});
+                });
+            });
+        }
+    });
+    return rangesByDay;
+}
+
+const computeGapPlans = (rangesByDay, segmentsByDay, standardMenu) => {
+    const gapPlans = [];
+
+    WEEK_DAYS.forEach(day => {
+        const dayRanges = rangesByDay[day].sort((a, b) =>
+            a.start.localeCompare(b.start)
+        );
+
+        segmentsByDay[day].forEach(({start: segStart, end: segEnd}) => {
+            let cursor = segStart;
+
+            dayRanges
+                .filter(({start, end}) => start < segEnd && end > segStart)
+                .sort((a, b) => a.start.localeCompare(b.start))
+                .forEach(({start, end}) => {
+                    if (start > cursor) {
+                        gapPlans.push({
+                            id: generateUUID(),
+                            menuId: standardMenu.id,
+                            dayOfWeek: day,
+                            timeRanges: [{startTime: cursor, endTime: start}],
+                        });
+                    }
+                    if (end > cursor) {
+                        cursor = end > segEnd ? segEnd : end;
+                    }
+                });
+
+            if (cursor < segEnd) {
+                gapPlans.push({
+                    id: generateUUID(),
+                    menuId: standardMenu.id,
+                    dayOfWeek: day,
+                    timeRanges: [{startTime: cursor, endTime: segEnd}],
+                });
+            }
+        });
+    });
+    return gapPlans;
 }
