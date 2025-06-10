@@ -1,5 +1,4 @@
 import {generateUUID} from "./utils";
-import {useCallback} from "react";
 
 export const WEEK_DAYS = [
     "MONDAY", "TUESDAY", "WEDNESDAY",

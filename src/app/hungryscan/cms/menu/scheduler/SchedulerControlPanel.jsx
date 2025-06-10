@@ -2,12 +2,11 @@ import {ReactSVG} from "react-svg";
 import {setSchedulerActive} from "../../../../../slices/cmsSlice";
 import React, {useCallback} from "react";
 import {useTranslation} from "react-i18next";
-import {WEEK_DAYS} from "../../../../../utils/schedulerUtils";
-import {generateUUID} from "../../../../../utils/utils";
 import {useDispatch, useSelector} from "react-redux";
 import {setPlansUpdated, updatePlans} from "../../../../../slices/menuSlice";
 import {useConfirmationMessage} from "../../../../../hooks/useConfirmationMessage";
 import {useFetchCurrentRestaurant} from "../../../../../hooks/useFetchCurrentRestaurant";
+import {fillGapsWithStandard} from "../../../../../utils/schedulerUtils";
 
 export const SchedulerControlPanel = ({menusConfig, setMenusConfig, externalRef, trashRef}) => {
     const {t} = useTranslation();
@@ -16,7 +15,7 @@ export const SchedulerControlPanel = ({menusConfig, setMenusConfig, externalRef,
     const renderConfirmation = useConfirmationMessage(setPlansUpdated);
     const getRestaurant = useFetchCurrentRestaurant();
     const restaurantSettings = restaurant?.value?.settings;
-    const {openingTime, closingTime} = restaurantSettings;
+    const operatingHours = restaurantSettings.operatingHours;
 
     const clearSchedules = () => {
         setMenusConfig(prevMenus =>
@@ -28,60 +27,8 @@ export const SchedulerControlPanel = ({menusConfig, setMenusConfig, externalRef,
     };
 
     const fillWithStandard = useCallback(() => {
-        setMenusConfig(prevMenus => {
-            const standardMenu = prevMenus.find(m => m.standard);
-            if (!standardMenu) return prevMenus;
-            const rangesByDay = WEEK_DAYS.reduce((acc, d) => ({...acc, [d]: []}), {});
-
-            prevMenus.forEach(menu => {
-                if (!menu.standard) {
-                    menu.plan?.forEach(plan =>
-                        plan.timeRanges.forEach(timeRange =>
-                            rangesByDay[plan.dayOfWeek].push({
-                                start: timeRange.startTime,
-                                end: timeRange.endTime
-                            })
-                        )
-                    );
-                }
-            });
-
-            const gapPlans = [];
-
-            WEEK_DAYS.forEach(day => {
-                const dayRanges = rangesByDay[day]
-                    .sort((a, b) => a.start.localeCompare(b.start));
-
-                let cursor = openingTime;
-                dayRanges.forEach(({start, end}) => {
-                    if (start > cursor) {
-                        gapPlans.push({
-                            id: generateUUID(),
-                            menuId: standardMenu.id,
-                            dayOfWeek: day,
-                            timeRanges: [{startTime: cursor, endTime: start}]
-                        });
-                    }
-                    if (end > cursor) cursor = end;
-                });
-
-                if (cursor < closingTime) {
-                    gapPlans.push({
-                        id: generateUUID(),
-                        menuId: standardMenu.id,
-                        dayOfWeek: day,
-                        timeRanges: [{startTime: cursor, endTime: closingTime}]
-                    });
-                }
-            });
-
-            return prevMenus.map(menu =>
-                menu.id === standardMenu.id
-                    ? {...menu, plan: gapPlans}
-                    : menu
-            );
-        });
-    }, [openingTime, closingTime, setMenusConfig]);
+        fillGapsWithStandard(setMenusConfig, operatingHours);
+    }, [operatingHours, setMenusConfig]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
