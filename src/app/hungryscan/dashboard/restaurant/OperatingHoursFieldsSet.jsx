@@ -2,23 +2,30 @@ import {TimeField} from "../../cms/form-components/TimeField";
 import {
     setFridayAvailable,
     setFridayClosingTime,
-    setFridayOpeningTime, setMondayAvailable,
+    setFridayOpeningTime,
+    setMondayAvailable,
     setMondayClosingTime,
-    setMondayOpeningTime, setSaturdayAvailable,
+    setMondayOpeningTime,
+    setSaturdayAvailable,
     setSaturdayClosingTime,
-    setSaturdayOpeningTime, setSundayAvailable,
+    setSaturdayOpeningTime,
+    setSundayAvailable,
     setSundayClosingTime,
-    setSundayOpeningTime, setThursdayAvailable,
+    setSundayOpeningTime,
+    setThursdayAvailable,
     setThursdayClosingTime,
-    setThursdayOpeningTime, setTuesdayAvailable,
+    setThursdayOpeningTime,
+    setTuesdayAvailable,
     setTuesdayClosingTime,
-    setTuesdayOpeningTime, setWednesdayAvailable,
+    setTuesdayOpeningTime,
+    setWednesdayAvailable,
     setWednesdayClosingTime,
     setWednesdayOpeningTime
 } from "../../../../slices/restaurantSlice";
 import React from "react";
 import {useTranslation} from "react-i18next";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
+import {LogicalToggle} from "../../cms/form-components/LogicalToggle";
 
 export const OperatingHoursFieldsSet = () => {
     const {t} = useTranslation();
@@ -28,113 +35,104 @@ export const OperatingHoursFieldsSet = () => {
         <>
             <div>Godziny otwarcia:</div>
             <div className={'flex-centered'}>
-                <LogicalToggle changeHandler={setMondayAvailable}
-                               value={operatingHours.MONDAY?.available}/>
+                <LogicalToggle id={'mondayAvailable'}
+                               changeHandler={setMondayAvailable}
+                               value={operatingHours?.MONDAY?.available}/>
                 <div>{t('monday')}</div>
                 <TimeField name={'mondayOpeningTime'}
                            value={operatingHours?.MONDAY?.startTime}
                            onChange={setMondayOpeningTime}
                 />
                 <TimeField name={'mondayClosingTime'}
-                           value={operatingHours.MONDAY?.endTime}
+                           value={operatingHours?.MONDAY?.endTime}
                            onChange={setMondayClosingTime}
                 />
 
             </div>
             <div className={'flex-centered'}>
-                <LogicalToggle changeHandler={setTuesdayAvailable}
-                               value={operatingHours.TUESDAY?.available}/>
+                <LogicalToggle id={'tuesdayAvailable'}
+                               changeHandler={setTuesdayAvailable}
+                               value={operatingHours?.TUESDAY?.available}/>
                 <div>{t('tuesday')}</div>
                 <TimeField name={'tuesdayOpeningTime'}
-                           value={operatingHours.TUESDAY?.startTime}
+                           value={operatingHours?.TUESDAY?.startTime}
                            onChange={setTuesdayOpeningTime}
                 />
                 <TimeField name={'tuesdayClosingTime'}
-                           value={operatingHours.TUESDAY?.endTime}
+                           value={operatingHours?.TUESDAY?.endTime}
                            onChange={setTuesdayClosingTime}
                 />
             </div>
             <div className={'flex-centered'}>
-                <LogicalToggle changeHandler={setWednesdayAvailable}
-                               value={operatingHours.WEDNESDAY?.available}/>
+                <LogicalToggle id={'wednesdayAvailable'}
+                               changeHandler={setWednesdayAvailable}
+                               value={operatingHours?.WEDNESDAY?.available}/>
                 <div>{t('wednesday')}</div>
                 <TimeField name={'wednesdayOpeningTime'}
-                           value={operatingHours.WEDNESDAY?.startTime}
+                           value={operatingHours?.WEDNESDAY?.startTime}
                            onChange={setWednesdayOpeningTime}
                 />
                 <TimeField name={'wednesdayClosingTime'}
-                           value={operatingHours.WEDNESDAY?.endTime}
+                           value={operatingHours?.WEDNESDAY?.endTime}
                            onChange={setWednesdayClosingTime}
                 />
             </div>
             <div className={'flex-centered'}>
-                <LogicalToggle changeHandler={setThursdayAvailable}
-                               value={operatingHours.THURSDAY?.available}/>
+                <LogicalToggle id={'thursdayAvailable'}
+                               changeHandler={setThursdayAvailable}
+                               value={operatingHours?.THURSDAY?.available}/>
                 <div>{t('thursday')}</div>
                 <TimeField name={'thursdayOpeningTime'}
-                           value={operatingHours.THURSDAY?.startTime}
+                           value={operatingHours?.THURSDAY?.startTime}
                            onChange={setThursdayOpeningTime}
                 />
                 <TimeField name={'thursdayClosingTime'}
-                           value={operatingHours.THURSDAY?.endTime}
+                           value={operatingHours?.THURSDAY?.endTime}
                            onChange={setThursdayClosingTime}
                 />
             </div>
             <div className={'flex-centered'}>
-                <LogicalToggle changeHandler={setFridayAvailable}
-                               value={operatingHours.FRIDAY?.available}/>
+                <LogicalToggle id={'fridayAvailable'}
+                               changeHandler={setFridayAvailable}
+                               value={operatingHours?.FRIDAY?.available}/>
                 <div>{t('friday')}</div>
                 <TimeField name={'fridayOpeningTime'}
-                           value={operatingHours.FRIDAY?.startTime}
+                           value={operatingHours?.FRIDAY?.startTime}
                            onChange={setFridayOpeningTime}
                 />
                 <TimeField name={'fridayClosingTime'}
-                           value={operatingHours.FRIDAY?.endTime}
+                           value={operatingHours?.FRIDAY?.endTime}
                            onChange={setFridayClosingTime}
                 />
             </div>
             <div className={'flex-centered'}>
-                <LogicalToggle changeHandler={setSaturdayAvailable}
-                               value={operatingHours.SATURDAY?.available}/>
+                <LogicalToggle id={'saturdayAvailable'}
+                               changeHandler={setSaturdayAvailable}
+                               value={operatingHours?.SATURDAY?.available}/>
                 <div>{t('saturday')}</div>
                 <TimeField name={'saturdayOpeningTime'}
-                           value={operatingHours.SATURDAY?.startTime}
+                           value={operatingHours?.SATURDAY?.startTime}
                            onChange={setSaturdayOpeningTime}
                 />
                 <TimeField name={'saturdayClosingTime'}
-                           value={operatingHours.SATURDAY?.endTime}
+                           value={operatingHours?.SATURDAY?.endTime}
                            onChange={setSaturdayClosingTime}
                 />
             </div>
             <div className={'flex-centered'}>
-                <LogicalToggle changeHandler={setSundayAvailable}
-                               value={operatingHours.SUNDAY?.available}/>
+                <LogicalToggle id={'sundayAvailable'}
+                               changeHandler={setSundayAvailable}
+                               value={operatingHours?.SUNDAY?.available}/>
                 <div>{t('sunday')}</div>
                 <TimeField name={'sundayOpeningTime'}
-                           value={operatingHours.SUNDAY?.startTime}
+                           value={operatingHours?.SUNDAY?.startTime}
                            onChange={setSundayOpeningTime}
                 />
                 <TimeField name={'sundayClosingTime'}
-                           value={operatingHours.SUNDAY?.endTime}
+                           value={operatingHours?.SUNDAY?.endTime}
                            onChange={setSundayClosingTime}
                 />
             </div>
         </>
-    );
-}
-
-export const LogicalToggle = ({changeHandler, value}) => {
-    const dispatch = useDispatch();
-    return (
-        <div className="toggle-switch">
-            <div className={'form-field-wrapper'}>
-                <input type="checkbox" id={'sundayAvailable'}
-                       name={'sundayAvailable'}
-                       value={value}
-                       onChange={() => dispatch(changeHandler(!value))}
-                       checked={value}/>
-                <label htmlFor={'sundayAvailable'} className="toggle-label"></label>
-            </div>
-        </div>
     );
 }
