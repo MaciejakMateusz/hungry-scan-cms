@@ -59,6 +59,44 @@ export const postRestaurant = createAsyncThunk(
     async (params, {getState, rejectWithValue}) => {
         try {
             const state = getState().restaurant.form;
+            const rawOperatingHours = state.settings.operatingHours;
+            const operatingHours = {
+                MONDAY: {
+                    ...rawOperatingHours.MONDAY,
+                    startTime: rawOperatingHours.MONDAY.startTime.value,
+                    endTime: rawOperatingHours.MONDAY.endTime.value
+                },
+                TUESDAY: {
+                    ...rawOperatingHours.TUESDAY,
+                    startTime: rawOperatingHours.TUESDAY.startTime.value,
+                    endTime: rawOperatingHours.TUESDAY.endTime.value
+                },
+                WEDNESDAY: {
+                    ...rawOperatingHours.WEDNESDAY,
+                    startTime: rawOperatingHours.WEDNESDAY.startTime.value,
+                    endTime: rawOperatingHours.WEDNESDAY.endTime.value
+                },
+                THURSDAY: {
+                    ...rawOperatingHours.THURSDAY,
+                    startTime: rawOperatingHours.THURSDAY.startTime.value,
+                    endTime: rawOperatingHours.THURSDAY.endTime.value
+                },
+                FRIDAY: {
+                    ...rawOperatingHours.FRIDAY,
+                    startTime: rawOperatingHours.FRIDAY.startTime.value,
+                    endTime: rawOperatingHours.FRIDAY.endTime.value
+                },
+                SATURDAY: {
+                    ...rawOperatingHours.SATURDAY,
+                    startTime: rawOperatingHours.SATURDAY.startTime.value,
+                    endTime: rawOperatingHours.SATURDAY.endTime.value
+                },
+                SUNDAY: {
+                    ...rawOperatingHours.SUNDAY,
+                    startTime: rawOperatingHours.SUNDAY.startTime.value,
+                    endTime: rawOperatingHours.SUNDAY.endTime.value
+                }
+            }
             const response = await fetch(`${apiHost}/api/cms/restaurants/${params.action}`, {
                 method: params.action === 'add' ? 'POST' : 'PATCH',
                 headers: {
@@ -73,8 +111,7 @@ export const postRestaurant = createAsyncThunk(
                     settings: {
                         id: state.settings.id,
                         restaurantId: state.settings.restaurantId,
-                        openingTime: state.settings.openingTime.value,
-                        closingTime: state.settings.closingTime.value
+                        operatingHours: operatingHours
                     }
                 }),
                 credentials: 'include'
@@ -345,6 +382,15 @@ export const formSlice = createSlice(
                     restaurantId: null,
                     openingTime: null,
                     closingTime: null,
+                    operatingHours: {
+                        MONDAY: {startTime: null, endTime: null, available: true},
+                        TUESDAY: {startTime: null, endTime: null, available: true},
+                        WEDNESDAY: {startTime: null, endTime: null, available: true},
+                        THURSDAY: {startTime: null, endTime: null, available: true},
+                        FRIDAY: {startTime: null, endTime: null, available: true},
+                        SATURDAY: {startTime: null, endTime: null, available: true},
+                        SUNDAY: {startTime: null, endTime: null, available: true}
+                    }
                 };
             }
         }
