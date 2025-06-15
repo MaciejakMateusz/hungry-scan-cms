@@ -10,25 +10,32 @@ import {
     setCity,
     setEditRestaurantFormActive,
     setErrorData,
-    setErrorMessage, setFridayAvailable,
+    setErrorMessage,
+    setFridayAvailable,
     setFridayClosingTime,
     setFridayOpeningTime,
-    setId, setMondayAvailable,
+    setId,
+    setMondayAvailable,
     setMondayClosingTime,
     setMondayOpeningTime,
     setName,
     setPostalCode,
-    setRestaurantUpdated, setSaturdayAvailable,
+    setRestaurantUpdated,
+    setSaturdayAvailable,
     setSaturdayClosingTime,
     setSaturdayOpeningTime,
     setSettingsId,
-    setSettingsRestaurantId, setSundayAvailable,
+    setSettingsRestaurantId,
+    setSundayAvailable,
     setSundayClosingTime,
-    setSundayOpeningTime, setThursdayAvailable,
+    setSundayOpeningTime,
+    setThursdayAvailable,
     setThursdayClosingTime,
-    setThursdayOpeningTime, setTuesdayAvailable,
+    setThursdayOpeningTime,
+    setTuesdayAvailable,
     setTuesdayClosingTime,
-    setTuesdayOpeningTime, setWednesdayAvailable,
+    setTuesdayOpeningTime,
+    setWednesdayAvailable,
     setWednesdayClosingTime,
     setWednesdayOpeningTime,
 } from "../../../../slices/restaurantSlice";
@@ -57,6 +64,10 @@ export const EditRestaurantForm = () => {
             dispatch(setSettingsRestaurantId(restaurantValue.id));
 
             const operatingHours = restaurantValue.settings.operatingHours;
+
+            if (!operatingHours) {
+                return;
+            }
 
             const mondayOpeningTime = operatingHours.MONDAY.startTime;
             const mondayOpeningTimeLabel = parseOperatingTimeToLabel(mondayOpeningTime);
