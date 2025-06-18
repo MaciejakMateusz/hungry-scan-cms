@@ -248,6 +248,9 @@
   "welcome": "Witaj",
   "switchStandard": "Ustaw jako standardowe",
   "standardSwitched": "Standardowe menu zmienione",
+  "color": "Kolor",
+  "colorSelectTooltip": "Wybrany kolor będzie wyświetlany dla tego menu w konfiguratorze harmonogramów.",
+  "dragToPlan": "Przeciągnij aby dodać godziny:",
 
   "constraints.NotBlank": "Pole nie może być puste",
   "constraints.ForenameSurname": "Pole powinno mieć minimum dwa znaki i zawierać tylko litery"

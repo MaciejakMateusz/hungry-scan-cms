@@ -246,6 +246,9 @@
   "welcome": "Welcome",
   "switchStandard": "Set as standard",
   "standardSwitched": "Standard menu switched",
+  "color": "Color",
+  "colorSelectTooltip": "Chosen color will be displayed for this menu in schedules configurator.",
+  "dragToPlan": "Drag to set hours:",
 
   "constraints.NotBlank": "Field cannot be blank",
   "constraints.ForenameSurname": "Field should contain minimum 2 letters and no special characters"
