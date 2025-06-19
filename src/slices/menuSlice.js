@@ -252,6 +252,51 @@ export const fetchMenuSlice = createSlice({
     }
 });
 
+export const fetchMenuColors = createAsyncThunk(
+    'fetchMenuColor/fetchMenuColor',
+    async (_, {rejectWithValue}) => {
+        const response = await fetch(`${apiHost}/api/cms/menu-colors`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include'
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            return rejectWithValue(errorData);
+        }
+
+        try {
+            return await response.json();
+        } catch (error) {
+            return {};
+        }
+    }
+);
+
+export const fetchMenuColorsSlice = createSlice({
+    name: 'fetchMenuColors',
+    initialState: {
+        isLoading: false,
+        menuColors: []
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchMenuColors.pending, state => {
+                state.isLoading = true;
+            })
+            .addCase(fetchMenuColors.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.menuColors = action.payload;
+            })
+            .addCase(fetchMenuColors.rejected, (state) => {
+                state.isLoading = false;
+            })
+    }
+});
+
 export const menuSLice = createSlice(
     {
         name: 'form',
@@ -266,7 +311,11 @@ export const menuSLice = createSlice(
             menuDuplicated: false,
             standardSwitched: false,
             plansUpdated: false,
-            name: ''
+            name: '',
+            color: {
+                id: null,
+                hex: ''
+            }
         },
         reducers: {
             setNewMenuFormActive: (state, action) => {
@@ -302,8 +351,15 @@ export const menuSLice = createSlice(
             setName: (state, action) => {
                 state.name = action.payload;
             },
+            setColor: (state, action) => {
+                state.color = action.payload;
+            },
             clearForm: (state) => {
                 state.name = '';
+                state.color = {
+                    id: null,
+                    hex: ''
+                }
             }
         }
     });
@@ -320,6 +376,7 @@ export const {
     setStandardSwitched,
     setPlansUpdated,
     setName,
+    setColor,
     clearForm
 } = menuSLice.actions;
 export const {setErrorData} = postMenuSlice.actions;
@@ -327,6 +384,7 @@ export const {setErrorData} = postMenuSlice.actions;
 const menuReducer = combineReducers({
     form: menuSLice.reducer,
     fetchMenu: fetchMenuSlice.reducer,
+    fetchMenuColors: fetchMenuColorsSlice.reducer,
     postMenu: postMenuSlice.reducer,
     updateMenu: updateMenuSlice.reducer,
     updatePlans: updatePlansSlice.reducer,
