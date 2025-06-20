@@ -1439,6 +1439,38 @@ ul {
     color: #222;
 }
 
+.form-field.color {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    border: 1px solid #EDEFF3;
+    padding-left: 15px;
+    padding-right: 15px;
+    cursor: pointer;
+}
+
+.menu-colors-pallet {
+    position: absolute;
+    top: 15px;
+    left: 55px;
+    z-index: 9999;
+    width: fit-content;
+    height: fit-content;
+    background: #FFF;
+    box-sizing: border-box;
+    border: 1px solid #EDEFF3;
+    padding: 8px;
+    border-radius: 5px;
+}
+
+.menu-color-element {
+    width: 25px;
+    height: 25px;
+    border-radius: 5px;
+    margin: 1px;
+}
+
 .form-field.file {
     display: flex;
     justify-content: center;
@@ -2800,13 +2832,19 @@ ul {
     margin-bottom: 20px;
 }
 
+.external-event-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .external-event {
     margin-bottom: 5px;
     padding: 5px 8px;
     border-radius: 5px;
-    background: #3788d8;
     color: #FFF;
     cursor: grab;
+    width: 50%;
 }
 
 .external-event:active {

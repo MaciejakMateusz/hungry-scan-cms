@@ -3,6 +3,7 @@ import {setName} from "../../../../slices/menuSlice";
 import React from "react";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
+import {MenuColorField} from "../form-components/MenuColorField";
 
 export const MenuFormTemplate = ({formHeader, discardHandler, submitHandler, errorData}) => {
     const {t} = useTranslation();
@@ -20,6 +21,7 @@ export const MenuFormTemplate = ({formHeader, discardHandler, submitHandler, err
                                onChange={(e) => dispatch(setName(e))}
                                error={errorData}
                     />
+                    <MenuColorField/>
                 </div>
                 <div className={'variant-dialog-footer'}>
                     <button className={'general-button cancel'} onClick={discardHandler}>
