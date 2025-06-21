@@ -68,9 +68,11 @@ export const parseMenusToEvents = menus => {
                     title: menu.name,
                     start: joinDateTime(date, timeRange.startTime),
                     end: joinDateTime(date, timeRange.endTime === '00:00:00' ? '24:00:00' : timeRange.endTime),
+                    color: menu.color.hex,
                     extendedProps: {
                         menuId: menu.id,
-                        standard: menu.standard
+                        standard: menu.standard,
+                        color: menu.color
                     }
                 };
                 schedulerEvents.push(event)
@@ -92,6 +94,7 @@ const parseMenus = events => {
         const menu = {
             id: Number(extProps.menuId),
             name: event.title,
+            color: extProps.color,
             plan: {
                 id: event.id.toString(),
                 menuId: extProps.menuId,
