@@ -7,6 +7,7 @@ import {setPlansUpdated, updatePlans} from "../../../../../slices/menuSlice";
 import {useConfirmationMessage} from "../../../../../hooks/useConfirmationMessage";
 import {useFetchCurrentRestaurant} from "../../../../../hooks/useFetchCurrentRestaurant";
 import {fillGapsWithStandard} from "../../../../../utils/schedulerUtils";
+import {MenuColorSelect} from "../../form-components/MenuColorSelect";
 
 export const SchedulerControlPanel = ({menusConfig, setMenusConfig, externalRef, trashRef}) => {
     const {t} = useTranslation();
@@ -40,15 +41,34 @@ export const SchedulerControlPanel = ({menusConfig, setMenusConfig, externalRef,
         }
     };
 
+    const handleColorChange = (color, menuId) => {
+        let menuToChange = menusConfig.find(menu => menu.id === menuId);
+        const otherMenus = [...menusConfig].filter(menu => menu.id !== menuId);
+        menuToChange = {
+            ...menuToChange,
+            color: color
+        };
+        otherMenus.push(menuToChange);
+        otherMenus.sort((a, b) => {
+            return (a.standard === b.standard) ? 0 : a.standard ? -1 : 1;
+        });
+        setMenusConfig(otherMenus);
+    }
+
     return (
         <div className={'scheduler-control-panel'}>
             <div className={'external-events'} ref={externalRef}>
-                <p>Dostępne menu do zaplanowania:</p>
-                {menusConfig.map(menu => (
-                    <div className={'external-event'}
-                         key={menu.id}
-                         data-menu-id={menu.id}>
-                        {menu.name}
+                <p>{t('dragToPlan')}</p>
+                {menusConfig?.map(menu => (
+                    <div key={menu.id} className={'external-event-wrapper'}>
+                        <div className={'external-event'}
+                             style={{background: menu.color.hex}}
+                             data-menu-id={menu.id}>
+                            {menu.name}
+                        </div>
+                        <MenuColorSelect handleColorChange={handleColorChange}
+                                         currentColor={menu.color}
+                                         menuId={menu.id}/>
                     </div>
                 ))}
             </div>
