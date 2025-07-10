@@ -34,7 +34,7 @@ export const ImageSection = ({image}) => {
                  className="details-image"
             />
         ) : (
-            <Img src={`${s3BucketUrl}/${id}?t=${dish.updated}`}
+            <Img src={`${s3BucketUrl}/menuItems/${id}?t=${dish.updated}`}
                  className="details-image"
                  onError={() => setShouldRender(false)}
             />

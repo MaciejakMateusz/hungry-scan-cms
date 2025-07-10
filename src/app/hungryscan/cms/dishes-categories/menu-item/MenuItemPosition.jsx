@@ -73,7 +73,7 @@ export const MenuItemPosition = ({id, category, menuItem, filtered}) => {
                 <div className={'menu-item-position-image-container'}>
                     <Img className={'menu-item-position-image'}
                          alt={'Menu item preview'}
-                         src={`${s3BucketUrl}/${menuItem.id}?t=${menuItem.updated}`}
+                         src={`${s3BucketUrl}/menuItems/${menuItem.id}?t=${menuItem.updated}`}
                          unloader={<PlaceholderImgIcon/>}
                     />
                 </div>
