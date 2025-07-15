@@ -1,34 +1,19 @@
-import React, {useEffect, useRef, useState} from "react";
-import {fetchMenuColors} from "../../../../slices/menuSlice";
-import {useDispatch, useSelector} from "react-redux";
+import React, { useRef, useState, useEffect } from "react";
+import { fetchMenuColors } from "../../../../slices/menuSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {useOutsideClick} from "../../../../hooks/useOutsideClick";
 
-export const MenuColorSelect = ({currentColor, handleColorChange, menuId}) => {
+export const MenuColorSelect = ({ currentColor, handleColorChange, menuId }) => {
     const dispatch = useDispatch();
     const [expanded, setExpanded] = useState(false);
-    const {menuColors} = useSelector(state => state.menu.fetchMenuColors);
+    const { menuColors } = useSelector(state => state.menu.fetchMenuColors);
     const wrapperRef = useRef(null);
 
     useEffect(() => {
         dispatch(fetchMenuColors());
     }, [dispatch]);
 
-    useEffect(() => {
-        if (!expanded) return;
-
-        const handleOutside = e => {
-            if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
-                setExpanded(false);
-            }
-        };
-
-        document.addEventListener('mousedown', handleOutside);
-        document.addEventListener('touchstart', handleOutside);
-
-        return () => {
-            document.removeEventListener('mousedown', handleOutside);
-            document.removeEventListener('touchstart', handleOutside);
-        };
-    }, [expanded]);
+    useOutsideClick(wrapperRef, () => setExpanded(false), expanded);
 
     const renderColorsSelect = () => {
         if (!expanded) return;
@@ -50,12 +35,12 @@ export const MenuColorSelect = ({currentColor, handleColorChange, menuId}) => {
         return (
             <div key={color.id}
                  className={'menu-color-element'}
-                 style={{backgroundColor: color.hex}}
+                 style={{ backgroundColor: color.hex }}
                  onClick={(e) => {
                      handleColorChange(color, menuId);
                      e.stopPropagation();
                      setExpanded(false);
-                 }}/>
+                 }} />
         );
     }
 
@@ -63,7 +48,7 @@ export const MenuColorSelect = ({currentColor, handleColorChange, menuId}) => {
         <div className={'form-field color'}
              ref={wrapperRef}
              id={'menu-color'}
-             style={{background: currentColor.hex}}
+             style={{ background: currentColor.hex }}
              onClick={() => {
                  setExpanded(!expanded);
              }}>
