@@ -245,9 +245,7 @@ export const formSlice = createSlice(
                     FRIDAY: {startTime: null, endTime: null, available: true},
                     SATURDAY: {startTime: null, endTime: null, available: true},
                     SUNDAY: {startTime: null, endTime: null, available: true}
-                },
-                openingTime: null,
-                closingTime: null
+                }
             },
             errorMessage: null
         },
@@ -299,12 +297,6 @@ export const formSlice = createSlice(
             },
             setSettingsRestaurantId: (state, action) => {
                 state.settings.restaurantId = action.payload;
-            },
-            setOpeningTime: (state, action) => {
-                state.settings.openingTime = action.payload;
-            },
-            setClosingTime: (state, action) => {
-                state.settings.closingTime = action.payload;
             },
             setMondayOpeningTime: (state, action) => {
                 state.settings.operatingHours.MONDAY.startTime = action.payload;
@@ -413,8 +405,6 @@ export const {
     setCity,
     setSettingsId,
     setSettingsRestaurantId,
-    setOpeningTime,
-    setClosingTime,
     setMondayOpeningTime,
     setMondayClosingTime,
     setMondayAvailable,
