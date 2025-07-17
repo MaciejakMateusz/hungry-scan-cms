@@ -2,6 +2,7 @@ import {useTranslation} from "react-i18next";
 import {EditIcon} from "../app/icons/EditIcon";
 import {DeleteIcon} from "../app/icons/DeleteIcon";
 import {
+    setContextMenuActive,
     setContextMenuDetailsActive,
     setEditMenuFormActive,
     setMenuDuplicated, setStandardSwitched,
@@ -23,6 +24,7 @@ export const useMenuContextPositions = () => {
     const confirmStandardSwitched = useConfirmationMessage(setStandardSwitched);
 
     const handleSwitchStandard = async () => {
+        dispatch(setContextMenuActive(false));
         const resultAction = await dispatch(switchStandard());
         if (switchStandard.fulfilled.match(resultAction)) {
             await dispatch(switchStandard());
@@ -33,6 +35,7 @@ export const useMenuContextPositions = () => {
     };
 
     const handleDuplication = async () => {
+        dispatch(setContextMenuActive(false));
         const resultAction = await dispatch(duplicateMenu());
         if (duplicateMenu.fulfilled.match(resultAction)) {
             await getRestaurant();
@@ -46,7 +49,10 @@ export const useMenuContextPositions = () => {
             id: 'rename',
             name: t('rename'),
             icon: <EditIcon width={'25'} height={'25'}/>,
-            handler: () => dispatch(setEditMenuFormActive(true))
+            handler: () => {
+                dispatch(setEditMenuFormActive(true));
+                dispatch(setContextMenuActive(false))
+            }
         },
         {
             id: 'switchStandard',
@@ -64,7 +70,10 @@ export const useMenuContextPositions = () => {
             id: 'remove',
             name: t('remove'),
             icon: <DeleteIcon width={'25'} height={'25'}/>,
-            handler: () => dispatch(setActiveRemovalType('menu'))
+            handler: () => {
+                dispatch(setActiveRemovalType('menu'));
+                dispatch(setContextMenuActive(false));
+            }
         },
         {
             id: 'details',

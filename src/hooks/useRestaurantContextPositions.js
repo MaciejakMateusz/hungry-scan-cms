@@ -2,7 +2,12 @@ import {useTranslation} from "react-i18next";
 import {EditIcon} from "../app/icons/EditIcon";
 import {DeleteIcon} from "../app/icons/DeleteIcon";
 import {useDispatch, useSelector} from "react-redux";
-import {setContextMenuDetailsActive, setEditRestaurantFormActive, setRemovalActive} from "../slices/restaurantSlice";
+import {
+    setContextMenuDetailsActive,
+    setEditRestaurantFormActive,
+    setRemovalActive,
+    setRestaurantContextMenuActive
+} from "../slices/restaurantSlice";
 
 export const useRestaurantContextPositions = () => {
     const {t} = useTranslation();
@@ -14,13 +19,19 @@ export const useRestaurantContextPositions = () => {
             id: 'edit',
             name: t('edit'),
             icon: <EditIcon width={'25'} height={'25'}/>,
-            handler: () => dispatch(setEditRestaurantFormActive(true))
+            handler: () => {
+                dispatch(setEditRestaurantFormActive(true));
+                dispatch(setRestaurantContextMenuActive(false));
+            }
         },
         {
             id: 'remove',
             name: t('remove'),
             icon: <DeleteIcon width={'25'} height={'25'}/>,
-            handler: () => dispatch(setRemovalActive(true))
+            handler: () => {
+                dispatch(setRemovalActive(true));
+                dispatch(setRestaurantContextMenuActive(false));
+            }
         },
         {
             id: 'details',
