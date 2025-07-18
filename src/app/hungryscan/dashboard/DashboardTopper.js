@@ -21,6 +21,7 @@ import {useRestaurantContextPositions} from "../../../hooks/useRestaurantContext
 import {DecisionDialog} from "../cms/dialog-windows/DecisionDialog";
 import {remove} from "../../../slices/objectRemovalSlice";
 import {useFetchCurrentRestaurant} from "../../../hooks/useFetchCurrentRestaurant";
+import {useOutsideClick} from "../../../hooks/useOutsideClick";
 
 export const DashboardTopper = () => {
     const {t} = useTranslation();
@@ -39,6 +40,12 @@ export const DashboardTopper = () => {
     const contextMenuPositions = useRestaurantContextPositions();
     const [confirmationTimeoutId, setConfirmationTimeoutId] = useState(null);
     const getRestaurant = useFetchCurrentRestaurant();
+    const contextRef = useRef();
+
+    useOutsideClick(contextRef, () => {
+            dispatch(setContextMenuDetailsActive(false));
+            dispatch(setRestaurantContextMenuActive(false));
+    }, restaurantContextMenuActive);
 
     useEffect(() => {
         if (!newRestaurantFormActive || !editRestaurantFormActive) {
@@ -110,17 +117,14 @@ export const DashboardTopper = () => {
                          if (controlDisabled) return;
                          dispatch(setRestaurantContextMenuActive(!restaurantContextMenuActive));
                          dispatch(setContextMenuDetailsActive(false));
-                     }}
-                     onBlur={() => {
-                         setTimeout(() => dispatch(setRestaurantContextMenuActive(false)), 150);
-                         dispatch(setContextMenuDetailsActive(false));
                      }}>
                     <ThreeDotsIcon/>
                 </div>
                 {restaurantContextMenuActive &&
                     <ContextMenu positions={contextMenuPositions}
                                  obj={restaurant.value}
-                                 detailsActive={contextMenuDetailsActive}/>}
+                                 detailsActive={contextMenuDetailsActive}
+                                 contextRef={contextRef}/>}
             </div>
         </header>
     );
