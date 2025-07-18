@@ -24,11 +24,14 @@ import {DecisionDialog} from "../dialog-windows/DecisionDialog";
 import {EditMenuFormDialog} from "../menu/EditMenuFormDialog";
 import {useConfirmationMessage} from "../../../../hooks/useConfirmationMessage";
 import {useFetchCurrentRestaurant} from "../../../../hooks/useFetchCurrentRestaurant";
+import {useOutsideClick} from "../../../../hooks/useOutsideClick";
+import {setRestaurantContextMenuActive} from "../../../../slices/restaurantSlice";
 
 export const CmsTopper = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const selectRef = useRef();
+    const contextRef= useRef();
     const {restaurant} = useSelector(state => state.dashboard.view);
     const {activeMenu} = useSelector(state => state.globalParams.globalParams);
     const {menu} = useSelector(state => state.cms.fetchActiveMenu);
@@ -43,6 +46,11 @@ export const CmsTopper = () => {
     const contextMenuPositions = useMenuContextPositions();
     const renderConfirmation = useConfirmationMessage(setMenuRemoved);
     const getRestaurant = useFetchCurrentRestaurant();
+
+    useOutsideClick(contextRef, () => {
+        dispatch(setContextMenuDetailsActive(false));
+        dispatch(setContextMenuActive(false));
+    }, contextMenuActive);
 
     useEffect(() => {
         if (!newMenuFormActive || !editMenuFormActive) {
@@ -129,10 +137,6 @@ export const CmsTopper = () => {
                              if (isInEditMode) return;
                              dispatch(setContextMenuActive(!contextMenuActive));
                              dispatch(setContextMenuDetailsActive(false));
-                         }}
-                         onBlur={() => {
-                             setTimeout(() => dispatch(setContextMenuActive(false)), 100);
-                             dispatch(setContextMenuDetailsActive(false));
                          }}>
                         <ThreeDotsIcon/>
                     </div>
@@ -140,7 +144,8 @@ export const CmsTopper = () => {
                         <ContextMenu
                             positions={contextMenuPositions}
                             obj={menu}
-                            detailsActive={contextMenuDetailsActive}/>}
+                            detailsActive={contextMenuDetailsActive}
+                            contextRef={contextRef}/>}
                 </div>
             </div>
             <button className={'general-button'}
