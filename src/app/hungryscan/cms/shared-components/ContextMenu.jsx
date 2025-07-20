@@ -1,26 +1,26 @@
 import {ContextMenuDetails} from "./ContextMenuDetails";
 
-export const ContextMenu = ({positions, obj, detailsActive}) => {
+export const ContextMenu = ({positions, obj, detailsActive, contextRef}) => {
 
-    const renderPosition = (p) => {
-        if (p.details) {
+    const renderPosition = (position) => {
+        if (position.details) {
             return (
-                <div key={p.id}
+                <div key={position.id}
                      className={'context-menu-position properties'}
-                     onMouseOver={p.handler}
-                     onMouseLeave={p.handler}>
-                    {p.icon}{p.name}
+                     onMouseOver={position.handler}
+                     onMouseLeave={position.handler}>
+                    {position.icon}{position.name}
                 </div>);
         }
         return (
-            <div key={p.id}
+            <div key={position.id}
                  className={'context-menu-position'}
-                 onClick={p.handler}>{p.icon}{p.name}
+                 onClick={position.handler}>{position.icon}{position.name}
             </div>);
     }
 
     return (
-        <div className={'context-menu'}>
+        <div className={'context-menu'} ref={contextRef}>
             <div className={'context-menu-wrapper'}>
                 {positions.map((p) => renderPosition(p))}
             </div>
