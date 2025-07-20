@@ -69,6 +69,15 @@ export const EditRestaurantForm = () => {
                 return;
             }
 
+            dispatch(setMondayAvailable(operatingHours.MONDAY.available));
+            dispatch(setTuesdayAvailable(operatingHours.TUESDAY.available));
+            dispatch(setWednesdayAvailable(operatingHours.WEDNESDAY.available));
+            dispatch(setThursdayAvailable(operatingHours.THURSDAY.available));
+            dispatch(setFridayAvailable(operatingHours.FRIDAY.available));
+            dispatch(setSaturdayAvailable(operatingHours.SATURDAY.available));
+            dispatch(setSundayAvailable(operatingHours.SUNDAY.available));
+            const isSundayAvailable = operatingHours.SUNDAY.available;
+
             const mondayOpeningTime = operatingHours.MONDAY.startTime;
             const mondayOpeningTimeLabel = parseOperatingTimeToLabel(mondayOpeningTime);
             dispatch(setMondayOpeningTime({
@@ -82,7 +91,6 @@ export const EditRestaurantForm = () => {
                 value: mondayClosingTime,
                 label: mondayClosingTimeLabel
             }));
-            dispatch(setMondayAvailable(operatingHours.MONDAY.available));
 
             const tuesdayOpeningTime = operatingHours.TUESDAY.startTime;
             const tuesdayOpeningTimeLabel = parseOperatingTimeToLabel(tuesdayOpeningTime);
@@ -97,7 +105,6 @@ export const EditRestaurantForm = () => {
                 value: tuesdayClosingTime,
                 label: tuesdayClosingTimeLabel
             }));
-            dispatch(setTuesdayAvailable(operatingHours.TUESDAY.available));
 
             const wednesdayOpeningTime = operatingHours.WEDNESDAY.startTime;
             const wednesdayOpeningTimeLabel = parseOperatingTimeToLabel(wednesdayOpeningTime);
@@ -112,7 +119,6 @@ export const EditRestaurantForm = () => {
                 value: wednesdayClosingTime,
                 label: wednesdayClosingTimeLabel
             }));
-            dispatch(setWednesdayAvailable(operatingHours.WEDNESDAY.available));
 
             const thursdayOpeningTime = operatingHours.THURSDAY.startTime;
             const thursdayOpeningTimeLabel = parseOperatingTimeToLabel(thursdayOpeningTime);
@@ -127,7 +133,6 @@ export const EditRestaurantForm = () => {
                 value: thursdayClosingTime,
                 label: thursdayClosingTimeLabel
             }));
-            dispatch(setThursdayAvailable(operatingHours.THURSDAY.available));
 
             const fridayOpeningTime = operatingHours.FRIDAY.startTime;
             const fridayOpeningTimeLabel = parseOperatingTimeToLabel(fridayOpeningTime);
@@ -142,7 +147,6 @@ export const EditRestaurantForm = () => {
                 value: fridayClosingTime,
                 label: fridayClosingTimeLabel
             }));
-            dispatch(setFridayAvailable(operatingHours.FRIDAY.available));
 
             const saturdayOpeningTime = operatingHours.SATURDAY.startTime;
             const saturdayOpeningTimeLabel = parseOperatingTimeToLabel(saturdayOpeningTime);
@@ -157,22 +161,20 @@ export const EditRestaurantForm = () => {
                 value: saturdayClosingTime,
                 label: saturdayClosingTimeLabel
             }));
-            dispatch(setSaturdayAvailable(operatingHours.SATURDAY.available));
 
             const sundayOpeningTime = operatingHours.SUNDAY.startTime;
             const sundayOpeningTimeLabel = parseOperatingTimeToLabel(sundayOpeningTime);
             dispatch(setSundayOpeningTime({
-                value: sundayOpeningTime,
-                label: sundayOpeningTimeLabel,
+                value: isSundayAvailable ? sundayOpeningTime : '-',
+                label: isSundayAvailable ? sundayOpeningTimeLabel : '-',
             }));
 
             const sundayClosingTime = operatingHours.SUNDAY.endTime;
             const sundayClosingTimeLabel = parseOperatingTimeToLabel(sundayClosingTime);
             dispatch(setSundayClosingTime({
-                value: sundayClosingTime,
-                label: sundayClosingTimeLabel
+                value: isSundayAvailable ? sundayClosingTime : '-',
+                label: isSundayAvailable ? sundayClosingTimeLabel : '-'
             }));
-            dispatch(setSundayAvailable(operatingHours.SUNDAY.available));
         }
         fillForm();
     }, [restaurant, dispatch]);
