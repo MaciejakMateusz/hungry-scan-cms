@@ -23,6 +23,7 @@ export const TimeField = (props) => {
                       error={props.error}
                       styles={mainSelectTime}
                       components={{NoOptionsMessage: CustomNoOptionsMessage}}
+                      isDisabled={props.isDisabled}
         />
     );
 }
