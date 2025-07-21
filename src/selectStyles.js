@@ -21,9 +21,9 @@ export const customSelect = {
         ...provided,
         width: '100%'
     }),
-    singleValue: (provided) => ({
+    singleValue: (provided, state) => ({
         ...provided,
-        color: '#000',
+        color: state.isDisabled ? '#888' : '#000',
         maxWidth: '90%'
     }),
     dropdownIndicator: (provided) => ({
