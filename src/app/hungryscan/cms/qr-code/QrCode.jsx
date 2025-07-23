@@ -2,7 +2,7 @@ import React from "react";
 import {Helmet} from "react-helmet";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
-import {apiHost, qrName, qrPath} from "../../../../apiData";
+import {apiHost, s3BucketUrl} from "../../../../apiData";
 import {setShareActive} from "../../../../slices/qrCodesSlice";
 import {QrShareDialog} from "./QrShareDialog";
 
@@ -10,11 +10,12 @@ export const QrCode = () => {
     const dispatch = useDispatch();
     const {shareActive} = useSelector(state => state.qrCodes.view);
     const {t} = useTranslation();
-    const qrUrl = qrPath + qrName;
+    const {restaurant} = useSelector(state => state.dashboard.view);
+    const restaurantData = restaurant?.value;
 
     const handlePrint = () => {
         const printWindow = window.open('', '_blank');
-        printWindow.document.write(`<img src="${qrUrl}" alt="QR" onload="window.print();window.close()" />`);
+        printWindow.document.write(`<img src="${s3BucketUrl}/qr/basic/${restaurantData?.id}?t=${restaurantData?.updated}" alt="QR" onload="window.print();window.close()" />`);
         printWindow.document.close();
     };
 
@@ -38,7 +39,10 @@ export const QrCode = () => {
                                 </div>
                             </div>
                             <div className={'qr-grid'}>
-                                <img className={'qr-preview'} alt={'qr-code'} src={qrUrl}/>
+                                <img className={'qr-preview'}
+                                     alt={'qr-code'}
+                                     src={`${s3BucketUrl}/qr/basic/${restaurantData?.id}?t=${restaurantData?.updated}`}
+                                />
                                 <div className={'qr-options'}>
                                     <div>
                                         <a className={'qr-option'} href={`${apiHost}/api/cms/qr/download`}>
