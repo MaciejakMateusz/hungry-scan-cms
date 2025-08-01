@@ -79,12 +79,12 @@ export const SchedulerControlPanel = ({menusConfig, setMenusConfig, externalRef,
 
             <div className={'general-button scheduler-button'}
                  onClick={clearSchedules}>
-                Wyczyść harmonogram
+                {t('clearSchedule')}
             </div>
 
             <div className={'general-button scheduler-button'}
                  onClick={fillWithStandard}>
-                Wypełnij standardowym
+                {t('fillEmptyWithStandard')}
             </div>
 
             <div className={'scheduler-control-panel-footer'}>
