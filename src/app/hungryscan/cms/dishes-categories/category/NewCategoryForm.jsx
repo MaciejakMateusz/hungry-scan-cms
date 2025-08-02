@@ -35,7 +35,10 @@ export const NewCategoryForm = () => {
     return (
         <div className={'background'}>
             <div className={'translations-padded-view-container'}>
-                {errorMessage ? <FormErrorDialog error={errorData} resetMessage={() => dispatch(setErrorMessage(null))} /> : null}
+                {errorMessage ?
+                    <FormErrorDialog error={errorData}
+                                     resetMessage={() => dispatch(setErrorMessage(null))} />
+                    : null}
                 <div className={'form-grid category'}>
                     <form className={'padded-form-fragment'}>
                         <div className={'form-header'}>
