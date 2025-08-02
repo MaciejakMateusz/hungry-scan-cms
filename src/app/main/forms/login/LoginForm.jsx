@@ -38,7 +38,7 @@ export const LoginForm = () => {
         } else if (errorData?.error) {
             return validationFail(errorData.error);
         }
-        return <></>
+        return null;
     }
 
     const notActivatedMsg = () => {
