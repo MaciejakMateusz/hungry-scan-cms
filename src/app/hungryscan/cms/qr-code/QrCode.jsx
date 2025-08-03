@@ -7,9 +7,9 @@ import {setShareActive} from "../../../../slices/qrCodesSlice";
 import {QrShareDialog} from "./QrShareDialog";
 
 export const QrCode = () => {
+    const {t} = useTranslation();
     const dispatch = useDispatch();
     const {shareActive} = useSelector(state => state.qrCodes.view);
-    const {t} = useTranslation();
     const {restaurant} = useSelector(state => state.dashboard.view);
     const restaurantData = restaurant?.value;
 
@@ -35,7 +35,7 @@ export const QrCode = () => {
                         <section className={'translations-vertical-split-left qr'}>
                             <div className={'qr-header'}>
                                 <div className={'qr-preview-label'}>
-                                    Podgląd
+                                    {t('preview')}
                                 </div>
                             </div>
                             <div className={'qr-grid'}>
@@ -47,13 +47,13 @@ export const QrCode = () => {
                                     <div>
                                         <a className={'qr-option'} href={`${apiHost}/api/cms/qr/download`}>
                                             <span className={'qr-icon'}/>
-                                            Pobierz
+                                            {t('download')}
                                         </a>
                                     </div>
                                     <div onClick={handlePrint}>
                                         <span className={'qr-option'}>
                                             <span className={'qr-icon'}/>
-                                            Drukuj
+                                            {t('print')}
                                         </span>
                                     </div>
                                 </div>
