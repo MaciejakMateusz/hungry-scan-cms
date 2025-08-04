@@ -253,6 +253,9 @@
   "dragToPlan": "Drag to set hours:",
   "clearSchedule": "Clear schedule",
   "fillEmptyWithStandard": "Fill empty with standard",
+  "views": "odsłon",
+  "mostViewedPositions": "Most viewed positions:",
+  "percent": "Percent",
 
   "constraints.NotBlank": "Field cannot be blank",
   "constraints.ForenameSurname": "Field should contain minimum 2 letters and no special characters"

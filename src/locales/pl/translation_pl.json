@@ -255,6 +255,9 @@
   "dragToPlan": "Przeciągnij aby dodać godziny:",
   "clearSchedule": "Wyczyść harmonogram",
   "fillEmptyWithStandard": "Wypełnij luki standardowym",
+  "views": "wyświetleń",
+  "mostViewedPositions": "Najchętniej przeglądane pozycje:",
+  "percent": "Procent",
 
   "constraints.NotBlank": "Pole nie może być puste",
   "constraints.ForenameSurname": "Pole powinno mieć minimum dwa znaki i zawierać tylko litery"
