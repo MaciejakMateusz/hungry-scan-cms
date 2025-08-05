@@ -1,7 +1,9 @@
 import React from "react";
 import {ResponsivePie} from '@nivo/pie'
+import {useTranslation} from "react-i18next";
 
 export const PieChart = () => {
+    const {t} = useTranslation();
     const fallbackData = [
         {
             "id": "first",
@@ -68,7 +70,7 @@ export const PieChart = () => {
                         fontSize: '0.9rem',
                         fill: '#707070'
                     }}>
-                    odsłon
+                    {t('views')}
                 </text>
             </>
         )
@@ -87,7 +89,7 @@ export const PieChart = () => {
                         fontWeight: '600',
                         fill: '#191D25'
                     }}>
-                    Najchętniej przeglądane dania:
+                    {t('mostViewedPositions')}
                 </text>
             </>
         )
@@ -155,8 +157,8 @@ export const PieChart = () => {
                     }}>
                     <div>
                         <span>{datum.data?.label}<br/></span>
-                        <span>Procent: {datum.data?.value}%<br/></span>
-                        <span>Wyświetleń: {datum.data?.number}<br/></span>
+                        <span>{t('percent')}: {datum.data?.value}%<br/></span>
+                        <span>{t('views')}: {datum.data?.number}<br/></span>
                     </div>
 
                 </div>
