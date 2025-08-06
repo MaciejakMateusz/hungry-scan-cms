@@ -25,13 +25,12 @@ import {EditMenuFormDialog} from "../menu/EditMenuFormDialog";
 import {useConfirmationMessage} from "../../../../hooks/useConfirmationMessage";
 import {useFetchCurrentRestaurant} from "../../../../hooks/useFetchCurrentRestaurant";
 import {useOutsideClick} from "../../../../hooks/useOutsideClick";
-import {setRestaurantContextMenuActive} from "../../../../slices/restaurantSlice";
 
 export const CmsTopper = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const selectRef = useRef();
-    const contextRef= useRef();
+    const contextRef = useRef();
     const {restaurant} = useSelector(state => state.dashboard.view);
     const {activeMenu} = useSelector(state => state.globalParams.globalParams);
     const {menu} = useSelector(state => state.cms.fetchActiveMenu);
@@ -141,11 +140,10 @@ export const CmsTopper = () => {
                         <ThreeDotsIcon/>
                     </div>
                     {contextMenuActive &&
-                        <ContextMenu
-                            positions={contextMenuPositions}
-                            obj={menu}
-                            detailsActive={contextMenuDetailsActive}
-                            contextRef={contextRef}/>}
+                        <ContextMenu positions={contextMenuPositions}
+                                     obj={menu}
+                                     detailsActive={contextMenuDetailsActive}
+                                     contextRef={contextRef}/>}
                 </div>
             </div>
             <button className={'general-button'}
