@@ -8,7 +8,6 @@ export function useDebounce(value, delay = 500) {
             setDebouncedValue(value);
         }, delay);
 
-        // Cleanup on unmount or when `value`/`delay` changes
         return () => {
             clearTimeout(timer);
         };
