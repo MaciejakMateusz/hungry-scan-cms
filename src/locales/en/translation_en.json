@@ -256,6 +256,8 @@
   "views": "odsłon",
   "mostViewedPositions": "Most viewed positions:",
   "percent": "Percent",
+  "reorderCategories": "Reorder categories",
+  "configureSchedules": "Configure schedules",
 
   "constraints.NotBlank": "Field cannot be blank",
   "constraints.ForenameSurname": "Field should contain minimum 2 letters and no special characters"
