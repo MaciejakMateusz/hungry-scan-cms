@@ -46,8 +46,8 @@ export const useMenuContextPositions = () => {
 
     const rawPositions = [
         {
-            id: 'rename',
-            name: t('rename'),
+            id: 'edit',
+            name: t('edit'),
             icon: <EditIcon width={'25'} height={'25'}/>,
             handler: () => {
                 dispatch(setEditMenuFormActive(true));
