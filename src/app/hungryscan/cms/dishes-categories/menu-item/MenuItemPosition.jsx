@@ -58,7 +58,7 @@ export const MenuItemPosition = ({id, category, menuItem, filtered}) => {
     };
 
     return (
-        <Fragment>
+        <>
             <div ref={setNodeRef}
                  style={style}
                  className={'menu-item-position-container'}>
@@ -119,6 +119,6 @@ export const MenuItemPosition = ({id, category, menuItem, filtered}) => {
             {menuItem.displayOrder === category?.menuItems.length ? null :
                 <div className={'menu-item-position-separator'}/>
             }
-        </Fragment>
+        </>
     );
 };
