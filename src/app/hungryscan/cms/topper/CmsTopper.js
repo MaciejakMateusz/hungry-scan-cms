@@ -107,7 +107,7 @@ export const CmsTopper = () => {
                                                              onSubmit={handleMenuRemoval}/>}
             <div className={'flex-wrapper'}>
                 <div className={'app-header-select-wrapper'}>
-                    <DocumentIcon customColor={"#9746FF"} absolute={true}/>
+                    <DocumentIcon customColor={menu?.color?.hex} absolute={true}/>
                     <Select id={'cms-menu'}
                             ref={selectRef}
                             name={'cms-menu'}
@@ -148,7 +148,7 @@ export const CmsTopper = () => {
             </div>
             <button className={'general-button'}
                     onClick={() => dispatch(setSchedulerActive(true))}>
-                Konfiguruj harmonogramy
+                {t('configureSchedules')}
             </button>
         </header>
     );
