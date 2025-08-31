@@ -52,8 +52,10 @@ export const ReorderCategoriesDialog = () => {
         <>
             <div className={'overlay'}></div>
             <div className={'reordering-dialog'}>
+                <div className={'reordering-dialog-header'}>
+                    <p>{t('reorderCategories')}</p>
+                </div>
                 <div className={'reordering-dialog-content'}>
-                    <p>Reorder categories</p>
                     <DndContext onDragEnd={(e) => handleDragEnd(e)}>
                         <SortableContext items={categories.map(c => c.id.toString())}>
                             {categories.map((category, index) => (
@@ -66,7 +68,7 @@ export const ReorderCategoriesDialog = () => {
                     </DndContext>
                 </div>
                 <div className={'reordering-dialog-footer'}>
-                <button onClick={discardDialog} className={'general-button cancel'}>{t('cancel')}</button>
+                    <button onClick={discardDialog} className={'general-button cancel'}>{t('cancel')}</button>
                     <form onSubmit={handleSubmit} style={{all: 'unset'}}>
                         <button type="submit" className={'general-button'}>{t('confirm')}</button>
                     </form>
