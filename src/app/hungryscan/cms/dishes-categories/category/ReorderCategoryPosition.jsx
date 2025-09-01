@@ -5,15 +5,21 @@ import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
 
 export const ReorderCategoryPosition = ({id, category, currentOrder}) => {
-    const {attributes, listeners, setNodeRef, transform, transition, isDragging} = useSortable({id});
+    const {
+        attributes,
+        listeners,
+        setNodeRef, transform,
+        transition,
+        isDragging
+    } = useSortable({id});
     const dndStyle = {
         transform: CSS.Transform.toString(transform),
         transition,
-        zIndex: isDragging ? 999 : 'auto'
+        zIndex: isDragging ? 9999 : 'auto'
     };
 
     return (
-        <div className={'category-container-header'} ref={setNodeRef} style={dndStyle}>
+        <div className={'category-container-header reordering'} ref={setNodeRef} style={dndStyle}>
             <div className={'category-info'}>
                 <div className={'drag-and-drop-wrapper'} {...listeners} {...attributes}>
                     <DragAndDropIcon/>
