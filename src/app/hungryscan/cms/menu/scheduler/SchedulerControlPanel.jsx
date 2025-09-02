@@ -1,5 +1,5 @@
 import {ReactSVG} from "react-svg";
-import {setSchedulerActive} from "../../../../../slices/cmsSlice";
+import {fetchActiveMenu, setSchedulerActive} from "../../../../../slices/cmsSlice";
 import React, {useCallback} from "react";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
@@ -36,6 +36,7 @@ export const SchedulerControlPanel = ({menusConfig, setMenusConfig, externalRef,
         const resultAction = await dispatch(updatePlans({menus: menusConfig}));
         if (updatePlans.fulfilled.match(resultAction)) {
             await getRestaurant();
+            await dispatch(fetchActiveMenu());
             dispatch(setSchedulerActive(false));
             renderConfirmation();
         }
