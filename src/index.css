@@ -2373,6 +2373,7 @@ ul {
 }
 
 .category-container-header {
+    position: relative;
     height: 50px;
     background: #FFF;
     display: flex;
@@ -2382,11 +2383,14 @@ ul {
     font-size: 13px;
 }
 
+.category-container-header.reordering:hover {
+    background: #F9F9F9;
+}
+
 .category-info {
     display: flex;
     gap: 15px;
 }
-
 
 .reordering-dialog {
     position: fixed;
@@ -2395,23 +2399,35 @@ ul {
     background-color: #FFF;
     padding: 12px;
     width: 25vw;
-    height: fit-content;
-    max-height: 50%;
     border: 0;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     z-index: 9999;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     font-size: 13px;
-    overflow-y: auto;
-    overflow-x: hidden;
+    display: grid;
+    grid-template-rows: 10% auto 10%;
+    max-height: 50%;
+    height: fit-content;
+}
+
+.reordering-dialog-header {
+    grid-row: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .reordering-dialog-content {
-
+    grid-row: 2;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 10px 0;
 }
 
 .reordering-dialog-footer {
+    grid-row: 3;
     display: flex;
     justify-content: flex-end;
+    padding: 10px 0;
 }
 
 .new-dish-button {
@@ -2849,6 +2865,10 @@ ul {
 
 .external-event:active {
     cursor: grabbing;
+}
+
+.fc-event-main {
+    cursor: grab;
 }
 
 .scheduler-control-panel-footer {
