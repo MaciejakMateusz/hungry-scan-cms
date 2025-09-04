@@ -258,6 +258,9 @@
   "percent": "Percent",
   "reorderCategories": "Reorder categories",
   "configureSchedules": "Configure schedules",
+  "dashboard": "Dashboard",
+  "statistics": "Statistics",
+  "generateNewCode": "Generate new code",
 
   "constraints.NotBlank": "Field cannot be blank",
   "constraints.ForenameSurname": "Field should contain minimum 2 letters and no special characters"
