@@ -12,6 +12,16 @@ export const QrWidget = () => {
     const {data} = useSelector(state => state.statistics.scanStats);
     const {restaurant} = useSelector(state => state.dashboard.view);
     const restaurantData = restaurant?.value;
+    const qrFileName = `${restaurantData?.id}/${restaurantData?.qrVersion}.png?t=${restaurantData?.updated}`;
+
+    const renderPlaceholderImg =
+        (
+            <div className={'qr-img'}>
+                <div className="qr-placeholder">
+                    <PlaceholderImgIcon/>
+                </div>
+            </div>
+        );
 
     return (
         <div className={'statistic-widget qr-code'}>
@@ -20,8 +30,8 @@ export const QrWidget = () => {
                     <div className={'qr-img-container'}>
                         <Img className={'qr-img'}
                              alt={'qr-code'}
-                             src={`${s3BucketUrl}/qr/basic/${restaurantData?.id}.png?t=${restaurantData?.updated}`}
-                             unloader={<PlaceholderImgIcon/>}
+                             src={`${s3BucketUrl}/qr/basic/${qrFileName}`}
+                             unloader={renderPlaceholderImg}
                         />
                     </div>
                     <div className={'qr-img-download-btn'}>{t('download')}<DownloadIcon/></div>
