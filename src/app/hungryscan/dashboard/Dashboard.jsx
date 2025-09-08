@@ -12,6 +12,7 @@ import {DashboardTopper} from "./DashboardTopper";
 import {NewRestaurantForm} from "./restaurant/NewRestaurantForm";
 import {EditRestaurantForm} from "./restaurant/EditRestaurantForm";
 import {NavPanel} from "../NavPanel";
+import {QrCode} from "./qr/QrCode";
 
 export const Dashboard = () => {
     const dispatch = useDispatch();
@@ -33,7 +34,7 @@ export const Dashboard = () => {
             case STATS:
                 return (<Statistics/>);
             case D_CODE_QR:
-                return <h1>Code QR</h1>;
+                return (<QrCode/>);
             case PACKAGE:
                 return <h1>Package</h1>;
             case USERS:
