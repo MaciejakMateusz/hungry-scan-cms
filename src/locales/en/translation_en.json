@@ -261,6 +261,7 @@
   "dashboard": "Dashboard",
   "statistics": "Statistics",
   "generateNewCode": "Generate new code",
+  "personalization": "Personalization",
 
   "constraints.NotBlank": "Field cannot be blank",
   "constraints.ForenameSurname": "Field should contain minimum 2 letters and no special characters"
