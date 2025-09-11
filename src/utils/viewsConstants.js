@@ -11,4 +11,4 @@ export const ADDITIONS = "cms/additions";
 export const C_CODE_QR = "cms/codeQr";
 export const TRANSLATIONS = "cms/translations";
 export const AD_POP_UPS = "cms/adPopUps";
-export const INTERFACE = "cms/interface";
+export const PERSONALIZATION = "cms/personalization";
