@@ -78,7 +78,7 @@ export const Translations = () => {
             </Helmet>
             {saveSuccess ? <SuccessMessage text={t('saved')}/> : <></>}
             <div className={'background'}>
-                <main className={'translations-padded-view-container'}>
+                <main className={'cms-padded-view-container'}>
                     <div className={'translations-vertical-split-grid'}>
                         <TranslationRecordsHeader/>
                         <section className={`translations-vertical-split-left ${chosenGroup?.value !== 'dishesCategories' ? 'simple' : ''}`}>

@@ -201,7 +201,7 @@ export const EditRestaurantForm = () => {
 
     return (
         <div className={'background'}>
-            <div className={'translations-padded-view-container'}>
+            <div className={'cms-padded-view-container'}>
                 {errorMessage ?
                     <FormErrorDialog error={errorData} resetMessage={() => dispatch(setErrorMessage(null))}/> : null}
                 <div className={'form-grid category'}>

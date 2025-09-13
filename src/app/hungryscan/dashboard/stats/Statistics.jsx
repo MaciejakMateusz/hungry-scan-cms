@@ -6,7 +6,7 @@ import {useTranslation} from "react-i18next";
 
 export const Statistics = () => {
     const {t} = useTranslation();
-    
+
     return (
         <div className={'statistics-content'}>
             <Helmet>

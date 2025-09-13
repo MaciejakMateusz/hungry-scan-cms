@@ -114,7 +114,7 @@ export const EditMenuItemForm = () => {
     return (
         <div className={'background'}>
             {errorMessage ? <FormErrorDialog error={errorData} resetMessage={setErrorMessage}/> : null}
-            <div className={'translations-padded-view-container'}>
+            <div className={'cms-padded-view-container'}>
                 <div className={'form-grid'}>
                     <div className={'padded-form-fragment'}>
                         <div className={'form-header'}>

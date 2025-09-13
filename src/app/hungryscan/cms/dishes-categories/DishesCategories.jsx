@@ -107,7 +107,7 @@ export const DishesCategories = () => {
             </Helmet>
             {submittedSuccessType && renderConfirmationDialog(submittedSuccessType)}
             <div className={'background'}>
-                <main className={'translations-padded-view-container'}>
+                <main className={'cms-padded-view-container'}>
                     <div className={'functions-header'}>
                         <div className={'section-heading'}>{t('dishesCategories')}</div>
                         <div className={'flex-wrapper-gapped'}>
