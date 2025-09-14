@@ -2,10 +2,9 @@ import React, {useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {NavButton} from "../NavButton";
 import {DishesCategories} from "./dishes-categories/DishesCategories";
-import {Variants} from "./variants/Variants";
 import {Additions} from "./additions/Additions";
 import {Translations} from "./translations/Translations";
-import {Interface} from "./interface/Interface";
+import {Personalization} from "./personalization/Personalization";
 import {useDispatch, useSelector} from "react-redux";
 import {DecisionDialog} from "./dialog-windows/DecisionDialog";
 import {clearForm as clearCategoryForm} from "../../../slices/categoryFormSlice";
@@ -14,7 +13,7 @@ import {clearView as clearVariantsView} from "../../../slices/variantsSlice";
 import {clearView as clearAdditionsView} from "../../../slices/additionsSlice";
 import {clearView as clearTranslationsView} from "../../../slices/translationsSlice";
 import {clearForm as clearDishForm} from "../../../slices/dishFormSlice";
-import {ADDITIONS, DISHES_CATEGORIES, INTERFACE, TRANSLATIONS, VARIANTS} from "../../../utils/viewsConstants";
+import {ADDITIONS, DISHES_CATEGORIES, PERSONALIZATION, TRANSLATIONS} from "../../../utils/viewsConstants";
 import {setCurrentDialog, setCurrentView} from "../../../slices/globalParamsSlice";
 import {CmsTopper} from "./topper/CmsTopper";
 import {fetchActiveMenu} from "../../../slices/cmsSlice";
@@ -75,14 +74,12 @@ export const Cms = () => {
         switch (currentView) {
             case DISHES_CATEGORIES:
                 return <DishesCategories/>;
-            case VARIANTS:
-                return <Variants/>;
             case ADDITIONS:
                 return <Additions/>;
             case TRANSLATIONS:
                 return <Translations/>;
-            case INTERFACE:
-                return <Interface/>;
+            case PERSONALIZATION:
+                return <Personalization/>;
             default:
                 return <DishesCategories/>;
         }
@@ -93,22 +90,18 @@ export const Cms = () => {
                    isActive={currentView === DISHES_CATEGORIES}
                    name={t('dishesCategories')}
                    onClick={() => switchView(DISHES_CATEGORIES)}/>,
-        <NavButton key={VARIANTS}
-                   isActive={currentView === VARIANTS}
-                   name={t('variants')}
-                   onClick={() => switchView(VARIANTS)}/>,
         <NavButton key={ADDITIONS}
                    isActive={currentView === ADDITIONS}
                    name={t('additions')}
                    onClick={() => switchView(ADDITIONS)}/>,
+        <NavButton key={PERSONALIZATION}
+                   isActive={currentView === PERSONALIZATION}
+                   name={t('personalization')}
+                   onClick={() => switchView(PERSONALIZATION)}/>,
         <NavButton key={TRANSLATIONS}
                    isActive={currentView === TRANSLATIONS}
                    name={t('translations')}
-                   onClick={() => switchView(TRANSLATIONS)}/>,
-        <NavButton key={INTERFACE}
-                   isActive={currentView === INTERFACE}
-                   name={t('interface')}
-                   onClick={() => switchView(INTERFACE)}/>
+                   onClick={() => switchView(TRANSLATIONS)}/>
     ];
 
     return (
