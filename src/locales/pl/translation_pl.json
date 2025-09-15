@@ -264,6 +264,19 @@
   "statistics": "Statystyki",
   "generateNewCode": "Wygeneruj nowy kod",
   "personalization": "Personalizacja",
+  "welcomeSlogan": "Slogan powitalny",
+  "welcomeSloganTooltip": "Wiadomość powitalna, którą zobaczą klienci na górze menu.",
+  "addSlogan": "Dodaj slogan",
+  "goodDay": "Dzień dobry! \uD83D\uDC4B",
+  "enjoyYourMeal": "Życzymy smacznego!",
+  "weWelcome": "Witamy!",
+  "niceToSeeYou": "Miło Cię widzieć!",
+  "hello": "Cześć! \uD83D\uDE42",
+  "theme": "Motyw",
+  "themeTooltip": "Główny kolor, którym będzie dekorowane to menu.",
+  "showBannerIcon": "Pokaż ikonę przy banerach",
+  "personalizationUpdated": "Personalizacja zaktualizowana pomyślnie",
+
 
   "constraints.NotBlank": "Pole nie może być puste",
   "constraints.ForenameSurname": "Pole powinno mieć minimum dwa znaki i zawierać tylko litery"

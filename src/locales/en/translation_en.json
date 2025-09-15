@@ -262,6 +262,18 @@
   "statistics": "Statistics",
   "generateNewCode": "Generate new code",
   "personalization": "Personalization",
+  "welcomeSlogan": "Welcome slogan",
+  "welcomeSloganTooltip": "A welcome message that your customers will see on the menu's topper.",
+  "addSlogan": "Add slogan",
+  "goodDay": "Good day! \uD83D\uDC4B",
+  "enjoyYourMeal": "Enjoy your meal!",
+  "weWelcome": "Welcome!",
+  "niceToSeeYou": "Nice to see you!",
+  "hello": "Hello! \uD83D\uDE42",
+  "theme": "Theme",
+  "themeTooltip": "A main color the menu will be decorated with.",
+  "showBannerIcon": "Show banner icon",
+  "personalizationUpdated": "Personalization updated successfully",
 
   "constraints.NotBlank": "Field cannot be blank",
   "constraints.ForenameSurname": "Field should contain minimum 2 letters and no special characters"
