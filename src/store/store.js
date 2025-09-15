@@ -19,6 +19,7 @@ import statisticsReducer from "../slices/statisticsSlice";
 import dashboardReducer from "../slices/dashboardSlice";
 import cmsReducer from "../slices/cmsSlice";
 import menuReducer from "../slices/menuSlice";
+import personalizationReducer from "../slices/personalizationSlice";
 
 const rootReducer = combineReducers({
     login: loginReducer,
@@ -40,7 +41,8 @@ const rootReducer = combineReducers({
     statistics: statisticsReducer,
     dashboard: dashboardReducer,
     cms: cmsReducer,
-    menu: menuReducer
+    menu: menuReducer,
+    personalization: personalizationReducer
 })
 
 export const store = configureStore({
