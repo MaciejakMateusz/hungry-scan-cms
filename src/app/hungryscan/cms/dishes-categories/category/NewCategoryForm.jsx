@@ -44,7 +44,7 @@ export const NewCategoryForm = () => {
                         <div className={'form-header'}>
                             {t('createNewCategory')}
                         </div>
-                        <div className={'menu-item-form'}>
+                        <div className={'padded-form-container'}>
                             <CategoryFormTemplate/>
                         </div>
                         <div className={'form-footer category'}>

@@ -66,7 +66,7 @@ export const EditCategoryForm = () => {
                             {t('editCategory')}&nbsp;
                             <span style={{color: '#6940C6'}}>"{getTranslation(category.name)}"</span>
                         </div>
-                        <div className={'menu-item-form'}>
+                        <div className={'padded-form-container'}>
                             <CategoryFormTemplate/>
                         </div>
                         <div className={'form-footer category'}>

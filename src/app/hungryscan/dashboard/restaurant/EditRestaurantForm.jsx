@@ -209,7 +209,7 @@ export const EditRestaurantForm = () => {
                         <div className={'form-header'}>
                             {t('editRestaurant')}
                         </div>
-                        <div className={'menu-item-form'}>
+                        <div className={'padded-form-container'}>
                             <RestaurantFormTemplate/>
                         </div>
                         <div className={'form-footer category'}>

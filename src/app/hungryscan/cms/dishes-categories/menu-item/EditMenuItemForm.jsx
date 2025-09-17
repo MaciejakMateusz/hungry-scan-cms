@@ -121,7 +121,7 @@ export const EditMenuItemForm = () => {
                             {t('editingDishInCategory')}:&nbsp;&nbsp;
                             <span style={{color: '#6940C6'}}> "{getTranslation(category?.name)}"</span>
                         </div>
-                        <form className={'menu-item-form'}>
+                        <form className={'padded-form-container'}>
                             <MenuItemFormTemplate setFile={setFile} isNewPosition={true}/>
                             <div className={'form-footer'}>
                                 <div className={'general-button cancel'}
