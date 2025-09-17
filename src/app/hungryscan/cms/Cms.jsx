@@ -64,7 +64,7 @@ export const Cms = () => {
     const switchView = (viewName) => {
         if (isInEditMode) {
             setSwitchViewDialog(viewName)
-        } else {
+        } else if (viewName !== currentView) {
             clearCmsState();
             dispatch(setCurrentView(viewName));
         }
