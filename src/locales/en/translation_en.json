@@ -274,6 +274,8 @@
   "themeTooltip": "A main color the menu will be decorated with.",
   "showBannerIcon": "Show banner icon",
   "personalizationUpdated": "Personalization updated successfully",
+  "noPositionsToDisplay": "No positions to display",
+  "noCategoriesToDisplay": "No categories to display",
 
   "constraints.NotBlank": "Field cannot be blank",
   "constraints.ForenameSurname": "Field should contain minimum 2 letters and no special characters"

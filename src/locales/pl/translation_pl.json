@@ -276,7 +276,8 @@
   "themeTooltip": "Główny kolor, którym będzie dekorowane to menu.",
   "showBannerIcon": "Pokaż ikonę przy banerach",
   "personalizationUpdated": "Personalizacja zaktualizowana pomyślnie",
-
+  "noPositionsToDisplay": "Brak pozycji do wyświetlenia",
+  "noCategoriesToDisplay": "Brak kategorii do wyświetlenia",
 
   "constraints.NotBlank": "Pole nie może być puste",
   "constraints.ForenameSurname": "Pole powinno mieć minimum dwa znaki i zawierać tylko litery"
