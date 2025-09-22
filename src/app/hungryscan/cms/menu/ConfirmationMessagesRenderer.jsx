@@ -17,6 +17,7 @@ export const ConfirmationMessagesRenderer = () => {
         restaurantRemoved,
         newRestaurantCreated,
         restaurantUpdated} = useSelector(state => state.restaurant.form);
+    const {personalizationUpdated} = useSelector(state => state.personalization.form);
 
     return (
         <>
@@ -29,6 +30,7 @@ export const ConfirmationMessagesRenderer = () => {
             {menuUpdated && <SuccessMessage text={t('menuUpdated')}/>}
             {plansUpdated && <SuccessMessage text={t('plansUpdated')}/>}
             {standardSwitched && <SuccessMessage text={t('standardSwitched')}/>}
+            {personalizationUpdated && <SuccessMessage text={t('personalizationUpdated')}/>}
         </>
     );
 }
