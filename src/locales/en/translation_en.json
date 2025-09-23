@@ -99,6 +99,8 @@
   "confirmCategoryRemoval": "Confirm category removal",
   "confirmDishRemoval": "Confirm dish removal",
   "confirmMenuRemoval": "Confirm menu removal",
+  "confirmAdditionRemoval": "Confirm addition removal",
+  "confirmVariantRemoval": "Confirm variant removal",
   "categoryRemovalSuccess": "Category removed successfully",
   "dishRemovalSuccess": "Dish removed successfully",
   "menuRemovalSuccess": "Menu removed successfully",
@@ -276,6 +278,7 @@
   "personalizationUpdated": "Personalization updated successfully",
   "noPositionsToDisplay": "No positions to display",
   "noCategoriesToDisplay": "No categories to display",
+  "information": "Informations",
 
   "constraints.NotBlank": "Field cannot be blank",
   "constraints.ForenameSurname": "Field should contain minimum 2 letters and no special characters"
