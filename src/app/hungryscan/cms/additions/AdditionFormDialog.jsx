@@ -26,7 +26,7 @@ export const AdditionFormDialog = (props) => {
     const {errorData} = useSelector(state => state.additions.postAddition);
 
     useEffect(() => {
-        if(!isNewAddition) {
+        if (!isNewAddition) {
             dispatch(setId(addition.id))
             dispatch(setName(getTranslation(addition.name)))
             dispatch(setPrice(addition.price.toFixed(2)))
@@ -45,7 +45,7 @@ export const AdditionFormDialog = (props) => {
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         const resultAction = await dispatch(postAddition());
-        if(postAddition.fulfilled.match(resultAction)) {
+        if (postAddition.fulfilled.match(resultAction)) {
             dispatch(setAdditionDialogActive(false));
             dispatch(clearForm());
             dispatch(resetAdditionData());
@@ -56,7 +56,7 @@ export const AdditionFormDialog = (props) => {
     return (
         <>
             <div className={'overlay'}></div>
-            <div className={'variant-form-dialog '}>
+            <div className={'form-dialog '}>
                 <div className={'variant-form-dialog-content'}>
                     <h4>
                         {isNewAddition ? t('createNewAddition') : t('editAddition')}
@@ -71,19 +71,18 @@ export const AdditionFormDialog = (props) => {
                                 setPrice={(e) => dispatch(setPrice(e))}
                                 error={errorData}
                     />
-                    <CustomSelect
-                        id={'variant-available'}
-                        name={'available'}
-                        labelName={t('availability')}
-                        value={available}
-                        onChange={(selected) => dispatch(setAvailable(selected))}
-                        options={[
-                            {value: true, label: t('availableVariant')},
-                            {value: false, label: t('unavailableVariant')}
-                        ]}
+                    <CustomSelect id={'variant-available'}
+                                  name={'available'}
+                                  labelName={t('availability')}
+                                  value={available}
+                                  onChange={(selected) => dispatch(setAvailable(selected))}
+                                  options={[
+                                      {value: true, label: t('availableVariant')},
+                                      {value: false, label: t('unavailableVariant')}
+                                  ]}
                     />
                 </div>
-                <div className={'variant-dialog-footer'}>
+                <div className={'dialog-footer'}>
                     <button className={'general-button cancel'} onClick={() => {
                         dispatch(setAdditionDialogActive(false));
                         dispatch(clearForm());
