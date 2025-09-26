@@ -1,22 +1,22 @@
 import React, {useEffect} from "react";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
-import {CustomSelect} from "../form-components/CustomSelect";
 import {NameField} from "../form-components/NameField";
 import {PriceField} from "../form-components/PriceField";
 import {
+    clearForm,
+    getIngredients,
+    postAddition,
+    resetAdditionData,
+    setAdditionDialogActive,
+    setAvailable,
+    setErrorData,
     setId,
     setName,
-    setPrice,
-    setAvailable,
-    setAdditionDialogActive,
-    postAddition,
-    clearForm,
-    resetAdditionData,
-    getIngredients,
-    setErrorData
+    setPrice
 } from "../../../../slices/additionsSlice";
 import {getTranslation} from "../../../../locales/langUtils";
+import {LogicalToggleField} from "../form-components/LogicalToggleField";
 
 export const AdditionFormDialog = (props) => {
     const {t} = useTranslation();
@@ -71,16 +71,10 @@ export const AdditionFormDialog = (props) => {
                                 setPrice={(e) => dispatch(setPrice(e))}
                                 error={errorData}
                     />
-                    <CustomSelect id={'variant-available'}
-                                  name={'available'}
-                                  labelName={t('availability')}
-                                  value={available}
-                                  onChange={(selected) => dispatch(setAvailable(selected))}
-                                  options={[
-                                      {value: true, label: t('availableVariant')},
-                                      {value: false, label: t('unavailableVariant')}
-                                  ]}
-                    />
+                    <LogicalToggleField id={'variant-available'}
+                                        name={t('availability')}
+                                        value={available}
+                                        onChange={() => dispatch(setAvailable(!available))}/>
                 </div>
                 <div className={'dialog-footer'}>
                     <button className={'general-button cancel'} onClick={() => {
