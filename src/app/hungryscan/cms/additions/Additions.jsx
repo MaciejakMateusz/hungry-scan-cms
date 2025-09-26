@@ -3,25 +3,22 @@ import {Helmet} from "react-helmet";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    getIngredients,
-    setAddition,
-    setAdditionDialogActive,
+    getIngredients, setAdditionDialogActive,
     setAdditionToRemove,
     setErrorData,
     setFilterExpanded,
     setFilteringActive,
     setFilterValue,
-    setIngredients,
-    setIsNewAddition
+    setIngredients
 } from "../../../../slices/additionsSlice";
 import {AdditionFormDialog} from "./AdditionFormDialog";
-import {SearchIcon} from "../../../icons/SearchIcon";
 import {LoadingSpinner} from "../../../icons/LoadingSpinner";
 import {remove} from "../../../../slices/objectRemovalSlice";
 import {DecisionDialog} from "../dialog-windows/DecisionDialog";
 import {filter} from "../../../../slices/filteringSlice";
-import {FilteringForm} from "../shared-components/FilteringForm";
-import {ListRecord} from "../shared-components/ListRecord";
+import {SearchButton} from "../dishes-categories/SearchButton";
+import {getTranslation} from "../../../../locales/langUtils";
+import {LetterGroup} from "./LetterGroup";
 
 export const Additions = () => {
     const {t} = useTranslation();
@@ -34,6 +31,7 @@ export const Additions = () => {
         filteringActive
     } = useSelector(state => state.additions.view);
     const {isLoading, ingredients} = useSelector(state => state.additions.getIngredients);
+    const letters = [...new Set(ingredients?.map((ingredient) => getTranslation(ingredient.name)[0]))];
 
     useEffect(() => {
         dispatch(getIngredients());
@@ -45,6 +43,10 @@ export const Additions = () => {
             executeFilter('');
         }
     }, [dispatch, filterExpanded]);
+
+    const filterIngredientsByLetter = (letter) => {
+        return ingredients.filter((ingredient) => getTranslation(ingredient.name)[0] === letter);
+    }
 
     const handleAdditionRemoval = async (e, ingredient) => {
         e.preventDefault();
@@ -81,56 +83,37 @@ export const Additions = () => {
             <Helmet>
                 <title>CMS - {t("additions")}</title>
             </Helmet>
-            {additionDialogActive ? <AdditionFormDialog filter={executeFilter}/> : <></>}
-            {additionToRemove ?
-                <DecisionDialog msg={t('confirmDishRemoval')}
+            {additionDialogActive && <AdditionFormDialog filter={executeFilter}/>}
+            {additionToRemove &&
+                <DecisionDialog msg={t('confirmAdditionRemoval')}
                                 objName={additionToRemove.name}
                                 onSubmit={(e) => handleAdditionRemoval(e, additionToRemove)}
-                                onCancel={() => dispatch(setAdditionToRemove(null))}/> : <></>}
-            <div className={'padded-view-container'}>
-                <div className={'vertical-split-grid'}>
-                    <div className={'vertical-split-left-panel'}>
-                        <div>
-                            <div className={'vertical-split-left-panel-header no-justify'}>
-                                <button className={'general-button submit'}
-                                        onClick={() => dispatch(setAdditionDialogActive(true))}>
-                                    + {t('newAddition')}
-                                </button>
-                                <div className={`search-button margin-left ${filterExpanded ? 'search-active' : ''}`}>
-                                    <button className={`search-initial-circle ${filterExpanded ? 'circle-active' : ''}`}
-                                            onClick={() => dispatch(setFilterExpanded(!filterExpanded))}>
-                                        <SearchIcon/>
-                                    </button>
-                                    {filterExpanded ?
-                                        <FilteringForm value={filterValue} searchSubmit={handleSearchSubmit}/> : <></>}
-                                </div>
-                            </div>
-                            {isLoading ? <LoadingSpinner/> :
-                                <ul>
-                                    <ul>
-                                        {ingredients ? (ingredients.length !== 0 ?
-                                                ingredients.map((ingredient, index) => (
-                                                    <li key={ingredient.id}
-                                                        className={'details-wrapper'}>
-                                                        <ListRecord displayOrder={index + 1}
-                                                                    name={ingredient.name}
-                                                                    price={ingredient.price}
-                                                                    available={ingredient.available}
-                                                                    onEdit={() => {
-                                                                        dispatch(setAddition(ingredient));
-                                                                        dispatch(setIsNewAddition(false));
-                                                                        dispatch(setAdditionDialogActive(true));
-                                                                    }}
-                                                                    onDelete={() => dispatch(setAdditionToRemove(ingredient))}
-                                                        />
-                                                    </li>)) :
-                                                <p className={'text-center'}>{t('noAdditions')}</p>) :
-                                            <p className={'text-center'}>{t('noDishChosen')}</p>
-                                        }
-                                    </ul>
-                                </ul>
-                            }
+                                onCancel={() => dispatch(setAdditionToRemove(null))}/>}
+            <div className={'cms-padded-view-container'}>
+                <div className={'functions-header'}>
+                    <div className={'section-heading'}>{t('additions')}</div>
+                    <div className={'flex-wrapper-gapped'}>
+                        <div className={'general-button-new'}
+                             onClick={() => dispatch(setAdditionDialogActive(true))}>+ &nbsp;{t('newAddition')}
                         </div>
+                        <SearchButton filterExpanded={filterExpanded}
+                                      onExpand={() => dispatch(setFilterExpanded(!filterExpanded))}
+                                      filterValue={filterValue}
+                                      onSubmit={handleSearchSubmit}
+                                      onClear={() => dispatch(setFilterValue(''))}
+                        />
+                    </div>
+                </div>
+                <div className={'scrollable-wrapper'}>
+                    <div className={'scroll-container'}>
+                        {isLoading && <LoadingSpinner/>}
+                        {ingredients.length === 0 && <p className={'text-center'}>{t('noAdditions')}</p>}
+                        {letters?.map(letter => (
+                            <LetterGroup key={letter}
+                                         letter={letter}
+                                         ingredients={filterIngredientsByLetter(letter)}
+                            />
+                        ))}
                     </div>
                 </div>
             </div>
