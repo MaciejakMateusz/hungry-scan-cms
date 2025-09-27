@@ -25,6 +25,7 @@ import {EditMenuFormDialog} from "../menu/EditMenuFormDialog";
 import {useConfirmationMessage} from "../../../../hooks/useConfirmationMessage";
 import {useFetchCurrentRestaurant} from "../../../../hooks/useFetchCurrentRestaurant";
 import {useOutsideClick} from "../../../../hooks/useOutsideClick";
+import {RecordOptionsButton} from "../shared-components/RecordOptionsButton";
 
 export const CmsTopper = () => {
     const {t} = useTranslation();
@@ -128,26 +129,24 @@ export const CmsTopper = () => {
                             selectRef={selectRef}
                     />
                 </div>
-                <div className={'relative-container'}>
-                    <div className={'options-button'}
-                         style={isInEditMode ? {cursor: 'not-allowed'} : {}}
-                         tabIndex={-1}
-                         onClick={() => {
-                             if (isInEditMode) return;
-                             dispatch(setContextMenuActive(!contextMenuActive));
-                             dispatch(setContextMenuDetailsActive(false));
-                         }}>
-                        <ThreeDotsIcon/>
-                    </div>
-                    {contextMenuActive &&
-                        <ContextMenu positions={contextMenuPositions}
+                <RecordOptionsButton className={'options-button'}
+                                     onClick={() => {
+                                         if (isInEditMode) return;
+                                         dispatch(setContextMenuActive(!contextMenuActive));
+                                         dispatch(setContextMenuDetailsActive(false));
+                                     }}
+                                     contextWindowActive={contextMenuActive}
+                                     contextPositions={contextMenuPositions}
                                      obj={menu}
                                      detailsActive={contextMenuDetailsActive}
-                                     contextRef={contextRef}/>}
-                </div>
+                                     contextRef={contextRef}/>
             </div>
             <button className={'general-button'}
-                    onClick={() => dispatch(setSchedulerActive(true))}>
+                    style={isInEditMode ? {cursor: 'not-allowed', background: '#B5B5B5'} : {}}
+                    onClick={() => {
+                        if (isInEditMode) return;
+                        dispatch(setSchedulerActive(true));
+                    }}>
                 {t('configureSchedules')}
             </button>
         </header>
