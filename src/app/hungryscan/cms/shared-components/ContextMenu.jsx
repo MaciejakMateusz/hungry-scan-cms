@@ -1,6 +1,6 @@
 import {ContextMenuDetails} from "./ContextMenuDetails";
 
-export const ContextMenu = ({positions, obj, detailsActive, contextRef}) => {
+export const ContextMenu = ({positions, obj, detailsActive, contextRef, position}) => {
 
     const renderPosition = (position) => {
         if (position.details) {
@@ -20,7 +20,7 @@ export const ContextMenu = ({positions, obj, detailsActive, contextRef}) => {
     }
 
     return (
-        <div className={'context-menu'} ref={contextRef}>
+        <div className={'context-menu'} style={position} ref={contextRef}>
             <div className={'context-menu-wrapper'}>
                 {positions.map((p) => renderPosition(p))}
             </div>
