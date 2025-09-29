@@ -27,3 +27,27 @@ export const getLanguage = () => {
     const lngCookie = getCookie('lng');
     return lngCookie ? lngCookie : i18n.language;
 }
+
+export const updateTranslatable = (translatable, translation) => {
+    const currentLanguage = getLanguage();
+    const languageKey = currentLanguage === 'pl-PL' ? 'pl' : currentLanguage;
+    const defaultLanguageIsNull = translatable[process.env.REACT_APP_DEFAULT_LANGUAGE] === null;
+    if (defaultLanguageIsNull) {
+        return {
+            ...translatable,
+            [process.env.REACT_APP_DEFAULT_LANGUAGE]: translation,
+            [languageKey]: translation
+        }
+    }
+    return {...translatable, [languageKey]: translation};
+}
+
+export const createTranslatable = translation => {
+    const currentLanguage = getLanguage();
+    const languageKey = currentLanguage === 'pl-PL' ? 'pl' : currentLanguage;
+    return {
+        id: null,
+        [process.env.REACT_APP_DEFAULT_LANGUAGE]: translation,
+        [languageKey]: translation
+    };
+}
