@@ -39,7 +39,7 @@ export const CategoryPosition = ({category}) => {
                     <DeleteIconNew/>
                 </span>
             </div>
-            <div className={'new-dish-button'} onClick={() => {
+            <div className={'new-position-button'} onClick={() => {
                 dispatch(setCategory(category));
                 dispatch(setNewDishFormActive(true));
             }}>
