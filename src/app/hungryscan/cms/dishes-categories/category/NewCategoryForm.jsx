@@ -1,24 +1,20 @@
 import React from "react";
 import {useTranslation} from "react-i18next";
-import {CategoryFormTemplate} from "./CategoryFormTemplate";
 import {useDispatch, useSelector} from "react-redux";
-import {clearForm, postCategory,
-    setErrorData, setErrorMessage
-} from "../../../../../slices/categoryFormSlice";
-import {
-    setNewCategoryFormActive,
-    setSubmittedSuccessType
-} from "../../../../../slices/dishesCategoriesSlice";
-import {FormErrorDialog} from "../../../../error/FormErrorDialog";
+import {clearForm, postCategory, setErrorData, setErrorMessage, setName} from "../../../../../slices/categoryFormSlice";
+import {setNewCategoryFormActive, setSubmittedSuccessType} from "../../../../../slices/dishesCategoriesSlice";
+import {CategoryForm} from "./CategoryForm";
+import {useTranslatableTransformer} from "../../../../../hooks/useTranslatableTransformer";
 
 export const NewCategoryForm = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
-    const {errorData, errorMessage} = useSelector(state => state.categoryForm.form);
+    const {category} = useSelector(state => state.dishesCategories.view);
+    const transformName = useTranslatableTransformer({obj: category, key: 'name'});
 
-    const handleFormSubmit = async (e) => {
+    const handleFormSubmit = async e => {
         e.preventDefault();
-        const resultAction = await dispatch(postCategory({action: "add"}));
+        const resultAction = await dispatch(postCategory({action: 'add', transformName: transformName}));
         if (postCategory.fulfilled.match(resultAction)) {
             dispatch(setSubmittedSuccessType('category-save'));
             setTimeout(() => {
@@ -32,34 +28,14 @@ export const NewCategoryForm = () => {
         }
     };
 
+    const handleFormDiscard = () => {
+        dispatch(clearForm());
+        dispatch(setNewCategoryFormActive(false));
+    }
+
     return (
-        <div className={'background'}>
-            <div className={'cms-padded-view-container'}>
-                {errorMessage ?
-                    <FormErrorDialog error={errorData}
-                                     resetMessage={() => dispatch(setErrorMessage(null))} />
-                    : null}
-                <div className={'form-grid category'}>
-                    <form className={'padded-form-fragment'}>
-                        <div className={'form-header'}>
-                            {t('createNewCategory')}
-                        </div>
-                        <div className={'padded-form-container'}>
-                            <CategoryFormTemplate/>
-                        </div>
-                        <div className={'form-footer category'}>
-                            <div className={'general-button cancel'}
-                                 onClick={() => {
-                                     dispatch(clearForm());
-                                     dispatch(setNewCategoryFormActive(false));
-                                 }}>
-                                {t('cancel')}
-                            </div>
-                            <div className={'general-button submit'} onClick={handleFormSubmit}>{t('save')}</div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+        <CategoryForm formHeader={t('createNewCategory')}
+                      onFormSubmit={handleFormSubmit}
+                      onFormDiscard={handleFormDiscard}/>
     );
 }
