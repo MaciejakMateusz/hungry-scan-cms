@@ -3,19 +3,16 @@ import {apiHost} from "../apiData";
 
 export const postCategory = createAsyncThunk(
     'categoryFetch/postCategory',
-    async ({action}, {getState, rejectWithValue}) => {
+    async ({action, transformName}, {getState, rejectWithValue}) => {
         const state = getState().categoryForm.form;
         const response = await fetch(`${apiHost}/api/cms/categories/${action}`, {
-            method: action === "add" ? 'POST' : 'PATCH',
+            method: action === 'add' ? 'POST' : 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
                 id: state.id,
-                name: {
-                    pl: state.name,
-                    en: ''
-                },
+                name: transformName(state.name),
                 menuItems: state.dishes,
                 available: state.available,
                 displayOrder: state.displayOrder.value
