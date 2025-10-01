@@ -17,6 +17,7 @@ import {
 } from "../../../../slices/additionsSlice";
 import {getTranslation} from "../../../../locales/langUtils";
 import {LogicalToggleField} from "../form-components/LogicalToggleField";
+import {useTranslatableTransformer} from "../../../../hooks/useTranslatableTransformer";
 
 export const AdditionFormDialog = (props) => {
     const {t} = useTranslation();
@@ -24,6 +25,10 @@ export const AdditionFormDialog = (props) => {
     const {isNewAddition, filteringActive, filterValue} = useSelector(state => state.additions.view);
     const {name, price, available, addition} = useSelector(state => state.additions.form);
     const {errorData} = useSelector(state => state.additions.postAddition);
+    const transformName = useTranslatableTransformer({
+        obj: isNewAddition ? null : addition,
+        key: 'name'
+    });
 
     useEffect(() => {
         if (!isNewAddition) {
@@ -44,7 +49,10 @@ export const AdditionFormDialog = (props) => {
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
-        const resultAction = await dispatch(postAddition());
+        const resultAction = await dispatch(postAddition({
+            action: isNewAddition ? 'add' : 'update',
+            transformName: transformName
+        }));
         if (postAddition.fulfilled.match(resultAction)) {
             dispatch(setAdditionDialogActive(false));
             dispatch(clearForm());
