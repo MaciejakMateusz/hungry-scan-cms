@@ -1,5 +1,6 @@
 import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
+import {createTranslatable} from "../locales/langUtils";
 
 export const postVariant = createAsyncThunk(
     'variants/postVariant',
@@ -15,10 +16,7 @@ export const postVariant = createAsyncThunk(
                 id: state.id,
                 menuItem: viewState.dish,
                 displayOrder: state.displayOrder.value,
-                name: {
-                    pl: state.name,
-                    en: ''
-                },
+                name: createTranslatable(state.name),
                 price: state.price,
                 available: state.available.value
             }),
@@ -164,10 +162,6 @@ export const variantsSlice = createSlice({
         setIsNewVariant: (state, action) => {
             state.isNewVariant = action.payload;
         },
-        resetVariantData: state => {
-            state.variantDialogActive = false;
-            state.isNewVariant = true;
-        },
         clearView: state => {
             state.filteringActive = false;
             state.filterValue = '';
@@ -232,7 +226,6 @@ export const {
     setVariantDialogActive,
     setVariantToRemove,
     setIsNewVariant,
-    resetVariantData,
     clearView
 } = variantsSlice.actions;
 
