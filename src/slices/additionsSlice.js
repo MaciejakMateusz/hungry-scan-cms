@@ -3,19 +3,16 @@ import {apiHost} from "../apiData";
 
 export const postAddition = createAsyncThunk(
     'additions/postAddition',
-    async (_, {getState, rejectWithValue}) => {
+    async ({action, transformName}, {getState, rejectWithValue}) => {
         const state = getState().additions.form;
-        const response = await fetch(`${apiHost}/api/cms/ingredients/add`, {
-            method: 'POST',
+        const response = await fetch(`${apiHost}/api/cms/ingredients/${action}`, {
+            method: action === 'add' ? 'POST' : 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
                 id: state.id,
-                name: {
-                    pl: state.name,
-                    en: ''
-                },
+                name: transformName(state.name),
                 price: state.price,
                 available: state.available.value
             }),
