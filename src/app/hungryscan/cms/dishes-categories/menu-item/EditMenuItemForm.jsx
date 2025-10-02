@@ -28,20 +28,25 @@ import {
     setVariants
 } from "../../../../../slices/dishFormSlice";
 import {setEditDishFormActive, setSubmittedSuccessType} from "../../../../../slices/dishesCategoriesSlice";
-import {FormErrorDialog} from "../../../../error/FormErrorDialog";
-import {MenuItemMobilePreview} from "./MenuItemMobilePreview";
 import {fetchIngredients, setChosenAdditions} from "../../../../../slices/dishAdditionsSlice";
 import {useClearForm} from "../../../../../hooks/useClearForm";
+import {MenuItemFormWrapper} from "./MenuItemFormWrapper";
+import {Variants} from "./variants/Variants";
+import {useTranslatableTransformer} from "../../../../../hooks/useTranslatableTransformer";
 
 export const EditMenuItemForm = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {category, dish} = useSelector(state => state.dishesCategories.view);
+    const {activeTab} = useSelector(state => state.dishForm.form);
     const clearForm = useClearForm();
     const {data} = useSelector(state => state.dishForm.fetchMenuItem);
-    const item = data?.menuItemFormDTO
+    const item = data?.menuItemFormDTO;
     const [file, setFile] = useState(null);
-    const {errorMessage, errorData} = useSelector(state => state.dishForm.form);
+    const translatableTransformers = {
+        transformName: useTranslatableTransformer({obj: dish, key: 'name'}),
+        transformDescription: useTranslatableTransformer({obj: dish, key: 'description'})
+    };
 
     useEffect(() => {
         dispatch(fetchMenuItem({id: dish?.id}));
@@ -86,7 +91,7 @@ export const EditMenuItemForm = () => {
             dispatch(setCreatedBy(item.createdBy));
         }
         setInitialFormState();
-    }, [dispatch, item]);
+    }, [dispatch, item, category]);
 
     const handleFormDiscard = () => {
         clearForm();
@@ -95,9 +100,13 @@ export const EditMenuItemForm = () => {
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
-        setErrorMessage(null);
+        dispatch(setErrorMessage(null));
 
-        const dishAction = await dispatch(postDish({action: "update", file: file}));
+        const dishAction = await dispatch(postDish({
+            action: 'update',
+            file: file,
+            translatableTransformers: translatableTransformers
+        }));
         if (postDish.fulfilled.match(dishAction)) {
             dispatch(setSubmittedSuccessType('dish-edit'));
             setTimeout(() => {
@@ -111,30 +120,22 @@ export const EditMenuItemForm = () => {
         }
     };
 
+    const renderFormView = () => {
+        switch (activeTab) {
+            case 'information':
+                return (<MenuItemFormTemplate setFile={setFile}/>);
+            case 'variants':
+                return (<Variants/>);
+            default:
+                return (<MenuItemFormTemplate setFile={setFile}/>);
+        }
+    }
+
     return (
-        <div className={'background'}>
-            {errorMessage ? <FormErrorDialog error={errorData} resetMessage={setErrorMessage}/> : null}
-            <div className={'cms-padded-view-container'}>
-                <div className={'form-grid'}>
-                    <div className={'padded-form-fragment'}>
-                        <div className={'form-header'}>
-                            {t('editingDishInCategory')}:&nbsp;&nbsp;
-                            <span style={{color: '#6940C6'}}> "{getTranslation(category?.name)}"</span>
-                        </div>
-                        <form className={'padded-form-container'}>
-                            <MenuItemFormTemplate setFile={setFile} isNewPosition={true}/>
-                            <div className={'form-footer'}>
-                                <div className={'general-button cancel'}
-                                     onClick={handleFormDiscard}>
-                                    {t('cancel')}
-                                </div>
-                                <div className={'general-button submit'} onClick={handleFormSubmit}>{t('save')}</div>
-                            </div>
-                        </form>
-                    </div>
-                    <MenuItemMobilePreview image={file}/>
-                </div>
-            </div>
-        </div>
+        <MenuItemFormWrapper title={t('editingDishInCategory')}
+                             onFormSubmit={handleFormSubmit}
+                             onFormDiscard={handleFormDiscard}>
+            {renderFormView()}
+        </MenuItemFormWrapper>
     );
 }
