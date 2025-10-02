@@ -31,7 +31,7 @@ export const getLanguage = () => {
 export const updateTranslatable = (translatable, translation) => {
     const currentLanguage = getLanguage();
     const languageKey = currentLanguage === 'pl-PL' ? 'pl' : currentLanguage;
-    const defaultLanguageIsNull = translatable[process.env.REACT_APP_DEFAULT_LANGUAGE] === null;
+    const defaultLanguageIsNull = !translatable[process.env.REACT_APP_DEFAULT_LANGUAGE];
     if (defaultLanguageIsNull) {
         return {
             ...translatable,
