@@ -26,21 +26,27 @@ export const fetchMenuItem = createAsyncThunk(
 
 export const postDish = createAsyncThunk(
     'postDish/postDish',
-    async ({action, file}, {getState, rejectWithValue}) => {
+    async ({action, file, translatableTransformers}, {getState, rejectWithValue}) => {
         const s = getState();
         const form = s.dishForm.form;
+        const preparedVariants = form.variants.map(variant => {
+            if (typeof variant.id !== "number") {
+                return {...variant, id: null}
+            }
+            return variant;
+        });
         const payload = {
             id: form.id,
             categoryId: form.category?.id,
             displayOrder: form.displayOrder,
-            name: {pl: form.name, en: ""},
-            description: {pl: form.description, en: ""},
+            name: translatableTransformers.transformName(form.name),
+            description: translatableTransformers.transformDescription(form.description),
             price: form.price,
             promoPrice: form.promoPrice,
             available: form.available,
             created: form.created,
             createdBy: form.createdBy,
-            variants: form.variants,
+            variants: preparedVariants,
             banners: s.dishForm.fetchBanners.chosenBanners.map(b => b.value),
             labels: s.dishForm.fetchLabels.chosenLabels.map(l => l.value),
             allergens: s.dishForm.fetchAllergens.chosenAllergens.map(a => a.value),
@@ -53,14 +59,14 @@ export const postDish = createAsyncThunk(
             [JSON.stringify(payload)],
             {type: "application/json"}
         );
-        const fd = new FormData();
-        fd.append("menuItem", menuItemBlob);
-        fd.append("image", file);
+        const formData = new FormData();
+        formData.append("menuItem", menuItemBlob);
+        formData.append("image", file);
 
         const res = await fetch(`${apiHost}/api/cms/items/${action}`, {
             method: action === 'add' ? 'POST' : 'PATCH',
             credentials: 'include',
-            body: fd
+            body: formData
         });
 
         if (!res.ok) {
@@ -295,6 +301,7 @@ export const fetchAllergensSlice = createSlice(
 export const dishFormSlice = createSlice({
     name: 'form',
     initialState: {
+        activeTab: 'information',
         id: null,
         name: '',
         description: '',
@@ -315,6 +322,9 @@ export const dishFormSlice = createSlice({
         errorData: {}
     },
     reducers: {
+        setActiveTab: (state, action) => {
+            state.activeTab = action.payload;
+        },
         setId: (state, action) => {
             state.id = action.payload;
         },
@@ -364,6 +374,7 @@ export const dishFormSlice = createSlice({
             state.errorData = action.payload;
         },
         clearForm: state => {
+            state.activeTab = 'information';
             state.id = null;
             state.name = '';
             state.description = '';
@@ -390,6 +401,7 @@ export const {setChosenLabels, clearLabels} = fetchLabelsSlice.actions;
 export const {setChosenAllergens, clearAllergens} = fetchAllergensSlice.actions;
 
 export const {
+    setActiveTab,
     setId,
     setName,
     setDescription,
