@@ -61,7 +61,7 @@ export const MenuItemPosition = ({id, category, menuItem, filtered}) => {
         <>
             <div ref={setNodeRef}
                  style={style}
-                 className={'menu-item-position-container'}>
+                 className={'draggable-position-container'}>
                 {!filtered ?
                     <div className={'drag-and-drop-wrapper'} {...listeners} {...attributes}>
                         <DragAndDropIcon/>
@@ -77,15 +77,15 @@ export const MenuItemPosition = ({id, category, menuItem, filtered}) => {
                          unloader={<PlaceholderImgIcon/>}
                     />
                 </div>
-                <div className={'menu-item-position-text-container'}>
-                    <span className={'menu-item-position-name'}>
+                <div className={'draggable-position-text-container'}>
+                    <span className={'draggable-position-name'}>
                         {getTranslation(menuItem.name)}
                     </span>
-                    <span className={'menu-item-position-description'}>
+                    <span className={'draggable-position-description'}>
                         {getTranslation(menuItem.description)}
                     </span>
                 </div>
-                <div className={'menu-item-position-price'}>
+                <div className={'draggable-position-price'}>
                     {formatPrice(menuItem.price)} zł
                 </div>
                 <div className={'menu-item-position-banner'}>
@@ -104,7 +104,7 @@ export const MenuItemPosition = ({id, category, menuItem, filtered}) => {
                         </Tooltip>
                     ))}
                 </div>
-                <div className={'menu-item-position-actions'}>
+                <div className={'draggable-position-actions'}>
                     <span className={'clickable-icon'} onClick={() => handleEditClick(category, menuItem)}>
                         <EditIconNew/>
                     </span>
@@ -116,9 +116,7 @@ export const MenuItemPosition = ({id, category, menuItem, filtered}) => {
                     </span>
                 </div>
             </div>
-            {menuItem.displayOrder === category?.menuItems.length ? null :
-                <div className={'menu-item-position-separator'}/>
-            }
+            {menuItem.displayOrder !== category?.menuItems.length && <div className={'draggable-position-separator'}/>}
         </>
     );
 };
