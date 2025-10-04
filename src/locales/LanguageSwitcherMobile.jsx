@@ -15,9 +15,9 @@ export const LanguageSwitcherMobile = () => {
         return language === 'pl-PL' ? 'PL' : language.toUpperCase();
     }
 
-    const changeLanguageMobile = lng => {
-        i18n.changeLanguage(lng.toLowerCase());
-        document.cookie = `i18next=${lng.toLowerCase()}; path=/`;
+    const handleLanguageChange = language => {
+        i18n.changeLanguage(language.toLowerCase());
+        document.cookie = `i18next=${language.toLowerCase()}; path=/`;
         setIsDropped(false);
     }
 
@@ -33,7 +33,7 @@ export const LanguageSwitcherMobile = () => {
                     <div className={'lng-mobile'}
                          onClick={(e) => {
                              e.stopPropagation();
-                             changeLanguageMobile(l);
+                             handleLanguageChange(l);
                          }}
                          key={l}>
                         {l}
