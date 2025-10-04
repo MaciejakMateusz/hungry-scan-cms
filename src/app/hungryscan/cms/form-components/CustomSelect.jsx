@@ -32,7 +32,7 @@ export const CustomSelect = (props) => {
 
     return (
         <div className={'form-field-wrapper'}>
-            <div className={'form-field-container'}>
+            <div className={`${props.disableFieldContainer ? '' : 'form-field-container'}`}>
                 <label htmlFor={props.id} className={'form-label'}>
                     {props.info && <InformationTooltip text={props.info}/>}
                     {props.labelName} {props.isOptional ?
@@ -40,7 +40,7 @@ export const CustomSelect = (props) => {
                 </label>
                 <Select id={props.id}
                         name={props.name}
-                        styles={mergeStyles(customSelect, errorStyles)}
+                        styles={mergeStyles({...customSelect, ...props.styles}, errorStyles)}
                         isDisabled={props.isDisabled}
                         value={chosenValue}
                         onChange={props.onChange}
