@@ -70,6 +70,8 @@
   "createFirstRestaurant": "Create your first restaurant!",
   "dishesCategories": "Categories and dishes",
   "variants": "Variants",
+  "menuItemsVariants": "Dishes and variants",
+  "welcomeSlogans": "Welcome slogans",
   "additions": "Additions",
   "translations": "Translations",
   "adPopUps": "Ad pop-ups",
@@ -283,6 +285,7 @@
   "noPositionsToDisplay": "No positions to display",
   "noCategoriesToDisplay": "No categories to display",
   "information": "Informations",
+  "menuName": "Menu name",
 
   "constraints.NotBlank": "Field cannot be blank",
   "constraints.ForenameSurname": "Field should contain minimum 2 letters and no special characters"

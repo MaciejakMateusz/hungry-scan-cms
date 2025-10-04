@@ -71,6 +71,8 @@
   "changeRestaurantDataInfo": "Dane restauracji w każdej chwili możesz zmienić w ustawieniach.",
   "dishesCategories": "Kategorie i dania",
   "variants": "Warianty",
+  "menuItemsVariants": "Dania i warianty",
+  "welcomeSlogans": "Slogany powitalne",
   "additions": "Dodatki",
   "qrCode": "Kod QR",
   "translations": "Tłumaczenia",
@@ -285,6 +287,7 @@
   "noPositionsToDisplay": "Brak pozycji do wyświetlenia",
   "noCategoriesToDisplay": "Brak kategorii do wyświetlenia",
   "information": "Informacje",
+  "menuName": "Nazwa menu",
 
   "constraints.NotBlank": "Pole nie może być puste",
   "constraints.ForenameSurname": "Pole powinno mieć minimum dwa znaki i zawierać tylko litery"
