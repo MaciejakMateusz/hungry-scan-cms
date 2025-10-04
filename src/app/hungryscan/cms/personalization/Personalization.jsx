@@ -27,25 +27,25 @@ export const Personalization = () => {
 
     return (
         <div className={'background'}>
-            <div className={'cms-padded-view-container'}>
+            <form className={'cms-padded-view-container'}>
+                <div className={'functions-header'}>
+                    <div className={'section-heading'}>
+                        {t('personalization')}
+                    </div>
+                    <div className={'flex-wrapper-gapped'}>
+                        <div className={'form-footer'}>
+                            <div className={'general-button'} onClick={handleFormSubmit}>
+                                {t('save')}
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div className={'form-grid'}>
                     <div className={'padded-form-fragment'}>
-                        <div className={'form-header'}>
-                            {t('personalization')}
-                        </div>
-                        <form className={'padded-form-container'}>
-                            <PersonalizationForm/>
-                            <div className={'personalization-form-footer'}>
-                                <div className={'general-button submit'}
-                                     onClick={handleFormSubmit}>
-                                    {t('save')}
-                                </div>
-                            </div>
-                        </form>
+                        <PersonalizationForm/>
                     </div>
-                    <MenuMobilePreview/>
                 </div>
-            </div>
+            </form>
         </div>
     );
 }
