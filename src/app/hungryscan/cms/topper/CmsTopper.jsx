@@ -3,7 +3,6 @@ import {DocumentIcon} from "../../../icons/DocumentIcon";
 import Select from "react-select";
 import {mainSelectIcon} from "../../../../selectStyles";
 import {CustomNoOptionsMessage} from "../form-components/CustomNoOptionsMessage";
-import {ThreeDotsIcon} from "../../../icons/ThreeDotsIcon";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchActiveMenu, setSchedulerActive, switchActiveMenu} from "../../../../slices/cmsSlice";
@@ -16,7 +15,6 @@ import {
     setMenuRemoved,
     setNewMenuFormActive
 } from "../../../../slices/menuSlice";
-import {ContextMenu} from "../shared-components/ContextMenu";
 import {useMenuContextPositions} from "../../../../hooks/useMenuContextPositions";
 import {remove} from "../../../../slices/objectRemovalSlice";
 import {setActiveRemovalType} from "../../../../slices/dishesCategoriesSlice";
