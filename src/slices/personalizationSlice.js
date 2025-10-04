@@ -1,5 +1,6 @@
 import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
+import {updateTranslatable} from "../locales/langUtils";
 
 export const fetchThemeHexes = createAsyncThunk(
     'fetchThemeHexes/fetchThemeHexes',
@@ -34,7 +35,7 @@ export const postPersonalization = createAsyncThunk(
             },
             body: JSON.stringify({
                 id: activeMenu.value.id,
-                message: {pl: form.welcomeSlogan},
+                message: updateTranslatable(activeMenu.value.message, form.welcomeSlogan),
                 theme: form.theme,
                 bannerIconVisible: form.bannerIconVisible,
                 color: activeMenu.value.color,
