@@ -1,7 +1,7 @@
 import React from "react";
 import {useTranslation} from "react-i18next";
-import {useDispatch, useSelector} from "react-redux";
-import {clearForm, postCategory, setErrorData, setErrorMessage, setName} from "../../../../../slices/categoryFormSlice";
+import {useDispatch} from "react-redux";
+import {clearForm, postCategory, setErrorData, setErrorMessage} from "../../../../../slices/categoryFormSlice";
 import {setNewCategoryFormActive, setSubmittedSuccessType} from "../../../../../slices/dishesCategoriesSlice";
 import {CategoryForm} from "./CategoryForm";
 import {useTranslatableTransformer} from "../../../../../hooks/useTranslatableTransformer";
@@ -9,8 +9,7 @@ import {useTranslatableTransformer} from "../../../../../hooks/useTranslatableTr
 export const NewCategoryForm = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
-    const {category} = useSelector(state => state.dishesCategories.view);
-    const transformName = useTranslatableTransformer({obj: category, key: 'name'});
+    const transformName = useTranslatableTransformer({obj: null, key: 'name'});
 
     const handleFormSubmit = async e => {
         e.preventDefault();
