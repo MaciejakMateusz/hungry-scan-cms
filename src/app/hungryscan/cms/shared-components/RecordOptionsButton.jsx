@@ -25,7 +25,7 @@ export const RecordOptionsButton = ({
                              obj={obj}
                              detailsActive={detailsActive}
                              contextRef={contextRef}
-                             position={windowPosition}/>}
+                             windowPosition={windowPosition}/>}
         </div>
     );
 }
