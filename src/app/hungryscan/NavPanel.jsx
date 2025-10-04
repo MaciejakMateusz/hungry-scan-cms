@@ -9,6 +9,7 @@ import {setCurrentView} from "../../slices/globalParamsSlice";
 import {DISHES_CATEGORIES, STATS} from "../../utils/viewsConstants";
 import {useDispatch, useSelector} from "react-redux";
 import {useTranslation} from "react-i18next";
+import {LanguageSwitcherMobile} from "../../locales/LanguageSwitcherMobile";
 
 export const NavPanel = ({children}) => {
     const {t} = useTranslation();
@@ -31,6 +32,7 @@ export const NavPanel = ({children}) => {
                     </span>
                 <UserProfileWhiteIcon/>
                 <NotificationIcon/>
+                <LanguageSwitcherMobile/>
             </div>
             <div className={'app-mode-switcher-wrapper'}>
                 <div className={'app-mode-switcher'} onClick={() => switchAppMode()}>
