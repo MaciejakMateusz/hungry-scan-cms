@@ -4,19 +4,20 @@ import {CategoryFormTemplate} from "./CategoryFormTemplate";
 import {useDispatch, useSelector} from "react-redux";
 import {setErrorMessage} from "../../../../../slices/categoryFormSlice";
 import {FormErrorDialog} from "../../../../error/FormErrorDialog";
+import {LoadingSpinner} from "../../../../icons/LoadingSpinner";
 
 export const CategoryForm = ({formHeader, onFormDiscard, onFormSubmit}) => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {errorData, errorMessage} = useSelector(state => state.categoryForm.form);
+    const {isLoading} = useSelector(state => state.categoryForm.postCategory);
+
 
     return (
         <div className={'background'}>
             <div className={'cms-padded-view-container'}>
-                {errorMessage ?
-                    <FormErrorDialog error={errorData}
-                                     resetMessage={() => dispatch(setErrorMessage(null))}/>
-                    : null}
+                {errorMessage && <FormErrorDialog error={errorData}
+                                                  resetMessage={() => dispatch(setErrorMessage(null))}/>}
                 <div className={'functions-header'}>
                     <div className={'section-heading'}>
                         {formHeader}
@@ -27,7 +28,10 @@ export const CategoryForm = ({formHeader, onFormDiscard, onFormSubmit}) => {
                                  onClick={onFormDiscard}>
                                 {t('cancel')}
                             </div>
-                            <div className={'general-button'} onClick={onFormSubmit}>{t('save')}</div>
+                            <div className={'general-button'}
+                                 onClick={onFormSubmit}>
+                                {isLoading ? <LoadingSpinner buttonMode={true}/> : t('save')}
+                            </div>
                         </div>
                     </div>
                 </div>
