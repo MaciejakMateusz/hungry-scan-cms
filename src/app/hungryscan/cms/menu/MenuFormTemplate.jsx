@@ -13,7 +13,7 @@ export const MenuFormTemplate = ({formHeader, discardHandler, submitHandler, err
     return (
         <>
             <div className={'overlay'}></div>
-            <div className={'variant-form-dialog '}>
+            <div className={'form-dialog '}>
                 <div className={'variant-form-dialog-content'}>
                     <h4>{formHeader}</h4>
                     <NameField id={'menu-name'}
@@ -23,7 +23,7 @@ export const MenuFormTemplate = ({formHeader, discardHandler, submitHandler, err
                     />
                     <MenuColorField/>
                 </div>
-                <div className={'variant-dialog-footer'}>
+                <div className={'dialog-footer'}>
                     <button className={'general-button cancel'} onClick={discardHandler}>
                         {t('cancel')}
                     </button>
