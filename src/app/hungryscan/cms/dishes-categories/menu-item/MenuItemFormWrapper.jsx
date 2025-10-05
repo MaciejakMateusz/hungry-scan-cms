@@ -4,11 +4,13 @@ import {getTranslation} from "../../../../../locales/langUtils";
 import {setActiveTab, setErrorMessage} from "../../../../../slices/dishFormSlice";
 import {FormErrorDialog} from "../../../../error/FormErrorDialog";
 import {useTranslation} from "react-i18next";
+import {LoadingSpinner} from "../../../../icons/LoadingSpinner";
 
 export const MenuItemFormWrapper = ({title, onFormDiscard, onFormSubmit, children}) => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {category} = useSelector(state => state.dishesCategories.view);
+    const {isLoading} = useSelector(state => state.dishForm.postDish);
     const {activeTab} = useSelector(state => state.dishForm.form);
     const {
         errorMessage,
@@ -31,8 +33,9 @@ export const MenuItemFormWrapper = ({title, onFormDiscard, onFormSubmit, childre
                                  onClick={onFormDiscard}>
                                 {t('cancel')}
                             </button>
-                            <button type="submit" className={'general-button'} onClick={onFormSubmit}>
-                                {t('save')}
+                            <button type="submit" className={'general-button'}
+                                    onClick={onFormSubmit}>
+                                {isLoading ? <LoadingSpinner buttonMode={true}/> : t('save')}
                             </button>
                         </div>
                     </div>
