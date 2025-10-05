@@ -311,13 +311,15 @@ export const dishFormSlice = createSlice({
         variants: [],
         price: formatPrice(0, true),
         promoPrice: formatPrice(0, true),
-        fileName: null,
         additionalIngredients: [],
         available: true,
         displayOrder: 0,
         displayOrders: [],
         created: null,
+        updated: null,
         createdBy: null,
+        hasImage: false,
+        isImageCleared: false,
         errorMessage: null,
         errorData: {}
     },
@@ -349,12 +351,6 @@ export const dishFormSlice = createSlice({
         setPromoPrice: (state, action) => {
             state.promoPrice = action.payload;
         },
-        setFileName: (state, action) => {
-            state.fileName = action.payload;
-        },
-        clearFileName: state => {
-            state.fileName = null;
-        },
         setAvailable: (state, action) => {
             state.available = action.payload;
         },
@@ -366,6 +362,15 @@ export const dishFormSlice = createSlice({
         },
         setCreatedBy: (state, action) => {
             state.createdBy = action.payload;
+        },
+        setUpdated: (state, action) => {
+            state.updated = action.payload;
+        },
+        setHasImage: (state, action) => {
+            state.hasImage = action.payload;
+        },
+        setIsImageCleared: (state, action) => {
+            state.isImageCleared = action.payload;
         },
         setErrorMessage: (state, action) => {
             state.errorMessage = action.payload;
@@ -382,7 +387,6 @@ export const dishFormSlice = createSlice({
             state.variants = [];
             state.price = formatPrice(0, true);
             state.file = {};
-            state.fileName = null;
             state.chosenLabels = [];
             state.chosenAllergens = [];
             state.available = true;
@@ -390,6 +394,9 @@ export const dishFormSlice = createSlice({
             state.displayOrders = [];
             state.created = null;
             state.createdBy = null;
+            state.updated = null;
+            state.hasImage = false;
+            state.isImageCleared = false;
             state.errorMessage = null;
             state.errorData = {};
         }
@@ -410,12 +417,13 @@ export const {
     setVariants,
     setPrice,
     setPromoPrice,
-    setFileName,
-    clearFileName,
     setAvailable,
     setDisplayOrder,
     setCreated,
     setCreatedBy,
+    setUpdated,
+    setHasImage,
+    setIsImageCleared,
     setErrorMessage,
     setErrorData,
     clearForm
@@ -427,7 +435,7 @@ const dishFormReducer = combineReducers({
     fetchBanners: fetchBannersSlice.reducer,
     fetchLabels: fetchLabelsSlice.reducer,
     fetchAllergens: fetchAllergensSlice.reducer,
-    postDish: postDishSlice
+    postDish: postDishSlice.reducer
 });
 
 export default dishFormReducer;
