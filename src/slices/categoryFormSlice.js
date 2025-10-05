@@ -33,9 +33,9 @@ export const postCategory = createAsyncThunk(
     }
 );
 
-export const categoryFetchSlice = createSlice(
+export const postCategorySlice = createSlice(
     {
-        name: 'categoryFetch',
+        name: 'postCategory',
         initialState: {
             isLoading: false
         },
@@ -117,7 +117,7 @@ export const {
 
 const categoryFormReducer = combineReducers({
     form: categoryFormSlice.reducer,
-    categoryFetch: categoryFetchSlice.reducer
+    postCategory: postCategorySlice.reducer
 });
 
 export default categoryFormReducer;
