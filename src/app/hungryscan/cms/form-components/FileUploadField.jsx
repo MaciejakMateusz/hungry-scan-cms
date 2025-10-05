@@ -1,25 +1,77 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
-import {clearFileName} from "../../../../slices/dishFormSlice";
+import {setHasImage, setIsImageCleared} from "../../../../slices/dishFormSlice";
 import {InformationTooltip} from "../shared-components/InformationTooltip";
+import {s3BucketUrl} from "../../../../apiData";
+import {InteractiveMenuItemImage} from "../dishes-categories/menu-item/InteractiveMenuItemImage";
 
-export const FileUploadField = (props) => {
+export const FileUploadField = ({setFile, file}) => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
-    const {fileName} = useSelector(state => state.dishForm.form);
+    const {id, updated, hasImage, isImageCleared} = useSelector(state => state.dishForm.form);
+
+    useEffect(() => {
+        if (!hasImage) return;
+
+        async function urlToFile(url, filename = "menu-item-image.jpg") {
+            const response = await fetch(url, {mode: "cors", cache: "no-cache"});
+            const blob = await response.blob();
+            return new File([blob], filename, {type: 'image/png'});
+        }
+
+        (async () => {
+            const file = await urlToFile(`${s3BucketUrl}/menuItems/${id}.png?t=${updated}`);
+            setFile(file);
+            dispatch(setHasImage(true));
+        })();
+    }, [dispatch, hasImage, id, setFile, updated]);
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
-        if (file) {
-            props.setFileName(file.name);
-        }
-        props.setFile(file);
+        setFile(file);
+        dispatch(setIsImageCleared(false));
     };
 
     const clearFileData = () => {
-        dispatch(clearFileName());
-        props.setFile(null);
+        setFile(null);
+        dispatch(setHasImage(false));
+        dispatch(setIsImageCleared(true));
+    }
+
+    const renderImage = () => {
+        let fileSource = null;
+        if (file) fileSource = URL.createObjectURL(file);
+        if (hasImage && !file) fileSource = `${s3BucketUrl}/menuItems/${id}.png?t=${updated}`;
+        if (!fileSource || isImageCleared) return;
+        return (<InteractiveMenuItemImage src={fileSource}/>);
+    }
+
+    const renderButton = () => {
+        if (isImageCleared || (!hasImage && !file)) {
+            return (
+                <>
+                    <label htmlFor={'dish-image'}
+                           className={'custom-file-upload label'}>
+                        {t('chooseFile')}
+                    </label>
+                    <input type={'file'}
+                           id={'dish-image'}
+                           name={'imageName'}
+                           onChange={(e) => handleFileChange(e)}
+                           accept={'.png'}
+                           className={'file-input'}
+                    />
+                </>
+            );
+        }
+        return (
+            <div className={'custom-file-upload label clear'}
+                 onClick={clearFileData}>
+                {t('clear')}
+                <span className={'clear-file-icon'}>x</span>
+            </div>
+        );
     }
 
     return (
@@ -30,31 +82,9 @@ export const FileUploadField = (props) => {
                     {t('image')}:
                 </label>
                 <div className={'custom-file-upload'}>
-                    {fileName === null ? (
-                            <>
-                                <label htmlFor={'dish-image'}
-                                       className={'custom-file-upload label'}>
-                                    {t('chooseFile')}
-                                </label>
-                                <input
-                                    type={'file'}
-                                    id={'dish-image'}
-                                    name={'imageName'}
-                                    onChange={(e) => handleFileChange(e)}
-                                    accept={'.png'}
-                                    className={'file-input'}/>
-                            </>
-                        ) :
-                        <label htmlFor={'dish-image'}
-                               className={'custom-file-upload label clear'}
-                               onClick={clearFileData}>
-                            {t('clear')}
-                            <span className={'clear-file-icon'}>x</span>
-                        </label>}
-                    <span className={'file-name'}
-                          id={'file-name'}>{fileName ? fileName : t('noFileChosen')}
-                    </span>
+                    {renderButton()}
                 </div>
+                {renderImage()}
             </div>
         </div>
     );
