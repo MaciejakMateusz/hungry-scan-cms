@@ -38,7 +38,6 @@ export const EditCategoryForm = () => {
     }, []);
 
     const handleFormSubmit = async e => {
-        console.log('submit')
         e.preventDefault();
         const resultAction = await dispatch(postCategory({action: 'update', transformName: transformName}));
         if (postCategory.fulfilled.match(resultAction)) {
