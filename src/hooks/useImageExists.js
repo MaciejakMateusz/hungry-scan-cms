@@ -5,20 +5,21 @@ export const useImageExists = id => {
     const [exists, setExists] = useState(null);
 
     useEffect(() => {
-        let active = true;
-        const url = `${s3BucketUrl}/menuItems/${id}`;
+        setExists(null);
+        let cancelled = false;
+        const url = `${s3BucketUrl}/menuItems/${id}.png?cb=${Date.now()}`;
         const img = new Image();
-
-        img.src = url;
         img.onload = () => {
-            if (active) setExists(true);
+            if (!cancelled) setExists(img.naturalWidth > 0);
         };
         img.onerror = () => {
-            if (active) setExists(false);
+            if (!cancelled) setExists(false);
         };
+        img.src = url;
 
         return () => {
-            active = false;
+            cancelled = true;
+            img.src = "";
         };
     }, [id]);
 
