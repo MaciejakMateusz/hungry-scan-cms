@@ -20,11 +20,11 @@ import {
     setDescription,
     setDisplayOrder,
     setErrorData,
-    setErrorMessage,
+    setErrorMessage, setHasImage,
     setId,
     setName,
     setPrice,
-    setPromoPrice,
+    setPromoPrice, setUpdated,
     setVariants
 } from "../../../../../slices/dishFormSlice";
 import {setEditDishFormActive, setSubmittedSuccessType} from "../../../../../slices/dishesCategoriesSlice";
@@ -33,6 +33,7 @@ import {useClearForm} from "../../../../../hooks/useClearForm";
 import {MenuItemFormWrapper} from "./MenuItemFormWrapper";
 import {Variants} from "./variants/Variants";
 import {useTranslatableTransformer} from "../../../../../hooks/useTranslatableTransformer";
+import {useImageExists} from "../../../../../hooks/useImageExists";
 
 export const EditMenuItemForm = () => {
     const {t} = useTranslation();
@@ -43,6 +44,7 @@ export const EditMenuItemForm = () => {
     const {data} = useSelector(state => state.dishForm.fetchMenuItem);
     const item = data?.menuItemFormDTO;
     const [file, setFile] = useState(null);
+    const imageExists = useImageExists(dish?.id ?? 0);
     const translatableTransformers = {
         transformName: useTranslatableTransformer({obj: dish, key: 'name'}),
         transformDescription: useTranslatableTransformer({obj: dish, key: 'description'})
@@ -89,12 +91,15 @@ export const EditMenuItemForm = () => {
             }))));
             dispatch(setCreated(item.created));
             dispatch(setCreatedBy(item.createdBy));
+            dispatch(setUpdated(item.updated));
+            dispatch(setHasImage(imageExists));
         }
         setInitialFormState();
-    }, [dispatch, item, category]);
+    }, [dispatch, item, category, imageExists]);
 
     const handleFormDiscard = () => {
         clearForm();
+        setFile(null);
         dispatch(setEditDishFormActive(false));
     }
 
@@ -114,6 +119,7 @@ export const EditMenuItemForm = () => {
             }, 4000);
             dispatch(setEditDishFormActive(false));
             clearForm();
+            setFile(null);
         } else if (postDish.rejected.match(dishAction)) {
             dispatch(setErrorData(dishAction.payload));
             dispatch(setErrorMessage(dishAction.payload));
@@ -123,11 +129,11 @@ export const EditMenuItemForm = () => {
     const renderFormView = () => {
         switch (activeTab) {
             case 'information':
-                return (<MenuItemFormTemplate setFile={setFile}/>);
+                return (<MenuItemFormTemplate setFile={setFile} file={file}/>);
             case 'variants':
                 return (<Variants/>);
             default:
-                return (<MenuItemFormTemplate setFile={setFile}/>);
+                return (<MenuItemFormTemplate setFile={setFile} file={file}/>);
         }
     }
 
