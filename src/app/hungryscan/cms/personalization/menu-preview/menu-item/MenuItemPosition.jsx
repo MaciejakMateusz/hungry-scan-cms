@@ -3,7 +3,7 @@ import {MenuItemImage} from "./MenuItemImage.jsx";
 import {MenuItemContent} from "./MenuItemContent.jsx";
 import {Banner} from "./Banner.jsx";
 import {useTranslation} from "react-i18next";
-import {useImageExists} from "../../../../../../hooks/useHasImage";
+import {useImageExists} from "../../../../../../hooks/useImageExists";
 
 export const MenuItemPosition = ({menuItem}) => {
     const {t} = useTranslation();

@@ -1,6 +1,5 @@
 import React, {Fragment} from "react";
 import {s3BucketUrl} from "../../../../../apiData";
-import {PlaceholderImgIcon} from "../../../../icons/PlaceholderImgIcon";
 import {getTranslation} from "../../../../../locales/langUtils";
 import {formatPrice} from "../../../../../utils/utils";
 import {Tooltip} from "../../Tooltip";
@@ -20,7 +19,7 @@ import {useDispatch} from "react-redux";
 import {DragAndDropIcon} from "../../../../icons/DragAndDropIcon";
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
-import {Img} from "react-image";
+import {InteractiveMenuItemImage} from "./InteractiveMenuItemImage";
 
 export const MenuItemPosition = ({id, category, menuItem, filtered}) => {
     const {t} = useTranslation();
@@ -70,13 +69,7 @@ export const MenuItemPosition = ({id, category, menuItem, filtered}) => {
                         <DragAndDropIcon disabled={true}/>
                     </div>
                 }
-                <div className={'menu-item-position-image-container'}>
-                    <Img className={'menu-item-position-image'}
-                         alt={'Menu item preview'}
-                         src={`${s3BucketUrl}/menuItems/${menuItem.id}?t=${menuItem.updated}`}
-                         unloader={<PlaceholderImgIcon/>}
-                    />
-                </div>
+                <InteractiveMenuItemImage src={`${s3BucketUrl}/menuItems/${menuItem.id}.png?t=${menuItem.updated}`}/>
                 <div className={'draggable-position-text-container'}>
                     <span className={'draggable-position-name'}>
                         {getTranslation(menuItem.name)}
