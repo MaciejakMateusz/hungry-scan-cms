@@ -9,17 +9,10 @@ import {PriceField} from "./PriceField";
 import {FileUploadField} from "./FileUploadField";
 import {useDispatch, useSelector} from "react-redux";
 import {LogicalToggleField} from "./LogicalToggleField";
-import {
-    setAvailable,
-    setDescription,
-    setFileName,
-    setName,
-    setPrice,
-    setPromoPrice
-} from "../../../../slices/dishFormSlice";
+import {setAvailable, setDescription, setName, setPrice, setPromoPrice} from "../../../../slices/dishFormSlice";
 import {BannersMultiselect} from "./BannersMultiselect";
 
-export const MenuItemFormTemplate = ({setFile}) => {
+export const MenuItemFormTemplate = ({setFile, file}) => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {
@@ -44,7 +37,7 @@ export const MenuItemFormTemplate = ({setFile}) => {
                               onChange={(e) => dispatch(setDescription(e))}
                               error={errorData}/>
             <FileUploadField setFile={setFile}
-                             setFileName={(e) => dispatch(setFileName(e))}/>
+                             file={file}/>
             <BannersMultiselect/>
             <LabelsMultiselect/>
             <AdditionsMultiselect/>
