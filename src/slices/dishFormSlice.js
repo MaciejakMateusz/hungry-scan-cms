@@ -320,6 +320,8 @@ export const dishFormSlice = createSlice({
         createdBy: null,
         hasImage: false,
         isImageCleared: false,
+        menuItemCreated: false,
+        menuItemUpdated: false,
         errorMessage: null,
         errorData: {}
     },
@@ -371,6 +373,12 @@ export const dishFormSlice = createSlice({
         },
         setIsImageCleared: (state, action) => {
             state.isImageCleared = action.payload;
+        },
+        setMenuItemCreated: (state, action) => {
+            state.menuItemCreated = action.payload;
+        },
+        setMenuItemUpdated: (state, action) => {
+            state.menuItemUpdated = action.payload;
         },
         setErrorMessage: (state, action) => {
             state.errorMessage = action.payload;
@@ -424,6 +432,8 @@ export const {
     setUpdated,
     setHasImage,
     setIsImageCleared,
+    setMenuItemCreated,
+    setMenuItemUpdated,
     setErrorMessage,
     setErrorData,
     clearForm
