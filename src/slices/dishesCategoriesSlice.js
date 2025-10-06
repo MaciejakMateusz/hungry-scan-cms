@@ -181,7 +181,6 @@ export const dishesCategoriesSlice = createSlice(
             reorderCategoriesDialogActive: false,
             newDishFormActive: false,
             editDishFormActive: false,
-            submittedSuccessType: null,
             categoryForAction: null,
             menuItemForAction: null,
             activeRemovalType: null,
@@ -218,9 +217,6 @@ export const dishesCategoriesSlice = createSlice(
             setEditDishFormActive: (state, action) => {
                 state.editDishFormActive = action.payload;
             },
-            setSubmittedSuccessType: (state, action) => {
-                state.submittedSuccessType = action.payload;
-            },
             setCategoryForAction: (state, action) => {
                 state.categoryForAction = action.payload;
             },
@@ -251,7 +247,6 @@ export const dishesCategoriesSlice = createSlice(
                 state.editCategoryFormActive = false;
                 state.newDishFormActive = false;
                 state.editDishFormActive = false;
-                state.submittedSuccessType = null;
                 state.categoryForAction = null;
                 state.menuItemForAction = null;
                 state.activeRemovalType = null;
@@ -272,7 +267,6 @@ export const {
     setReorderCategoriesDialogActive,
     setNewDishFormActive,
     setEditDishFormActive,
-    setSubmittedSuccessType,
     setCategoryForAction,
     setMenuItemForAction,
     setActiveRemovalType,
