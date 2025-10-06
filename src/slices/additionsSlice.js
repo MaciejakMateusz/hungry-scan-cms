@@ -164,6 +164,8 @@ export const additionsSlice = createSlice({
         isNewAddition: true,
         filteringActive: false,
         filterExpanded: false,
+        additionCreated: false,
+        additionUpdated: false
     },
     reducers: {
         setFilterValue: (state, action) => {
@@ -183,6 +185,12 @@ export const additionsSlice = createSlice({
         },
         setFilterExpanded: (state, action) => {
             state.filterExpanded = action.payload;
+        },
+        setAdditionCreated: (state, action) => {
+            state.additionCreated = action.payload;
+        },
+        setAdditionUpdated: (state, action) => {
+            state.additionUpdated = action.payload;
         },
         resetAdditionData: state => {
             state.additionDialogActive = false;
@@ -206,6 +214,8 @@ export const {
     setIsNewAddition,
     setFilteringActive,
     setFilterExpanded,
+    setAdditionCreated,
+    setAdditionUpdated,
     resetAdditionData,
     clearView
 } = additionsSlice.actions;
