@@ -1,6 +1,7 @@
 import React from "react";
 import {getTranslation} from "../../../../locales/langUtils";
 import {useTranslation} from "react-i18next";
+import {LoadingSpinner} from "../../../icons/LoadingSpinner";
 
 export const DecisionDialog = (props) => {
     const {t} = useTranslation();
@@ -20,14 +21,14 @@ export const DecisionDialog = (props) => {
             return (
                 <button className={'general-button'}
                         onClick={props.onSubmit}>
-                    {t('confirm')}
+                    {props.isLoading ? <LoadingSpinner buttonMode={true}/> : t('save')}
                 </button>
             );
         }
         return (
             <button className={'general-button'}
                     onClick={props.onSubmit}>
-                Ok
+                {props.isLoading ? <LoadingSpinner buttonMode={true}/> : 'Ok'}
             </button>
         );
     }
@@ -43,7 +44,6 @@ export const DecisionDialog = (props) => {
                     {renderCancelButton()}
                     {renderConfirmButton()}
                 </div>
-
             </div>
         </>
     );
