@@ -5,7 +5,6 @@ import {DishesCategoriesList} from "./DishesCategoriesList";
 import {SearchButton} from "./SearchButton";
 import {useDispatch, useSelector} from "react-redux";
 import {NewCategoryForm} from "./category/NewCategoryForm";
-import {SuccessMessage} from "../dialog-windows/SuccessMessage";
 import {NewMenuItemForm} from "./menu-item/NewMenuItemForm";
 import {EditMenuItemForm} from "./menu-item/EditMenuItemForm";
 import {EditCategoryForm} from "./category/EditCategoryForm";
@@ -29,8 +28,7 @@ export const DishesCategories = () => {
         newCategoryFormActive,
         editCategoryFormActive,
         newDishFormActive,
-        editDishFormActive,
-        submittedSuccessType
+        editDishFormActive
     } = useSelector(state => state.dishesCategories.view);
     const {schedulerActive} = useSelector(state => state.cms.view);
     const {menu} = useSelector(state => state.cms.fetchActiveMenu);
@@ -73,21 +71,6 @@ export const DishesCategories = () => {
         dispatch(setFilteredItems(filteredItems));
     }
 
-    const renderConfirmationDialog = (type) => {
-        switch (type) {
-            case 'category-save':
-                return (<SuccessMessage text={t('categorySaved')}/>);
-            case 'category-edit':
-                return (<SuccessMessage text={t('categoryEdited')}/>);
-            case 'dish-save':
-                return (<SuccessMessage text={t('dishSaved')}/>);
-            case 'dish-edit':
-                return (<SuccessMessage text={t('dishEdited')}/>);
-            default:
-                return null;
-        }
-    }
-
     if (schedulerActive) {
         return <Scheduler/>
     } else if (newCategoryFormActive) {
@@ -105,7 +88,6 @@ export const DishesCategories = () => {
             <Helmet>
                 <title>CMS - {t('dishesCategories')}</title>
             </Helmet>
-            {submittedSuccessType && renderConfirmationDialog(submittedSuccessType)}
             <div className={'background'}>
                 <main className={'cms-padded-view-container'}>
                     <div className={'functions-header'}>
