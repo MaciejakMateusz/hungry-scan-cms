@@ -44,6 +44,7 @@ export const CmsTopper = () => {
     const contextMenuPositions = useMenuContextPositions();
     const renderConfirmation = useConfirmationMessage(setMenuRemoved);
     const getRestaurant = useFetchCurrentRestaurant();
+    const removalPending = useSelector(state => state.objRemoval.isLoading);
 
     useOutsideClick(contextRef, () => {
         dispatch(setContextMenuDetailsActive(false));
@@ -103,7 +104,8 @@ export const CmsTopper = () => {
             {'menu' === activeRemovalType && <DecisionDialog msg={t('confirmMenuRemoval')}
                                                              objName={menu.name}
                                                              onCancel={() => dispatch(setActiveRemovalType(null))}
-                                                             onSubmit={handleMenuRemoval}/>}
+                                                             onSubmit={handleMenuRemoval}
+                                                             isLoading={removalPending}/>}
             <div className={'flex-wrapper'}>
                 <div className={'app-header-select-wrapper'}>
                     <DocumentIcon customColor={menu?.color?.hex} absolute={true}/>
