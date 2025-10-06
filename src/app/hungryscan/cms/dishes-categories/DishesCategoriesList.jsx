@@ -34,6 +34,7 @@ export const DishesCategoriesList = () => {
     const [confirmationTimeoutId, setConfirmationTimeoutId] = useState(null);
     const [errorTimeoutId, setErrorTimeoutId] = useState(null);
     const [localCategories, setLocalCategories] = useState([]);
+    const removalPending = useSelector(state => state.objRemoval.isLoading);
 
     useEffect(() => {
         if (menu?.categories) {
@@ -122,7 +123,8 @@ export const DishesCategoriesList = () => {
         return <DecisionDialog msg={msg}
                                objName={objName}
                                onSubmit={handleRemoval}
-                               onCancel={discardDeletion}/>
+                               onCancel={discardDeletion}
+                               isLoading={removalPending}/>
     };
 
     const renderReorderCategoriesDialog = () => {
