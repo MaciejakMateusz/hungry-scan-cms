@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {setErrorMessage} from "../../../../../slices/categoryFormSlice";
 import {FormErrorDialog} from "../../../../error/FormErrorDialog";
 import {LoadingSpinner} from "../../../../icons/LoadingSpinner";
+import {FormHeader} from "../../shared-components/FormHeader";
 
 export const CategoryForm = ({formHeader, onFormDiscard, onFormSubmit}) => {
     const {t} = useTranslation();
@@ -18,23 +19,11 @@ export const CategoryForm = ({formHeader, onFormDiscard, onFormSubmit}) => {
             <div className={'cms-padded-view-container'}>
                 {errorMessage && <FormErrorDialog error={errorData}
                                                   resetMessage={() => dispatch(setErrorMessage(null))}/>}
-                <div className={'functions-header'}>
-                    <div className={'section-heading'}>
-                        {formHeader}
-                    </div>
-                    <div className={'flex-wrapper-gapped'}>
-                        <div className={'form-footer'}>
-                            <div className={'general-button cancel'}
-                                 onClick={onFormDiscard}>
-                                {t('cancel')}
-                            </div>
-                            <div className={'general-button'}
-                                 onClick={onFormSubmit}>
-                                {isLoading ? <LoadingSpinner buttonMode={true}/> : t('save')}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <FormHeader formHeader={formHeader}
+                            onFormSubmit={onFormSubmit}
+                            onFormDiscard={onFormDiscard}
+                            isLoading={isLoading}
+                />
                 <div className={'form-grid category'}>
                     <form className={'padded-form-fragment'}>
                         <div className={'form-header'}>
