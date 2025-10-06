@@ -110,6 +110,7 @@
   "confirmCategoryRemoval": "Confirm category removal",
   "confirmDishRemoval": "Confirm dish removal",
   "confirmMenuRemoval": "Confirm menu removal",
+  "confirmRestaurantRemoval": "Confirm restaurant removal",
   "confirmAdditionRemoval": "Confirm addition removal",
   "confirmVariantRemoval": "Confirm variant removal",
   "categoryRemovalSuccess": "Category removed successfully",
@@ -155,6 +156,8 @@
   "categoryEdited": "Category edited successfully",
   "dishSaved": "Dish saved successfully",
   "dishEdited": "Dish edited successfully",
+  "additionCreated": "Addition created successfully",
+  "additionUpdated": "Addition edited successfully",
   "formHasErrors": "Form has errors",
   "newVariant": "New variant",
   "createNewVariantForDish": "Create new variant for dish: ",
@@ -301,6 +304,10 @@
   "noCategoriesToDisplay": "No categories to display",
   "information": "Informations",
   "menuName": "Menu name",
+  "openingHours": "Opening hours",
+  "restaurantData": "Restaurant data",
+  "open": "Open",
+  "closed": "Closed",
 
   "constraints.NotBlank": "Field cannot be blank",
   "constraints.ForenameSurname": "Field should contain minimum 2 letters and no special characters"

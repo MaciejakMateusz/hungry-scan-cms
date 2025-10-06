@@ -110,6 +110,7 @@
   "confirmCategoryRemoval": "Potwierdź usunięcie kategorii",
   "confirmDishRemoval": "Potwierdź usunięcie dania",
   "confirmMenuRemoval": "Potwierdź usunięcie menu",
+  "confirmRestaurantRemoval": "Potwierdź usunięcie restauracji",
   "confirmAdditionRemoval": "Potwierdź usunięcie dodatku",
   "confirmVariantRemoval": "Potwierdź usunięcie wariantu",
   "categoryRemovalSuccess": "Kategoria została usunięta pomyślnie",
@@ -155,6 +156,8 @@
   "categoryEdited": "Kategoria edytowana pomyślnie",
   "dishSaved": "Danie zapisane pomyślnie",
   "dishEdited": "Danie edytowane pomyślnie",
+  "additionCreated": "Dodatek zapisany pomyślnie",
+  "additionUpdated": "Dodatek edytowany pomyślnie",
   "formHasErrors": "Formularz zawiera błędy",
   "newVariant": "Nowy wariant",
   "createNewVariantForDish": "Stwórz nowy wariant dla dania: ",
@@ -304,6 +307,10 @@
   "noCategoriesToDisplay": "Brak kategorii do wyświetlenia",
   "information": "Informacje",
   "menuName": "Nazwa menu",
+  "openingHours": "Godziny otwarcia",
+  "restaurantData": "Dane restauracji",
+  "open": "Otwarte",
+  "closed": "Zamknięte",
 
   "constraints.NotBlank": "Pole nie może być puste",
   "constraints.ForenameSurname": "Pole powinno mieć minimum dwa znaki i zawierać tylko litery"
