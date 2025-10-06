@@ -41,6 +41,7 @@ export const DashboardTopper = () => {
     const [confirmationTimeoutId, setConfirmationTimeoutId] = useState(null);
     const getRestaurant = useFetchCurrentRestaurant();
     const contextRef = useRef();
+    const removalPending = useSelector(state => state.objRemoval.isLoading);
 
     useOutsideClick(contextRef, () => {
             dispatch(setContextMenuDetailsActive(false));
@@ -83,10 +84,11 @@ export const DashboardTopper = () => {
 
     return (
         <header className={'app-header dashboard'}>
-            {removalActive && <DecisionDialog msg={t('confirmMenuRemoval')}
+            {removalActive && <DecisionDialog msg={t('confirmRestaurantRemoval')}
                                               objName={restaurant?.value.name}
                                               onCancel={() => dispatch(setRemovalActive(false))}
-                                              onSubmit={handleRestaurantRemoval}/>}
+                                              onSubmit={handleRestaurantRemoval}
+                                               isLoading={removalPending}/>}
             <div className={'app-header-select-wrapper'}>
                 <DocumentIcon customColor={"#9746FF"} absolute={true}/>
                 <Select id={'dashboard-restaurant'}
