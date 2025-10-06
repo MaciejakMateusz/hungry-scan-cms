@@ -30,7 +30,12 @@ export const Additions = () => {
         additionToRemove,
         filteringActive
     } = useSelector(state => state.additions.view);
-    const {isLoading, ingredients} = useSelector(state => state.additions.getIngredients);
+    const {
+        isLoading: ingredientsLoading,
+        ingredients
+    } = useSelector(state => state.additions.getIngredients);
+    const removalPending = useSelector(state => state.objRemoval.isLoading);
+
     const letters = [...new Set(ingredients?.map((ingredient) => getTranslation(ingredient.name)[0]))];
 
     useEffect(() => {
@@ -88,7 +93,8 @@ export const Additions = () => {
                 <DecisionDialog msg={t('confirmAdditionRemoval')}
                                 objName={additionToRemove.name}
                                 onSubmit={(e) => handleAdditionRemoval(e, additionToRemove)}
-                                onCancel={() => dispatch(setAdditionToRemove(null))}/>}
+                                onCancel={() => dispatch(setAdditionToRemove(null))}
+                                isLoading={removalPending}/>}
             <div className={'cms-padded-view-container'}>
                 <div className={'functions-header'}>
                     <div className={'section-heading'}>{t('additions')}</div>
@@ -106,7 +112,7 @@ export const Additions = () => {
                 </div>
                 <div className={'scrollable-wrapper'}>
                     <div className={'scroll-container'}>
-                        {isLoading && <LoadingSpinner/>}
+                        {ingredientsLoading && <LoadingSpinner/>}
                         {ingredients.length === 0 && <p className={'text-center'}>{t('noAdditions')}</p>}
                         {letters?.map(letter => (
                             <LetterGroup key={letter}
