@@ -7,8 +7,8 @@ import {
     clearForm,
     getIngredients,
     postAddition,
-    resetAdditionData,
-    setAdditionDialogActive,
+    resetAdditionData, setAdditionCreated,
+    setAdditionDialogActive, setAdditionUpdated,
     setAvailable,
     setErrorData,
     setId,
@@ -18,17 +18,20 @@ import {
 import {getTranslation} from "../../../../locales/langUtils";
 import {LogicalToggleField} from "../form-components/LogicalToggleField";
 import {useTranslatableTransformer} from "../../../../hooks/useTranslatableTransformer";
+import {LoadingSpinner} from "../../../icons/LoadingSpinner";
+import {useConfirmationMessage} from "../../../../hooks/useConfirmationMessage";
 
 export const AdditionFormDialog = (props) => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {isNewAddition, filteringActive, filterValue} = useSelector(state => state.additions.view);
     const {name, price, available, addition} = useSelector(state => state.additions.form);
-    const {errorData} = useSelector(state => state.additions.postAddition);
+    const {errorData, isLoading} = useSelector(state => state.additions.postAddition);
     const transformName = useTranslatableTransformer({
         obj: isNewAddition ? null : addition,
         key: 'name'
     });
+    const renderConfirmation = useConfirmationMessage(isNewAddition ? setAdditionCreated : setAdditionUpdated);
 
     useEffect(() => {
         if (!isNewAddition) {
@@ -58,6 +61,7 @@ export const AdditionFormDialog = (props) => {
             dispatch(clearForm());
             dispatch(resetAdditionData());
             filteringActive ? await props.filter(filterValue) : await dispatch(getIngredients());
+            renderConfirmation();
         }
     }
 
@@ -94,7 +98,9 @@ export const AdditionFormDialog = (props) => {
                         {t('cancel')}
                     </button>
                     <form style={{all: 'unset'}} onSubmit={(e) => handleFormSubmit(e)}>
-                        <button type="submit" className={'general-button'}>{t('save')}</button>
+                        <button type="submit" className={'general-button'}>
+                            {isLoading ? <LoadingSpinner buttonMode={true}/> : t('save')}
+                        </button>
                     </form>
                 </div>
 
