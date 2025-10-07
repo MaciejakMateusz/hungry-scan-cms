@@ -20,20 +20,24 @@ import {
     setDescription,
     setDisplayOrder,
     setErrorData,
-    setErrorMessage, setHasImage,
+    setErrorMessage,
+    setHasImage,
     setId,
+    setMenuItemUpdated,
     setName,
     setPrice,
-    setPromoPrice, setUpdated,
+    setPromoPrice,
+    setUpdated,
     setVariants
 } from "../../../../../slices/dishFormSlice";
-import {setEditDishFormActive, setSubmittedSuccessType} from "../../../../../slices/dishesCategoriesSlice";
+import {setEditDishFormActive} from "../../../../../slices/dishesCategoriesSlice";
 import {fetchIngredients, setChosenAdditions} from "../../../../../slices/dishAdditionsSlice";
 import {useClearForm} from "../../../../../hooks/useClearForm";
 import {MenuItemFormWrapper} from "./MenuItemFormWrapper";
 import {Variants} from "./variants/Variants";
 import {useTranslatableTransformer} from "../../../../../hooks/useTranslatableTransformer";
 import {useImageExists} from "../../../../../hooks/useImageExists";
+import {useConfirmationMessage} from "../../../../../hooks/useConfirmationMessage";
 
 export const EditMenuItemForm = () => {
     const {t} = useTranslation();
@@ -49,6 +53,7 @@ export const EditMenuItemForm = () => {
         transformName: useTranslatableTransformer({obj: dish, key: 'name'}),
         transformDescription: useTranslatableTransformer({obj: dish, key: 'description'})
     };
+    const renderConfirmation = useConfirmationMessage(setMenuItemUpdated);
 
     useEffect(() => {
         dispatch(fetchMenuItem({id: dish?.id}));
@@ -113,13 +118,10 @@ export const EditMenuItemForm = () => {
             translatableTransformers: translatableTransformers
         }));
         if (postDish.fulfilled.match(dishAction)) {
-            dispatch(setSubmittedSuccessType('dish-edit'));
-            setTimeout(() => {
-                dispatch(setSubmittedSuccessType(null));
-            }, 4000);
             dispatch(setEditDishFormActive(false));
             clearForm();
             setFile(null);
+            renderConfirmation();
         } else if (postDish.rejected.match(dishAction)) {
             dispatch(setErrorData(dishAction.payload));
             dispatch(setErrorMessage(dishAction.payload));
