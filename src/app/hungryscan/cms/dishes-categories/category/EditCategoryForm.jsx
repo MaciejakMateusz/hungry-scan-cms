@@ -5,6 +5,7 @@ import {
     clearForm,
     postCategory,
     setAvailable,
+    setCategoryUpdated,
     setDishes,
     setDisplayOrder,
     setErrorData,
@@ -12,16 +13,18 @@ import {
     setId,
     setName
 } from "../../../../../slices/categoryFormSlice";
-import {setEditCategoryFormActive, setSubmittedSuccessType} from "../../../../../slices/dishesCategoriesSlice";
+import {setEditCategoryFormActive} from "../../../../../slices/dishesCategoriesSlice";
 import {getTranslation} from "../../../../../locales/langUtils";
 import {CategoryForm} from "./CategoryForm";
 import {useTranslatableTransformer} from "../../../../../hooks/useTranslatableTransformer";
+import {useConfirmationMessage} from "../../../../../hooks/useConfirmationMessage";
 
 export const EditCategoryForm = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {category} = useSelector(state => state.dishesCategories.view);
     const transformName = useTranslatableTransformer({obj: category, key: 'name'});
+    const renderConfirmation = useConfirmationMessage(setCategoryUpdated);
 
     useEffect(() => {
         const setFormInitialState = () => {
@@ -41,12 +44,9 @@ export const EditCategoryForm = () => {
         e.preventDefault();
         const resultAction = await dispatch(postCategory({action: 'update', transformName: transformName}));
         if (postCategory.fulfilled.match(resultAction)) {
-            dispatch(setSubmittedSuccessType('category-edit'));
-            setTimeout(() => {
-                dispatch(setSubmittedSuccessType(null));
-            }, 4000);
             dispatch(setEditCategoryFormActive(false));
             dispatch(clearForm());
+            renderConfirmation();
         } else if (postCategory.rejected.match(resultAction)) {
             dispatch(setErrorData(resultAction.payload));
             dispatch(setErrorMessage(resultAction.payload));
