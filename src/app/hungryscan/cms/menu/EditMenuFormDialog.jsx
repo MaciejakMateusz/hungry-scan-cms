@@ -18,7 +18,7 @@ export const EditMenuFormDialog = () => {
     const dispatch = useDispatch();
     const {menu} = useSelector(state => state.cms.fetchActiveMenu);
     const {name, color} = useSelector(state => state.menu.form);
-    const {errorData} = useSelector(state => state.menu.updateMenu);
+    const {errorData, isLoading} = useSelector(state => state.menu.updateMenu);
     const renderConfirmation = useConfirmationMessage(setMenuUpdated);
 
     useEffect(() => {
@@ -48,6 +48,7 @@ export const EditMenuFormDialog = () => {
         <MenuFormTemplate formHeader={t('rename')}
                           submitHandler={handleFormSubmit}
                           discardHandler={handleFormDiscard}
-                          errorData={errorData}/>
+                          errorData={errorData}
+                          isLoading={isLoading}/>
     );
 }
