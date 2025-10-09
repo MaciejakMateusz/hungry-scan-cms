@@ -1,8 +1,6 @@
 import React, {useEffect} from "react";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
-import {RestaurantFormTemplate} from "./RestaurantFormTemplate";
-import {FormErrorDialog} from "../../../error/FormErrorDialog";
 import {
     clearForm,
     postRestaurant,
@@ -40,13 +38,12 @@ import {
     setWednesdayOpeningTime,
 } from "../../../../slices/restaurantSlice";
 import {useConfirmationMessage} from "../../../../hooks/useConfirmationMessage";
+import {RestaurantFormWrapper} from "./RestaurantFormWrapper";
 
 export const EditRestaurantForm = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {restaurant} = useSelector(state => state.dashboard.view);
-    const {errorMessage} = useSelector(state => state.restaurant.form);
-    const {errorData} = useSelector(state => state.restaurant.post);
     const renderConfirmation = useConfirmationMessage(setRestaurantUpdated);
 
     useEffect(() => {
@@ -199,32 +196,14 @@ export const EditRestaurantForm = () => {
         }
     }
 
+    const handleFormDiscard = () => {
+        dispatch(clearForm());
+        dispatch(setEditRestaurantFormActive(false));
+    }
+
     return (
-        <div className={'background'}>
-            <div className={'cms-padded-view-container'}>
-                {errorMessage ?
-                    <FormErrorDialog error={errorData} resetMessage={() => dispatch(setErrorMessage(null))}/> : null}
-                <div className={'form-grid category'}>
-                    <form className={'padded-form-fragment'}>
-                        <div className={'form-header'}>
-                            {t('editRestaurant')}
-                        </div>
-                        <div className={'padded-form-container'}>
-                            <RestaurantFormTemplate/>
-                        </div>
-                        <div className={'form-footer category'}>
-                            <div className={'general-button cancel'}
-                                 onClick={() => {
-                                     dispatch(clearForm());
-                                     dispatch(setEditRestaurantFormActive(false));
-                                 }}>
-                                {t('cancel')}
-                            </div>
-                            <div className={'general-button submit'} onClick={handleFormSubmit}>{t('save')}</div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+        <RestaurantFormWrapper onSubmit={handleFormSubmit}
+                               onDiscard={handleFormDiscard}
+                               title={t('editRestaurant')}/>
     );
 }
