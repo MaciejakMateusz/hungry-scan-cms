@@ -4,8 +4,9 @@ import React from "react";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {MenuColorField} from "../form-components/MenuColorField";
+import {LoadingSpinner} from "../../../icons/LoadingSpinner";
 
-export const MenuFormTemplate = ({formHeader, discardHandler, submitHandler, errorData}) => {
+export const MenuFormTemplate = ({formHeader, discardHandler, submitHandler, errorData, isLoading}) => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {name} = useSelector(state => state.menu.form);
@@ -28,7 +29,9 @@ export const MenuFormTemplate = ({formHeader, discardHandler, submitHandler, err
                         {t('cancel')}
                     </button>
                     <form style={{all: 'unset'}} onSubmit={submitHandler}>
-                        <button type="submit" className={'general-button'}>{t('save')}</button>
+                        <button type="submit" className={'general-button'}>
+                            {isLoading ? <LoadingSpinner buttonMode={true}/> : t('save')}
+                        </button>
                     </form>
                 </div>
             </div>
