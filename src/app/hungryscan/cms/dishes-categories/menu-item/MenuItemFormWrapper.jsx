@@ -4,7 +4,7 @@ import {getTranslation} from "../../../../../locales/langUtils";
 import {setActiveTab, setErrorMessage} from "../../../../../slices/dishFormSlice";
 import {FormErrorDialog} from "../../../../error/FormErrorDialog";
 import {useTranslation} from "react-i18next";
-import {LoadingSpinner} from "../../../../icons/LoadingSpinner";
+import {FormHeader} from "../../shared-components/FormHeader";
 
 export const MenuItemFormWrapper = ({title, onFormDiscard, onFormSubmit, children}) => {
     const {t} = useTranslation();
@@ -17,29 +17,24 @@ export const MenuItemFormWrapper = ({title, onFormDiscard, onFormSubmit, childre
         errorData,
     } = useSelector(state => state.dishForm.form);
 
+    const FormTitle = () => {
+        return (
+            <>
+                {title}:&nbsp;&nbsp;
+                <span style={{color: '#6940C6'}}> "{getTranslation(category?.name)}"</span>
+            </>
+        );
+    }
 
     return (
         <div className={'background'}>
             {errorMessage ? <FormErrorDialog error={errorData} resetMessage={setErrorMessage}/> : null}
             <form className={'cms-padded-view-container'}>
-                <div className={'functions-header'}>
-                    <div className={'section-heading'}>
-                        {title}:&nbsp;&nbsp;
-                        <span style={{color: '#6940C6'}}> "{getTranslation(category?.name)}"</span>
-                    </div>
-                    <div className={'flex-wrapper-gapped'}>
-                        <div className={'form-footer'}>
-                            <button className={'general-button cancel'}
-                                 onClick={onFormDiscard}>
-                                {t('cancel')}
-                            </button>
-                            <button type="submit" className={'general-button'}
-                                    onClick={onFormSubmit}>
-                                {isLoading ? <LoadingSpinner buttonMode={true}/> : t('save')}
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                <FormHeader formHeader={<FormTitle/>}
+                            onFormSubmit={onFormSubmit}
+                            onFormDiscard={onFormDiscard}
+                            isLoading={isLoading}
+                />
                 <div className={'menu-item-form-tabs-container'}>
                     <div id={'menu-item-info-tab'}
                          className={`menu-item-form-tab ${activeTab === 'information' && 'active'}`}
