@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { useTranslation } from "react-i18next";
+import React, {useState, useEffect} from 'react';
+import {useTranslation} from "react-i18next";
 
-export const FormErrorDialog = ({ error, resetMessage }) => {
+export const FormErrorDialog = ({error, resetMessage}) => {
     const [open, setOpen] = useState(true);
-    const { t } = useTranslation();
+    const {t} = useTranslation();
 
     useEffect(() => {
         setOpen(true);
@@ -18,56 +18,36 @@ export const FormErrorDialog = ({ error, resetMessage }) => {
         return null;
     }
 
+    const renderErrorChunk = (key, name) => {
+        return (
+            <div key={key} className={'error-field-wrapper'}>
+                <p className={'error-field-key'}>
+                    {t(name)}: <span className={'error-field-value'}>{error[key]}</span>
+                </p>
+            </div>
+        );
+    }
+
     const renderMessage = (key) => {
         switch (key) {
             case 'categoryId':
-                return (
-                    <div key={key} className={'error-field-wrapper'}>
-                        <p className={'error-field-key'}>
-                            {t('category')}: <span className={'error-field-value'}>{error[key]}</span>
-                        </p>
-                    </div>
-                );
+                return renderErrorChunk(key, 'category');
             case 'price':
-                return (
-                    <div key={key} className={'error-field-wrapper'}>
-                        <p className={'error-field-key'}>
-                            {t('price')}: <span className={'error-field-value'}>{error[key]}</span>
-                        </p>
-                    </div>
-                );
+                return renderErrorChunk(key, 'price');
             case 'name':
-                return (
-                    <div key={key} className={'error-field-wrapper'}>
-                        <p className={'error-field-key'}>
-                            {t('name')}: <span className={'error-field-value'}>{error[key]}</span>
-                        </p>
-                    </div>
-                );
+                return renderErrorChunk(key, 'name');
             case 'displayOrder':
-                return (
-                    <div key={key} className={'error-field-wrapper'}>
-                        <p className={'error-field-key'}>
-                            {t('displayOrder')}: <span className={'error-field-value'}>{error[key]}</span>
-                        </p>
-                    </div>
-                );
+                return renderErrorChunk(key, 'displayOrder');
+            case 'password':
+                return renderErrorChunk(key, 'password');
+            case 'newPassword':
+                return renderErrorChunk(key, 'newPassword');
+            case 'repeatedPassword':
+                return renderErrorChunk(key, 'repeatedPassword');
             case 'exceptionMsg':
-                return (
-                    <div key={key} className={'error-field-wrapper'}>
-                        <p className={'error-field-key'}>
-                            {t('error')}: <span className={'error-field-value'}>{error[key]}</span>
-                        </p>
-                    </div>
-                );
+                return renderErrorChunk(key, 'error');
             default:
-                return (
-                    <div key={key} className={'error-field-wrapper'}>
-                        <p className={'error-field-key'}>
-                            {t('error')}: <span className={'error-field-value'}>{error[key]}</span>
-                        </p>
-                    </div>
-                );
+                return renderErrorChunk(key, 'error');
         }
     };
 
