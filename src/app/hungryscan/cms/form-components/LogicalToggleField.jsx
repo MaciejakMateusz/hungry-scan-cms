@@ -1,20 +1,48 @@
 import React from "react";
 import {useTranslation} from "react-i18next";
+import {useDispatch} from "react-redux";
 
-export const LogicalToggleField = ({id, name, value, onChange}) => {
+export const LogicalToggleField = ({
+                                       id,
+                                       name,
+                                       value,
+                                       onChange,
+                                       customMessageFalse,
+                                       customMessageTrue}) => {
     const {t} = useTranslation();
+
+    const renderLabel = () => {
+        if (!name) return;
+        return (
+            <label htmlFor={id} className={'form-label'}>
+                {name}
+            </label>
+        );
+    }
+
+    const renderMessage = () => {
+        if (!customMessageTrue || !customMessageFalse) {
+            return value ? t('visibleInMenu') : t('invisibleInMenu');
+        }
+        return value ? customMessageTrue : customMessageFalse;
+    }
 
     return (
         <div className={'form-field-wrapper'}>
             <div className={'form-field-container'}>
-                <label htmlFor={id} className={'form-label'}>
-                    {name}
-                </label>
+                {renderLabel()}
                 <div className="toggle-switch">
-                    <input type="checkbox" id={id} name={id} value={value} onChange={onChange} checked={value}/>
+                    <input type="checkbox"
+                           id={id}
+                           name={id}
+                           value={value}
+                           onChange={onChange}
+                           checked={value}/>
                     <label htmlFor={id} className="toggle-label"></label>
                 </div>
-                <span className={'menu-visibility-msg'}>{value ? t('visibleInMenu') : t('invisibleInMenu')}</span>
+                <span className={'menu-visibility-msg'}>
+                    {renderMessage()}
+                </span>
             </div>
         </div>
     );
