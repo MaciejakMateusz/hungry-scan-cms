@@ -11,7 +11,7 @@ export const NewMenuFormDialog = () => {
     const dispatch = useDispatch();
     const {menu} = useSelector(state => state.menu.fetchMenu);
     const {name} = useSelector(state => state.menu.form);
-    const {errorData} = useSelector(state => state.menu.postMenu);
+    const {errorData, isLoading} = useSelector(state => state.menu.postMenu);
     const renderConfirmation = useConfirmationMessage(setNewMenuCreated);
 
     const handleFormSubmit = async (e) => {
@@ -35,6 +35,7 @@ export const NewMenuFormDialog = () => {
         <MenuFormTemplate formHeader={t('addMenu')}
                           submitHandler={handleFormSubmit}
                           discardHandler={handleFormDiscard}
-                          errorData={errorData}/>
+                          errorData={errorData}
+                          isLoading={isLoading}/>
     );
 }
