@@ -138,7 +138,7 @@ export const {
 const personalizationReducer = combineReducers({
     form: personalizationFormSlice.reducer,
     fetchThemeHexes: fetchThemeHexesSlice.reducer,
-    postPersonalization: postPersonalizationSlice
+    postPersonalization: postPersonalizationSlice.reducer
 });
 
 export default personalizationReducer;
