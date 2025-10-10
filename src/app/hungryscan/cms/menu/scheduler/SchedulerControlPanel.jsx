@@ -8,11 +8,13 @@ import {useConfirmationMessage} from "../../../../../hooks/useConfirmationMessag
 import {useFetchCurrentRestaurant} from "../../../../../hooks/useFetchCurrentRestaurant";
 import {fillGapsWithStandard} from "../../../../../utils/schedulerUtils";
 import {MenuColorSelect} from "../../form-components/MenuColorSelect";
+import {LoadingSpinner} from "../../../../icons/LoadingSpinner";
 
 export const SchedulerControlPanel = ({menusConfig, setMenusConfig, externalRef, trashRef}) => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {restaurant} = useSelector((state) => state.dashboard.view);
+    const {isLoading} = useSelector((state) => state.menu.updatePlans);
     const renderConfirmation = useConfirmationMessage(setPlansUpdated);
     const getRestaurant = useFetchCurrentRestaurant();
     const restaurantSettings = restaurant?.value?.settings;
@@ -95,7 +97,7 @@ export const SchedulerControlPanel = ({menusConfig, setMenusConfig, externalRef,
                 </button>
                 <form style={{all: 'unset'}} onSubmit={handleSubmit}>
                     <button type={'submit'} className={'general-button'}>
-                        {t('save')}
+                        {isLoading ? <LoadingSpinner buttonMode={true}/> : t('save')}
                     </button>
                 </form>
             </div>
