@@ -9,14 +9,16 @@ import {
     postDish,
     setCategory,
     setErrorData,
-    setErrorMessage
+    setErrorMessage,
+    setMenuItemCreated
 } from "../../../../../slices/dishFormSlice";
-import {setNewDishFormActive, setSubmittedSuccessType} from "../../../../../slices/dishesCategoriesSlice";
+import {setNewDishFormActive} from "../../../../../slices/dishesCategoriesSlice";
 import {fetchIngredients} from "../../../../../slices/dishAdditionsSlice";
 import {useClearForm} from "../../../../../hooks/useClearForm";
 import {MenuItemFormWrapper} from "./MenuItemFormWrapper";
 import {Variants} from "./variants/Variants";
 import {useTranslatableTransformer} from "../../../../../hooks/useTranslatableTransformer";
+import {useConfirmationMessage} from "../../../../../hooks/useConfirmationMessage";
 
 export const NewMenuItemForm = () => {
     const {t} = useTranslation();
@@ -29,6 +31,7 @@ export const NewMenuItemForm = () => {
         transformName: useTranslatableTransformer({obj: null, key: 'name'}),
         transformDescription: useTranslatableTransformer({obj: null, key: 'description'})
     };
+    const renderConfirmation = useConfirmationMessage(setMenuItemCreated);
 
     useEffect(() => {
         dispatch(setCategory(category));
@@ -40,6 +43,7 @@ export const NewMenuItemForm = () => {
 
     const handleFormDiscard = () => {
         clearForm();
+        setFile(null);
         dispatch(setNewDishFormActive(false));
     }
 
@@ -53,12 +57,10 @@ export const NewMenuItemForm = () => {
             translatableTransformers: translatableTransformers
         }));
         if (postDish.fulfilled.match(dishAction)) {
-            dispatch(setSubmittedSuccessType('dish-save'));
-            setTimeout(() => {
-                dispatch(setSubmittedSuccessType(null));
-            }, 4000);
             dispatch(setNewDishFormActive(false));
             clearForm();
+            setFile(null);
+            renderConfirmation();
         } else if (postDish.rejected.match(dishAction)) {
             dispatch(setErrorData(dishAction.payload));
             dispatch(setErrorMessage(dishAction.payload));
@@ -68,11 +70,11 @@ export const NewMenuItemForm = () => {
     const renderFormView = () => {
         switch (activeTab) {
             case 'information':
-                return (<MenuItemFormTemplate setFile={setFile}/>);
+                return (<MenuItemFormTemplate setFile={setFile} file={file}/>);
             case 'variants':
                 return (<Variants/>);
             default:
-                return (<MenuItemFormTemplate setFile={setFile}/>);
+                return (<MenuItemFormTemplate setFile={setFile} file={file}/>);
         }
     }
 
