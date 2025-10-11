@@ -1,11 +1,13 @@
 import React from "react";
-import {getTranslation} from "../../../../locales/langUtils";
+import {getLanguage, getTranslation} from "../../../../locales/langUtils";
 import {TranslationStatus} from "./TranslationStatus";
 import {RightArrowIcon} from "../../../icons/RightArrowIcon";
 import {useSelector} from "react-redux";
 
 export const TranslationRecord = ({parent, index, record, setActive}) => {
-    const {chosenGroup, activeRecordId} = useSelector(state => state.translations.view);
+    const {activeRecordId, chosenDestinationLanguage} = useSelector(state => state.translations.view);
+    const currentSystemLanguage = getLanguage();
+    const {chosenGroup} = useSelector(state => state.translations.view);
 
     const renderLeftColumn = () => {
         return (
@@ -21,6 +23,7 @@ export const TranslationRecord = ({parent, index, record, setActive}) => {
         return (
             <span className={'translations-records-column middle'}>
                 <span className={'translation-record-content'}>
+                    {chosenGroup.value === 'welcomeSlogans' && getTranslation(record.message)}
                     {record.description && getTranslation(record.description)}
                 </span>
             </span>
@@ -37,33 +40,36 @@ export const TranslationRecord = ({parent, index, record, setActive}) => {
     }
 
     const determineTranslationStatus = () => {
-        let isNameTranslated = true;
-        let isDescriptionTranslated = true;
+        let isNameTranslated = false;
+        let isDescriptionTranslated = false;
+        let isFullyTranslated = false;
         if (record.name) {
-            const namePl = record.name.pl ? record.name.pl.length > 0 : false;
-            const nameEn = record.name.en ? record.name.en.length > 0 : false;
-            isNameTranslated = namePl && nameEn;
+            const sourceName = record.name[currentSystemLanguage] ? record.name[currentSystemLanguage].length > 0 : false;
+            const targetName = record.name[chosenDestinationLanguage.value] ? record.name[chosenDestinationLanguage.value].length > 0 : false;
+            isNameTranslated = sourceName && targetName;
+            isFullyTranslated = isNameTranslated;
         }
         if (record.description) {
-            const descriptionPl = record.description.pl ? record.description.pl.length > 0 : false;
-            const descriptionEn = record.description.en ? record.description.en.length > 0 : false;
-            isDescriptionTranslated = descriptionPl && descriptionEn;
+            const sourceDescription = record.description[currentSystemLanguage] ? record.description[currentSystemLanguage].length > 0 : false;
+            const targetDescription = record.description[chosenDestinationLanguage.value] ? record.description[chosenDestinationLanguage.value].length > 0 : false;
+            isDescriptionTranslated = sourceDescription && targetDescription;
+            isFullyTranslated = isNameTranslated && isDescriptionTranslated;
         }
-        const isFullyTranslated = isNameTranslated && isDescriptionTranslated;
+        if (record.message) {
+            const sourceWelcomeSlogan = record.message[currentSystemLanguage] ? record.message[currentSystemLanguage].length > 0 : false;
+            const targetWelcomeSlogan = record.message[chosenDestinationLanguage.value] ? record.message[chosenDestinationLanguage.value].length > 0 : false;
+            isFullyTranslated = sourceWelcomeSlogan && targetWelcomeSlogan;
+        }
         return (
             <TranslationStatus translated={isFullyTranslated}/>
         );
     }
 
     const renderRecord = () => {
-        let parentClass = parent;
-        if (parent && chosenGroup?.value !== 'dishesCategories') {
-            parentClass = false;
-        }
-        const getActiveRecordId = parent ? 'p' + record.id : 'c' + record.id
+        const currentRecordId = parent ? 'p' + record.id : 'c' + record.id
         return (
             <div
-                className={`translation-record-grid ${parentClass ? 'parent' : 'child'} ${activeRecordId === getActiveRecordId ? 'active' : ''}`}
+                className={`translation-record-grid ${parent ? 'parent' : 'child'} ${activeRecordId === currentRecordId && 'active'}`}
                 onClick={setActive}>
                 {renderLeftColumn()}
                 {renderMiddleColumn()}
