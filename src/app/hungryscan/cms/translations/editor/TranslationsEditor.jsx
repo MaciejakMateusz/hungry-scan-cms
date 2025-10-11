@@ -1,14 +1,28 @@
 import React, {useEffect, useState} from "react";
-import {OriginalTranslation} from "./OriginalTranslation";
-import {TranslateToField} from "./TranslateToField";
+import {SourceTranslationField} from "./SourceTranslationField";
+import {TargetTranslationField} from "./TargetTranslationField";
 import {useDispatch, useSelector} from "react-redux";
-import {useTranslation} from "react-i18next";
-import {postTranslatables, setSaveSuccess} from "../../../../../slices/translationsSlice";
+import {
+    postTranslatables,
+    setSaveSuccess, setSourceDescription, setSourceName, setSourceWelcomeSlogan,
+    setTargetDescription,
+    setTargetName, setTargetWelcomeSlogan
+} from "../../../../../slices/translationsSlice";
+import {getLanguage} from "../../../../../locales/langUtils";
 
 export const TranslationsEditor = ({fetchRecords}) => {
-    const {t} = useTranslation();
     const dispatch = useDispatch();
-    const {activeRecord} = useSelector(state => state.translations.view);
+    const {
+        activeRecord,
+        targetName,
+        targetDescription,
+        targetWelcomeSlogan,
+        sourceName,
+        sourceDescription,
+        sourceWelcomeSlogan,
+    } = useSelector(state => state.translations.view);
+    const currentSystemLanguage = getLanguage();
+    const {chosenDestinationLanguage} = useSelector(state => state.translations.view);
     const [confirmationTimeoutId, setConfirmationTimeoutId] = useState(null);
     const [hasDescription, setHasDescription] = useState(false);
 
@@ -20,10 +34,20 @@ export const TranslationsEditor = ({fetchRecords}) => {
         }
     }, [activeRecord]);
 
+    useEffect(() => {
+        if (!activeRecord) return;
+        dispatch(setSourceName(activeRecord.name?.[currentSystemLanguage]?? ''));
+        dispatch(setSourceDescription(activeRecord.description?.[currentSystemLanguage]?? ''));
+        dispatch(setSourceWelcomeSlogan(activeRecord.message?.[currentSystemLanguage]?? ''));
+        dispatch(setTargetName(activeRecord.name?.[chosenDestinationLanguage.value] ?? ''));
+        dispatch(setTargetDescription(activeRecord.description?.[chosenDestinationLanguage.value]?? ''));
+        dispatch(setTargetWelcomeSlogan(activeRecord.message?.[chosenDestinationLanguage.value]?? ''));
+    }, [activeRecord, currentSystemLanguage, chosenDestinationLanguage, dispatch]);
+
     const handleTranslatablesSubmit = async (e) => {
         e.preventDefault();
-        const resultAction = await dispatch(postTranslatables());
-        if(postTranslatables.fulfilled.match(resultAction)) {
+        const resultAction = await dispatch(postTranslatables({targetLanguage: chosenDestinationLanguage.value}));
+        if (postTranslatables.fulfilled.match(resultAction)) {
             dispatch(setSaveSuccess(true));
 
             if (confirmationTimeoutId) {
@@ -35,35 +59,65 @@ export const TranslationsEditor = ({fetchRecords}) => {
             }, 2000);
             setConfirmationTimeoutId(newConfirmationTimeoutId);
 
-            await fetchRecords();
+            await fetchRecords(false);
         }
     }
 
     const renderDescriptionTranslatable = () => {
-        if (!activeRecord || !('description' in activeRecord)) {
-            return null;
-        }
-
+        if (!activeRecord || !('description' in activeRecord)) return;
         return (
             <>
-                <OriginalTranslation value={activeRecord?.description.pl} type={t('description')}/>
-                <TranslateToField
-                    value={activeRecord?.description.en ? activeRecord.description.en : ''}
+                <SourceTranslationField value={sourceDescription}
+                                        type={'description'}
+                                        handleFieldChange={setSourceDescription}/>
+                <TargetTranslationField
+                    value={targetDescription}
                     renderButton={true}
-                    type={t('description')}/>
+                    changeHandler={setTargetDescription}
+                    type={'description'}/>
             </>
         );
     };
 
+    const renderNameTranslatable = () => {
+        if (!activeRecord || 'message' in activeRecord) return;
+        return (
+            <section className={'translations-vertical-split-right'}>
+                <form className={'translation-wrapper'} onSubmit={handleTranslatablesSubmit}>
+                    <SourceTranslationField value={sourceName}
+                                            type={'name'}
+                                            handleFieldChange={setSourceName}/>
+                    <TargetTranslationField value={targetName}
+                                            renderButton={!hasDescription}
+                                            changeHandler={setTargetName}
+                                            type={'name'}/>
+                    {renderDescriptionTranslatable()}
+                </form>
+            </section>
+        );
+    }
+
+    const renderWelcomeSloganTranslatable = () => {
+        if (!activeRecord  || !('message' in activeRecord)) return;
+        return (
+            <section className={'translations-vertical-split-right'}>
+                <form className={'translation-wrapper'} onSubmit={handleTranslatablesSubmit}>
+                    <SourceTranslationField value={sourceWelcomeSlogan}
+                                            type={'welcomeSlogan'}
+                                            handleFieldChange={setSourceWelcomeSlogan}/>
+                    <TargetTranslationField value={targetWelcomeSlogan}
+                                            renderButton={!hasDescription}
+                                            changeHandler={setTargetWelcomeSlogan}
+                                            type={'welcomeSlogan'}/>
+                </form>
+            </section>
+        );
+    }
+
     return (
-        <section className={'translations-vertical-split-right'}>
-            <form className={'translation-wrapper'} onSubmit={handleTranslatablesSubmit}>
-                <OriginalTranslation value={activeRecord?.name.pl} type={t('name')}/>
-                <TranslateToField value={activeRecord?.name.en ? activeRecord.name.en : ''}
-                                  renderButton={!hasDescription}
-                                  type={t('name')}/>
-                {renderDescriptionTranslatable()}
-            </form>
-        </section>
+        <>
+            {renderNameTranslatable()}
+            {renderWelcomeSloganTranslatable()}
+        </>
     );
 };
