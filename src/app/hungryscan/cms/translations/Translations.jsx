@@ -5,12 +5,14 @@ import {useDispatch, useSelector} from "react-redux";
 import {TranslationRecordsHeader} from "./TranslationRecordsHeader";
 import {getCategories} from "../../../../slices/dishesCategoriesSlice";
 import {
-    getAllIngredients,
+    getAllIngredients, getAllMenus,
     getAllVariants,
     setActiveRecord,
     setActiveRecordId,
-    setErrorData,
-    setRecords
+    setAdditions,
+    setDishesCategories,
+    setErrorData, setMenus,
+    setVariants
 } from "../../../../slices/translationsSlice";
 import {TranslationsEditor} from "./editor/TranslationsEditor";
 import {SuccessMessage} from "../dialog-windows/SuccessMessage";
@@ -19,18 +21,25 @@ import {TranslationsEditorHeader} from "./editor/TranslationsEditorHeader";
 
 export const Translations = () => {
     const {t} = useTranslation();
-    const {chosenGroup, saveSuccess, activeRecord} = useSelector(state => state.translations.view);
+    const {chosenGroup, saveSuccess} = useSelector(state => state.translations.view);
     const dispatch = useDispatch();
 
-    const fetchRecords = async () => {
-        const fetchGroupData = async (provider) => {
+    const fetchRecords = async isInitialLoading => {
+        const fetchGroupData = async (provider, type) => {
             try {
                 const data = await dispatch(provider());
                 if (provider.fulfilled.match(data)) {
-                    dispatch(setRecords(data.payload));
-                    if(!activeRecord) {
-                        dispatch(setActiveRecord(data.payload[0]));
-                        setRecordId(data.payload[0]);
+                    if (type === 'categoriesMenuItems') {
+                        dispatch(setDishesCategories(data.payload));
+                    } else if (type === 'menuItemsVariants') {
+                        dispatch(setVariants(data.payload));
+                    } else if (type === 'additions') {
+                        dispatch(setAdditions(data.payload));
+                    } else if (type === 'welcomeSlogans') {
+                        dispatch(setMenus(data.payload));
+                    }
+                    if (isInitialLoading) {
+                        activateFirstRecord(type, data);
                     }
                 } else if (provider.rejected.match(data)) {
                     dispatch(setErrorData(data.payload));
@@ -41,34 +50,40 @@ export const Translations = () => {
                 dispatch(setErrorData(error));
             }
         };
-        const groupValue = chosenGroup ? chosenGroup?.value : chosenGroup;
-        switch (groupValue) {
-            case 'dishesCategories':
-                await fetchGroupData(getCategories);
+
+        switch (chosenGroup?.value) {
+            case 'categoriesMenuItems':
+                await fetchGroupData(getCategories, 'categoriesMenuItems');
                 break;
-            case 'variants':
-                await fetchGroupData(getAllVariants);
+            case 'menuItemsVariants':
+                await fetchGroupData(getAllVariants, 'menuItemsVariants');
                 break;
             case 'additions':
-                await fetchGroupData(getAllIngredients);
+                await fetchGroupData(getAllIngredients, 'additions');
+                break;
+            case 'welcomeSlogans':
+                await fetchGroupData(getAllMenus, 'welcomeSlogans');
                 break;
             default:
                 await fetchGroupData(getCategories);
         }
     }
 
-    const setRecordId = activeRecord => {
-        if(chosenGroup?.value === 'dishesCategories') {
-            const hasDescription = 'description' in activeRecord;
-            const activeRecordId = hasDescription ? 'c' + activeRecord?.id : 'p' + activeRecord?.id;
-            dispatch(setActiveRecordId(activeRecordId));
+    const activateFirstRecord = (type, data) => {
+        dispatch(setActiveRecord(data.payload[0]));
+        setRecordId(data.payload[0], type);
+    }
+
+    const setRecordId = (activeRecord, type) => {
+        if (['categoriesMenuItems', 'menuItemsVariants'].includes(type)) {
+            dispatch(setActiveRecordId('p' + activeRecord?.id));
             return;
         }
-        dispatch(setActiveRecordId('p' + activeRecord.id));
+        dispatch(setActiveRecordId('c' + activeRecord?.id));
     }
 
     useEffect(() => {
-        fetchRecords();
+        fetchRecords(true);
     }, [chosenGroup]);
 
     return (
@@ -81,7 +96,8 @@ export const Translations = () => {
                 <main className={'cms-padded-view-container'}>
                     <div className={'translations-vertical-split-grid'}>
                         <TranslationRecordsHeader/>
-                        <section className={`translations-vertical-split-left ${chosenGroup?.value !== 'dishesCategories' ? 'simple' : ''}`}>
+                        <section
+                            className={`translations-vertical-split-left ${chosenGroup?.value !== 'dishesCategories' && 'simple'}`}>
                             <TranslationsList/>
                         </section>
                         <TranslationsEditorHeader/>
