@@ -1,18 +1,20 @@
 import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
+import {getLanguage} from "../locales/langUtils";
 
 export const getAutoTranslation = createAsyncThunk(
     'translations/getAutoTranslations',
-    async (credentials, {rejectWithValue}) => {
+    async ({text, targetLanguage}, {rejectWithValue}) => {
+        const sourceLanguage = getLanguage().toUpperCase();
         const response = await fetch(`${apiHost}/api/cms/translatable/translate`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                text: [credentials.text],
-                source_lang: "PL",
-                target_lang: "EN",
+                text: [text],
+                source_lang: sourceLanguage,
+                target_lang: targetLanguage.toUpperCase(),
                 context: "Restaurant CMS - Translate names and descriptions for categories, dishes, ingredients, and variants."
             }),
             credentials: 'include'
@@ -49,11 +51,9 @@ export const getAutoTranslationSlice = createSlice(
 
 export const postTranslatables = createAsyncThunk(
     'translations/postTranslatables',
-    async (credentials, {getState, rejectWithValue}) => {
+    async ({targetLanguage}, {getState, rejectWithValue}) => {
         const state = getState().translations.view;
-        const requestBody = state.activeRecord?.description ?
-            [state.activeRecord?.name, state.activeRecord.description] :
-            [state.activeRecord.name];
+        const requestBody = mapTranslatables(state, targetLanguage);
         const response = await fetch(`${apiHost}/api/cms/translatable/save-all`, {
             method: "POST",
             headers: {
@@ -75,6 +75,38 @@ export const postTranslatables = createAsyncThunk(
         }
     }
 );
+
+const mapTranslatables = (state, targetLanguage) => {
+    const currentSystemLanguage = getLanguage();
+    let resultTranslatables = [];
+
+    if ('description' in state.activeRecord) {
+        resultTranslatables.push({
+            ...state.activeRecord?.name,
+            [currentSystemLanguage]: state.sourceName,
+            [targetLanguage]: state.targetName
+        });
+        resultTranslatables.push({
+                ...state.activeRecord?.description,
+                [currentSystemLanguage]: state.sourceDescription,
+                [targetLanguage]: state.targetDescription
+        });
+    } else if(!('description' in state.activeRecord) && !state.activeRecord.message) {
+        resultTranslatables.push({
+            ...state.activeRecord?.name,
+            [currentSystemLanguage]: state.sourceName,
+            [targetLanguage]: state.targetName,
+        });
+    } else if ('message' in state.activeRecord) {
+        resultTranslatables.push({
+            ...state.activeRecord?.message,
+            [currentSystemLanguage]: state.sourceWelcomeSlogan,
+            [targetLanguage]: state.targetWelcomeSlogan,
+        });
+    }
+
+    return resultTranslatables;
+}
 
 export const postTranslatablesSlice = createSlice(
     {
@@ -176,13 +208,63 @@ export const getAllIngredientsSlice = createSlice(
         }
     });
 
+export const getAllMenus = createAsyncThunk(
+    'translations/getAllMenus',
+    async (_, {rejectWithValue}) => {
+        const response = await fetch(`${apiHost}/api/cms/menus`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include'
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            return rejectWithValue(errorData);
+        }
+
+        return await response.json();
+    }
+);
+
+export const getAllMenusSlice = createSlice(
+    {
+        name: 'getAllMenus',
+        initialState: {
+            isLoading: false,
+        },
+        extraReducers: (builder) => {
+            builder
+                .addCase(getAllMenus.pending, state => {
+                    state.isLoading = true;
+                })
+                .addCase(getAllMenus.fulfilled, state => {
+                    state.isLoading = false;
+                })
+                .addCase(getAllMenus.rejected, state => {
+                    state.isLoading = false;
+                })
+        }
+    });
+
 export const translationsSlice = createSlice({
     name: 'view',
     initialState: {
         activeRecordId: null,
         activeRecord: null,
-        records: [],
+        dishesCategories: [],
+        variants: [],
+        additions: [],
+        menus: [],
         chosenGroup: null,
+        chosenDestinationLanguage: {},
+        targetName: '',
+        targetDescription: '',
+        targetWelcomeSlogan: '',
+        sourceName: '',
+        sourceDescription: '',
+        sourceWelcomeSlogan: '',
         saveSuccess: false,
         errorData: null
     },
@@ -193,32 +275,44 @@ export const translationsSlice = createSlice({
         setActiveRecord: (state, action) => {
             state.activeRecord = action.payload;
         },
-        setRecordName: (state, action) => {
-            state.activeRecord = {
-                ...state?.activeRecord,
-                name: {
-                    ...state.activeRecord?.name,
-                    translationEn: action.payload
-                }
-            }
+        setDishesCategories: (state, action) => {
+            state.dishesCategories = action.payload;
         },
-        setRecordDescription: (state, action) => {
-            state.activeRecord = {
-                ...state?.activeRecord,
-                description: {
-                    ...state.activeRecord?.description,
-                    translationEn: action.payload
-                }
-            }
+        setVariants: (state, action) => {
+            state.variants = action.payload;
         },
-        setRecords: (state, action) => {
-            state.records = action.payload;
+        setAdditions: (state, action) => {
+            state.additions = action.payload;
+        },
+        setMenus: (state, action) => {
+            state.menus = action.payload;
         },
         setChosenGroup: (state, action) => {
             state.chosenGroup = action.payload;
         },
+        setChosenDestinationLanguage: (state, action) => {
+            state.chosenDestinationLanguage = action.payload;
+        },
+        setTargetName: (state, action) => {
+            state.targetName = action.payload;
+        },
+        setTargetDescription: (state, action) => {
+            state.targetDescription = action.payload;
+        },
+        setTargetWelcomeSlogan: (state, action) => {
+            state.targetWelcomeSlogan = action.payload;
+        },
+        setSourceName: (state, action) => {
+            state.sourceName = action.payload;
+        },
+        setSourceDescription: (state, action) => {
+            state.sourceDescription = action.payload;
+        },
+        setSourceWelcomeSlogan: (state, action) => {
+            state.sourceWelcomeSlogan = action.payload;
+        },
         setSaveSuccess: (state, action) => {
-          state.saveSuccess = action.payload;
+            state.saveSuccess = action.payload;
         },
         setErrorData: (state, action) => {
             state.errorData = action.payload;
@@ -237,10 +331,18 @@ export const translationsSlice = createSlice({
 export const {
     setActiveRecordId,
     setActiveRecord,
-    setRecordName,
-    setRecordDescription,
-    setRecords,
+    setDishesCategories,
+    setVariants,
+    setAdditions,
+    setMenus,
     setChosenGroup,
+    setChosenDestinationLanguage,
+    setTargetName,
+    setTargetDescription,
+    setTargetWelcomeSlogan,
+    setSourceName,
+    setSourceDescription,
+    setSourceWelcomeSlogan,
     setSaveSuccess,
     setErrorData,
     clearView
@@ -251,6 +353,7 @@ const translationsReducer = combineReducers({
     autoTranslate: getAutoTranslationSlice.reducer,
     postTranslatables: postTranslatablesSlice.reducer,
     getAllVariants: getAllVariantsSlice.reducer,
+    getAllMenus: getAllMenusSlice.reducer,
     getAllIngredients: getAllIngredientsSlice.reducer
 });
 
