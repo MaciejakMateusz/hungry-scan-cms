@@ -1,64 +1,45 @@
-import React, {useState} from "react";
-import {TranslationStatus} from "../TranslationStatus";
+import React from "react";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
-import {
-    getAutoTranslation,
-    setErrorData,
-    setRecordDescription,
-    setRecordName
-} from "../../../../../slices/translationsSlice";
+import {getAutoTranslation, setErrorData} from "../../../../../slices/translationsSlice";
 import {LoadingSpinner} from "../../../../icons/LoadingSpinner";
+import {TranslationStatus} from "../TranslationStatus";
 
-export const TranslateToField = ({value, renderButton, type}) => {
+export const TargetTranslationField = ({value, changeHandler, renderButton, type}) => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
-    const {activeRecord} = useSelector(state => state.translations.view);
-    const [loadingType, setLoadingType] = useState(null);
+    const {
+        sourceName,
+        sourceDescription,
+        sourceWelcomeSlogan
+    } = useSelector(state => state.translations.view);
+    const {chosenDestinationLanguage} = useSelector(state => state.translations.view);
+    const isAutoTranslateLoading = useSelector(state => state.translations.autoTranslate.isLoading);
+    const isPostLoading = useSelector(state => state.translations.postTranslatables.isLoading);
 
-    const handleFieldChange = (value) => {
-        if (t('name') === type) {
-            dispatch(setRecordName(value));
-            return;
-        }
-        dispatch(setRecordDescription(value));
+    const handleFieldChange = value => {
+        dispatch(changeHandler(value));
     }
 
     const handleFieldTranslation = async () => {
         let textToTranslate;
-        if (t('name') === type) {
-            textToTranslate = activeRecord.name.pl;
-            setLoadingType('name');
-        } else {
-            textToTranslate = activeRecord.description?.pl;
-            setLoadingType('description');
+        if ('name' === type) {
+            textToTranslate = sourceName;
+        } else if ('description' === type) {
+            textToTranslate = sourceDescription;
+        } else if ('welcomeSlogan' === type) {
+            textToTranslate = sourceWelcomeSlogan;
         }
-        const resultAction = await dispatch(getAutoTranslation({text: textToTranslate}));
+        const resultAction = await dispatch(getAutoTranslation({
+            text: textToTranslate,
+            targetLanguage: chosenDestinationLanguage.value
+        }));
         if (getAutoTranslation.fulfilled.match(resultAction)) {
-            setLoadingType(null);
             const translatedText = resultAction.payload?.translations[0].text;
             handleFieldChange(translatedText);
         } else if (getAutoTranslation.rejected.match(resultAction)) {
-            setLoadingType(null);
             dispatch(setErrorData(resultAction.payload));
         }
-    }
-
-    const renderLoadingSpinner = () => {
-        if (type === t('name') && loadingType === 'name') {
-            return (
-                <div className={'absolute-spinner-container'}>
-                    <LoadingSpinner buttonMode={true} customStyle={{width: '0.6rem', height: '0.6rem'}}/>
-                </div>
-            );
-        } else if (type === t('description') && loadingType === 'description') {
-            return (
-                <div className={'absolute-spinner-container'}>
-                    <LoadingSpinner buttonMode={true} customStyle={{width: '0.6rem', height: '0.6rem'}}/>
-                </div>
-            );
-        }
-        return (<></>);
     }
 
     return (
@@ -67,17 +48,20 @@ export const TranslateToField = ({value, renderButton, type}) => {
                 <span className={'translation-text-label'}>
                     {t('translation')}
                 </span>
-                {renderLoadingSpinner()}
+                {isAutoTranslateLoading &&
+                    <div className={'absolute-spinner-container'}>
+                        <LoadingSpinner buttonMode={true} customStyle={{width: '0.6rem', height: '0.6rem'}}/>
+                    </div>}
                 <div className={'translation-status-label-group'}>
                     <div className={'translate-to-translation-status'}>
                         <TranslationStatus translated={value?.length > 0}/>
                     </div>
                     <div className={'language-label'}>
-                        {t('english')}
+                        {t(chosenDestinationLanguage.value)}
                     </div>
                 </div>
             </div>
-            <div className={'translate-to-content-container'}>
+            <div className={'translation-value-content-container'}>
                     <textarea className={'translation-textarea-input'}
                               placeholder={t('typeTranslation')}
                               id={type}
@@ -95,7 +79,11 @@ export const TranslateToField = ({value, renderButton, type}) => {
                             {t('automaticTranslation')}
                     </span>
                 </div>
-                {renderButton ? <button type={'submit'} className={'translations-general-button'}>{t('save')}</button> : <></>}
+                {renderButton &&
+                    <button type={'submit'}
+                            className={'translations-general-button'}>
+                        {isPostLoading ? <LoadingSpinner buttonMode={true}/> : t('save')}
+                    </button>}
             </div>
         </div>
     );
