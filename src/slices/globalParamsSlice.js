@@ -1,4 +1,5 @@
 import {combineReducers, createSlice} from "@reduxjs/toolkit";
+import {STATS} from "../utils/viewsConstants";
 
 export const globalParamsSlice = createSlice(
     {
@@ -8,7 +9,7 @@ export const globalParamsSlice = createSlice(
             activeRestaurantId: null,
             activeMenu: null,
             activeMenuId: null,
-            currentView: 'dashboard/stats',
+            currentView: STATS,
             cmsActive: false,
             currentDialog: null,
         },
@@ -27,7 +28,9 @@ export const globalParamsSlice = createSlice(
             },
             setCurrentView: (state, action) => {
                 state.currentView = action.payload;
-                state.cmsActive = state.currentView.includes("cms");
+            },
+            setCmsActive: (state, action) => {
+                state.cmsActive = action.payload;
             },
             setCurrentDialog: (state, action) => {
                 state.currentDialog = action.payload;
@@ -41,6 +44,7 @@ export const {
     setActiveMenu,
     setActiveMenuId,
     setCurrentView,
+    setCmsActive,
     setCurrentDialog
 } = globalParamsSlice.actions;
 
