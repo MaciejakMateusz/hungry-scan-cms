@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import {NavButton} from "../NavButton";
 import {useDispatch, useSelector} from "react-redux";
 import {setCurrentView} from "../../../slices/globalParamsSlice";
@@ -12,7 +12,6 @@ import {NewRestaurantForm} from "./restaurant/NewRestaurantForm";
 import {EditRestaurantForm} from "./restaurant/EditRestaurantForm";
 import {NavPanel} from "../NavPanel";
 import {QrCode} from "./qr/QrCode";
-import {getUserProfile} from "../../../slices/userProfileSlice";
 import {useTranslation} from "react-i18next";
 import {UserProfile} from "./user/UserProfile";
 import {Users} from "./users/Users";
@@ -25,10 +24,6 @@ export const Dashboard = () => {
     const statsHoveredOrActive = currentView === STATS;
     const qrHoveredOrActive = currentView === CODE_QR;
     const usersHoveredOrActive = currentView === USERS;
-
-    useEffect(() => {
-        dispatch(getUserProfile())
-    }, [dispatch]);
 
     const renderMainView = () => {
         if (newRestaurantFormActive) {
