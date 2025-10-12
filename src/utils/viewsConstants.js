@@ -1,5 +1,7 @@
+//Common views
+export const USER_PROFILE = "common/userProfile";
+
 //Dashboard views:
-export const USER_PROFILE = "dashboard/userProfile";
 export const STATS = "dashboard/stats";
 export const CODE_QR = "dashboard/codeQr";
 export const PACKAGE = "dashboard/package";
