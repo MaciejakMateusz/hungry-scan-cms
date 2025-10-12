@@ -1,7 +1,7 @@
 import React from 'react';
 import {useTranslation} from "react-i18next";
 
-export const ErrorDialog = ({ error, errorInfo }) => {
+export const ErrorDialog = ({error, errorInfo}) => {
     const [open, setOpen] = React.useState(true);
     const {t} = useTranslation();
 
