@@ -67,6 +67,7 @@ export const categoryFormSlice = createSlice({
         displayOrders: [],
         categoryCreated: false,
         categoryUpdated: false,
+        categoryRemoved: false,
         errorMessage: null,
         errorData: {}
     },
@@ -91,6 +92,9 @@ export const categoryFormSlice = createSlice({
         },
         setCategoryUpdated: (state, action) => {
             state.categoryUpdated = action.payload;
+        },
+        setCategoryRemoved: (state, action) => {
+            state.categoryRemoved = action.payload;
         },
         setErrorMessage: (state, action) => {
             state.errorMessage = action.payload;
@@ -120,6 +124,7 @@ export const {
     setDisplayOrder,
     setCategoryCreated,
     setCategoryUpdated,
+    setCategoryRemoved,
     setErrorMessage,
     setErrorData,
     clearForm
