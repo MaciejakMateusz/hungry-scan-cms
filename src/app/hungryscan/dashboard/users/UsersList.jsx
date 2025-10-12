@@ -18,12 +18,13 @@ import React from "react";
 import {
     getUsers,
     removeUser,
-    setEditUserFormActive, setRemovalError,
+    setEditUserFormActive, setRemovalError, setUserRemoved,
     setUserToRemove,
     setUserToUpdate
 } from "../../../../slices/usersSlice";
 import {DecisionDialog} from "../../cms/dialog-windows/DecisionDialog";
 import {ErrorMessageDialog} from "../../../error/ErrorMessageDialog";
+import {useConfirmationMessage} from "../../../../hooks/useConfirmationMessage";
 
 export const UsersList = () => {
     const {t} = useTranslation();
@@ -31,6 +32,7 @@ export const UsersList = () => {
     const {users} = useSelector(state => state.users.getUsers);
     const {userToRemove} = useSelector(state => state.users.view);
     const {isLoading: userRemovalPending, removalError} = useSelector(state => state.users.removeUser);
+    const confirmUserRemoval = useConfirmationMessage(setUserRemoved);
 
     const handleUserRemoval = async e => {
         e.preventDefault();
@@ -38,6 +40,7 @@ export const UsersList = () => {
         if (removeUser.fulfilled.match(resultAction)) {
             dispatch(setUserToRemove(null));
             dispatch(getUsers());
+            confirmUserRemoval();
         }
     };
 
