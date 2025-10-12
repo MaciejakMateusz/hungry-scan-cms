@@ -31,6 +31,8 @@ export const LoginForm = () => {
     const renderMessage = () => {
         if (errorData?.message === 'notActivated') {
             return notActivatedMsg();
+        } else if (errorData?.message === 'accountInactive') {
+            return validationFail(t('userIsInactive'))
         } else if (isLoggedOut) {
             return logoutSuccess();
         } else if (notAuthorized) {
