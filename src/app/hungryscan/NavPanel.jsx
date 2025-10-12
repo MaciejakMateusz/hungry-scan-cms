@@ -1,5 +1,4 @@
 import {UserProfileWhiteIcon} from "../icons/UserProfileWhiteIcon";
-import {NotificationIcon} from "../icons/NotificationIcon";
 import {NavButton} from "./NavButton";
 import {DocumentIcon} from "../icons/DocumentIcon";
 import {executeLogoutFetch} from "../../slices/loginFormSlice";
@@ -15,7 +14,8 @@ export const NavPanel = ({children}) => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {restaurant} = useSelector(state => state.dashboard.view);
-    const {cmsActive, userForename} = useSelector(state => state.globalParams.globalParams);
+    const {cmsActive} = useSelector(state => state.globalParams.globalParams);
+    const {userData} = useSelector(state => state.userProfile.getUserProfile);
     const [isLogoutHovered, setIsLogoutHovered] = useState(false);
 
     const switchAppMode = () => {
@@ -28,11 +28,12 @@ export const NavPanel = ({children}) => {
         <div className={'app-nav-panel'}>
             <div className={'app-nav-header'}>
                     <span className={'profile-name'}>
-                        {t('welcome')}, {userForename}!
+                        {t('welcome')} {userData?.forename}!
                     </span>
-                <UserProfileWhiteIcon/>
-                <NotificationIcon/>
-                <LanguageSwitcherMobile/>
+                <div className={'flex-centered'}>
+                    <UserProfileWhiteIcon/>
+                    <LanguageSwitcherMobile/>
+                </div>
             </div>
             <div className={'app-mode-switcher-wrapper'}>
                 <div className={'app-mode-switcher'} onClick={() => switchAppMode()}>
