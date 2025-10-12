@@ -304,7 +304,8 @@ export const usersViewSlice = createSlice({
         userToRemove: null,
         userToUpdate: null,
         userCreated: false,
-        userUpdated: false
+        userUpdated: false,
+        userRemoved: false
     },
     reducers: {
         setNewUserFormActive: (state, action) => {
@@ -324,6 +325,9 @@ export const usersViewSlice = createSlice({
         },
         setUserUpdated: (state, action) => {
             state.userUpdated = action.payload;
+        },
+        setUserRemoved: (state, action) => {
+            state.userRemoved = action.payload;
         }
     }
 });
@@ -379,7 +383,8 @@ export const {
     setUserToRemove,
     setUserToUpdate,
     setUserCreated,
-    setUserUpdated
+    setUserUpdated,
+    setUserRemoved
 } = usersViewSlice.actions;
 
 export const {
