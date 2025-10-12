@@ -35,7 +35,7 @@ export const CustomSelect = (props) => {
             <div className={`${props.disableFieldContainer ? '' : 'form-field-container'}`}>
                 <label htmlFor={props.id} className={'form-label'}>
                     {props.info && <InformationTooltip text={props.info}/>}
-                    {props.labelName} {props.isOptional ?
+                    {props.labelName} {props.isRequired && ' *'} {props.isOptional ?
                     <span className={'form-optional'}>{t('optional')}:</span> : ''}
                 </label>
                 <Select id={props.id}
@@ -47,7 +47,7 @@ export const CustomSelect = (props) => {
                         placeholder={props.placeholder}
                         isClearable={props.isClearable}
                         options={props.options}
-                        components={{NoOptionsMessage: CustomNoOptionsMessage, ...props.components}}
+                        components={{ ...(props.components || {}), NoOptionsMessage: CustomNoOptionsMessage }}
                         isMulti={props.isMulti}
                         closeMenuOnSelect={props.closeMenuOnSelect}
                         menuPlacement={props.menuPlacement}
