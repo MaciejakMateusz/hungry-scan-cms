@@ -13,11 +13,12 @@ import {clearView as clearVariantsView} from "../../../slices/variantsSlice";
 import {clearView as clearAdditionsView} from "../../../slices/additionsSlice";
 import {clearView as clearTranslationsView} from "../../../slices/translationsSlice";
 import {clearForm as clearDishForm} from "../../../slices/dishFormSlice";
-import {ADDITIONS, DISHES_CATEGORIES, PERSONALIZATION, TRANSLATIONS} from "../../../utils/viewsConstants";
+import {ADDITIONS, DISHES_CATEGORIES, PERSONALIZATION, TRANSLATIONS, USER_PROFILE} from "../../../utils/viewsConstants";
 import {setCurrentDialog, setCurrentView} from "../../../slices/globalParamsSlice";
 import {CmsTopper} from "./topper/CmsTopper";
 import {fetchActiveMenu} from "../../../slices/cmsSlice";
 import {NavPanel} from "../NavPanel";
+import {UserProfile} from "../dashboard/user/UserProfile";
 
 export const Cms = () => {
     const {t} = useTranslation();
@@ -72,6 +73,8 @@ export const Cms = () => {
 
     const renderMainView = () => {
         switch (currentView) {
+            case USER_PROFILE:
+                return (<UserProfile/>);
             case DISHES_CATEGORIES:
                 return <DishesCategories/>;
             case ADDITIONS:
