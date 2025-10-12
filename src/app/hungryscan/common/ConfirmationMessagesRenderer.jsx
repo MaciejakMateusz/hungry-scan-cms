@@ -12,11 +12,11 @@ import {
 } from "../../../slices/menuSlice";
 import {setPersonalizationUpdated} from "../../../slices/personalizationSlice";
 import {setUserProfileUpdated} from "../../../slices/userProfileSlice";
-import {setCategoryCreated, setCategoryUpdated} from "../../../slices/categoryFormSlice";
-import {setMenuItemCreated, setMenuItemUpdated} from "../../../slices/dishFormSlice";
-import {setAdditionCreated, setAdditionUpdated} from "../../../slices/additionsSlice";
+import {setCategoryCreated, setCategoryRemoved, setCategoryUpdated} from "../../../slices/categoryFormSlice";
+import {setMenuItemCreated, setMenuItemRemoved, setMenuItemUpdated} from "../../../slices/dishFormSlice";
+import {setAdditionCreated, setAdditionRemoved, setAdditionUpdated} from "../../../slices/additionsSlice";
 import {setSaveSuccess} from "../../../slices/translationsSlice";
-import {setUserCreated, setUserUpdated} from "../../../slices/usersSlice";
+import {setUserCreated, setUserRemoved, setUserUpdated} from "../../../slices/usersSlice";
 
 export const ConfirmationMessagesRenderer = () => {
     const {t} = useTranslation();
@@ -35,11 +35,23 @@ export const ConfirmationMessagesRenderer = () => {
         restaurantUpdated} = useSelector(state => state.restaurant.form);
     const {personalizationUpdated} = useSelector(state => state.personalization.form);
     const {userProfileUpdated} = useSelector(state => state.userProfile.form);
-    const {categoryCreated, categoryUpdated} = useSelector(state => state.categoryForm.form);
-    const {menuItemCreated, menuItemUpdated} = useSelector(state => state.dishForm.form);
-    const {additionCreated, additionUpdated} = useSelector(state => state.additions.view);
+    const {
+        categoryCreated,
+        categoryUpdated,
+        categoryRemoved
+    } = useSelector(state => state.categoryForm.form);
+    const {
+        menuItemCreated,
+        menuItemUpdated,
+        menuItemRemoved
+    } = useSelector(state => state.dishForm.form);
+    const {
+        additionCreated,
+        additionUpdated,
+        additionRemoved
+    } = useSelector(state => state.additions.view);
     const {saveSuccess: translationsSaved} = useSelector(state => state.translations.view);
-    const {userCreated, userUpdated} = useSelector(state => state.users.view);
+    const {userCreated, userUpdated, userRemoved} = useSelector(state => state.users.view);
 
     return (
         <>
@@ -69,22 +81,28 @@ export const ConfirmationMessagesRenderer = () => {
                                                    onDismiss={() => dispatch(setCategoryUpdated(false))}/>}
             {categoryCreated && <SuccessMessage text={t('categorySaved')}
                                                 onDismiss={() => dispatch(setCategoryCreated(false))}/>}
+            {categoryRemoved && <SuccessMessage text={t('categoryRemovalSuccess')}
+                                                onDismiss={() => dispatch(setCategoryRemoved(false))}/>}
+            {menuItemCreated && <SuccessMessage text={t('dishSaved')}
+                                                onDismiss={() => dispatch(setMenuItemCreated(false))}/>}
             {menuItemUpdated && <SuccessMessage text={t('dishEdited')}
                                                 onDismiss={() => dispatch(setMenuItemUpdated(false))}/>}
-            {menuItemCreated && <SuccessMessage text={t('dishEdited')}
-                                                onDismiss={() => dispatch(setMenuItemCreated(false))}/>}
-            {menuItemCreated && <SuccessMessage text={t('dishEdited')}
-                                                onDismiss={() => dispatch(setMenuItemCreated(false))}/>}
+            {menuItemRemoved && <SuccessMessage text={t('dishRemovalSuccess')}
+                                                onDismiss={() => dispatch(setMenuItemRemoved(false))}/>}
             {additionCreated && <SuccessMessage text={t('additionCreated')}
                                                 onDismiss={() => dispatch(setAdditionCreated(false))}/>}
             {additionUpdated && <SuccessMessage text={t('additionUpdated')}
                                                 onDismiss={() => dispatch(setAdditionUpdated(false))}/>}
+            {additionRemoved && <SuccessMessage text={t('additionRemoved')}
+                                                onDismiss={() => dispatch(setAdditionRemoved(false))}/>}
             {translationsSaved && <SuccessMessage text={t('saved')}
                                                 onDismiss={() => dispatch(setSaveSuccess(false))}/>}
             {userCreated && <SuccessMessage text={t('userSaved')}
                                                   onDismiss={() => dispatch(setUserCreated(false))}/>}
             {userUpdated && <SuccessMessage text={t('userUpdated')}
                                             onDismiss={() => dispatch(setUserUpdated(false))}/>}
+            {userRemoved && <SuccessMessage text={t('userRemoved')}
+                                            onDismiss={() => dispatch(setUserRemoved(false))}/>}
         </>
     );
 }
