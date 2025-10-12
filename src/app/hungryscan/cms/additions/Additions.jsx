@@ -3,7 +3,7 @@ import {Helmet} from "react-helmet";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    getIngredients, setAdditionDialogActive,
+    getIngredients, setAdditionDialogActive, setAdditionRemoved,
     setAdditionToRemove,
     setErrorData,
     setFilterExpanded,
@@ -19,6 +19,7 @@ import {filter} from "../../../../slices/filteringSlice";
 import {SearchButton} from "../dishes-categories/SearchButton";
 import {getTranslation} from "../../../../locales/langUtils";
 import {LetterGroup} from "./LetterGroup";
+import {useConfirmationMessage} from "../../../../hooks/useConfirmationMessage";
 
 export const Additions = () => {
     const {t} = useTranslation();
@@ -35,7 +36,7 @@ export const Additions = () => {
         ingredients
     } = useSelector(state => state.additions.getIngredients);
     const removalPending = useSelector(state => state.objRemoval.isLoading);
-
+    const confirmAdditionRemoval = useConfirmationMessage(setAdditionRemoved);
     const letters = [...new Set(ingredients?.map((ingredient) => getTranslation(ingredient.name)[0]))];
 
     useEffect(() => {
@@ -58,7 +59,8 @@ export const Additions = () => {
         const resultAction = await dispatch(remove({id: ingredient.id, path: 'ingredients'}));
         if (remove.fulfilled.match(resultAction)) {
             dispatch(setAdditionToRemove(null));
-            filteringActive ? await executeFilter(filterValue) : await dispatch(getIngredients())
+            filteringActive ? await executeFilter(filterValue) : await dispatch(getIngredients());
+            confirmAdditionRemoval();
         } else if (remove.rejected.match(resultAction)) {
             setErrorData(resultAction.payload);
         }
