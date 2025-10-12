@@ -20,11 +20,14 @@ import dashboardReducer from "../slices/dashboardSlice";
 import cmsReducer from "../slices/cmsSlice";
 import menuReducer from "../slices/menuSlice";
 import personalizationReducer from "../slices/personalizationSlice";
+import userProfileReducer from "../slices/userProfileSlice";
+import usersReducer from "../slices/usersSlice";
 
 const rootReducer = combineReducers({
     login: loginReducer,
     register: registerReducer,
     recovery: recoveryReducer,
+    userProfile: userProfileReducer,
     dishesCategories: dishesCategoriesReducer,
     categoryForm: categoryFormReducer,
     dishForm: dishFormReducer,
@@ -42,7 +45,8 @@ const rootReducer = combineReducers({
     dashboard: dashboardReducer,
     cms: cmsReducer,
     menu: menuReducer,
-    personalization: personalizationReducer
+    personalization: personalizationReducer,
+    users: usersReducer
 })
 
 export const store = configureStore({
