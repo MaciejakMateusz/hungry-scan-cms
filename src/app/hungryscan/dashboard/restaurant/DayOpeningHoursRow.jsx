@@ -3,7 +3,6 @@ import {TimeField} from "../../cms/form-components/TimeField";
 import {useTranslation} from "react-i18next";
 import {Available, Fields, Grid, Label} from "./DayOpeningHoursRow.style";
 import {LogicalToggleField} from "../../cms/form-components/LogicalToggleField";
-import {useDispatch} from "react-redux";
 
 export const DayOpeningHoursRow = ({
                                        operatingHours,

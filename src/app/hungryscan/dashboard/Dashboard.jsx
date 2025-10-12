@@ -5,7 +5,7 @@ import {setCurrentView} from "../../../slices/globalParamsSlice";
 import {StatsIcon} from "../../icons/StatsIcon";
 import {QrCodeIcon} from "../../icons/QrCodeIcon";
 import {UsersIcon} from "../../icons/UsersIcon";
-import {CODE_QR, PACKAGE, STATS, USER_PROFILE, USERS} from "../../../utils/viewsConstants";
+import {CODE_QR, STATS, USER_PROFILE, USERS} from "../../../utils/viewsConstants";
 import {Statistics} from "./stats/Statistics";
 import {DashboardTopper} from "./DashboardTopper";
 import {NewRestaurantForm} from "./restaurant/NewRestaurantForm";

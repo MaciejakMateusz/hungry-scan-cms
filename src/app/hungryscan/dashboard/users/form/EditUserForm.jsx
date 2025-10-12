@@ -3,8 +3,9 @@ import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {useConfirmationMessage} from "../../../../../hooks/useConfirmationMessage";
 import {
-    clearForm, getUsers,
-    saveUser, setActive,
+    clearForm,
+    getUsers,
+    setActive,
     setChosenRestaurants,
     setChosenRoles,
     setEditUserFormActive,
