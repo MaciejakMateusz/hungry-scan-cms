@@ -18,11 +18,13 @@ export const App = () => {
 
     useEffect(() => {
         dispatch(getUserProfile())
-        hasAccessToDashboard ? dispatch(setCurrentView(STATS)) : dispatch(setCurrentView(DISHES_CATEGORIES));
+        if (hasAccessToDashboard !== undefined) {
+            hasAccessToDashboard ? dispatch(setCurrentView(STATS)) : dispatch(setCurrentView(DISHES_CATEGORIES));
+        }
     }, [dispatch, hasAccessToDashboard]);
 
     const renderView = () => {
-        if (!hasAccessToDashboard) {
+        if (hasAccessToDashboard !== undefined && hasAccessToDashboard === false) {
             return (<Cms/>);
         }
         return cmsActive ? <Cms/> : <Dashboard/>;
