@@ -325,7 +325,7 @@
   "userSaved": "Użytkownik utworzony pomyślnie",
   "userUpdated": "Użytkownik zaktualizowany pomyślnie",
   "userInactive": "Użytkownik nieaktywny, nie może się zalogować",
-  "userActive": "Użytkownik aktywny, posiada dostęp do CMS",
+  "userActive": "Użytkownik aktywny, może się zalogować",
   "userIsInactive": "Konto nieaktywne. Skontaktuj się ze swoją organizacją aby reaktywować to konto.",
 
   "constraints.NotBlank": "Pole nie może być puste",

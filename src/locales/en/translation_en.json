@@ -321,8 +321,8 @@
   "login": "Login",
   "userSaved": "User created successfully",
   "userUpdated": "User updated successfully",
-  "userInactive": "User inactive, login is disabled",
-  "userActive": "User active, has access to CMS",
+  "userInactive": "User inactive, can't sign in",
+  "userActive": "User active, can sign in",
   "userIsInactive": "Account is inactive. Please contact your organization to reactivate the account.",
 
   "constraints.NotBlank": "Field cannot be blank",
