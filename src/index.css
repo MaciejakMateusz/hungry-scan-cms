@@ -795,6 +795,10 @@ ul {
     z-index: 9999;
 }
 
+.app-nav-panel.no-dashboard {
+    grid-template-rows: 56px 6px 1fr 10% 15% 5%;
+}
+
 .app-nav-header {
     grid-row: 1;
     display: flex;
@@ -811,68 +815,6 @@ ul {
 .profile-icon-wrapper {
     padding: 5px;
     cursor: pointer;
-}
-
-.app-mode-switcher-wrapper {
-    grid-row: 2;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.app-mode-switcher {
-    position: relative;
-    width: 75%;
-    height: 37px;
-    background: #191D25;
-    border-radius: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-    color: #93939E;
-    font-weight: 400;
-    line-height: 16px;
-    cursor: pointer;
-}
-
-.app-mode-indicator {
-    position: absolute;
-    height: 27px;
-    top: 5px;
-    color: #93939E;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: 400;
-    font-size: 1rem;
-    border-radius: 100px;
-}
-
-.app-mode-indicator.dashboard {
-    left: 33px;
-}
-
-.app-mode-indicator.dashboard.active {
-    left: 6px;
-}
-
-.app-mode-indicator.cms {
-    right: 33px;
-}
-
-.app-mode-indicator.cms.active {
-    right: 6px;
-}
-
-.app-mode-indicator.active {
-    width: 100px;
-    background: #9746FF;
-    color: #FAFAFA;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: 400;
-    border-radius: 100px;
 }
 
 .app-nav-menu {
