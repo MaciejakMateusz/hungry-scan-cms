@@ -4,28 +4,21 @@ import {DocumentIcon} from "../icons/DocumentIcon";
 import {executeLogoutFetch} from "../../slices/loginFormSlice";
 import {RestaurantLocationIcon} from "../icons/RestaurantLocationIcon";
 import React, {useState} from "react";
-import {setCurrentView} from "../../slices/globalParamsSlice";
-import {DISHES_CATEGORIES, STATS} from "../../utils/viewsConstants";
 import {useDispatch, useSelector} from "react-redux";
 import {useTranslation} from "react-i18next";
 import {LanguageSwitcherMobile} from "../../locales/LanguageSwitcherMobile";
+import {AppModeSwitcher} from "./common/navigation/AppModeSwitcher";
 
 export const NavPanel = ({children}) => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {restaurant} = useSelector(state => state.dashboard.view);
-    const {cmsActive} = useSelector(state => state.globalParams.globalParams);
     const {userData} = useSelector(state => state.userProfile.getUserProfile);
     const [isLogoutHovered, setIsLogoutHovered] = useState(false);
-
-    const switchAppMode = () => {
-        cmsActive ?
-            dispatch(setCurrentView(STATS)) :
-            dispatch(setCurrentView(DISHES_CATEGORIES));
-    }
+    const hasAccessToDashboard = userData?.roles?.some(role => [2, 3].includes(role.id));
 
     return (
-        <div className={'app-nav-panel'}>
+        <div className={`app-nav-panel ${!hasAccessToDashboard && 'no-dashboard'}`}>
             <div className={'app-nav-header'}>
                     <span className={'profile-name'}>
                         {t('welcome')} {userData?.forename}!
@@ -35,12 +28,7 @@ export const NavPanel = ({children}) => {
                     <LanguageSwitcherMobile/>
                 </div>
             </div>
-            <div className={'app-mode-switcher-wrapper'}>
-                <div className={'app-mode-switcher'} onClick={() => switchAppMode()}>
-                    <span className={`app-mode-indicator dashboard ${cmsActive ? '' : 'active'}`}>Pulpit</span>
-                    <span className={`app-mode-indicator cms ${cmsActive ? 'active' : ''}`}>CMS</span>
-                </div>
-            </div>
+            <AppModeSwitcher hasAccessToDashboard={hasAccessToDashboard}/>
             <div className={'app-nav-menu'}>
                 <ul className={'app-nav-ul'}>
                     {children}
