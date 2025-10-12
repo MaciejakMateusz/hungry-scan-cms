@@ -1,8 +1,13 @@
 import React from "react";
+import {setCurrentView} from "../../slices/globalParamsSlice";
+import {USER_PROFILE} from "../../utils/viewsConstants";
+import {useDispatch} from "react-redux";
 
 export const UserProfileWhiteIcon = () => {
+    const dispatch = useDispatch();
+
     return (
-        <div className={'profile-icon-wrapper'}>
+        <div className={'profile-icon-wrapper'} onClick={() => dispatch(setCurrentView(USER_PROFILE))}>
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g id="Group">
                     <path id="Vector"
