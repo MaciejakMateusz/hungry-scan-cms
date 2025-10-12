@@ -323,6 +323,7 @@
   "userUpdated": "User updated successfully",
   "userInactive": "User inactive, login is disabled",
   "userActive": "User active, has access to CMS",
+  "userIsInactive": "Account is inactive. Please contact your organization to reactivate the account.",
 
   "constraints.NotBlank": "Field cannot be blank",
   "constraints.ForenameSurname": "Field should contain minimum 2 letters and no special characters"
