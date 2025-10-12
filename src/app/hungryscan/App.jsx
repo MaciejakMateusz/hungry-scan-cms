@@ -1,19 +1,37 @@
-import React from "react";
-import {useSelector} from "react-redux";
+import React, {useEffect} from "react";
+import {useDispatch, useSelector} from "react-redux";
 import {Dashboard} from "./dashboard/Dashboard";
 import {Cms} from "./cms/Cms";
 import {getInactivityTimeout} from "../../utils/utils";
 import {useInactivityTimeout} from "../../hooks/useInactivityTimeout";
 import {GlobalRenderingPlugin} from "./common/GlobalRenderingPlugin";
+import {getUserProfile} from "../../slices/userProfileSlice";
+import {setCurrentView} from "../../slices/globalParamsSlice";
+import {DISHES_CATEGORIES, STATS} from "../../utils/viewsConstants";
 
 export const App = () => {
-    const {currentView} = useSelector(state => state.globalParams.globalParams);
+    const dispatch = useDispatch();
+    const {cmsActive} = useSelector(state => state.globalParams.globalParams);
+    const {userData} = useSelector(state => state.userProfile.getUserProfile);
+    const hasAccessToDashboard = userData?.roles?.some(role => [2, 3].includes(role.id));
     useInactivityTimeout(getInactivityTimeout);
+
+    useEffect(() => {
+        dispatch(getUserProfile())
+        hasAccessToDashboard ? dispatch(setCurrentView(STATS)) : dispatch(setCurrentView(DISHES_CATEGORIES));
+    }, [dispatch, hasAccessToDashboard]);
+
+    const renderView = () => {
+        if (!hasAccessToDashboard) {
+            return (<Cms/>);
+        }
+        return cmsActive ? <Cms/> : <Dashboard/>;
+    }
 
     return (
         <div className={'app-grid'}>
             <GlobalRenderingPlugin/>
-            {currentView.includes('dashboard') ? <Dashboard/> : <Cms/>}
+            {renderView()}
         </div>
     );
 }
