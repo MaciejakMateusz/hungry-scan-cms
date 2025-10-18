@@ -159,7 +159,7 @@
   "additionCreated": "Dodatek zapisany pomyślnie",
   "additionUpdated": "Dodatek edytowany pomyślnie",
   "additionRemoved": "Dodatek usunięty pomyślnie",
-  "formHasErrors": "Formularz zawiera błędy",
+  "formHasErrors": "Wystąpił błąd podczas przesyłania formularza",
   "newVariant": "Nowy wariant",
   "createNewVariantForDish": "Stwórz nowy wariant dla dania: ",
   "createNewAddition": "Stwórz nowy dodatek",
@@ -329,6 +329,9 @@
   "userInactive": "Użytkownik nieaktywny, nie może się zalogować",
   "userActive": "Użytkownik aktywny, może się zalogować",
   "userIsInactive": "Konto nieaktywne. Skontaktuj się ze swoją organizacją aby reaktywować to konto.",
+  "switchCategory": "Zmień kategorię",
+  "movePositionToCategory": "Przenieś pozycję do kategorii:",
+  "menuItemCategorySwitched": "Pozycja przeniesiona pomyślnie",
 
   "constraints.NotBlank": "Pole nie może być puste",
   "constraints.ForenameSurname": "Pole powinno mieć minimum dwa znaki i zawierać tylko litery"

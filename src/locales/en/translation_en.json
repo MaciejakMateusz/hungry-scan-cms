@@ -159,7 +159,7 @@
   "additionCreated": "Addition created successfully",
   "additionUpdated": "Addition edited successfully",
   "additionRemoved": "Addition removed successfully",
-  "formHasErrors": "Form has errors",
+  "formHasErrors": "Error occurred while sending the form",
   "newVariant": "New variant",
   "createNewVariantForDish": "Create new variant for dish: ",
   "createNewAddition": "Create new addition",
@@ -326,6 +326,9 @@
   "userInactive": "User inactive, can't sign in",
   "userActive": "User active, can sign in",
   "userIsInactive": "Account is inactive. Please contact your organization to reactivate the account.",
+  "switchCategory": "Switch category",
+  "movePositionToCategory": "Move position to category:",
+  "menuItemCategorySwitched": "Menu item moved successfully",
 
   "constraints.NotBlank": "Field cannot be blank",
   "constraints.ForenameSurname": "Field should contain minimum 2 letters and no special characters"
