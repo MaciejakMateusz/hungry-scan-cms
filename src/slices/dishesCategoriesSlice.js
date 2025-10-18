@@ -30,6 +30,12 @@ export const updateCategoriesOrderSlice = createSlice({
     name: 'updateCategoriesOrder',
     initialState: {
         isLoading: false,
+        errorData: null
+    },
+    reducers: {
+        setErrorData: (state, action) => {
+            state.errorData = action.payload;
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -84,6 +90,59 @@ export const updateMenuItemsOrderSlice = createSlice({
                 state.isLoading = false;
             })
             .addCase(updateMenuItemsOrder.rejected, (state) => {
+                state.isLoading = false;
+            })
+    }
+})
+
+export const switchMenuItemCategory = createAsyncThunk(
+    'switchMenuItemCategory/switchMenuItemCategory',
+    async ({menuItemId, newCategoryId}, {rejectWithValue}) => {
+        const response = await fetch(`${apiHost}/api/cms/items/switch-category`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                menuItemId: menuItemId,
+                newCategoryId: newCategoryId
+            }),
+            credentials: 'include'
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            return rejectWithValue(errorData);
+        }
+
+        try {
+            return await response.json();
+        } catch (error) {
+            return {};
+        }
+    }
+);
+
+export const switchMenuItemCategorySlice = createSlice({
+    name: 'switchMenuItemCategory',
+    initialState: {
+        isLoading: false,
+        switchingError: null
+    },
+    reducers: {
+        setSwitchingError: (state, action) => {
+            state.switchingError = action.payload;
+        }
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(switchMenuItemCategory.pending, state => {
+                state.isLoading = true;
+            })
+            .addCase(switchMenuItemCategory.fulfilled, state => {
+                state.isLoading = false;
+            })
+            .addCase(switchMenuItemCategory.rejected, (state) => {
                 state.isLoading = false;
             })
     }
@@ -179,6 +238,8 @@ export const dishesCategoriesSlice = createSlice(
             newCategoryFormActive: false,
             editCategoryFormActive: false,
             reorderCategoriesDialogActive: false,
+            switchCategoryDialogActive: false,
+            menuItemCategorySwitched: false,
             newDishFormActive: false,
             editDishFormActive: false,
             categoryForAction: null,
@@ -210,6 +271,12 @@ export const dishesCategoriesSlice = createSlice(
             },
             setReorderCategoriesDialogActive: (state, action) => {
                 state.reorderCategoriesDialogActive = action.payload;
+            },
+            setSwitchCategoryDialogActive: (state, action) => {
+                state.switchCategoryDialogActive = action.payload;
+            },
+            setMenuItemCategorySwitched: (state, action) => {
+                state.menuItemCategorySwitched = action.payload;
             },
             setNewDishFormActive: (state, action) => {
                 state.newDishFormActive = action.payload;
@@ -265,6 +332,8 @@ export const {
     setNewCategoryFormActive,
     setEditCategoryFormActive,
     setReorderCategoriesDialogActive,
+    setSwitchCategoryDialogActive,
+    setMenuItemCategorySwitched,
     setNewDishFormActive,
     setEditDishFormActive,
     setCategoryForAction,
@@ -277,11 +346,15 @@ export const {
     clearView
 } = dishesCategoriesSlice.actions;
 
+export const {setErrorData} = updateCategoriesOrderSlice.actions;
+export const {setSwitchingError} = switchMenuItemCategorySlice.actions;
+
 const dishesCategoriesReducer = combineReducers({
     view: dishesCategoriesSlice.reducer,
     getCategories: getCategoriesSlice.reducer,
     getCategory: getCategorySlice.reducer,
     updateMenuItemsOrder: updateMenuItemsOrderSlice.reducer,
+    switchCategory: switchMenuItemCategorySlice.reducer,
     updateCategoriesOrder: updateCategoriesOrderSlice.reducer
 });
 
