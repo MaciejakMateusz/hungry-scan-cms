@@ -331,5 +331,6 @@
   "menuItemCategorySwitched": "Menu item moved successfully",
 
   "constraints.NotBlank": "Field cannot be blank",
-  "constraints.ForenameSurname": "Field should contain minimum 2 letters and no special characters"
+  "constraints.ForenameSurname": "Field should contain minimum 2 letters and no special characters",
+  "constraints.MaxLength": "Content must be shorter that 255 characters"
 }

@@ -334,5 +334,6 @@
   "menuItemCategorySwitched": "Pozycja przeniesiona pomyślnie",
 
   "constraints.NotBlank": "Pole nie może być puste",
-  "constraints.ForenameSurname": "Pole powinno mieć minimum dwa znaki i zawierać tylko litery"
+  "constraints.ForenameSurname": "Pole powinno mieć minimum dwa znaki i zawierać tylko litery",
+  "constraints.MaxLength": "Zawartość nie może być dłuższa niż 255 znaków"
 }
