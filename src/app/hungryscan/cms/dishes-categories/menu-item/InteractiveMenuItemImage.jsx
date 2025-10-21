@@ -3,7 +3,7 @@ import {Img} from "react-image";
 import {PlaceholderImgIcon} from "../../../../icons/PlaceholderImgIcon";
 import {LoadingSpinner} from "../../../../icons/LoadingSpinner";
 
-export const InteractiveMenuItemImage = ({src}) => {
+export const InteractiveMenuItemImage = ({src, hasImage}) => {
     const [isExpanded, setIsExpanded] = useState(false);
 
     const commonProps = {
@@ -14,11 +14,16 @@ export const InteractiveMenuItemImage = ({src}) => {
         unloader: <PlaceholderImgIcon/>
     };
 
+    const handleExpansion = () => {
+        if (!hasImage) return;
+        setIsExpanded(!isExpanded);
+    }
+
     return (
         <div
             className={'menu-item-position-image-container'}
-            onClick={() => setIsExpanded(!isExpanded)}
-            style={{cursor: isExpanded ? 'zoom-out' : 'zoom-in'}}>
+            onClick={handleExpansion}
+            style={hasImage ? {cursor: isExpanded ? 'zoom-out' : 'zoom-in'} : {}}>
             <Img {...commonProps}/>
             {isExpanded && (
                 <Img{...commonProps}
