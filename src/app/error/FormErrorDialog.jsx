@@ -1,55 +1,22 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {useTranslation} from "react-i18next";
+import {useDispatch} from "react-redux";
 
-export const FormErrorDialog = ({error, resetMessage}) => {
-    const [open, setOpen] = useState(true);
+export const FormErrorDialog = ({errorData, setErrorData}) => {
     const {t} = useTranslation();
-
-    useEffect(() => {
-        setOpen(true);
-    }, [error]);
+    const dispatch = useDispatch();
+    const exceptionMessage = errorData?.exceptionMsg;
 
     const handleClose = () => {
-        setOpen(false);
-        resetMessage(null);
+        dispatch(setErrorData({
+            ...errorData,
+            exceptionMsg: null
+        }));
     };
 
-    if (!open) {
+    if (!exceptionMessage) {
         return null;
     }
-
-    const renderErrorChunk = (key, name) => {
-        return (
-            <div key={key} className={'error-field-wrapper'}>
-                <p className={'error-field-key'}>
-                    {t(name)}: <span className={'error-field-value'}>{error[key]}</span>
-                </p>
-            </div>
-        );
-    }
-
-    const renderMessage = (key) => {
-        switch (key) {
-            case 'categoryId':
-                return renderErrorChunk(key, 'category');
-            case 'price':
-                return renderErrorChunk(key, 'price');
-            case 'name':
-                return renderErrorChunk(key, 'name');
-            case 'displayOrder':
-                return renderErrorChunk(key, 'displayOrder');
-            case 'password':
-                return renderErrorChunk(key, 'password');
-            case 'newPassword':
-                return renderErrorChunk(key, 'newPassword');
-            case 'repeatedPassword':
-                return renderErrorChunk(key, 'repeatedPassword');
-            case 'exceptionMsg':
-                return renderErrorChunk(key, 'error');
-            default:
-                return renderErrorChunk(key, 'error');
-        }
-    };
 
     return (
         <div className={'error-dialog-overlay'}>
@@ -58,7 +25,11 @@ export const FormErrorDialog = ({error, resetMessage}) => {
                     <h2>{t('formHasErrors')}</h2>
                 </div>
                 <div className={'error-dialog-content'}>
-                    {Object.keys(error).map((key) => renderMessage(key))}
+                    <div className={'error-field-wrapper'}>
+                        <p className={'error-field-key'}>
+                            {t('error')}: <span className={'error-field-value'}>{exceptionMessage}</span>
+                        </p>
+                    </div>
                 </div>
                 <div className={'error-dialog-actions'}>
                     <button onClick={handleClose}>
