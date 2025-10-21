@@ -11,7 +11,7 @@ import {CustomMenuList} from "../form-components/CustomMenuList";
 import {NewMenuFormDialog} from "../menu/NewMenuFormDialog";
 import {
     setContextMenuActive,
-    setContextMenuDetailsActive,
+    setContextMenuDetailsActive, setErrorData,
     setMenuRemoved,
     setNewMenuFormActive
 } from "../../../../slices/menuSlice";
@@ -24,6 +24,7 @@ import {useConfirmationMessage} from "../../../../hooks/useConfirmationMessage";
 import {useFetchCurrentRestaurant} from "../../../../hooks/useFetchCurrentRestaurant";
 import {useOutsideClick} from "../../../../hooks/useOutsideClick";
 import {RecordOptionsButton} from "../shared-components/RecordOptionsButton";
+import {FormErrorDialog} from "../../../error/FormErrorDialog";
 
 export const CmsTopper = () => {
     const {t} = useTranslation();
@@ -31,14 +32,15 @@ export const CmsTopper = () => {
     const selectRef = useRef();
     const contextRef = useRef();
     const {restaurant} = useSelector(state => state.dashboard.view);
-    const {activeMenu} = useSelector(state => state.globalParams.globalParams);
+    const {activeMenu} = useSelector(state => state.globalParams.globalParams)
     const {menu} = useSelector(state => state.cms.fetchActiveMenu);
     const {isInEditMode, activeRemovalType} = useSelector(state => state.dishesCategories.view);
     const {
         newMenuFormActive,
         editMenuFormActive,
         contextMenuActive,
-        contextMenuDetailsActive
+        contextMenuDetailsActive,
+        errorData
     } = useSelector(state => state.menu.form);
     const [menus, setMenus] = useState([]);
     const contextMenuPositions = useMenuContextPositions();
@@ -101,6 +103,7 @@ export const CmsTopper = () => {
         <header className={'app-header cms'}>
             {newMenuFormActive && <NewMenuFormDialog/>}
             {editMenuFormActive && <EditMenuFormDialog/>}
+            <FormErrorDialog errorData={errorData} setErrorData={setErrorData}/>
             {'menu' === activeRemovalType && <DecisionDialog msg={t('confirmMenuRemoval')}
                                                              objName={menu.name}
                                                              onCancel={() => dispatch(setActiveRemovalType(null))}
