@@ -20,18 +20,21 @@ export const CustomTextField = (props) => {
                     {props.tooltip && <InformationTooltip text={props.tooltipText}/>}
                     {props.label} {props.required && '*'}
                 </label>
-                <input type={'text'}
-                       className={`form-field name ${hasError ? 'error' : ''}`}
-                       id={props.id}
-                       name={props.name}
-                       value={props.value}
-                       onChange={(e) => {
-                           props.onChange(e.target.value)
-                           resetErrorStyles()
-                       }}
-                       placeholder={isFocused ? '' : props.placeholder}
-                       onFocus={() => setIsFocused(true)}
-                       onBlur={() => setIsFocused(false)}/>
+                <div className={'full-width'}>
+                    <input type={'text'}
+                           className={`form-field name ${hasError ? 'error' : ''}`}
+                           id={props.id}
+                           name={props.name}
+                           value={props.value}
+                           onChange={(e) => {
+                               props.onChange(e.target.value)
+                               resetErrorStyles()
+                           }}
+                           placeholder={isFocused ? '' : props.placeholder}
+                           onFocus={() => setIsFocused(true)}
+                           onBlur={() => setIsFocused(false)}/>
+                    {hasError && <div className={'validation-msg'}>{props.errorField}</div>}
+                </div>
             </div>
         </div>
     );
