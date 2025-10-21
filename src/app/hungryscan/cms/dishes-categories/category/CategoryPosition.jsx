@@ -9,21 +9,31 @@ import {
 } from "../../../../../slices/dishesCategoriesSlice";
 import {EditIconNew} from "../../../../icons/EditIconNew";
 import {DeleteIconNew} from "../../../../icons/DeleteIconNew";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useTranslation} from "react-i18next";
 import {ReorderIcon} from "../../../../icons/ReorderIcon";
 
 export const CategoryPosition = ({category}) => {
     const {t} = useTranslation();
+    const {menu} = useSelector(state => state.cms.fetchActiveMenu);
     const dispatch = useDispatch();
+
+    const renderReorderIcon = () => {
+        if (menu?.categories.length === 1) return;
+
+        return (
+            <span className={'clickable-icon'}
+                  onClick={() => dispatch(setReorderCategoriesDialogActive(true))}>
+                <ReorderIcon/>
+            </span>
+        );
+    }
+
     return (
         <div className={'category-container-header'}>
             <div className={'category-info'}>
                 {getTranslation(category.name)} ({category.menuItems.length})
-                <span className={'clickable-icon'}
-                      onClick={() => dispatch(setReorderCategoriesDialogActive(true))}>
-                    <ReorderIcon/>
-                </span>
+                {renderReorderIcon()}
                 <span className={'clickable-icon'}
                       onClick={() => {
                           dispatch(setCategory(category));
