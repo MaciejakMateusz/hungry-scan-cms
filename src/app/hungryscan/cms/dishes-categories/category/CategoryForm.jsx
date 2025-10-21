@@ -1,20 +1,18 @@
 import React from "react";
 import {CategoryFormTemplate} from "./CategoryFormTemplate";
-import {useDispatch, useSelector} from "react-redux";
-import {setErrorMessage} from "../../../../../slices/categoryFormSlice";
+import {useSelector} from "react-redux";
 import {FormErrorDialog} from "../../../../error/FormErrorDialog";
 import {FormHeader} from "../../shared-components/FormHeader";
+import {setErrorData} from "../../../../../slices/categoryFormSlice";
 
 export const CategoryForm = ({formHeader, onFormDiscard, onFormSubmit}) => {
-    const dispatch = useDispatch();
-    const {errorData, errorMessage} = useSelector(state => state.categoryForm.form);
+    const {errorData} = useSelector(state => state.categoryForm.form);
     const {isLoading} = useSelector(state => state.categoryForm.postCategory);
 
     return (
         <div className={'background'}>
             <div className={'cms-padded-view-container'}>
-                {errorMessage && <FormErrorDialog error={errorData}
-                                                  resetMessage={() => dispatch(setErrorMessage(null))}/>}
+                <FormErrorDialog errorData={errorData} setErrorData={setErrorData}/>
                 <FormHeader formHeader={formHeader}
                             onFormSubmit={onFormSubmit}
                             onFormDiscard={onFormDiscard}
