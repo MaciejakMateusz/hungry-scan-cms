@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
-import {FailureMessage} from "../dialog-windows/FailureMessage";
 import {DecisionDialog} from "../dialog-windows/DecisionDialog";
 import {MenuItemPosition} from "./menu-item/MenuItemPosition";
 import {CategoryPosition} from "./category/CategoryPosition";
 import {FilteredMenuItems} from "./FilteredMenuItems";
-import {remove} from "../../../../slices/objectRemovalSlice";
+import {remove, setRemovalError} from "../../../../slices/objectRemovalSlice";
 import {
     setActiveRemovalType,
     setCategoryForAction,
@@ -19,6 +18,8 @@ import {ReorderCategoriesDialog} from "../dialog-windows/ReorderCategoriesDialog
 import {useConfirmationMessage} from "../../../../hooks/useConfirmationMessage";
 import {setCategoryRemoved} from "../../../../slices/categoryFormSlice";
 import {setMenuItemRemoved} from "../../../../slices/dishFormSlice";
+import {SwitchCategoryDialog} from "../dialog-windows/SwitchCategoryDialog";
+import {FormErrorDialog} from "../../../error/FormErrorDialog";
 
 export const DishesCategoriesList = () => {
     const {t} = useTranslation();
@@ -26,15 +27,14 @@ export const DishesCategoriesList = () => {
     const {
         categoryForAction,
         reorderCategoriesDialogActive,
+        switchCategoryDialogActive,
         menuItemForAction,
         filterValue,
         activeRemovalType
     } = useSelector(state => state.dishesCategories.view);
     const {menu} = useSelector(state => state.cms.fetchActiveMenu);
-    const [errorData, setErrorData] = useState({});
-    const [errorTimeoutId, setErrorTimeoutId] = useState(null);
     const [localCategories, setLocalCategories] = useState([]);
-    const removalPending = useSelector(state => state.objRemoval.isLoading);
+    const {isLoading: removalPending, removalError} = useSelector(state => state.objRemoval);
     const confirmCategoryRemoval = useConfirmationMessage(setCategoryRemoved);
     const confirmMenuItemRemoval = useConfirmationMessage(setMenuItemRemoved);
 
@@ -62,35 +62,7 @@ export const DishesCategoriesList = () => {
                 confirmMenuItemRemoval();
             }
         } else if (remove.rejected.match(resultAction)) {
-            if ('categories' === actionType) {
-                dispatch(setActiveRemovalType(null));
 
-                if (errorTimeoutId) {
-                    clearTimeout(errorTimeoutId);
-                    setErrorData({})
-                }
-
-                setErrorData(resultAction.payload);
-
-                const newErrorTimeoutId = setTimeout(() => {
-                    setErrorData({});
-                }, 4000);
-                setErrorTimeoutId(newErrorTimeoutId);
-            } else {
-                dispatch(setActiveRemovalType(null));
-
-                if (errorTimeoutId) {
-                    clearTimeout(errorTimeoutId);
-                    setErrorData({})
-                }
-
-                setErrorData(resultAction.payload);
-
-                const newErrorTimeoutId = setTimeout(() => {
-                    setErrorData({});
-                }, 4000);
-                setErrorTimeoutId(newErrorTimeoutId);
-            }
         }
     }
 
@@ -102,17 +74,14 @@ export const DishesCategoriesList = () => {
 
     const renderRemovalDialog = () => {
         if (!['category', 'dish'].includes(activeRemovalType)) return;
-        const msg = activeRemovalType === 'category' ? t('confirmCategoryRemoval') : t('confirmDishRemoval');
+        const msg =
+            activeRemovalType === 'category' ? t('confirmCategoryRemoval') : t('confirmDishRemoval');
         const objName = activeRemovalType === 'category' ? categoryForAction.name : menuItemForAction.name;
         return <DecisionDialog msg={msg}
                                objName={objName}
                                onSubmit={handleRemoval}
                                onCancel={discardDeletion}
                                isLoading={removalPending}/>
-    };
-
-    const renderReorderCategoriesDialog = () => {
-        return <ReorderCategoriesDialog/>
     };
 
     const handleDragEnd = async (event, category) => {
@@ -168,8 +137,9 @@ export const DishesCategoriesList = () => {
                 <FilteredMenuItems/> :
                 renderCategories()}
             {activeRemovalType && renderRemovalDialog()}
-            {reorderCategoriesDialogActive && renderReorderCategoriesDialog()}
-            {errorData.exceptionMsg && (<FailureMessage text={errorData.exceptionMsg}/>)}
+            {reorderCategoriesDialogActive && <ReorderCategoriesDialog/>}
+            {switchCategoryDialogActive && <SwitchCategoryDialog/>}
+            <FormErrorDialog errorData={removalError} setErrorData={setRemovalError}/>
         </div>
     );
 }
