@@ -2,7 +2,7 @@ import React from "react";
 import {LoadingSpinner} from "../../../icons/LoadingSpinner";
 import {useTranslation} from "react-i18next";
 
-export const FormHeader = ({formHeader, onFormDiscard, onFormSubmit, isLoading}) => {
+export const FormHeader = ({formHeader, onFormDiscard, onFormSubmit, isLoading, submitDisabled}) => {
     const {t} = useTranslation();
 
     const DiscardButton = () => {
@@ -23,7 +23,7 @@ export const FormHeader = ({formHeader, onFormDiscard, onFormSubmit, isLoading})
             <div className={'flex-wrapper-gapped'}>
                 <div className={'form-footer'}>
                     <DiscardButton/>
-                    <div className={'general-button'}
+                    <div className={`general-button ${submitDisabled && 'disabled'}`}
                          onClick={onFormSubmit}>
                         {isLoading ? <LoadingSpinner buttonMode={true}/> : t('save')}
                     </div>
