@@ -11,7 +11,7 @@ import {
     setEditUserFormActive,
     setErrorData,
     setForename,
-    setSurname,
+    setSurname, setUpdateUserError,
     setUsername,
     setUserToUpdate,
     setUserUpdated,
@@ -62,6 +62,7 @@ export const EditUserForm = () => {
     const handleFormDiscard = () => {
         dispatch(setEditUserFormActive(false));
         dispatch(clearForm());
+        dispatch(setUpdateUserError(null));
     }
 
     return (
