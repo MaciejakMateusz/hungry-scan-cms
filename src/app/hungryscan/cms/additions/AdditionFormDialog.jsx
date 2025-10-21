@@ -20,6 +20,7 @@ import {LogicalToggleField} from "../form-components/LogicalToggleField";
 import {useTranslatableTransformer} from "../../../../hooks/useTranslatableTransformer";
 import {LoadingSpinner} from "../../../icons/LoadingSpinner";
 import {useConfirmationMessage} from "../../../../hooks/useConfirmationMessage";
+import {FormErrorDialog} from "../../../error/FormErrorDialog";
 
 export const AdditionFormDialog = (props) => {
     const {t} = useTranslation();
@@ -38,15 +39,9 @@ export const AdditionFormDialog = (props) => {
             dispatch(setId(addition.id))
             dispatch(setName(getTranslation(addition.name)))
             dispatch(setPrice(addition.price.toFixed(2)))
-            dispatch(setAvailable({
-                value: addition.available,
-                label: addition.available ? t('availableVariant') : t('unavailableVariant')
-            }));
+            dispatch(setAvailable(addition.available));
         } else {
-            dispatch(setAvailable({
-                value: true,
-                label: t('availableVariant')
-            }));
+            dispatch(setAvailable(true));
         }
     }, [isNewAddition]);
 
@@ -60,13 +55,17 @@ export const AdditionFormDialog = (props) => {
             dispatch(setAdditionDialogActive(false));
             dispatch(clearForm());
             dispatch(resetAdditionData());
+            dispatch(setErrorData(null));
             filteringActive ? await props.filter(filterValue) : await dispatch(getIngredients());
             renderConfirmation();
+        } else {
+            dispatch(setErrorData(resultAction?.payload));
         }
     }
 
     return (
         <>
+            <FormErrorDialog errorData={errorData} setErrorData={setErrorData}/>
             <div className={'overlay'}></div>
             <div className={'form-dialog '}>
                 <div className={'variant-form-dialog-content'}>
