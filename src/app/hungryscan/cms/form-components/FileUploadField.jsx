@@ -44,7 +44,7 @@ export const FileUploadField = ({setFile, file}) => {
         if (file) fileSource = URL.createObjectURL(file);
         if (hasImage && !file) fileSource = `${s3BucketUrl}/menuItems/${id}.png?t=${updated}`;
         if (!fileSource || isImageCleared) return;
-        return (<InteractiveMenuItemImage src={fileSource}/>);
+        return (<InteractiveMenuItemImage src={fileSource} hasImage={hasImage}/>);
     }
 
     const renderButton = () => {
