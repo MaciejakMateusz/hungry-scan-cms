@@ -37,7 +37,9 @@ export const Additions = () => {
     } = useSelector(state => state.additions.getIngredients);
     const removalPending = useSelector(state => state.objRemoval.isLoading);
     const confirmAdditionRemoval = useConfirmationMessage(setAdditionRemoved);
-    const letters = [...new Set(ingredients?.map((ingredient) => getTranslation(ingredient.name)[0]))];
+    const letters = [...new Set(ingredients?.map((ingredient) =>
+        getTranslation(ingredient.name).toUpperCase()[0]
+    ))];
 
     useEffect(() => {
         dispatch(getIngredients());
@@ -51,7 +53,8 @@ export const Additions = () => {
     }, [dispatch, filterExpanded]);
 
     const filterIngredientsByLetter = (letter) => {
-        return ingredients.filter((ingredient) => getTranslation(ingredient.name)[0] === letter);
+        return ingredients.filter((ingredient) =>
+            getTranslation(ingredient.name).toUpperCase()[0] === letter);
     }
 
     const handleAdditionRemoval = async (e, ingredient) => {
