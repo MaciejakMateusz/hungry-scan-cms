@@ -14,7 +14,7 @@ export const postAddition = createAsyncThunk(
                 id: state.id,
                 name: transformName(state.name),
                 price: state.price,
-                available: state.available.value
+                available: state.available
             }),
             credentials: 'include'
         });
