@@ -22,18 +22,22 @@ export const DescriptionField = (props) => {
                     <InformationTooltip text={t('descriptionFieldTooltip')}/>
                     {t('description')}
                 </label>
-                <textarea
-                    className={`form-field description ${hasError ? 'error' : ''}`}
-                    id={'dish-description'}
-                    name={'description'}
-                    value={props.value}
-                    onChange={(e) => {
-                        props.onChange(e.target.value);
-                        resetErrorStyles();
-                    }}
-                    placeholder={isFocused ? '' : t('type')}
-                    onFocus={() => setIsFocused(true)}
-                    onBlur={() => setIsFocused(false)}/>
+                <div className={'full-width'}>
+                    <textarea
+                        className={`form-field description ${hasError ? 'error' : ''}`}
+                        id={'dish-description'}
+                        name={'description'}
+                        value={props.value}
+                        onChange={(e) => {
+                            props.onChange(e.target.value);
+                            resetErrorStyles();
+                        }}
+                        placeholder={isFocused ? '' : t('type')}
+                        onFocus={() => setIsFocused(true)}
+                        onBlur={() => setIsFocused(false)}
+                    />
+                    {hasError && <div className={'validation-msg'}>{props.error?.description}</div>}
+                </div>
             </div>
         </div>
     );
