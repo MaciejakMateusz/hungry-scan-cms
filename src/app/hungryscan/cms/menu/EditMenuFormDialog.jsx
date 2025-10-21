@@ -3,8 +3,7 @@ import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {
     clearForm, setColor,
-    setEditMenuFormActive,
-    setErrorData,
+    setEditMenuFormActive, setErrorData,
     setMenuUpdated,
     setName,
     updateMenu
@@ -12,13 +11,14 @@ import {
 import {fetchActiveMenu} from "../../../../slices/cmsSlice";
 import {useConfirmationMessage} from "../../../../hooks/useConfirmationMessage";
 import {MenuFormTemplate} from "./MenuFormTemplate";
+import {FormErrorDialog} from "../../../error/FormErrorDialog";
 
 export const EditMenuFormDialog = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {menu} = useSelector(state => state.cms.fetchActiveMenu);
-    const {name, color} = useSelector(state => state.menu.form);
-    const {errorData, isLoading} = useSelector(state => state.menu.updateMenu);
+    const {name, color, errorData} = useSelector(state => state.menu.form);
+    const {isLoading} = useSelector(state => state.menu.updateMenu);
     const renderConfirmation = useConfirmationMessage(setMenuUpdated);
 
     useEffect(() => {
@@ -34,7 +34,10 @@ export const EditMenuFormDialog = () => {
             await dispatch(fetchActiveMenu());
             await dispatch(setEditMenuFormActive(false));
             dispatch(clearForm());
+            dispatch(setErrorData(null));
             renderConfirmation();
+        } else {
+            dispatch(setErrorData(resultAction?.payload));
         }
     }
 
@@ -45,10 +48,14 @@ export const EditMenuFormDialog = () => {
     }
 
     return (
-        <MenuFormTemplate formHeader={t('rename')}
-                          submitHandler={handleFormSubmit}
-                          discardHandler={handleFormDiscard}
-                          errorData={errorData}
-                          isLoading={isLoading}/>
+        <>
+            <FormErrorDialog errorData={errorData} setErrorData={setErrorData}/>
+            <MenuFormTemplate formHeader={t('rename')}
+                              submitHandler={handleFormSubmit}
+                              discardHandler={handleFormDiscard}
+                              errorData={errorData}
+                              isLoading={isLoading}/>
+        </>
+
     );
 }
