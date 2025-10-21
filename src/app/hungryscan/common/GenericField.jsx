@@ -20,20 +20,24 @@ export const GenericField = (props) => {
                     {props.tooltip && <InformationTooltip text={props.tooltip}/>}
                     {props.name} {props.required && '*'}
                 </label>
-                <input type={props.type}
-                       className={`form-field name ${hasError ? 'error' : ''}`}
-                       id={props.id}
-                       name={props.id}
-                       readOnly={props.readOnly}
-                       disabled={props.disabled}
-                       value={props.value}
-                       onChange={(e) => {
-                           props.onChange(e.target.value)
-                           resetErrorStyles()
-                       }}
-                       placeholder={!isFocused && props.placeholder}
-                       onFocus={() => setIsFocused(true)}
-                       onBlur={() => setIsFocused(false)}/>
+                <div className={'full-width'}>
+                    <input type={props.type}
+                           className={`form-field name ${hasError ? 'error' : ''}`}
+                           id={props.id}
+                           name={props.id}
+                           readOnly={props.readOnly}
+                           disabled={props.disabled}
+                           value={props.value}
+                           onChange={(e) => {
+                               props.onChange(e.target.value)
+                               resetErrorStyles()
+                           }}
+                           placeholder={!isFocused && props.placeholder}
+                           onFocus={() => setIsFocused(true)}
+                           onBlur={() => setIsFocused(false)}
+                    />
+                    {hasError && <div className={'validation-msg'}>{props.error}</div>}
+                </div>
             </div>
         </div>
     );
