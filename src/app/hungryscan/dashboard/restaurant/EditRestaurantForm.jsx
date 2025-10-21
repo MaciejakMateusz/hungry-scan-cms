@@ -8,7 +8,6 @@ import {
     setCity,
     setEditRestaurantFormActive,
     setErrorData,
-    setErrorMessage,
     setFridayAvailable,
     setFridayClosingTime,
     setFridayOpeningTime,
@@ -187,18 +186,17 @@ export const EditRestaurantForm = () => {
         if (postRestaurant.fulfilled.match(resultAction)) {
             await dispatch(setEditRestaurantFormActive(false));
             dispatch(clearForm());
-            dispatch(setErrorMessage(null));
             dispatch(setErrorData(null));
             renderConfirmation();
-        } else if (postRestaurant.rejected.match(resultAction)) {
-            dispatch(setErrorMessage(resultAction.payload));
-            dispatch(setErrorData(resultAction.payload));
+        } else {
+            dispatch(setErrorData(resultAction?.payload));
         }
     }
 
     const handleFormDiscard = () => {
         dispatch(clearForm());
         dispatch(setEditRestaurantFormActive(false));
+        dispatch(setErrorData(null));
     }
 
     return (
