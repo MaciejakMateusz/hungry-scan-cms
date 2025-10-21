@@ -17,6 +17,7 @@ import {setMenuItemCreated, setMenuItemRemoved, setMenuItemUpdated} from "../../
 import {setAdditionCreated, setAdditionRemoved, setAdditionUpdated} from "../../../slices/additionsSlice";
 import {setSaveSuccess} from "../../../slices/translationsSlice";
 import {setUserCreated, setUserRemoved, setUserUpdated} from "../../../slices/usersSlice";
+import {setMenuItemCategorySwitched} from "../../../slices/dishesCategoriesSlice";
 
 export const ConfirmationMessagesRenderer = () => {
     const {t} = useTranslation();
@@ -45,6 +46,7 @@ export const ConfirmationMessagesRenderer = () => {
         menuItemUpdated,
         menuItemRemoved
     } = useSelector(state => state.dishForm.form);
+    const {menuItemCategorySwitched} = useSelector(state => state.dishesCategories.view);
     const {
         additionCreated,
         additionUpdated,
@@ -89,6 +91,8 @@ export const ConfirmationMessagesRenderer = () => {
                                                 onDismiss={() => dispatch(setMenuItemUpdated(false))}/>}
             {menuItemRemoved && <SuccessMessage text={t('dishRemovalSuccess')}
                                                 onDismiss={() => dispatch(setMenuItemRemoved(false))}/>}
+            {menuItemCategorySwitched && <SuccessMessage text={t('menuItemCategorySwitched')}
+                                                onDismiss={() => dispatch(setMenuItemCategorySwitched(false))}/>}
             {additionCreated && <SuccessMessage text={t('additionCreated')}
                                                 onDismiss={() => dispatch(setAdditionCreated(false))}/>}
             {additionUpdated && <SuccessMessage text={t('additionUpdated')}
