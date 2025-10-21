@@ -66,7 +66,7 @@ export const DishesCategories = () => {
             allItems.push(...categoryItems);
         });
         const filteredItems = allItems.filter(mi =>
-            getTranslation(mi.name).toLowerCase().includes(value)
+            getTranslation(mi.name).toLowerCase().includes(value.toLowerCase())
         );
         dispatch(setFilteredItems(filteredItems));
     }
