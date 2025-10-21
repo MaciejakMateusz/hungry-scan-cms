@@ -46,6 +46,7 @@ export const EditCategoryForm = () => {
         if (postCategory.fulfilled.match(resultAction)) {
             dispatch(setEditCategoryFormActive(false));
             dispatch(clearForm());
+            dispatch(setErrorData(null));
             renderConfirmation();
         } else if (postCategory.rejected.match(resultAction)) {
             dispatch(setErrorData(resultAction.payload));
