@@ -242,6 +242,8 @@
   "preview": "Podgląd",
   "print": "Drukuj",
   "numberScans": "Number of scans",
+  "allScans": "All scans",
+  "scans": "scans",
   "relatedTo": "in relation to",
   "previousPeriod": "previous period",
   "scanFrequency": "Scanning frequency",
