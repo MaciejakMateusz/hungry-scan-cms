@@ -5,6 +5,8 @@ export const LegendContainer = styled.div`
     grid-template-columns: 10px auto 1fr;
     grid-template-rows: auto auto;
     gap: 7px;
+    font-size: 1rem;
+    font-weight: 300;
 `
 
 export const UniqueScanIconContainer = styled.div`
@@ -15,8 +17,8 @@ export const UniqueScanIconContainer = styled.div`
 `
 
 export const UniqueScanIcon = styled.div`
-    width: 7px;
-    height: 7px;
+    width: 9px;
+    height: 9px;
     background: #016DFF;
     border-radius: 100px;
 `
@@ -29,12 +31,11 @@ export const RepeatedScanIconContainer = styled.div`
 `
 
 export const RepeatedScanIcon = styled.div`
-    width: 7px;
-    height: 7px;
+    width: 9px;
+    height: 9px;
     background: #4C97F6;
     border-radius: 100px;
 `
-
 
 export const UniqueScanLabel = styled.div`
     grid-column: 2;
@@ -51,7 +52,7 @@ export const RepeatedScanLabel = styled.div`
 export const UniqueValuesWrapper = styled.div`
     grid-column: 3;
     grid-row: 1;
-    font-weight: bolder;
+    font-weight: 600;
     display: flex;
     gap: 15px;
 `
@@ -59,7 +60,7 @@ export const UniqueValuesWrapper = styled.div`
 export const RepeatedValuesWrapper = styled.div`
     grid-column: 3;
     grid-row: 2;
-    font-weight: bolder;
+    font-weight: 600;
     display: flex;
     gap: 15px;
 `
