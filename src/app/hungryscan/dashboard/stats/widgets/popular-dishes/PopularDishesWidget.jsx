@@ -1,16 +1,16 @@
-import React, {useCallback, useEffect} from "react";
-import {PieChart} from "./PieChart";
+import React, {useEffect, useState} from "react";
+import {TopDishesChart} from "./TopDishesChart";
 import {useDispatch, useSelector} from "react-redux";
 import {getPopularItemsStats, setChosenMenu} from "../../../../../../slices/statisticsSlice";
 import Select from "react-select";
 import {chartStyles} from "../../../../../../selectStyles";
 import {CustomNoOptionsMessage} from "../../../../cms/form-components/CustomNoOptionsMessage";
 import {useTranslation} from "react-i18next";
-import debounce from "lodash/debounce";
 
 export const PopularDishesWidget = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
+    const {restaurant} = useSelector(state => state.dashboard.view);
     const {
         period,
         chosenYear,
@@ -19,32 +19,36 @@ export const PopularDishesWidget = () => {
         chosenDay,
         chosenMenu
     } = useSelector(state => state.statistics.view);
+    const [menus, setMenus] = useState([]);
 
-    const fetchPopularDishes = useCallback(() => {
+    useEffect(() => {
         if (!period) return;
         if (period === "year" && !chosenYear) return;
         if (period === "month" && (!chosenYear || !chosenMonth)) return;
         if (period === "week" && (!chosenYear || !chosenWeek)) return;
         if (period === "day" && !chosenDay) return;
+        if (!chosenMenu) return;
         const params = {
             year: chosenYear,
             month: chosenMonth,
             week: chosenWeek,
             day: chosenDay,
-            menuId: chosenMenu
+            menu: chosenMenu
         };
         dispatch(getPopularItemsStats({period, params}));
-    }, [period, chosenYear, chosenMonth, chosenWeek, chosenDay, chosenMenu])
-    
-    const debouncedFetchPopularDishes = useCallback(() => {
-        debounce(() => {
-            fetchPopularDishes();
-        })
-    }, [fetchPopularDishes]);
+    }, [chosenDay, chosenMenu, chosenMonth, chosenWeek, chosenYear, dispatch, period]);
 
     useEffect(() => {
-        debouncedFetchPopularDishes();
-    }, [debouncedFetchPopularDishes]);
+        const menus = restaurant?.value.menus;
+        const mappedMenus = menus?.map(menu => ({
+            value: menu.id,
+            label: menu.name,
+        }));
+        setMenus(mappedMenus);
+        if (mappedMenus?.length > 0) {
+            dispatch(setChosenMenu(mappedMenus[0]));
+        }
+    }, [dispatch, restaurant?.value.menus]);
 
     return (
         <div className={'statistic-widget popular-dishes'}>
@@ -53,14 +57,13 @@ export const PopularDishesWidget = () => {
                         name={'menu-popular-dishes-selector'}
                         value={chosenMenu}
                         placeholder={t('choose')}
-                        options={[]}
-                        defaultValue={undefined}
-                        onChange={(selected) => setChosenMenu(selected)}
+                        options={menus}
+                        onChange={(selected) => dispatch(setChosenMenu(selected))}
                         styles={chartStyles}
                         components={{NoOptionsMessage: CustomNoOptionsMessage}}
                         isSearchable={false}/>
             </div>
-            <PieChart/>
+            <TopDishesChart/>
         </div>
     );
 }
