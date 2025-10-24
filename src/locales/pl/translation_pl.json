@@ -253,6 +253,7 @@
   "unique": "Unikalne",
   "repeated": "Powtórzone",
   "everyday": "Codziennie",
+  "noAvailableData": "Brak dostępnych danych",
   "selectedCount": "Wybrano {{count}}",
   "addMenu": "Dodaj menu",
   "editMenu": "Edytuj menu",
