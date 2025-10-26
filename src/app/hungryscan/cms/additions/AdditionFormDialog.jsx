@@ -47,6 +47,11 @@ export const AdditionFormDialog = (props) => {
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
+        const isNameBlank = !name || name.trim().length === 0;
+        if (isNameBlank) {
+            dispatch(setErrorData({name: t('constraints.NotBlank')}));
+            return;
+        }
         const resultAction = await dispatch(postAddition({
             action: isNewAddition ? 'add' : 'update',
             transformName: transformName
@@ -96,7 +101,8 @@ export const AdditionFormDialog = (props) => {
                     }}>
                         {t('cancel')}
                     </button>
-                    <form style={{all: 'unset'}} onSubmit={(e) => handleFormSubmit(e)}>
+                    <form style={{all: 'unset'}}
+                          onSubmit={(e) => handleFormSubmit(e)}>
                         <button type="submit" className={'general-button'}>
                             {isLoading ? <LoadingSpinner buttonMode={true}/> : t('save')}
                         </button>
