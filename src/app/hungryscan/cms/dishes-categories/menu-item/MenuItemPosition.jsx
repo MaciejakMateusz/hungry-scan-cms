@@ -1,60 +1,43 @@
-import React, {Fragment} from "react";
+import React, {Fragment, useRef, useState} from "react";
 import {s3BucketUrl} from "../../../../../apiData";
 import {getTranslation} from "../../../../../locales/langUtils";
 import {formatPrice} from "../../../../../utils/utils";
 import {Tooltip} from "../../Tooltip";
 import {ReactSVG} from "react-svg";
-import {EditIconNew} from "../../../../icons/EditIconNew";
-import {
-    getCategory,
-    setActiveRemovalType,
-    setCategory,
-    setDish,
-    setEditDishFormActive,
-    setMenuItemForAction
-} from "../../../../../slices/dishesCategoriesSlice";
-import {DeleteIconNew} from "../../../../icons/DeleteIconNew";
 import {useTranslation} from "react-i18next";
-import {useDispatch} from "react-redux";
 import {DragAndDropIcon} from "../../../../icons/DragAndDropIcon";
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
 import {InteractiveMenuItemImage} from "./InteractiveMenuItemImage";
+import {RecordOptionsButton} from "../../shared-components/RecordOptionsButton";
+import {useOutsideClick} from "../../../../../hooks/useOutsideClick";
+import {useMenuItemContextPositions} from "../../../../../hooks/useMenuItemContextPositions";
+import {useImageExists} from "../../../../../hooks/useImageExists";
 
 export const MenuItemPosition = ({id, category, menuItem, filtered}) => {
     const {t} = useTranslation();
-    const dispatch = useDispatch();
+    const contextRef = useRef();
+    const [contextWindowActive, setContextWindowActive] = useState(false);
+    const menuItemContextPositions =
+        useMenuItemContextPositions({category, menuItem, setContextWindowActive});
     const {
         attributes,
         listeners,
         setNodeRef,
         transform,
         transition,
-        isDragging} = useSortable({id});
+        isDragging
+    } = useSortable({id});
     const style = {
         transform: CSS.Transform.toString(transform),
         transition,
-        zIndex: isDragging ? 999 : 'auto'
+        zIndex:  isDragging && !filtered ? 800 : 'auto'
     };
+    const hasImage = useImageExists(id);
 
-    const getCategoryData = async id => {
-        const resultAction = await dispatch(getCategory({id}));
-        if (getCategory.fulfilled.match(resultAction)) {
-            return resultAction.payload.categoryFormDTO;
-        }
-        return null;
-    };
-
-    const handleEditClick = async (category, menuItem) => {
-        if (category) {
-            dispatch(setCategory(category));
-        } else {
-            const categoryData = await getCategoryData(menuItem.categoryId);
-            dispatch(setCategory(categoryData));
-        }
-        dispatch(setDish(menuItem));
-        dispatch(setEditDishFormActive(true));
-    };
+    useOutsideClick(contextRef, () => {
+        setContextWindowActive(false);
+    }, contextWindowActive);
 
     return (
         <>
@@ -69,7 +52,8 @@ export const MenuItemPosition = ({id, category, menuItem, filtered}) => {
                         <DragAndDropIcon disabled={true}/>
                     </div>
                 }
-                <InteractiveMenuItemImage src={`${s3BucketUrl}/menuItems/${menuItem.id}.png?t=${menuItem.updated}`}/>
+                <InteractiveMenuItemImage src={`${s3BucketUrl}/menuItems/${menuItem.id}.png?t=${menuItem.updated}`}
+                                          hasImage={hasImage}/>
                 <div className={'draggable-position-text-container'}>
                     <span className={'draggable-position-name'}>
                         {getTranslation(menuItem.name)}
@@ -98,15 +82,14 @@ export const MenuItemPosition = ({id, category, menuItem, filtered}) => {
                     ))}
                 </div>
                 <div className={'draggable-position-actions'}>
-                    <span className={'clickable-icon'} onClick={() => handleEditClick(category, menuItem)}>
-                        <EditIconNew/>
-                    </span>
-                    <span className={'clickable-icon'} onClick={() => {
-                        dispatch(setMenuItemForAction(menuItem));
-                        dispatch(setActiveRemovalType('dish'));
-                    }}>
-                        <DeleteIconNew/>
-                    </span>
+                    <RecordOptionsButton className={'record-context-actions-button'}
+                                         onClick={() => setContextWindowActive(!contextWindowActive)}
+                                         contextWindowActive={contextWindowActive}
+                                         contextPositions={menuItemContextPositions}
+                                         obj={menuItem}
+                                         detailsActive={false}
+                                         contextRef={contextRef}
+                                         windowPosition={{left: '-150px', top: '30px'}}/>
                 </div>
             </div>
             {menuItem.displayOrder !== category?.menuItems.length && <div className={'draggable-position-separator'}/>}
