@@ -60,41 +60,42 @@ export const postRestaurant = createAsyncThunk(
         try {
             const state = getState().restaurant.form;
             const rawOperatingHours = state.settings.operatingHours;
+            console.log(rawOperatingHours)
             const operatingHours = {
                 MONDAY: {
                     ...rawOperatingHours.MONDAY,
-                    startTime: rawOperatingHours.MONDAY.startTime.value,
-                    endTime: rawOperatingHours.MONDAY.endTime.value
+                    startTime: rawOperatingHours.MONDAY.startTime?.value,
+                    endTime: rawOperatingHours.MONDAY.endTime?.value
                 },
                 TUESDAY: {
                     ...rawOperatingHours.TUESDAY,
-                    startTime: rawOperatingHours.TUESDAY.startTime.value,
-                    endTime: rawOperatingHours.TUESDAY.endTime.value
+                    startTime: rawOperatingHours.TUESDAY.startTime?.value,
+                    endTime: rawOperatingHours.TUESDAY.endTime?.value
                 },
                 WEDNESDAY: {
                     ...rawOperatingHours.WEDNESDAY,
-                    startTime: rawOperatingHours.WEDNESDAY.startTime.value,
-                    endTime: rawOperatingHours.WEDNESDAY.endTime.value
+                    startTime: rawOperatingHours.WEDNESDAY.startTime?.value,
+                    endTime: rawOperatingHours.WEDNESDAY.endTime?.value
                 },
                 THURSDAY: {
                     ...rawOperatingHours.THURSDAY,
-                    startTime: rawOperatingHours.THURSDAY.startTime.value,
-                    endTime: rawOperatingHours.THURSDAY.endTime.value
+                    startTime: rawOperatingHours.THURSDAY.startTime?.value,
+                    endTime: rawOperatingHours.THURSDAY.endTime?.value
                 },
                 FRIDAY: {
                     ...rawOperatingHours.FRIDAY,
-                    startTime: rawOperatingHours.FRIDAY.startTime.value,
-                    endTime: rawOperatingHours.FRIDAY.endTime.value
+                    startTime: rawOperatingHours.FRIDAY.startTime?.value,
+                    endTime: rawOperatingHours.FRIDAY.endTime?.value
                 },
                 SATURDAY: {
                     ...rawOperatingHours.SATURDAY,
-                    startTime: rawOperatingHours.SATURDAY.startTime.value,
-                    endTime: rawOperatingHours.SATURDAY.endTime.value
+                    startTime: rawOperatingHours.SATURDAY.startTime?.value,
+                    endTime: rawOperatingHours.SATURDAY.endTime?.value
                 },
                 SUNDAY: {
                     ...rawOperatingHours.SUNDAY,
-                    startTime: rawOperatingHours.SUNDAY.startTime.value,
-                    endTime: rawOperatingHours.SUNDAY.endTime.value
+                    startTime: rawOperatingHours.SUNDAY.startTime?.value,
+                    endTime: rawOperatingHours.SUNDAY.endTime?.value
                 }
             }
             const response = await fetch(`${apiHost}/api/cms/restaurants/${params.action}`, {
@@ -151,9 +152,8 @@ export const postRestaurantSlice = createSlice(
                 state.notAuthorized = false;
             }).addCase(postRestaurant.fulfilled, state => {
                 state.isLoading = false;
-            }).addCase(postRestaurant.rejected, (state, action) => {
+            }).addCase(postRestaurant.rejected, state => {
                 state.isLoading = false;
-                state.errorData = action.payload;
             })
         }
     }
@@ -247,7 +247,7 @@ export const formSlice = createSlice(
                     SUNDAY: {startTime: null, endTime: null, available: true}
                 }
             },
-            errorMessage: null
+            errorData: null
         },
         reducers: {
             setNewRestaurantFormActive: (state, action) => {
@@ -361,10 +361,11 @@ export const formSlice = createSlice(
             setSundayAvailable: (state, action) => {
                 state.settings.operatingHours.SUNDAY.available = action.payload;
             },
-            setErrorMessage: (state, action) => {
-                state.errorMessage = action.payload;
+            setErrorData: (state, action) => {
+                state.errorData = action.payload;
             },
             clearForm: state => {
+                state.id = null;
                 state.name = '';
                 state.address = '';
                 state.postalCode = '';
@@ -426,11 +427,9 @@ export const {
     setSundayOpeningTime,
     setSundayClosingTime,
     setSundayAvailable,
-    setErrorMessage,
+    setErrorData,
     clearForm
 } = formSlice.actions;
-
-export const {setErrorData} = postRestaurantSlice.actions;
 
 const createRestaurantReducer = combineReducers({
     form: formSlice.reducer,
