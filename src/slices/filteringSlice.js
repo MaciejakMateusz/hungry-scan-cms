@@ -6,7 +6,7 @@ export const filter = createAsyncThunk(
     async (credentials, {rejectWithValue}) => {
         const path = credentials.path;
         const value = credentials.value;
-        const response = await fetch(`${apiHost}/api/cms/${path}/filter`, {
+        const response = await fetch(`${apiHost}/api/${path}/filter`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
