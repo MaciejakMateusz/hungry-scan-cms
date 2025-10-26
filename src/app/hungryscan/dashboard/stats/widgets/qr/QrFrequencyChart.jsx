@@ -26,11 +26,11 @@ export const QrFrequencyChart = () => {
     ];
     const zeroedChart = [
         {
-            "id": "unique",
+            "id": "zero",
             "label": t('unique'),
             "periodDifference": 0,
             "value": 1,
-            "color": "#707070"
+            "color": "#B5B5B5"
         }
     ];
     const totalValue = chartData.reduce((sum, item) => sum + item.value, 0);
@@ -96,7 +96,7 @@ export const QrFrequencyChart = () => {
                 }}>
                 <div>
                     <span>{datum.data?.label}<br/></span>
-                    <span>{t('percent')}: {datum.data?.value}%<br/></span>
+                    <span>{t('percent')}: {(datum.data?.value * 100) / totalValue}%<br/></span>
                     <span>{t('views')}: {datum.data?.number}<br/></span>
                 </div>
             </div>
