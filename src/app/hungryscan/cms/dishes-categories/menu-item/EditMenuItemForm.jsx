@@ -43,7 +43,7 @@ export const EditMenuItemForm = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {category, dish} = useSelector(state => state.dishesCategories.view);
-    const {activeTab} = useSelector(state => state.dishForm.form);
+    const {activeTab, name} = useSelector(state => state.dishForm.form);
     const clearForm = useClearForm();
     const {data} = useSelector(state => state.dishForm.fetchMenuItem);
     const item = data?.menuItemFormDTO;
@@ -111,7 +111,11 @@ export const EditMenuItemForm = () => {
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         dispatch(setErrorMessage(null));
-
+        const isNameBlank = !name || name.trim().length === 0;
+        if (isNameBlank) {
+            dispatch(setErrorData({name: t('constraints.NotBlank')}));
+            return;
+        }
         const dishAction = await dispatch(postDish({
             action: 'update',
             file: file,
