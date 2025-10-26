@@ -15,7 +15,7 @@ export const RestaurantFormTemplate = () => {
         postalCode,
         city
     } = useSelector(state => state.restaurant.form);
-    const {errorData} = useSelector(state => state.restaurant.post);
+    const {errorData} = useSelector(state => state.restaurant.form);
 
     return (
         <>
