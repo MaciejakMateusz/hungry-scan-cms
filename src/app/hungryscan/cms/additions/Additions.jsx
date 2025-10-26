@@ -3,11 +3,12 @@ import {Helmet} from "react-helmet";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    getIngredients, setAdditionDialogActive, setAdditionRemoved,
+    getIngredients,
+    setAdditionDialogActive,
+    setAdditionRemoved,
     setAdditionToRemove,
     setErrorData,
-    setFilterExpanded,
-    setFilteringActive,
+    setFilterExpanded, setFilteringActive,
     setFilterValue,
     setIngredients
 } from "../../../../slices/additionsSlice";
@@ -78,7 +79,7 @@ export const Additions = () => {
     const executeFilter = async value => {
         if ('' !== value) {
             dispatch(setFilteringActive(true));
-            const resultAction = await dispatch(filter({path: 'ingredients', value: value}));
+            const resultAction = await dispatch(filter({path: 'cms/ingredients', value: value}));
             if (filter.fulfilled.match(resultAction)) {
                 dispatch(setIngredients(resultAction.payload));
             }
@@ -111,7 +112,10 @@ export const Additions = () => {
                                       onExpand={() => dispatch(setFilterExpanded(!filterExpanded))}
                                       filterValue={filterValue}
                                       onSubmit={handleSearchSubmit}
-                                      onClear={() => dispatch(setFilterValue(''))}
+                                      onClear={() => {
+                                          dispatch(setFilterValue(''));
+                                          dispatch(getIngredients());
+                                      }}
                         />
                     </div>
                 </div>
