@@ -165,7 +165,7 @@ iframe {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 9999;
 }
 
 .error-dialog {
@@ -247,6 +247,10 @@ iframe {
 }
 
 /* ---- END -----*/
+
+.full-width {
+    width: 100%;
+}
 
 button, input, select, textarea {
     font-family: "Lexend", sans-serif;
@@ -656,6 +660,13 @@ a:hover {
     text-align: center;
 }
 
+.validation-msg {
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: #EC5858;
+    margin-top: 2px;
+}
+
 .form-validation-msg {
     font-size: 0.9rem;
     font-weight: 300;
@@ -786,7 +797,7 @@ ul {
 .app-nav-panel {
     grid-column: 1;
     display: grid;
-    grid-template-rows: 56px 80px 50% 10% 15% 5%;
+    grid-template-rows: 56px 80px 1fr 10% 15% 5%;
     background: #1F242D;
     overflow: hidden;
     position: fixed;
@@ -810,6 +821,10 @@ ul {
     color: #FFF;
     font-size: 1.2rem;
     margin-right: 20px;
+    max-width: 125px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-wrap: nowrap;
 }
 
 .profile-icon-wrapper {
@@ -900,12 +915,20 @@ ul {
     font-size: 1rem;
     display: block;
     margin-bottom: 8px;
+    max-width: 170px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-wrap: nowrap;
 }
 
 .restaurant-info-address {
     color: #93939E;
     font-size: 1rem;
     display: block;
+    max-width: 170px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-wrap: nowrap;
 }
 
 .app-nav-restaurant-info {
@@ -1024,6 +1047,7 @@ ul {
 
 .period-picker-wrapper {
     display: flex;
+    z-index: 10;
 }
 
 .summary-text {
@@ -1086,7 +1110,7 @@ ul {
     margin-bottom: 24px;
 }
 
-.statistic-widget.package {
+.statistic-widget.users {
     width: 100%;
     height: 368px;
 }
@@ -1200,6 +1224,11 @@ ul {
     margin-right: 5px;
 }
 
+.qr-frequency-gauge {
+    width: 270px;
+    height: 100%;
+}
+
 .qr-frequency-grid {
     display: grid;
     grid-template-rows: 20% 1fr;
@@ -1220,6 +1249,7 @@ ul {
 }
 
 .scan-frequency-p {
+    font-size: 1.1rem;
     font-weight: 500;
     margin: 0 0 5px 0;
 }
@@ -1238,6 +1268,7 @@ ul {
     position: absolute;
     right: 15px;
     top: 12px;
+    z-index: 5;
 }
 
 .legend-left-axis-name {
@@ -1381,6 +1412,11 @@ ul {
     margin-right: 0;
 }
 
+.general-button.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
 .general-button.submit:disabled {
     opacity: 0.6;
     cursor: not-allowed;
@@ -1414,6 +1450,7 @@ ul {
 .form-price-fields-wrapper {
     display: flex;
     gap: 15px;
+    align-items: flex-start;
 }
 
 .form-field-wrapper {
@@ -1442,7 +1479,7 @@ ul {
 }
 
 .form-field.error {
-    border: 2px solid rgba(255, 0, 0, 0.5);
+    border: 1px solid rgba(255, 0, 0, 0.5);
     animation: shake 0.5s ease-in-out;
 }
 
@@ -1500,8 +1537,8 @@ ul {
 
 .price-input-currency {
     position: absolute;
+    top: 11px;
     right: 10px;
-    font-size: 13px;
     color: #222;
 }
 
@@ -1760,7 +1797,7 @@ ul {
     height: 8rem;
     border: 0;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    z-index: 9999;
+    z-index: 9998;
     display: grid;
     grid-template-rows: 70% 30%;
     font-size: 13px;
@@ -1997,7 +2034,7 @@ ul {
     border: 0;
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    z-index: 9999;
+    z-index: 9998;
     display: grid;
     grid-template-rows: 90% 10%;
 }
@@ -2588,11 +2625,11 @@ ul {
     padding: 12px;
     width: 25vw;
     border: 0;
-    z-index: 9999;
+    z-index: 9998;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     font-size: 13px;
     display: grid;
-    grid-template-rows: 10% auto 10%;
+    grid-template-rows: 10% auto auto;
     max-height: 50%;
     height: fit-content;
 }
@@ -2615,7 +2652,7 @@ ul {
     grid-row: 3;
     display: flex;
     justify-content: flex-end;
-    padding: 10px 0;
+    margin-top: 10px;
 }
 
 .flex-end-container {
