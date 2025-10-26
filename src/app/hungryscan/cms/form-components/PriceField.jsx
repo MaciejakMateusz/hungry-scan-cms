@@ -47,16 +47,19 @@ export const PriceField = (props) => {
                     {props.priceLabel || t('price')} *
                 </label>
                 <span className={'price-input-wrapper'}>
-                    <input type={'text'}
-                           id={props.id}
-                           placeholder={isFocused ? '' : '0.00'}
-                           name={'price'}
-                           className={`form-field price ${hasError ? 'error' : ''}`}
-                           value={props.value}
-                           onChange={handlePriceChange}
-                           onFocus={() => setIsFocused(true)}
-                           onBlur={(e) => handleBlur(e)}
-                    />
+                    <div>
+                        <input type={'text'}
+                               id={props.id}
+                               placeholder={isFocused ? '' : '0.00'}
+                               name={'price'}
+                               className={`form-field price ${hasError ? 'error' : ''}`}
+                               value={props.value}
+                               onChange={handlePriceChange}
+                               onFocus={() => setIsFocused(true)}
+                               onBlur={(e) => handleBlur(e)}
+                        />
+                        {hasError && <div className={'validation-msg'}>{props.error?.price}</div>}
+                    </div>
                     <span className={'price-input-currency'}>PLN</span>
                 </span>
             </div>
