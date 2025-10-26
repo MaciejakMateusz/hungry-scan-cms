@@ -27,6 +27,11 @@ export const postPersonalization = createAsyncThunk(
     async ({activeMenu}, {getState, rejectWithValue}) => {
         const state = getState();
         const form = state.personalization.form;
+        const post = state.personalization.postPersonalization;
+
+        if (post.errorData) {
+            return rejectWithValue(post.errorData);
+        }
 
         const response = await fetch(`${apiHost}/api/cms/menus/update`, {
             method: 'PATCH',
@@ -39,7 +44,8 @@ export const postPersonalization = createAsyncThunk(
                 theme: form.theme,
                 bannerIconVisible: form.bannerIconVisible,
                 color: activeMenu.value.color,
-                name: activeMenu.value.name
+                name: activeMenu.value.name,
+                standard: activeMenu.value.standard
             }),
             credentials: 'include'
         });
@@ -62,6 +68,12 @@ export const postPersonalizationSlice = createSlice(
         name: 'postPersonalization',
         initialState: {
             isLoading: false,
+            errorData: null,
+        },
+        reducers: {
+            setErrorData: (state, action) => {
+                state.errorData = action.payload;
+            }
         },
         extraReducers: (builder) => {
             builder
@@ -134,6 +146,8 @@ export const {
     setTheme,
     setBannerIconVisible,
     setPersonalizationUpdated} = personalizationFormSlice.actions
+
+export const {setErrorData} = postPersonalizationSlice.actions;
 
 const personalizationReducer = combineReducers({
     form: personalizationFormSlice.reducer,
