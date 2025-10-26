@@ -2,6 +2,7 @@ import {useTranslation} from "react-i18next";
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {
+    setErrorData,
     setReorderCategoriesDialogActive,
     updateCategoriesOrder
 } from "../../../../slices/dishesCategoriesSlice";
@@ -9,12 +10,14 @@ import {DndContext} from '@dnd-kit/core';
 import {arrayMove, SortableContext} from '@dnd-kit/sortable';
 
 import {ReorderCategoryPosition} from "../dishes-categories/category/ReorderCategoryPosition";
+import {FormErrorDialog} from "../../../error/FormErrorDialog";
 
 export const ReorderCategoriesDialog = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {menu} = useSelector(state => state.cms.fetchActiveMenu);
     const [categories, setCategories] = useState([]);
+    const {errorData} = useSelector(state => state.dishesCategories.updateCategoriesOrder)
 
     useEffect(() => {
         if (menu?.categories) {
@@ -24,12 +27,18 @@ export const ReorderCategoriesDialog = () => {
 
     const discardDialog = () => {
         dispatch(setReorderCategoriesDialogActive(false));
+        dispatch(setErrorData(null));
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await dispatch(updateCategoriesOrder({categories: categories}));
-        await dispatch(setReorderCategoriesDialogActive(false));
+        const resultAction = await dispatch(updateCategoriesOrder({categories: categories}));
+        if (updateCategoriesOrder.fulfilled.match(resultAction)) {
+            dispatch(setReorderCategoriesDialogActive(false));
+            dispatch(setErrorData(null));
+        } else {
+            dispatch(setErrorData(resultAction?.payload));
+        }
     }
 
     const handleDragEnd = async event => {
@@ -50,6 +59,7 @@ export const ReorderCategoriesDialog = () => {
 
     return (
         <>
+            <FormErrorDialog errorData={errorData} setErrorData={setErrorData}/>
             <div className={'overlay'}></div>
             <div className={'reordering-dialog'}>
                 <div className={'reordering-dialog-header'}>
