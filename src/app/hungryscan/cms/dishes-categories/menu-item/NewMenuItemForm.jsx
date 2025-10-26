@@ -23,7 +23,7 @@ import {useConfirmationMessage} from "../../../../../hooks/useConfirmationMessag
 export const NewMenuItemForm = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
-    const {activeTab} = useSelector(state => state.dishForm.form);
+    const {activeTab, name} = useSelector(state => state.dishForm.form);
     const {category} = useSelector(state => state.dishesCategories.view);
     const clearForm = useClearForm();
     const [file, setFile] = useState(null);
@@ -50,6 +50,12 @@ export const NewMenuItemForm = () => {
     const handleFormSubmit = async e => {
         e.preventDefault();
         dispatch(setErrorMessage(null));
+
+        const isNameBlank = !name || name.trim().length === 0;
+        if (isNameBlank) {
+            dispatch(setErrorData({name: t('constraints.NotBlank')}));
+            return;
+        }
 
         const dishAction = await dispatch(postDish({
             action: "add",
