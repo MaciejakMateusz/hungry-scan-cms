@@ -23,6 +23,7 @@ export const EditCategoryForm = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {category} = useSelector(state => state.dishesCategories.view);
+    const {name} = useSelector(state => state.categoryForm.form);
     const transformName = useTranslatableTransformer({obj: category, key: 'name'});
     const renderConfirmation = useConfirmationMessage(setCategoryUpdated);
 
@@ -43,6 +44,11 @@ export const EditCategoryForm = () => {
     const handleFormSubmit = async e => {
         e.preventDefault();
         const resultAction = await dispatch(postCategory({action: 'update', transformName: transformName}));
+        const isNameBlank = !name || name.trim().length === 0;
+        if (isNameBlank) {
+            dispatch(setErrorData({name: t('constraints.NotBlank')}));
+            return;
+        }
         if (postCategory.fulfilled.match(resultAction)) {
             dispatch(setEditCategoryFormActive(false));
             dispatch(clearForm());
