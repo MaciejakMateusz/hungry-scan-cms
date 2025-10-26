@@ -4,7 +4,7 @@ import {PeriodSelectors} from "./PeriodSelectors";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 
-export const PeriodicSummary = () => {
+export const PeriodicSummaryHeader = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {period} = useSelector(state => state.statistics.view);
