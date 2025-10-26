@@ -1,6 +1,6 @@
 import React from "react";
 import {useTranslation} from "react-i18next";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {
     clearForm,
     postCategory,
@@ -16,15 +16,22 @@ import {useConfirmationMessage} from "../../../../../hooks/useConfirmationMessag
 export const NewCategoryForm = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
+    const {name} = useSelector(state => state.categoryForm.form);
     const transformName = useTranslatableTransformer({obj: null, key: 'name'});
     const renderConfirmation = useConfirmationMessage(setCategoryCreated);
 
     const handleFormSubmit = async e => {
         e.preventDefault();
+        const isNameBlank = !name || name.trim().length === 0;
+        if (isNameBlank) {
+            dispatch(setErrorData({name: t('constraints.NotBlank')}));
+            return;
+        }
         const resultAction = await dispatch(postCategory({action: 'add', transformName: transformName}));
         if (postCategory.fulfilled.match(resultAction)) {
             dispatch(setNewCategoryFormActive(false));
             dispatch(clearForm());
+            dispatch(setErrorData(null));
             renderConfirmation();
         } else if (postCategory.rejected.match(resultAction)) {
             dispatch(setErrorData(resultAction.payload));
