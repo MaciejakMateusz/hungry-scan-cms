@@ -29,25 +29,18 @@ export const switchStandard = createAsyncThunk(
 export const switchStandardSlice = createSlice({
     name: 'switchStandard',
     initialState: {
-        isLoading: false,
-        errorData: null
-    },
-    reducers: {
-        setErrorData: (state, action) => {
-            state.errorData = action.payload;
-        }
+        isLoading: false
     },
     extraReducers: (builder) => {
         builder
             .addCase(switchStandard.pending, state => {
                 state.isLoading = true;
             })
-            .addCase(switchStandard.fulfilled, (state) => {
+            .addCase(switchStandard.fulfilled, state => {
                 state.isLoading = false;
             })
-            .addCase(switchStandard.rejected, (state, action) => {
+            .addCase(switchStandard.rejected, state => {
                 state.isLoading = false;
-                state.errorData = action.payload;
             })
     }
 });
@@ -82,11 +75,11 @@ export const updatePlansSlice = createSlice({
     name: 'updatePlans',
     initialState: {
         isLoading: false,
-        errorData: null
+        updatingPlansError: null
     },
     reducers: {
-        setErrorData: (state, action) => {
-            state.errorData = action.payload;
+        setUpdatingPlansError: (state, action) => {
+            state.updatingPlansError = action.payload;
         }
     },
     extraReducers: (builder) => {
@@ -94,12 +87,11 @@ export const updatePlansSlice = createSlice({
             .addCase(updatePlans.pending, state => {
                 state.isLoading = true;
             })
-            .addCase(updatePlans.fulfilled, (state) => {
+            .addCase(updatePlans.fulfilled, state => {
                 state.isLoading = false;
             })
-            .addCase(updatePlans.rejected, (state, action) => {
+            .addCase(updatePlans.rejected, state => {
                 state.isLoading = false;
-                state.errorData = action.payload;
             })
     }
 });
@@ -132,25 +124,18 @@ export const updateMenu = createAsyncThunk(
 export const updateMenuSlice = createSlice({
     name: 'updateMenu',
     initialState: {
-        isLoading: false,
-        errorData: null
-    },
-    reducers: {
-        setErrorData: (state, action) => {
-            state.errorData = action.payload;
-        }
+        isLoading: false
     },
     extraReducers: (builder) => {
         builder
             .addCase(updateMenu.pending, state => {
                 state.isLoading = true;
             })
-            .addCase(updateMenu.fulfilled, (state) => {
+            .addCase(updateMenu.fulfilled, state => {
                 state.isLoading = false;
             })
-            .addCase(updateMenu.rejected, (state, action) => {
+            .addCase(updateMenu.rejected, state => {
                 state.isLoading = false;
-                state.errorData = action.payload;
             })
     }
 });
@@ -183,25 +168,18 @@ export const postMenu = createAsyncThunk(
 export const postMenuSlice = createSlice({
     name: 'postMenu',
     initialState: {
-        isLoading: false,
-        errorData: null
-    },
-    reducers: {
-        setErrorData: (state, action) => {
-            state.errorData = action.payload;
-        }
+        isLoading: false
     },
     extraReducers: (builder) => {
         builder
             .addCase(postMenu.pending, state => {
                 state.isLoading = true;
             })
-            .addCase(postMenu.fulfilled, (state) => {
+            .addCase(postMenu.fulfilled, state => {
                 state.isLoading = false;
             })
-            .addCase(postMenu.rejected, (state, action) => {
+            .addCase(postMenu.rejected, state => {
                 state.isLoading = false;
-                state.errorData = action.payload;
             })
     }
 });
@@ -315,7 +293,8 @@ export const menuSLice = createSlice(
             color: {
                 id: null,
                 hex: ''
-            }
+            },
+            errorData: null
         },
         reducers: {
             setNewMenuFormActive: (state, action) => {
@@ -354,6 +333,9 @@ export const menuSLice = createSlice(
             setColor: (state, action) => {
                 state.color = action.payload;
             },
+            setErrorData: (state, action) => {
+                state.errorData = action.payload;
+            },
             clearForm: (state) => {
                 state.name = '';
                 state.color = {
@@ -377,9 +359,11 @@ export const {
     setPlansUpdated,
     setName,
     setColor,
+    setErrorData,
     clearForm
 } = menuSLice.actions;
-export const {setErrorData} = postMenuSlice.actions;
+
+export const {setUpdatingPlansError} = updatePlansSlice.actions;
 
 const menuReducer = combineReducers({
     form: menuSLice.reducer,
