@@ -20,11 +20,12 @@ import {
 import {UserForm} from "./UserForm";
 import {getTranslation} from "../../../../../locales/langUtils";
 
-export const EditUserForm = () => {
+export const EditUserForm = ({executeFilter}) => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const renderConfirmation = useConfirmationMessage(setUserUpdated);
     const {userToUpdate: user} = useSelector(state => state.users.view);
+    const {filteringActive, filterValue} = useSelector(state => state.users.view);
 
     useEffect(() => {
         const fillUserData = () => {
@@ -53,7 +54,7 @@ export const EditUserForm = () => {
             dispatch(setUserToUpdate(null));
             dispatch(clearForm());
             renderConfirmation();
-            dispatch(getUsers());
+            filteringActive ? executeFilter(filterValue) : dispatch(getUsers());
         } else if (updateUser.rejected.match(resultAction)) {
             dispatch(setErrorData(resultAction.payload));
         }
