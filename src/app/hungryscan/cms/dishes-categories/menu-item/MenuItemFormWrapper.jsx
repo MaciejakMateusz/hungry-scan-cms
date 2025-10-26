@@ -1,7 +1,7 @@
 import React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {getTranslation} from "../../../../../locales/langUtils";
-import {setActiveTab, setErrorMessage} from "../../../../../slices/dishFormSlice";
+import {setActiveTab, setErrorData} from "../../../../../slices/dishFormSlice";
 import {FormErrorDialog} from "../../../../error/FormErrorDialog";
 import {useTranslation} from "react-i18next";
 import {FormHeader} from "../../shared-components/FormHeader";
@@ -12,10 +12,7 @@ export const MenuItemFormWrapper = ({title, onFormDiscard, onFormSubmit, childre
     const {category} = useSelector(state => state.dishesCategories.view);
     const {isLoading} = useSelector(state => state.dishForm.postDish);
     const {activeTab} = useSelector(state => state.dishForm.form);
-    const {
-        errorMessage,
-        errorData,
-    } = useSelector(state => state.dishForm.form);
+    const {errorData} = useSelector(state => state.dishForm.form);
 
     const FormTitle = () => {
         return (
@@ -28,7 +25,7 @@ export const MenuItemFormWrapper = ({title, onFormDiscard, onFormSubmit, childre
 
     return (
         <div className={'background'}>
-            {errorMessage ? <FormErrorDialog error={errorData} resetMessage={setErrorMessage}/> : null}
+            <FormErrorDialog errorData={errorData} setErrorData={setErrorData}/>
             <form className={'cms-padded-view-container'}>
                 <FormHeader formHeader={<FormTitle/>}
                             onFormSubmit={onFormSubmit}
