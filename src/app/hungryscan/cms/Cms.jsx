@@ -19,6 +19,10 @@ import {CmsTopper} from "./topper/CmsTopper";
 import {fetchActiveMenu} from "../../../slices/cmsSlice";
 import {NavPanel} from "../NavPanel";
 import {UserProfile} from "../dashboard/user/UserProfile";
+import {DocumentIcon} from "../../icons/DocumentIcon";
+import {AdditionsIcon} from "../../icons/AdditionsIcon";
+import {PersonalizationIcon} from "../../icons/PersonalizationIcon";
+import {TranslationsIcon} from "../../icons/TranslationsIcon";
 
 export const Cms = () => {
     const {t} = useTranslation();
@@ -92,18 +96,22 @@ export const Cms = () => {
         <NavButton key={DISHES_CATEGORIES}
                    isActive={currentView === DISHES_CATEGORIES}
                    name={t('dishesCategories')}
+                   icon={<DocumentIcon active={currentView === DISHES_CATEGORIES}/>}
                    onClick={() => switchView(DISHES_CATEGORIES)}/>,
         <NavButton key={ADDITIONS}
                    isActive={currentView === ADDITIONS}
                    name={t('additions')}
+                   icon={<AdditionsIcon active={currentView === ADDITIONS}/>}
                    onClick={() => switchView(ADDITIONS)}/>,
         <NavButton key={PERSONALIZATION}
                    isActive={currentView === PERSONALIZATION}
                    name={t('personalization')}
+                   icon={<PersonalizationIcon active={currentView === PERSONALIZATION}/>}
                    onClick={() => switchView(PERSONALIZATION)}/>,
         <NavButton key={TRANSLATIONS}
                    isActive={currentView === TRANSLATIONS}
                    name={t('translations')}
+                   icon={<TranslationsIcon active={currentView === TRANSLATIONS}/>}
                    onClick={() => switchView(TRANSLATIONS)}/>
     ];
 
