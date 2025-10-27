@@ -21,6 +21,9 @@ export const Router = () => {
                 <Route path='/price-plans' element={<MainPage activeView={'pricePlans'}/>}/>
                 <Route path='/about-us' element={<MainPage activeView={'aboutUs'}/>}/>
                 <Route path='/contact' element={<MainPage activeView={'contact'}/>}/>
+                <Route path='/terms-of-use' element={<MainPage activeView={'termsOfUse'}/>}/>
+                <Route path='/privacy-policy' element={<MainPage activeView={'privacyPolicy'}/>}/>
+                <Route path='/cookies' element={<MainPage activeView={'cookies'}/>}/>
                 <Route path='/server-down' element={<ErrorPage h4={t('connectionError')}
                                                                p={t('serverUnderMaintenance')}/>}/>
                 <Route path='*' element={<ErrorPage code={'404'}
