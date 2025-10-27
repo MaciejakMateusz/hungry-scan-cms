@@ -16,10 +16,10 @@ export const MenuItemFormWrapper = ({title, onFormDiscard, onFormSubmit, childre
 
     const FormTitle = () => {
         return (
-            <>
+            <div className={'text-ellipsis'} style={{maxWidth: '50vw'}}>
                 {title}:&nbsp;&nbsp;
-                <span style={{color: '#6940C6'}}> "{getTranslation(category?.name)}"</span>
-            </>
+                <span style={{color: '#6940C6'}}> {getTranslation(category?.name)}</span>
+            </div>
         );
     }
 
