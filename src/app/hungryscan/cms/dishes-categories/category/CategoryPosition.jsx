@@ -32,7 +32,10 @@ export const CategoryPosition = ({category}) => {
     return (
         <div className={'category-container-header'}>
             <div className={'category-info'}>
-                {getTranslation(category.name)} ({category.menuItems.length})
+                <span className={'text-ellipsis'} style={{maxWidth: '50vw'}}>
+                    {getTranslation(category.name)}
+                </span>
+                ({category.menuItems.length})
                 {renderReorderIcon()}
                 <span className={'clickable-icon'}
                       onClick={() => {
