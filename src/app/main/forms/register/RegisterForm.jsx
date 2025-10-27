@@ -95,12 +95,14 @@ export const RegisterForm = () => {
                 <button className={'form-submit-button'} onClick={handleSignUp}>
                     {isLoading ? <LoadingSpinner buttonMode={true}/> : t('signUp')}
                 </button>
-                <span className={'register-terms-of-use-info'}>
-                    <div>{t('acceptTerms')}</div>
-                    <div>
-                        <a href={'/#'}> {t('termsOfUse')}</a> {t('and')} <a href={'/#'}>{t('privacyPolicy')}</a>
-                    </div>
-                </span>
+                {process.env.REACT_APP_IS_PROD === 'true' &&
+                    <span className={'register-terms-of-use-info'}>
+                        <div>{t('acceptTerms')}</div>
+                        <div>
+                            <a href={'/terms-of-use'}> {t('termsOfUse')}</a> {t('and')} <a href={'/privacy-policy]'}>{t('privacyPolicy')}</a>
+                        </div>
+                    </span>
+                }
             </form>
         </div>
     );
