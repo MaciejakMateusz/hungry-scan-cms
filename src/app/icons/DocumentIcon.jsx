@@ -5,7 +5,7 @@ export const DocumentIcon = ({active, customColor, absolute}) => {
     const color = active ? "#FAFAFA" : defaultColor;
     return (
         <div className={`nav-btn-icon-wrapper ${absolute ? 'absolute' : ''}`}>
-            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g id="4">
                     <g id="Group 1137">
                         <path id="Rectangle 4763"
