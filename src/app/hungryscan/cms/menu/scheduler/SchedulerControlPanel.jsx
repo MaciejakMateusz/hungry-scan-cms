@@ -3,7 +3,7 @@ import {fetchActiveMenu, setSchedulerActive} from "../../../../../slices/cmsSlic
 import React, {useCallback} from "react";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
-import {setPlansUpdated, updatePlans} from "../../../../../slices/menuSlice";
+import {setPlansUpdated, setUpdatingPlansError, updatePlans} from "../../../../../slices/menuSlice";
 import {useConfirmationMessage} from "../../../../../hooks/useConfirmationMessage";
 import {useFetchCurrentRestaurant} from "../../../../../hooks/useFetchCurrentRestaurant";
 import {fillGapsWithStandard} from "../../../../../utils/schedulerUtils";
@@ -33,6 +33,11 @@ export const SchedulerControlPanel = ({menusConfig, setMenusConfig, externalRef,
         fillGapsWithStandard(setMenusConfig, operatingHours);
     }, [operatingHours, setMenusConfig]);
 
+    const handleDiscard = () => {
+        dispatch(setSchedulerActive(false));
+        dispatch(setUpdatingPlansError(null));
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const resultAction = await dispatch(updatePlans({menus: menusConfig}));
@@ -41,6 +46,8 @@ export const SchedulerControlPanel = ({menusConfig, setMenusConfig, externalRef,
             await dispatch(fetchActiveMenu());
             dispatch(setSchedulerActive(false));
             renderConfirmation();
+        } else {
+            dispatch(setUpdatingPlansError(resultAction?.payload));
         }
     };
 
@@ -92,7 +99,7 @@ export const SchedulerControlPanel = ({menusConfig, setMenusConfig, externalRef,
 
             <div className={'scheduler-control-panel-footer'}>
                 <button className={'general-button cancel'}
-                        onClick={() => dispatch(setSchedulerActive(false))}>
+                        onClick={handleDiscard}>
                     {t('cancel')}
                 </button>
                 <form style={{all: 'unset'}} onSubmit={handleSubmit}>
