@@ -23,7 +23,7 @@ export const ReorderCategoryPosition = ({id, category, currentOrder}) => {
             <div className={'category-info'}>
                 <div className={'drag-and-drop-wrapper'} {...listeners} {...attributes}>
                     <DragAndDropIcon/>
-                    {currentOrder}. {getTranslation(category.name)}
+                    <span className={'text-ellipsis'} style={{maxWidth: '250px'}}>{currentOrder}. {getTranslation(category.name)}</span>
                 </div>
             </div>
         </div>
