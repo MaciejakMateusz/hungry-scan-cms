@@ -67,9 +67,11 @@ export const EditCategoryForm = () => {
 
     const FormHeader = () => {
         return (
-            <div>
+            <div className={'text-ellipsis'} style={{maxWidth: '50vw'}}>
                 {t('editCategory')}&nbsp;
-                <span style={{color: '#6940C6'}}>"{getTranslation(category.name)}"</span>
+                <span style={{color: '#6940C6'}}>
+                    {getTranslation(category.name)}
+                </span>
             </div>
         );
     }
