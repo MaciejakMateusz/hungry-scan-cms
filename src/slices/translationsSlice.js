@@ -34,6 +34,12 @@ export const getAutoTranslationSlice = createSlice(
         name: 'getAutoTranslation',
         initialState: {
             isLoading: false,
+            autoTranslationError: null
+        },
+        reducers: {
+            setAutoTranslationError: (state, action) => {
+                state.autoTranslationError = action.payload;
+            }
         },
         extraReducers: (builder) => {
             builder
@@ -42,9 +48,11 @@ export const getAutoTranslationSlice = createSlice(
                 })
                 .addCase(getAutoTranslation.fulfilled, state => {
                     state.isLoading = false;
+                    state.autoTranslationError = null;
                 })
-                .addCase(getAutoTranslation.rejected, state => {
+                .addCase(getAutoTranslation.rejected, (state, action) => {
                     state.isLoading = false;
+                    state.autoTranslationError = action.payload;
                 })
         }
     });
@@ -113,6 +121,12 @@ export const postTranslatablesSlice = createSlice(
         name: 'postTranslatables',
         initialState: {
             isLoading: false,
+            postingError: null,
+        },
+        reducers: {
+            setPostingError: (state, action) => {
+                state.postingError = action.payload;
+            }
         },
         extraReducers: (builder) => {
             builder
@@ -121,9 +135,11 @@ export const postTranslatablesSlice = createSlice(
                 })
                 .addCase(postTranslatables.fulfilled, state => {
                     state.isLoading = false;
+                    state.postingError = null;
                 })
-                .addCase(postTranslatables.rejected, state => {
+                .addCase(postTranslatables.rejected, (state, action) => {
                     state.isLoading = false;
+                    state.postingError = action.payload;
                 })
         }
     });
@@ -347,6 +363,9 @@ export const {
     setErrorData,
     clearView
 } = translationsSlice.actions;
+
+export const {setAutoTranslationError} = getAutoTranslationSlice.actions;
+export const {setPostingError} = postTranslatablesSlice.actions;
 
 const translationsReducer = combineReducers({
     view: translationsSlice.reducer,
