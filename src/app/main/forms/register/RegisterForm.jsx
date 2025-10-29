@@ -51,7 +51,7 @@ export const RegisterForm = () => {
         <div className={'main-page-dialog'}>
             <BackPurpleIcon onClick={() => window.location.href = '/sign-in'}/>
             <h3 className={'register-header'}>{t('signUp')}</h3>
-            <h4 className={'register-subheader'}>{t('signUpHc')}</h4>
+            <h4 className={'register-subheader'}>{t('signUpHs')}</h4>
             <form className={'main-page-login-form'}>
                 <FormField type={'text'}
                            placeholder={t('forename')}
@@ -95,14 +95,13 @@ export const RegisterForm = () => {
                 <button className={'form-submit-button'} onClick={handleSignUp}>
                     {isLoading ? <LoadingSpinner buttonMode={true}/> : t('signUp')}
                 </button>
-                {process.env.REACT_APP_IS_PROD === 'true' &&
-                    <span className={'register-terms-of-use-info'}>
-                        <div>{t('acceptTerms')}</div>
-                        <div>
-                            <a href={'/terms-of-use'}> {t('termsOfUse')}</a> {t('and')} <a href={'/privacy-policy]'}>{t('privacyPolicy')}</a>
-                        </div>
-                    </span>
-                }
+                <span className={'register-terms-of-use-info'}>
+                    <div>{t('acceptTerms')}</div>
+                    <div>
+                        <a href={'/terms-of-use'}> {t('termsOfUse')}</a> {t('and')}
+                        <a href={'/privacy-policy]'}>{t('privacyPolicy')}</a>
+                    </div>
+                </span>
             </form>
         </div>
     );
