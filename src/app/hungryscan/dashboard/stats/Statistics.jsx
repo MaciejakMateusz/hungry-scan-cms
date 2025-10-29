@@ -1,6 +1,6 @@
 import React from "react";
 import {Widgets} from "./widgets/Widgets";
-import {PeriodicSummary} from "./PeriodicSummary";
+import {PeriodicSummaryHeader} from "./PeriodicSummaryHeader";
 import {Helmet} from "react-helmet";
 import {useTranslation} from "react-i18next";
 
@@ -12,7 +12,7 @@ export const Statistics = () => {
             <Helmet>
                 <title>{t('dashboard')} - {t('statistics')}</title>
             </Helmet>
-            <PeriodicSummary/>
+            <PeriodicSummaryHeader/>
             <Widgets/>
         </div>
     );
