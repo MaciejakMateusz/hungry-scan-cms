@@ -1,6 +1,47 @@
 import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
 
+export const getUsersActivity = createAsyncThunk(
+    'getUsersActivity/getUsersActivity',
+    async (_, {rejectWithValue}) => {
+        const response = await fetch(`${apiHost}/api/admin/users/activity`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include'
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            return rejectWithValue(errorData);
+        }
+
+        return await response.json();
+    }
+);
+
+export const getUsersActivitySlice = createSlice({
+    name: 'getPopularItemsStats',
+    initialState: {
+        isLoading: false,
+        data: null
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(getUsersActivity.pending, state => {
+                state.isLoading = true;
+            })
+            .addCase(getUsersActivity.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.data = action.payload;
+            })
+            .addCase(getUsersActivity.rejected, (state) => {
+                state.isLoading = false;
+            })
+    }
+});
+
 export const getPopularItemsStats = createAsyncThunk(
     'getPopularItemsStats/getPopularItemsStats',
     async (credentials, {rejectWithValue}) => {
@@ -12,7 +53,7 @@ export const getPopularItemsStats = createAsyncThunk(
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                menuId: params.menu?.value?.id,
+                menuId: params.menu?.value,
                 year: params.year?.value,
                 month: params.month?.value,
                 week: params.week?.value,
@@ -34,7 +75,7 @@ export const getPopularItemsStatsSlice = createSlice({
     name: 'getPopularItemsStats',
     initialState: {
         isLoading: false,
-        data: null,
+        data: []
     },
     extraReducers: (builder) => {
         builder
@@ -83,7 +124,7 @@ export const getScanStatsSlice = createSlice({
     name: 'getScanStats',
     initialState: {
         isLoading: false,
-        data: null,
+        data: []
     },
     extraReducers: (builder) => {
         builder
@@ -155,7 +196,8 @@ export const {
 const statisticsReducer = combineReducers({
     view: statisticsSlice.reducer,
     scanStats: getScanStatsSlice.reducer,
-    popularItemsStats: getPopularItemsStatsSlice.reducer
+    popularItemsStats: getPopularItemsStatsSlice.reducer,
+    usersActivity: getUsersActivitySlice.reducer
 });
 
 export default statisticsReducer;
