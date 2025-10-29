@@ -9,19 +9,22 @@ import {
     getAllVariants,
     setActiveRecord,
     setActiveRecordId,
-    setAdditions,
+    setAdditions, setAutoTranslationError,
     setDishesCategories,
-    setErrorData, setMenus,
+    setErrorData, setMenus, setPostingError,
     setVariants
 } from "../../../../slices/translationsSlice";
 import {TranslationsEditor} from "./editor/TranslationsEditor";
 import {SuccessMessage} from "../dialog-windows/SuccessMessage";
 import {TranslationsList} from "./TranslationsList";
 import {TranslationsEditorHeader} from "./editor/TranslationsEditorHeader";
+import {FormErrorDialog} from "../../../error/FormErrorDialog";
 
 export const Translations = () => {
     const {t} = useTranslation();
     const {chosenGroup, saveSuccess} = useSelector(state => state.translations.view);
+    const {autoTranslationError} = useSelector(state => state.translations.autoTranslate);
+    const {postingError} = useSelector(state => state.translations.postTranslatables);
     const dispatch = useDispatch();
 
     const fetchRecords = async isInitialLoading => {
@@ -92,6 +95,8 @@ export const Translations = () => {
                 <title>CMS - {t("translations")}</title>
             </Helmet>
             {saveSuccess ? <SuccessMessage text={t('saved')}/> : <></>}
+            <FormErrorDialog errorData={autoTranslationError} setErrorData={setAutoTranslationError}/>
+            <FormErrorDialog errorData={postingError} setErrorData={setPostingError}/>
             <div className={'background'}>
                 <main className={'cms-padded-view-container'}>
                     <div className={'translations-vertical-split-grid'}>
