@@ -46,7 +46,7 @@ export const UserProfileForm = () => {
                 <div className={'form-group-header'}>
                     {t('userData')}
                 </div>
-                <GenericField id={'username'}
+                <GenericField id={'profileUsername'}
                               type={'text'}
                               name={t('username')}
                               placeholder={t('typeUsername')}
@@ -57,7 +57,7 @@ export const UserProfileForm = () => {
                               disabled={true}
                               error={errorData?.username}
                 />
-                <GenericField id={'forename'}
+                <GenericField id={'profileForename'}
                               type={'text'}
                               name={t('forename')}
                               placeholder={t('typeForename')}
@@ -66,7 +66,7 @@ export const UserProfileForm = () => {
                               required={true}
                               error={errorData?.forename}
                 />
-                <GenericField id={'surname'}
+                <GenericField id={'profileSurname'}
                               type={'text'}
                               name={t('surname')}
                               placeholder={t('typeSurname')}
