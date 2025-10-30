@@ -11,12 +11,14 @@ import {
 } from "../../../../slices/userProfileSlice";
 import {DecisionDialog} from "../../cms/dialog-windows/DecisionDialog";
 import {executeLogoutFetch} from "../../../../slices/loginFormSlice";
+import {FormErrorDialog} from "../../../error/FormErrorDialog";
 
 export const UserProfile = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const renderConfirmation = useConfirmationMessage(setUserProfileUpdated);
     const {password, newPassword, repeatedPassword} = useSelector(state => state.userProfile.form);
+    const {errorData} = useSelector(state => state.userProfile.updateUserProfile);
     const [confirmLogout, setConfirmLogout] = useState(false);
     const hasChangedPassword = password && newPassword && repeatedPassword;
     const logoutPending = useSelector(state => state.login.logoutFetch.isLoading);
@@ -27,8 +29,6 @@ export const UserProfile = () => {
         if (updateUserProfile.fulfilled.match(resultAction)) {
             await dispatch(getUserProfile());
             hasChangedPassword ? setConfirmLogout(true) : renderConfirmation();
-        } else if (updateUserProfile.rejected.match(resultAction)) {
-            dispatch(setErrorData(resultAction.payload));
         }
     }
 
@@ -39,6 +39,7 @@ export const UserProfile = () => {
                                 onSubmit={() => dispatch(executeLogoutFetch())}
                                 isLoading={logoutPending}
                 />}
+            <FormErrorDialog errorData={errorData} setErrorData={setErrorData}/>
             <form className={'cms-padded-view-container'}>
                 <div className={'functions-header'}>
                     <div className={'section-heading'}>
