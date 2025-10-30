@@ -4,7 +4,7 @@ import {DeleteIcon} from "../app/icons/DeleteIcon";
 import {
     setContextMenuActive,
     setContextMenuDetailsActive,
-    setEditMenuFormActive,
+    setEditMenuFormActive, setErrorData,
     setMenuDuplicated, setStandardSwitched,
     switchStandard
 } from "../slices/menuSlice";
@@ -31,6 +31,9 @@ export const useMenuContextPositions = () => {
             await getRestaurant();
             await dispatch(fetchActiveMenu());
             confirmStandardSwitched();
+            dispatch(setErrorData(null));
+        } else {
+            dispatch(setErrorData(resultAction?.payload))
         }
     };
 
@@ -41,6 +44,9 @@ export const useMenuContextPositions = () => {
             await getRestaurant();
             await dispatch(fetchActiveMenu());
             confirmDuplication();
+            dispatch(setErrorData(null));
+        } else {
+            dispatch(setErrorData(resultAction?.payload))
         }
     };
 
