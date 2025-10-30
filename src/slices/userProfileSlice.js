@@ -38,7 +38,13 @@ export const updateUserProfileSlice = createSlice(
     {
         name: 'updateUserProfile',
         initialState: {
-            isLoading: false
+            isLoading: false,
+            errorData: null
+        },
+        reducers: {
+            setErrorData: (state, action) => {
+                state.errorData = action.payload;
+            }
         },
         extraReducers: (builder) => {
             builder
@@ -47,9 +53,11 @@ export const updateUserProfileSlice = createSlice(
                 })
                 .addCase(updateUserProfile.fulfilled, state => {
                     state.isLoading = false;
+                    state.errorData = null;
                 })
-                .addCase(updateUserProfile.rejected, (state) => {
+                .addCase(updateUserProfile.rejected, (state, action) => {
                     state.isLoading = false;
+                    state.errorData = action.payload;
                 })
         }
     });
@@ -107,7 +115,6 @@ export const userProfileFormSlice = createSlice({
         password: null,
         newPassword: null,
         repeatedPassword: null,
-        errorData: null,
         userProfileUpdated: false,
     },
     reducers: {
@@ -129,11 +136,16 @@ export const userProfileFormSlice = createSlice({
         setRepeatedPassword: (state, action) => {
             state.repeatedPassword = action.payload;
         },
-        setErrorData: (state, action) => {
-            state.errorData = action.payload;
-        },
         setUserProfileUpdated: (state, action) => {
             state.userProfileUpdated = action.payload;
+        },
+        clearProfileForm: (state) => {
+            state.username = null;
+            state.surname = null;
+            state.forename = null;
+            state.password = null;
+            state.newPassword = null;
+            state.repeatedPassword = null;
         }
     }
 });
@@ -145,10 +157,11 @@ export const {
     setPassword,
     setNewPassword,
     setRepeatedPassword,
-    setErrorMessage,
-    setErrorData,
-    setUserProfileUpdated
+    setUserProfileUpdated,
+    clearProfileForm
 } = userProfileFormSlice.actions
+
+export const {setErrorData} = updateUserProfileSlice.actions;
 
 const userProfileReducer = combineReducers({
     form: userProfileFormSlice.reducer,
