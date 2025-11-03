@@ -18,13 +18,14 @@ import {remove} from "../../../../slices/objectRemovalSlice";
 import {DecisionDialog} from "../dialog-windows/DecisionDialog";
 import {filter} from "../../../../slices/filteringSlice";
 import {SearchButton} from "../dishes-categories/SearchButton";
-import {getTranslation} from "../../../../locales/langUtils";
 import {LetterGroup} from "./LetterGroup";
 import {useConfirmationMessage} from "../../../../hooks/useConfirmationMessage";
+import {useGetTranslation} from "../../../../hooks/useGetTranslation";
 
 export const Additions = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
+    const getTranslation = useGetTranslation();
     const {
         filterValue,
         filterExpanded,
