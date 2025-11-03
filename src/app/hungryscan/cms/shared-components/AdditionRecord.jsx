@@ -1,14 +1,15 @@
 import React, {useRef, useState} from "react";
-import {getTranslation} from "../../../../locales/langUtils";
 import {useAdditionContextPositions} from "../../../../hooks/useAdditionContextPositions";
 import {useOutsideClick} from "../../../../hooks/useOutsideClick";
 import {RecordOptionsButton} from "./RecordOptionsButton";
+import {useGetTranslation} from "../../../../hooks/useGetTranslation";
 
 export const AdditionRecord = ({ingredient, name, price}) => {
     const contextRef = useRef();
     const [contextWindowActive, setContextWindowActive] = useState(false);
     const additionContextPositions =
         useAdditionContextPositions({ingredient, setContextWindowActive});
+    const getTranslation = useGetTranslation();
 
     useOutsideClick(contextRef, () => {
         setContextWindowActive(false);
