@@ -15,7 +15,6 @@ import {
     setName,
     setPrice
 } from "../../../../slices/additionsSlice";
-import {getTranslation} from "../../../../locales/langUtils";
 import {LogicalToggleField} from "../form-components/LogicalToggleField";
 import {useTranslatableTransformer} from "../../../../hooks/useTranslatableTransformer";
 import {LoadingSpinner} from "../../../icons/LoadingSpinner";
@@ -27,6 +26,7 @@ export const AdditionFormDialog = (props) => {
     const dispatch = useDispatch();
     const {isNewAddition, filteringActive, filterValue} = useSelector(state => state.additions.view);
     const {name, price, available, addition} = useSelector(state => state.additions.form);
+    const {restaurant} = useSelector(state => state.dashboard.view);
     const {errorData, isLoading} = useSelector(state => state.additions.postAddition);
     const transformName = useTranslatableTransformer({
         obj: isNewAddition ? null : addition,
@@ -36,9 +36,10 @@ export const AdditionFormDialog = (props) => {
 
     useEffect(() => {
         if (!isNewAddition) {
-            dispatch(setId(addition.id))
-            dispatch(setName(getTranslation(addition.name)))
-            dispatch(setPrice(addition.price.toFixed(2)))
+            const restaurantLanguage = restaurant?.value.settings.language.toLowerCase();
+            dispatch(setId(addition.id));
+            dispatch(setName(addition.name[restaurantLanguage]));
+            dispatch(setPrice(addition.price.toFixed(2)));
             dispatch(setAvailable(addition.available));
         } else {
             dispatch(setAvailable(true));
@@ -82,7 +83,7 @@ export const AdditionFormDialog = (props) => {
                                onChange={(e) => dispatch(setName(e))}
                                error={errorData}
                     />
-                    <PriceField id={'variant-price'}
+                    <PriceField id={'price'}
                                 value={price}
                                 setPrice={(e) => dispatch(setPrice(e))}
                                 error={errorData}
