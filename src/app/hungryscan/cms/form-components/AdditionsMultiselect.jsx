@@ -1,4 +1,5 @@
 import React from "react";
+import {components} from "react-select";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {CustomSelect} from "./CustomSelect";
@@ -13,6 +14,17 @@ export const AdditionsMultiselect = () => {
     const mergedOptions = useMergeUniqueOptions({chosenOptions: chosenAdditions, options: ingredients});
     const animatedComponents = makeAnimated();
 
+    const CustomNoOptionsMessage = (props) => {
+        const {t} = useTranslation();
+        return (
+            <components.NoOptionsMessage {...props}>
+                <div>
+                    {t('noOptionsMsgAdditions')}
+                </div>
+            </components.NoOptionsMessage>
+        );
+    };
+
     return (
         <CustomSelect id={'dish-additions'}
                       name={'additions'}
@@ -25,6 +37,6 @@ export const AdditionsMultiselect = () => {
                       isClearable={true}
                       isMulti={true}
                       menuPlacement={'top'}
-                      components={animatedComponents}/>
+                      components={{...animatedComponents, NoOptionsMessage: CustomNoOptionsMessage}}/>
     );
 }
