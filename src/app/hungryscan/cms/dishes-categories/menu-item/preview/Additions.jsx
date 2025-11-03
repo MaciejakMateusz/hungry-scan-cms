@@ -1,13 +1,13 @@
 import React from "react";
 import {useTranslation} from "react-i18next";
 import {useSelector} from "react-redux";
-import {getTranslation} from "../../../../../../locales/langUtils";
 import {formatPrice} from "../../../../../../utils/utils";
+import {useGetTranslation} from "../../../../../../hooks/useGetTranslation";
 
 export const Additions = () => {
     const {t} = useTranslation();
     const {chosenAdditions} = useSelector(state => state.dishAdditions.fetchIngredients);
-
+    const getTranslation = useGetTranslation();
 
     if (chosenAdditions?.length === 0) {
         return <></>;
