@@ -2,14 +2,15 @@ import React, {useRef, useState} from "react";
 import {useAdditionContextPositions} from "../../../../hooks/useAdditionContextPositions";
 import {useOutsideClick} from "../../../../hooks/useOutsideClick";
 import {RecordOptionsButton} from "./RecordOptionsButton";
-import {useGetTranslation} from "../../../../hooks/useGetTranslation";
+import {useSelector} from "react-redux";
 
 export const AdditionRecord = ({ingredient, name, price}) => {
     const contextRef = useRef();
     const [contextWindowActive, setContextWindowActive] = useState(false);
     const additionContextPositions =
         useAdditionContextPositions({ingredient, setContextWindowActive});
-    const getTranslation = useGetTranslation();
+    const {restaurant} = useSelector(state => state.dashboard.view);
+    const restaurantLanguage = restaurant?.value.settings.language.toLowerCase();
 
     useOutsideClick(contextRef, () => {
         setContextWindowActive(false);
@@ -19,7 +20,7 @@ export const AdditionRecord = ({ingredient, name, price}) => {
         <>
             <div className={'addition-record-container'}>
                 <div className={'addition-record'}>
-                    <span>{getTranslation(name)}</span>
+                    <span>{name[restaurantLanguage]}</span>
                     <div className={'addition-price-actions-group'}>
                         <span>+ {price.toFixed(2)} zł</span>
                         <RecordOptionsButton className={'record-context-actions-button'}
