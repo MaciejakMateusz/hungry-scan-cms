@@ -3,7 +3,7 @@ import {useTranslation} from "react-i18next";
 import {NavButton} from "../NavButton";
 import {DishesCategories} from "./dishes-categories/DishesCategories";
 import {Additions} from "./additions/Additions";
-import {Translations} from "./translations/Translations";
+import {Translations} from "./translations-new/Translations";
 import {Personalization} from "./personalization/Personalization";
 import {useDispatch, useSelector} from "react-redux";
 import {DecisionDialog} from "./dialog-windows/DecisionDialog";
@@ -23,6 +23,7 @@ import {DocumentIcon} from "../../icons/DocumentIcon";
 import {AdditionsIcon} from "../../icons/AdditionsIcon";
 import {PersonalizationIcon} from "../../icons/PersonalizationIcon";
 import {TranslationsIcon} from "../../icons/TranslationsIcon";
+import {Scheduler} from "./menu/scheduler/Scheduler";
 
 export const Cms = () => {
     const {t} = useTranslation();
@@ -76,6 +77,7 @@ export const Cms = () => {
     }
 
     const renderMainView = () => {
+        if (schedulerActive) return (<Scheduler/>);
         switch (currentView) {
             case USER_PROFILE:
                 return (<UserProfile/>);
