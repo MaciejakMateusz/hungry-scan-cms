@@ -12,16 +12,16 @@ import {
     setFilteredItems,
     setFilterExpanded,
     setFilteringActive,
-    setFilterValue
+    setFilterValue,
+    setNewCategoryFormActive
 } from "../../../../slices/dishesCategoriesSlice";
-import {setNewCategoryFormActive} from "../../../../slices/dishesCategoriesSlice";
 import ErrorBoundary from "../../../error/ErrorBoundary";
-import {getTranslation} from "../../../../locales/langUtils";
-import {Scheduler} from "../menu/scheduler/Scheduler";
 
 export const DishesCategories = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
+    const {restaurant} = useSelector(state => state.dashboard.view);
+    const restaurantLanguage = restaurant?.value.settings.language.toLowerCase();
     const {
         filterValue,
         filterExpanded,
@@ -30,7 +30,6 @@ export const DishesCategories = () => {
         newDishFormActive,
         editDishFormActive
     } = useSelector(state => state.dishesCategories.view);
-    const {schedulerActive} = useSelector(state => state.cms.view);
     const {menu} = useSelector(state => state.cms.fetchActiveMenu);
 
     useEffect(() => {
@@ -66,14 +65,12 @@ export const DishesCategories = () => {
             allItems.push(...categoryItems);
         });
         const filteredItems = allItems.filter(mi =>
-            getTranslation(mi.name).toLowerCase().includes(value.toLowerCase())
+            mi?.name[restaurantLanguage].toLowerCase().includes(value.toLowerCase())
         );
         dispatch(setFilteredItems(filteredItems));
     }
 
-    if (schedulerActive) {
-        return <Scheduler/>
-    } else if (newCategoryFormActive) {
+    if (newCategoryFormActive) {
         return (<NewCategoryForm/>);
     } else if (editCategoryFormActive) {
         return (<EditCategoryForm/>);
