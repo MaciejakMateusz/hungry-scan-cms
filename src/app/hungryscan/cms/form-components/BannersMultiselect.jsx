@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import makeAnimated from "react-select/animated";
 import {setChosenBanners} from "../../../../slices/dishFormSlice";
 import {useMergeUniqueOptions} from "../../../../hooks/useMergeUniqueOptions";
+import {CustomNoOptionsMessage} from "./CustomNoOptionsMessage";
 
 export const BannersMultiselect = () => {
     const {t} = useTranslation();
@@ -23,7 +24,7 @@ export const BannersMultiselect = () => {
                       isClearable={true}
                       isMulti={true}
                       options={mergedOptions}
-                      components={animatedComponents}
+                      components={{...animatedComponents, NoOptionsMessage: CustomNoOptionsMessage}}
                       closeMenuOnSelect={false}
         />
     );
