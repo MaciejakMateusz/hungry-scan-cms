@@ -1,10 +1,13 @@
 import React from "react";
-import {getTranslation} from "../../../../locales/langUtils";
 import {useTranslation} from "react-i18next";
 import {LoadingSpinner} from "../../../icons/LoadingSpinner";
+import {useGetTranslation} from "../../../../hooks/useGetTranslation";
+import {useSelector} from "react-redux";
 
 export const DecisionDialog = (props) => {
     const {t} = useTranslation();
+    const {restaurant} = useSelector(state => state.dashboard.view);
+    const restaurantLanguage = restaurant?.value.settings.language.toLowerCase();
 
     const renderCancelButton = () => {
         if (!props.onCancel) return;
@@ -21,7 +24,7 @@ export const DecisionDialog = (props) => {
             return (
                 <button className={'general-button'}
                         onClick={props.onSubmit}>
-                    {props.isLoading ? <LoadingSpinner buttonMode={true}/> : t('save')}
+                    {props.isLoading ? <LoadingSpinner buttonMode={true}/> : t('confirm')}
                 </button>
             );
         }
@@ -38,7 +41,7 @@ export const DecisionDialog = (props) => {
             <div className={'overlay'}></div>
             <div className={'decision-dialog'}>
                 <div className={'decision-dialog-content'}>
-                    <p>{props.msg} {props.objName ? `"` + getTranslation(props.objName) + '"' : ''}</p>
+                    <p>{props.msg} {props.objName ? `"` + props.objName[restaurantLanguage] + '"' : ''}</p>
                 </div>
                 <div className={'decision-dialog-footer'}>
                     {renderCancelButton()}
