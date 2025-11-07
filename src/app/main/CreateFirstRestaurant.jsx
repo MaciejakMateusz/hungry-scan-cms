@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {FormField} from "./forms/FormField";
 import {LoadingSpinner} from "../icons/LoadingSpinner";
 import {useTranslation} from "react-i18next";
@@ -7,10 +7,16 @@ import {
     createInitialRestaurant,
     setAddress,
     setCity,
+    setLanguage,
     setName,
     setPostalCode
 } from "../../slices/restaurantSlice";
 import {CreateFirstRestaurantInit} from "./CreateFirstRestaurantInit";
+import {CustomSelect} from "../hungryscan/cms/form-components/CustomSelect";
+import {mainSelect} from "../../selectStyles";
+import {CustomNoOptionsMessage} from "../hungryscan/cms/form-components/CustomNoOptionsMessage";
+import {supportedLanguages} from "../../i18n";
+import {getLanguage} from "../../locales/langUtils";
 
 export const CreateFirstRestaurant = () => {
     const dispatch = useDispatch();
@@ -20,7 +26,8 @@ export const CreateFirstRestaurant = () => {
         name,
         address,
         postalCode,
-        city
+        city,
+        settings
     } = useSelector(state => state.restaurant.form)
     const {isLoading, errorData} = useSelector(state => state.restaurant.postInitial)
     const checkName = errorData?.name && name.length === 0;
@@ -28,6 +35,17 @@ export const CreateFirstRestaurant = () => {
     const checkPostalCode = errorData?.postalCode && postalCode.length === 0;
     const checkCity = errorData?.city && city.length === 0;
     const is500Error = errorData?.status === 500
+    const supported = Object.keys(supportedLanguages);
+    const destinationOptions = supported.map(language => ({value: language.toUpperCase(), label: t(language)}));
+
+    useEffect(() => {
+        const initializeForm = () => {
+            if (!destinationOptions) return;
+            const currentLanguage = getLanguage();
+            dispatch(setLanguage({value: currentLanguage.toUpperCase(), label: t(currentLanguage)}));
+        }
+        initializeForm();
+    }, [dispatch]);
 
     const handleInitialRestaurantCreation = (e) => {
         e.preventDefault();
@@ -73,6 +91,17 @@ export const CreateFirstRestaurant = () => {
                                    error={errorData?.city}
                                    hasError={checkCity}
                                    changeHandler={(e) => dispatch(setCity(e.target.value))}/>
+                        <CustomSelect id={'language'}
+                                      name={'language'}
+                                      labelName={t('language')}
+                                      isRequired={true}
+                                      info={t('restaurantLanguageInfo')}
+                                      placeholder={'Wybierz język...'}
+                                      value={settings.language}
+                                      onChange={(selected) => dispatch(setLanguage(selected))}
+                                      options={destinationOptions}
+                                      styles={mainSelect}
+                                      components={{NoOptionsMessage: CustomNoOptionsMessage}}/>
                         <button className={'form-submit-button'} onClick={handleInitialRestaurantCreation}>
                             {isLoading ? <LoadingSpinner buttonMode={true}/> : t('create')}
                         </button>
