@@ -1,5 +1,6 @@
 import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
+import {getLanguage} from "../locales/langUtils";
 
 export const duplicateMenu = createAsyncThunk(
     'fetchActiveMenu/fetchActiveMenu',
@@ -8,6 +9,7 @@ export const duplicateMenu = createAsyncThunk(
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept-Language': getLanguage()
             },
             credentials: 'include'
         });
@@ -53,6 +55,7 @@ export const fetchActiveMenu = createAsyncThunk(
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept-Language': getLanguage()
             },
             credentials: 'include'
         });
@@ -100,6 +103,7 @@ export const switchActiveMenu = createAsyncThunk(
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept-Language': getLanguage()
             },
             body: JSON.stringify(menuId),
             credentials: 'include'
