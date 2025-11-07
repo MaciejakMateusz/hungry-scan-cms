@@ -13,6 +13,7 @@ export const Container = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    z-index: 9999;
 `
 
 export const Header = styled.span`
