@@ -1,7 +1,7 @@
 import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
 import {formatPrice} from "../utils/utils";
-import {getTranslation} from "../locales/langUtils";
+import {getLanguage} from "../locales/langUtils";
 
 export const fetchMenuItem = createAsyncThunk(
     'fetchMenuItem/fetchMenuItem',
@@ -10,6 +10,7 @@ export const fetchMenuItem = createAsyncThunk(
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept-Language': getLanguage()
             },
             credentials: 'include',
             body: JSON.stringify(id)
@@ -35,6 +36,7 @@ export const postDish = createAsyncThunk(
             }
             return variant;
         });
+        const banners = s.dishForm.fetchBanners.chosenBanners.map(b => b.value);
         const payload = {
             id: form.id,
             categoryId: form.category?.id,
@@ -42,12 +44,14 @@ export const postDish = createAsyncThunk(
             name: translatableTransformers.transformName(form.name),
             description: translatableTransformers.transformDescription(form.description),
             price: form.price,
-            promoPrice: form.promoPrice,
+            promoPrice: banners.map(banner => banner.id).includes('promo') ?
+                (form.promoPrice ? form.promoPrice : formatPrice(0, true))
+                : null,
             available: form.available,
             created: form.created,
             createdBy: form.createdBy,
             variants: preparedVariants,
-            banners: s.dishForm.fetchBanners.chosenBanners.map(b => b.value),
+            banners: banners,
             labels: s.dishForm.fetchLabels.chosenLabels.map(l => l.value),
             allergens: s.dishForm.fetchAllergens.chosenAllergens.map(a => a.value),
             additionalIngredients:
@@ -87,6 +91,7 @@ export const getBanners = createAsyncThunk(
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept-Language': getLanguage()
             },
             credentials: 'include'
         });
@@ -107,6 +112,7 @@ export const getLabels = createAsyncThunk(
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept-Language': getLanguage()
             },
             credentials: 'include'
         });
@@ -127,6 +133,7 @@ export const getAllergens = createAsyncThunk(
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept-Language': getLanguage()
             },
             credentials: 'include'
         });
@@ -193,6 +200,9 @@ export const fetchBannersSlice = createSlice(
             chosenBanners: []
         },
         reducers: {
+            setBanners: (state, action) => {
+                state.banners = action.payload;
+            },
             setChosenBanners: (state, action) => {
                 state.chosenBanners = action.payload;
             },
@@ -206,17 +216,10 @@ export const fetchBannersSlice = createSlice(
                 .addCase(getBanners.pending, state => {
                     state.isLoading = true;
                 })
-                .addCase(getBanners.fulfilled, (state, action) => {
+                .addCase(getBanners.fulfilled, state => {
                     state.isLoading = false;
-                    state.banners = action.payload?.map(banner => ({
-                        value: banner,
-                        label: getTranslation(banner.name)
-                    }));
-                    state.banners.sort((a, b) =>
-                        getTranslation(a.value.name).localeCompare(getTranslation(b.value.name))
-                    );
                 })
-                .addCase(getBanners.rejected, (state) => {
+                .addCase(getBanners.rejected, state => {
                     state.isLoading = false;
                 })
         }
@@ -231,6 +234,9 @@ export const fetchLabelsSlice = createSlice(
             chosenLabels: []
         },
         reducers: {
+            setLabels: (state, action) => {
+                state.labels = action.payload;
+            },
             setChosenLabels: (state, action) => {
                 state.chosenLabels = action.payload;
             },
@@ -244,17 +250,10 @@ export const fetchLabelsSlice = createSlice(
                 .addCase(getLabels.pending, state => {
                     state.isLoading = true;
                 })
-                .addCase(getLabels.fulfilled, (state, action) => {
+                .addCase(getLabels.fulfilled, state => {
                     state.isLoading = false;
-                    state.labels = action.payload?.map(label => ({
-                        value: label,
-                        label: getTranslation(label.name)
-                    }));
-                    state.labels.sort((a, b) =>
-                        getTranslation(a.value.name).localeCompare(getTranslation(b.value.name))
-                    );
                 })
-                .addCase(getLabels.rejected, (state) => {
+                .addCase(getLabels.rejected, state => {
                     state.isLoading = false;
                 })
         }
@@ -269,6 +268,9 @@ export const fetchAllergensSlice = createSlice(
             chosenAllergens: []
         },
         reducers: {
+            setAllergens: (state, action) => {
+                state.allergens = action.payload;
+            },
             setChosenAllergens: (state, action) => {
                 state.chosenAllergens = action.payload;
             },
@@ -282,17 +284,10 @@ export const fetchAllergensSlice = createSlice(
                 .addCase(getAllergens.pending, state => {
                     state.isLoading = true;
                 })
-                .addCase(getAllergens.fulfilled, (state, action) => {
+                .addCase(getAllergens.fulfilled, state => {
                     state.isLoading = false;
-                    state.allergens = action.payload?.map(allergen => ({
-                        value: allergen,
-                        label: getTranslation(allergen.name)
-                    }));
-                    state.allergens?.sort((a, b) =>
-                        getTranslation(a.value.name).localeCompare(getTranslation(b.value.name))
-                    );
                 })
-                .addCase(getAllergens.rejected, (state) => {
+                .addCase(getAllergens.rejected, state => {
                     state.isLoading = false;
                 })
         }
@@ -398,6 +393,7 @@ export const dishFormSlice = createSlice({
             state.category = null;
             state.variants = [];
             state.price = formatPrice(0, true);
+            state.promoPrice = formatPrice(0, true);
             state.file = {};
             state.chosenLabels = [];
             state.chosenAllergens = [];
@@ -415,9 +411,21 @@ export const dishFormSlice = createSlice({
     }
 });
 
-export const {setChosenBanners, clearBanners} = fetchBannersSlice.actions;
-export const {setChosenLabels, clearLabels} = fetchLabelsSlice.actions;
-export const {setChosenAllergens, clearAllergens} = fetchAllergensSlice.actions;
+export const {
+    setChosenBanners,
+    clearBanners,
+    setBanners
+} = fetchBannersSlice.actions;
+export const {
+    setChosenLabels,
+    clearLabels,
+    setLabels
+} = fetchLabelsSlice.actions;
+export const {
+    setChosenAllergens,
+    clearAllergens,
+    setAllergens
+} = fetchAllergensSlice.actions;
 
 export const {
     setActiveTab,
