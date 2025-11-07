@@ -1,5 +1,4 @@
 import React from "react";
-import {getTranslation} from "../../../../../locales/langUtils";
 import {
     setActiveRemovalType,
     setCategory,
@@ -17,9 +16,11 @@ export const CategoryPosition = ({category}) => {
     const {t} = useTranslation();
     const {menu} = useSelector(state => state.cms.fetchActiveMenu);
     const dispatch = useDispatch();
+    const {restaurant} = useSelector(state => state.dashboard.view);
+    const restaurantLanguage = restaurant?.value.settings.language.toLowerCase();
 
     const renderReorderIcon = () => {
-        if (menu?.categories.length === 1) return;
+        if (menu.categories.length === 1) return;
 
         return (
             <span className={'clickable-icon'}
@@ -29,11 +30,13 @@ export const CategoryPosition = ({category}) => {
         );
     }
 
+    if (!menu || !menu.categories) return null;
+
     return (
         <div className={'category-container-header'}>
             <div className={'category-info'}>
                 <span className={'text-ellipsis'} style={{maxWidth: '50vw'}}>
-                    {getTranslation(category.name)}
+                    {category.name[restaurantLanguage]}
                 </span>
                 ({category.menuItems.length})
                 {renderReorderIcon()}
