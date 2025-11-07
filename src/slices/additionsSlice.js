@@ -1,5 +1,6 @@
 import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
+import {getLanguage} from "../locales/langUtils";
 
 export const postAddition = createAsyncThunk(
     'additions/postAddition',
@@ -9,6 +10,7 @@ export const postAddition = createAsyncThunk(
             method: action === 'add' ? 'POST' : 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept-Language': getLanguage()
             },
             body: JSON.stringify({
                 id: state.id,
@@ -73,6 +75,7 @@ export const getIngredients = createAsyncThunk(
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept-Language': getLanguage()
             },
             body: JSON.stringify(params),
             credentials: 'include'
