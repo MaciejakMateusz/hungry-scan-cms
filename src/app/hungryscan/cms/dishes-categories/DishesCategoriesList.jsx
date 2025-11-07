@@ -113,7 +113,7 @@ export const DishesCategoriesList = () => {
             return (
                 <div key={category.id} className={'category-container-new'}>
                     <CategoryPosition category={category}/>
-                    {category.menuItems.length > 1 && <div className={'draggable-position-separator'}/>}
+                    {category.menuItems.length > 0 && <div className={'draggable-position-separator'}/>}
                     <DndContext onDragEnd={(event) => handleDragEnd(event, category)}>
                         <SortableContext items={menuItemIds}>
                             {category.menuItems.map(menuItem => (
