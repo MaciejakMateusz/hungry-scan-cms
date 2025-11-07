@@ -1,7 +1,6 @@
 import React from "react";
 import {useTranslation} from "react-i18next";
 import {LoadingSpinner} from "../../../icons/LoadingSpinner";
-import {useGetTranslation} from "../../../../hooks/useGetTranslation";
 import {useSelector} from "react-redux";
 
 export const DecisionDialog = (props) => {
