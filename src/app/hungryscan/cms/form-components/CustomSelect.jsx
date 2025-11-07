@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import Select from "react-select";
 import {customSelect} from "../../../../selectStyles";
 import {useTranslation} from "react-i18next";
-import {CustomNoOptionsMessage} from "./CustomNoOptionsMessage";
 import {InformationTooltip} from "../shared-components/InformationTooltip";
 
 export const CustomSelect = (props) => {
@@ -43,11 +42,12 @@ export const CustomSelect = (props) => {
                         styles={mergeStyles({...customSelect, ...props.styles}, errorStyles)}
                         isDisabled={props.isDisabled}
                         value={chosenValue}
+                        defaultValue={props.defaultValue}
                         onChange={props.onChange}
                         placeholder={props.placeholder}
                         isClearable={props.isClearable}
                         options={props.options}
-                        components={{ ...(props.components || {}), NoOptionsMessage: CustomNoOptionsMessage }}
+                        components={{ ...(props.components || {})}}
                         isMulti={props.isMulti}
                         closeMenuOnSelect={props.closeMenuOnSelect}
                         menuPlacement={props.menuPlacement}
