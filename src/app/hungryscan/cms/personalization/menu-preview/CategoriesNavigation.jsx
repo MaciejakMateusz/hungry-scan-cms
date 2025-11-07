@@ -1,11 +1,12 @@
 import React from "react";
 import {useSelector} from "react-redux";
 import {useTranslation} from "react-i18next";
-import {getTranslation} from "../../../../../locales/langUtils";
+import {useGetTranslation} from "../../../../../hooks/useGetTranslation";
 
 export const CategoriesNavigation = ({chooseCategory, chosenCategory}) => {
     const {t} = useTranslation();
     const {menu} = useSelector(state => state.cms.fetchActiveMenu);
+    const getTranslation = useGetTranslation();
     const categories = menu?.categories;
     const theme = menu?.theme;
 
