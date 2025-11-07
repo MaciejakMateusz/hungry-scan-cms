@@ -2,12 +2,13 @@ import React from "react";
 import {useSelector} from "react-redux";
 import {ReactSVG} from "react-svg";
 import {useTranslation} from "react-i18next";
-import {getTranslation} from "../../../../../../locales/langUtils";
 import {Tooltip} from "../../../Tooltip";
+import {useGetTranslation} from "../../../../../../hooks/useGetTranslation";
 
 export const Allergens = () => {
     const {chosenAllergens} = useSelector(state => state.dishForm.fetchAllergens);
     const {t} = useTranslation();
+    const getTranslation = useGetTranslation();
 
     if (chosenAllergens?.length === 0) {
         return <></>;
