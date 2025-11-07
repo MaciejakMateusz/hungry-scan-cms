@@ -1,6 +1,6 @@
 import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
-import {getTranslation} from "../locales/langUtils";
+import {getLanguage} from "../locales/langUtils";
 
 export const fetchIngredients = createAsyncThunk(
     'fetchIngredients/fetchIngredients',
@@ -9,6 +9,7 @@ export const fetchIngredients = createAsyncThunk(
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept-Language': getLanguage()
             },
             credentials: 'include'
         });
@@ -34,6 +35,9 @@ export const fetchIngredientsSlice = createSlice({
         chosenAdditions: []
     },
     reducers: {
+        setIngredients: (state, action) => {
+            state.ingredients = action.payload;
+        },
         setChosenAdditions: (state, action) => {
             state.chosenAdditions = action.payload;
         },
@@ -44,26 +48,23 @@ export const fetchIngredientsSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(fetchIngredients.pending, (state) => {
+            .addCase(fetchIngredients.pending, state => {
                 state.isLoading = true;
             })
-            .addCase(fetchIngredients.fulfilled, (state, action) => {
+            .addCase(fetchIngredients.fulfilled, state => {
                 state.isLoading = false;
-                state.ingredients = action.payload?.map(ingredient => ({
-                    value: ingredient,
-                    label: getTranslation(ingredient.name)
-                }));
-                state.ingredients.sort((a, b) =>
-                    getTranslation(a.value.name).localeCompare(getTranslation(b.value.name))
-                );
             })
-            .addCase(fetchIngredients.rejected, (state) => {
+            .addCase(fetchIngredients.rejected, state => {
                 state.isLoading = false;
             });
     }
 });
 
-export const {setChosenAdditions, clearAdditions} = fetchIngredientsSlice.actions;
+export const {
+    setChosenAdditions,
+    clearAdditions,
+    setIngredients
+} = fetchIngredientsSlice.actions;
 
 const dishAdditionsReducer = combineReducers({
     fetchIngredients: fetchIngredientsSlice.reducer
