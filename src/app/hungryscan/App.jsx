@@ -8,6 +8,7 @@ import {GlobalRenderingPlugin} from "./common/GlobalRenderingPlugin";
 import {getUserProfile} from "../../slices/userProfileSlice";
 import {setCurrentView} from "../../slices/globalParamsSlice";
 import {DISHES_CATEGORIES, STATS} from "../../utils/viewsConstants";
+import {CookieConsent} from "../main/cookies/CookieConsent";
 
 export const App = () => {
     const dispatch = useDispatch();
@@ -34,6 +35,7 @@ export const App = () => {
         <div className={'app-grid'}>
             <GlobalRenderingPlugin/>
             {renderView()}
+            <CookieConsent/>
         </div>
     );
 }
