@@ -5,6 +5,7 @@ import {CustomSelect} from "./CustomSelect";
 import {setChosenAllergens} from "../../../../slices/dishFormSlice";
 import makeAnimated from "react-select/animated";
 import {useMergeUniqueOptions} from "../../../../hooks/useMergeUniqueOptions";
+import {CustomNoOptionsMessage} from "./CustomNoOptionsMessage";
 
 export const AllergensMultiselect = () => {
     const {t} = useTranslation();
@@ -25,6 +26,6 @@ export const AllergensMultiselect = () => {
                       isClearable={true}
                       isMulti={true}
                       menuPlacement={'top'}
-                      components={animatedComponents}/>
+                      components={{...animatedComponents, NoOptionsMessage: CustomNoOptionsMessage}}/>
     );
 }
