@@ -1,5 +1,6 @@
 import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
+import {getLanguage} from "../locales/langUtils";
 
 export const postCategory = createAsyncThunk(
     'categoryFetch/postCategory',
@@ -9,6 +10,7 @@ export const postCategory = createAsyncThunk(
             method: action === 'add' ? 'POST' : 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept-Language': getLanguage()
             },
             body: JSON.stringify({
                 id: state.id,
