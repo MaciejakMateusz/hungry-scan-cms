@@ -1,5 +1,6 @@
 import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
+import {getLanguage} from "../locales/langUtils";
 
 export const updateCategoriesOrder = createAsyncThunk(
     'updateCategoriesOrder/updateCategoriesOrder',
@@ -8,6 +9,7 @@ export const updateCategoriesOrder = createAsyncThunk(
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept-Language': getLanguage()
             },
             body: JSON.stringify(params.categories),
             credentials: 'include'
@@ -58,6 +60,7 @@ export const updateMenuItemsOrder = createAsyncThunk(
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept-Language': getLanguage()
             },
             body: JSON.stringify(params.menuItems),
             credentials: 'include'
@@ -102,6 +105,7 @@ export const switchMenuItemCategory = createAsyncThunk(
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept-Language': getLanguage()
             },
             body: JSON.stringify({
                 menuItemId: menuItemId,
@@ -155,6 +159,7 @@ export const getCategory = createAsyncThunk(
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept-Language': getLanguage()
             },
             body: credentials.id,
             credentials: 'include'
@@ -195,6 +200,7 @@ export const getCategories = createAsyncThunk(
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept-Language': getLanguage()
             },
             credentials: 'include'
         });
