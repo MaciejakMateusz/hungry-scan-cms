@@ -1,13 +1,9 @@
 import React, {useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
-import {getTranslation} from "../../../../../locales/langUtils";
 import {MenuItemFormTemplate} from "../../form-components/MenuItemFormTemplate";
 import {
     fetchMenuItem,
-    getAllergens,
-    getBanners,
-    getLabels,
     postDish,
     setAvailable,
     setCategory,
@@ -31,17 +27,22 @@ import {
     setVariants
 } from "../../../../../slices/dishFormSlice";
 import {setEditDishFormActive} from "../../../../../slices/dishesCategoriesSlice";
-import {fetchIngredients, setChosenAdditions} from "../../../../../slices/dishAdditionsSlice";
+import {setChosenAdditions} from "../../../../../slices/dishAdditionsSlice";
 import {useClearForm} from "../../../../../hooks/useClearForm";
 import {MenuItemFormWrapper} from "./MenuItemFormWrapper";
 import {Variants} from "./variants/Variants";
 import {useTranslatableTransformer} from "../../../../../hooks/useTranslatableTransformer";
 import {useImageExists} from "../../../../../hooks/useImageExists";
 import {useConfirmationMessage} from "../../../../../hooks/useConfirmationMessage";
+import {useGetTranslation} from "../../../../../hooks/useGetTranslation";
+import {useFetchMenuItemFormCollections} from "../../../../../hooks/useFetchMenuItemFormCollections";
 
 export const EditMenuItemForm = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
+    const getTranslation = useGetTranslation();
+    const {restaurant} = useSelector(state => state.dashboard.view);
+    const restaurantLanguage = restaurant?.value.settings.language.toLowerCase();
     const {category, dish} = useSelector(state => state.dishesCategories.view);
     const {activeTab, name} = useSelector(state => state.dishForm.form);
     const clearForm = useClearForm();
@@ -54,6 +55,7 @@ export const EditMenuItemForm = () => {
         transformDescription: useTranslatableTransformer({obj: dish, key: 'description'})
     };
     const renderConfirmation = useConfirmationMessage(setMenuItemUpdated);
+    const getFormCollections = useFetchMenuItemFormCollections();
 
     useEffect(() => {
         dispatch(fetchMenuItem({id: dish?.id}));
@@ -63,17 +65,14 @@ export const EditMenuItemForm = () => {
         const setInitialFormState = () => {
             if (!item) return;
 
-            dispatch(fetchIngredients());
-            dispatch(getAllergens());
-            dispatch(getLabels());
-            dispatch(getBanners());
+            getFormCollections();
 
             dispatch(setId(item.id));
             dispatch(setCategoryId(item.categoryId));
             dispatch(setCategory(category));
             dispatch(setDisplayOrder(item.displayOrder));
-            dispatch(setName(getTranslation(item.name)));
-            dispatch(setDescription(getTranslation(item.description)));
+            dispatch(setName(item.name[restaurantLanguage]));
+            dispatch(setDescription(item.description[restaurantLanguage]));
             dispatch(setVariants(item.variants));
             dispatch(setPrice(item.price.toFixed(2)));
             dispatch(setPromoPrice(item.promoPrice?.toFixed(2)));
@@ -92,7 +91,7 @@ export const EditMenuItemForm = () => {
             }))));
             dispatch(setChosenAdditions(item.additionalIngredients?.map(addition => ({
                 value: addition,
-                label: getTranslation(addition.name)
+                label: addition.name[restaurantLanguage]
             }))));
             dispatch(setCreated(item.created));
             dispatch(setCreatedBy(item.createdBy));
@@ -100,7 +99,7 @@ export const EditMenuItemForm = () => {
             dispatch(setHasImage(imageExists));
         }
         setInitialFormState();
-    }, [dispatch, item, category, imageExists]);
+    }, [dispatch, item, category, imageExists, restaurantLanguage]);
 
     const handleFormDiscard = () => {
         clearForm();
