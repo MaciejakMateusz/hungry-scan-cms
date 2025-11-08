@@ -18,11 +18,12 @@ import {
     updateUser
 } from "../../../../../slices/usersSlice";
 import {UserForm} from "./UserForm";
-import {getTranslation} from "../../../../../locales/langUtils";
+import {useGetTranslation} from "../../../../../hooks/useGetTranslation";
 
 export const EditUserForm = ({executeFilter}) => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
+    const getTranslation = useGetTranslation();
     const renderConfirmation = useConfirmationMessage(setUserUpdated);
     const {userToUpdate: user} = useSelector(state => state.users.view);
     const {filteringActive, filterValue} = useSelector(state => state.users.view);
