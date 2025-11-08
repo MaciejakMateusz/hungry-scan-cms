@@ -50,7 +50,7 @@ export const EditMenuFormDialog = () => {
     return (
         <>
             <FormErrorDialog errorData={errorData} setErrorData={setErrorData}/>
-            <MenuFormTemplate formHeader={t('rename')}
+            <MenuFormTemplate formHeader={t('editMenu')}
                               submitHandler={handleFormSubmit}
                               discardHandler={handleFormDiscard}
                               errorData={errorData}
