@@ -14,23 +14,26 @@ import {
     setName
 } from "../../../../../slices/categoryFormSlice";
 import {setEditCategoryFormActive} from "../../../../../slices/dishesCategoriesSlice";
-import {getTranslation} from "../../../../../locales/langUtils";
 import {CategoryForm} from "./CategoryForm";
 import {useTranslatableTransformer} from "../../../../../hooks/useTranslatableTransformer";
 import {useConfirmationMessage} from "../../../../../hooks/useConfirmationMessage";
+import {useGetTranslation} from "../../../../../hooks/useGetTranslation";
 
 export const EditCategoryForm = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
+    const getTranslation = useGetTranslation();
     const {category} = useSelector(state => state.dishesCategories.view);
+    const {restaurant} = useSelector(state => state.dashboard.view);
     const {name} = useSelector(state => state.categoryForm.form);
     const transformName = useTranslatableTransformer({obj: category, key: 'name'});
     const renderConfirmation = useConfirmationMessage(setCategoryUpdated);
 
     useEffect(() => {
         const setFormInitialState = () => {
+            const restaurantLanguage = restaurant?.value.settings.language.toLowerCase();
             dispatch(setId(category.id));
-            dispatch(setName(getTranslation(category.name)));
+            dispatch(setName(category.name[restaurantLanguage]));
             dispatch(setDishes(category.menuItems))
             dispatch(setAvailable(category.available));
             dispatch(setDisplayOrder({
@@ -39,7 +42,7 @@ export const EditCategoryForm = () => {
             }));
         }
         setFormInitialState();
-    }, []);
+    }, [restaurant?.value.settings.language]);
 
     const handleFormSubmit = async e => {
         e.preventDefault();
