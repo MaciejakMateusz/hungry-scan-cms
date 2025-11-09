@@ -2,10 +2,11 @@ import React from "react";
 import {useSelector} from "react-redux";
 import {ReactSVG} from "react-svg";
 import {Tooltip} from "../../../Tooltip";
-import {getTranslation} from "../../../../../../locales/langUtils";
+import {useGetTranslation} from "../../../../../../hooks/useGetTranslation";
 
 export const Labels = () => {
     const {chosenLabels} = useSelector(state => state.dishForm.fetchLabels);
+    const getTranslation = useGetTranslation();
 
     if (chosenLabels?.length === 0) {
         return (<></>);
