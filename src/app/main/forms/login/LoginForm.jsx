@@ -7,12 +7,13 @@ import {LoadingSpinner} from "../../../icons/LoadingSpinner";
 import {urlParamValue} from "../../../../utils/utils";
 
 export const LoginForm = () => {
+    const {t} = useTranslation();
     const dispatch = useDispatch();
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const {username, password} = useSelector((state) => state.login.loginForm);
     const {notAuthorized, isLoading, errorData} = useSelector((state) => state.login.loginFetch);
     const [isLoggedOut, setIsLoggedOut] = useState(false);
-    const {t} = useTranslation();
+    const isBeta = process.env.REACT_APP_IS_BETA === 'true';
 
     useEffect(() => {
         setIsLoggedOut(Boolean(urlParamValue("logout")))
@@ -93,21 +94,24 @@ export const LoginForm = () => {
                 </button>
                 {renderMessage()}
             </form>
-            <div className={'login-else'}>
-                <span className={'login-else-line left'}/>
-                <span>lub</span>
-                <span className={'login-else-line right'}/>
-            </div>
-            <button className={'form-submit-button register-redirect'}
-                    onClick={() => window.location.href = '/sign-up'}>
-                {t('signUp')}
-            </button>
-            <div className={'pass-reminder'}>
-                <span className={'pass-reminder-link'}>
-                    <a href={'/password-recovery'}>{t('loginProblems')}</a>
-                </span>
-            </div>
-
+            {!isBeta && (
+                <>
+                    <div className={'login-else'}>
+                        <span className={'login-else-line left'}/>
+                        <span>{t('or')}</span>
+                        <span className={'login-else-line right'}/>
+                    </div>
+                    <button className={'form-submit-button register-redirect'}
+                            onClick={() => window.location.href = '/sign-up'}>
+                        {t('signUp')}
+                    </button>
+                    <div className={'pass-reminder'}>
+                        <span className={'pass-reminder-link'}>
+                            <a href={'/password-recovery'}>{t('loginProblems')}</a>
+                        </span>
+                    </div>
+                </>
+            )}
         </div>
     );
 }
