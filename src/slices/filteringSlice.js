@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
+import {getLanguage} from "../locales/langUtils";
 
 export const filter = createAsyncThunk(
     'filtering/filter',
@@ -10,6 +11,7 @@ export const filter = createAsyncThunk(
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept-Language': getLanguage()
             },
             body: value,
             credentials: 'include'
