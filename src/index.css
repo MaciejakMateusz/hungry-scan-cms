@@ -296,6 +296,16 @@ a:hover {
     width: 100%;
 }
 
+.brand-logo-container {
+    width: 30px;
+    height: 30px;
+    background: #000;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .icon-logo-group {
     display: flex;
     align-items: center;
@@ -817,6 +827,12 @@ ul {
     align-items: center;
 }
 
+.text-ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-wrap: nowrap;
+}
+
 .profile-name {
     color: #FFF;
     font-size: 1.2rem;
@@ -867,6 +883,8 @@ ul {
 
 .nav-btn-icon-wrapper {
     padding: 0 15px 0 0;
+    width: 18px;
+    height: 18px;
 }
 
 .nav-btn-icon-wrapper.absolute {
@@ -2030,7 +2048,7 @@ ul {
     top: 25vh;
     left: 40vw;
     background-color: #FFF;
-    padding: 2rem;
+    padding: 3rem;
     border: 0;
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -2205,7 +2223,7 @@ ul {
 }
 
 .translation-record-grid.header {
-    margin-top: 10px;
+    margin-top: 5px;
 }
 
 .translation-record-grid.header:hover {
@@ -2230,7 +2248,7 @@ ul {
 }
 
 .translations-records-column.header {
-    font-size: 0.7rem;
+    font-size: 0.8rem;
 }
 
 .translations-records-column.parent {
@@ -2312,7 +2330,7 @@ ul {
 .translation-text-label {
     padding: 24px 20px 10px 20px;
     color: #6940C6;
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     font-weight: 400;
 }
 
@@ -2668,9 +2686,10 @@ ul {
 }
 
 .draggable-position-container {
+    display: grid;
+    grid-template-columns: 40px 60px 300px 60px 80px 60px auto auto auto;
     height: 82px;
     background: #FFF;
-    display: flex;
     align-items: center;
     padding-right: 20px;
     gap: 40px;
@@ -2678,10 +2697,12 @@ ul {
 }
 
 .draggable-position-container.variant {
+    grid-template-columns: 40px auto auto auto;
     height: 60px;
 }
 
 .draggable-position-actions {
+    grid-column: 8;
     display: none;
 }
 
@@ -2802,14 +2823,16 @@ ul {
 
 .menu-item-position-banner {
     color: #33353E;
-    min-width: 62px;
+    min-width: 68px;
 }
 
-.menu-item-position-allergens-container {
-    display: flex;
-    gap: 5px;
-    max-width: 150px;
-    overflow: hidden;
+.menu-item-position-counters-container {
+
+}
+
+.menu-item-position-counter {
+    text-wrap: nowrap;
+    margin-bottom: 5px;
 }
 
 .relative-container {
