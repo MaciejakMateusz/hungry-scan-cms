@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {setChosenLabels} from "../../../../slices/dishFormSlice";
 import makeAnimated from "react-select/animated";
 import {useMergeUniqueOptions} from "../../../../hooks/useMergeUniqueOptions";
+import {CustomNoOptionsMessage} from "./CustomNoOptionsMessage";
 
 export const LabelsMultiselect = () => {
     const {t} = useTranslation();
@@ -25,6 +26,6 @@ export const LabelsMultiselect = () => {
                       options={mergedOptions}
                       isClearable={true}
                       isMulti={true}
-                      components={animatedComponents}/>
+                      components={{...animatedComponents, NoOptionsMessage: CustomNoOptionsMessage}}/>
     );
 }
