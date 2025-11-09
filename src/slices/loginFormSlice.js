@@ -1,6 +1,7 @@
 import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
 import {removeCookie, setCookie} from "../utils/utils";
+import {getLanguage} from "../locales/langUtils";
 
 export const executeLogoutFetch = createAsyncThunk(
     'loginFetch/executeLogoutFetch',
@@ -8,7 +9,8 @@ export const executeLogoutFetch = createAsyncThunk(
         const response = await fetch(`${apiHost}/api/user/logout`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Accept-Language': getLanguage()
             },
             credentials: 'include'
         });
@@ -47,7 +49,8 @@ export const executeLoginFetch = createAsyncThunk(
         const response = await fetch(`${apiHost}/api/user/login`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Accept-Language': getLanguage()
             },
             body: JSON.stringify({
                 username: state.username,
