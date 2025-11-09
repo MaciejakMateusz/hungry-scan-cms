@@ -9,14 +9,9 @@ import translation_fr from './locales/fr/translation_fr.json';
 import translation_es from './locales/es/translation_es.json';
 import translation_uk from './locales/uk/translation_uk.json';
 
-const languageDetector = new LanguageDetector(null, {
-    order: ['cookie', 'localStorage', 'navigator', 'htmlTag', 'path', 'subdomain'],
-    caches: ['cookie']
-});
-
 export const supportedLanguages = {
-    pl: {translation: translation_pl},
     en: {translation: translation_en},
+    pl: {translation: translation_pl},
     de: {translation: translation_de},
     fr: {translation: translation_fr},
     es: {translation: translation_es},
@@ -24,23 +19,19 @@ export const supportedLanguages = {
 };
 
 i18n
-    .use(languageDetector)
+    .use(LanguageDetector)
     .use(initReactI18next)
     .init({
         resources: supportedLanguages,
-        lng: process.env.REACT_APP_DEFAULT_LANGUAGE,
-        fallbackLng: process.env.REACT_APP_DEFAULT_LANGUAGE,
+        fallbackLng: process.env.REACT_APP_DEFAULT_LANGUAGE || 'en',
+        supportedLngs: Object.keys(supportedLanguages),
+        detection: {
+            order: ['cookie', 'localStorage', 'navigator', 'htmlTag', 'path', 'subdomain'],
+            caches: ['cookie', 'localStorage']
+        },
         interpolation: {
             escapeValue: false,
         },
-        detection: {
-            order: ['cookie', 'localStorage', 'navigator'],
-            caches: ['cookie']
-        }
     });
-
-if (!languageDetector.detect()) {
-    languageDetector.cacheUserLanguage('pl');
-}
 
 export default i18n;
