@@ -5,6 +5,7 @@ import {PasswordRecovery} from "../password-recovery/PasswordRecovery";
 import {NewPassword} from "../password-recovery/NewPassword";
 import {NavMenu} from "../NavMenu";
 import {ActivationError} from "./register/ActivationError";
+import {CookieConsent} from "../cookies/CookieConsent";
 
 export const Forms = ({activeForm}) => {
 
@@ -31,6 +32,7 @@ export const Forms = ({activeForm}) => {
             <div className={'main-page-content'}>
                 <div className={'main-page-dialog-wrapper'}>
                     {renderActiveForm()}
+                    <CookieConsent/>
                 </div>
             </div>
         </div>
