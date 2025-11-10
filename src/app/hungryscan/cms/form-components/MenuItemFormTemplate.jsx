@@ -9,7 +9,14 @@ import {PriceField} from "./PriceField";
 import {FileUploadField} from "./FileUploadField";
 import {useDispatch, useSelector} from "react-redux";
 import {LogicalToggleField} from "./LogicalToggleField";
-import {setAvailable, setDescription, setName, setPrice, setPromoPrice} from "../../../../slices/dishFormSlice";
+import {
+    setAvailable,
+    setDescription,
+    setErrorData,
+    setName,
+    setPrice,
+    setPromoPrice
+} from "../../../../slices/dishFormSlice";
 import {BannersMultiselect} from "./BannersMultiselect";
 
 export const MenuItemFormTemplate = ({setFile, file}) => {
@@ -43,15 +50,18 @@ export const MenuItemFormTemplate = ({setFile, file}) => {
             <AdditionsMultiselect/>
             <AllergensMultiselect/>
             <div className={'form-price-fields-wrapper'}>
-                <PriceField id={'dish-price'}
+                <PriceField id={'price'}
                             value={price}
                             setPrice={(e) => dispatch(setPrice(e))}
-                            error={errorData}/>
+                            error={errorData}
+                            errorSetter={setErrorData}/>
                 {displayPromoPrice &&
-                    <PriceField id={'dish-price'}
+                    <PriceField id={'promoPrice'}
                                 value={promoPrice}
                                 setPrice={(e) => dispatch(setPromoPrice(e))}
-                                priceLabel={t('promoPrice')}/>
+                                priceLabel={t('promoPrice')}
+                                error={errorData}
+                                errorSetter={setErrorData}/>
                 }
             </div>
             <LogicalToggleField id={'available'}
