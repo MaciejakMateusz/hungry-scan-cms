@@ -1,9 +1,6 @@
 import React, {Fragment, useRef, useState} from "react";
 import {s3BucketUrl} from "../../../../../apiData";
-import {getTranslation} from "../../../../../locales/langUtils";
 import {formatPrice} from "../../../../../utils/utils";
-import {Tooltip} from "../../Tooltip";
-import {ReactSVG} from "react-svg";
 import {useTranslation} from "react-i18next";
 import {DragAndDropIcon} from "../../../../icons/DragAndDropIcon";
 import {useSortable} from '@dnd-kit/sortable';
@@ -13,9 +10,26 @@ import {RecordOptionsButton} from "../../shared-components/RecordOptionsButton";
 import {useOutsideClick} from "../../../../../hooks/useOutsideClick";
 import {useMenuItemContextPositions} from "../../../../../hooks/useMenuItemContextPositions";
 import {useImageExists} from "../../../../../hooks/useImageExists";
+import {
+    Banner,
+    BannersWrapper,
+    DragAndDropWrapper,
+    ImageWrapper,
+    LabelsAllergensCounters,
+    PricesWrapper,
+    TextWrapper,
+    VariantsAdditionsCounters
+} from "./MenuItemPosition.style";
+import {UnavailableIcon} from "../../../../icons/UnavailableIcon";
+import {Tooltip} from "../../Tooltip";
+import {useGetTranslation} from "../../../../../hooks/useGetTranslation";
+import {useSelector} from "react-redux";
 
 export const MenuItemPosition = ({id, category, menuItem, filtered}) => {
     const {t} = useTranslation();
+    const getTranslation = useGetTranslation();
+    const {restaurant} = useSelector(state => state.dashboard.view);
+    const restaurantLanguage = restaurant?.value.settings.language.toLowerCase();
     const contextRef = useRef();
     const [contextWindowActive, setContextWindowActive] = useState(false);
     const menuItemContextPositions =
@@ -31,7 +45,7 @@ export const MenuItemPosition = ({id, category, menuItem, filtered}) => {
     const style = {
         transform: CSS.Transform.toString(transform),
         transition,
-        zIndex:  isDragging && !filtered ? 800 : 'auto'
+        zIndex: isDragging && !filtered ? 800 : 'auto'
     };
     const hasImage = useImageExists(id);
 
@@ -39,47 +53,84 @@ export const MenuItemPosition = ({id, category, menuItem, filtered}) => {
         setContextWindowActive(false);
     }, contextWindowActive);
 
+    const renderPrices = menuItem => {
+        if (menuItem.promoPrice) {
+            return (
+                <div>
+                    <div style={{textDecoration: 'line-through'}}>
+                        {formatPrice(menuItem.price)} zł
+                    </div>
+                    <div>
+                        {formatPrice(menuItem.promoPrice)} zł
+                    </div>
+                </div>
+            )
+        }
+        return `${formatPrice(menuItem.price)} zł`;
+    }
+
+    const renderBanners = menuItem => {
+        return (
+            <div>
+                {menuItem.banners?.filter(banner => banner.id !== 'promo')
+                    .map(banner => (
+                        <Banner key={banner.id}>
+                            {getTranslation(banner.name)}
+                        </Banner>
+                    ))}
+            </div>
+        );
+    }
+
     return (
         <>
-            <div ref={setNodeRef}
-                 style={style}
-                 className={'draggable-position-container'}>
+            <div className={'draggable-position-container'} ref={setNodeRef} style={style}>
                 {!filtered ?
-                    <div className={'drag-and-drop-wrapper'} {...listeners} {...attributes}>
+                    <DragAndDropWrapper {...listeners} {...attributes}>
                         <DragAndDropIcon/>
-                    </div> :
-                    <div className={'drag-and-drop-wrapper disabled'}>
+                    </DragAndDropWrapper> :
+                    <DragAndDropWrapper $disabled={true}>
                         <DragAndDropIcon disabled={true}/>
-                    </div>
+                    </DragAndDropWrapper>
                 }
-                <InteractiveMenuItemImage src={`${s3BucketUrl}/menuItems/${menuItem.id}.png?t=${menuItem.updated}`}
-                                          hasImage={hasImage}/>
-                <div className={'draggable-position-text-container'}>
+                <ImageWrapper>
+                    <InteractiveMenuItemImage src={`${s3BucketUrl}/menuItems/${menuItem.id}.png?t=${menuItem.updated}`}
+                                              hasImage={hasImage}/>
+                </ImageWrapper>
+                <TextWrapper>
                     <span className={'draggable-position-name'}>
-                        {getTranslation(menuItem.name)}
+                        {menuItem.name[restaurantLanguage]}
                     </span>
                     <span className={'draggable-position-description'}>
-                        {getTranslation(menuItem.description)}
+                        {menuItem.description[restaurantLanguage]}
                     </span>
-                </div>
-                <div className={'draggable-position-price'}>
-                    {formatPrice(menuItem.price)} zł
-                </div>
-                <div className={'menu-item-position-banner'}>
-                    {menuItem.bestseller ? t('isBestseller') : ''}
-                    {menuItem.new ? t('isNew') : ''}
-                </div>
-                <div className={'menu-item-position-allergens-container'}>
-                    {menuItem.allergens?.map(allergen => (
-                        <Tooltip key={allergen.id} content={getTranslation(allergen.description)}>
-                            <ReactSVG src={`${process.env.PUBLIC_URL}/theme/preview-icons/${allergen.iconName}`}/>
-                        </Tooltip>
-                    ))}
-                    {menuItem.labels?.map(label => (
-                        <Tooltip key={label.id} content={getTranslation(label.name)}>
-                            <ReactSVG src={`${process.env.PUBLIC_URL}/theme/preview-icons/${label.iconName}`}/>
-                        </Tooltip>
-                    ))}
+                </TextWrapper>
+                <PricesWrapper>
+                    {renderPrices(menuItem)}
+                </PricesWrapper>
+                <BannersWrapper>
+                    {renderBanners(menuItem)}
+                </BannersWrapper>
+                <VariantsAdditionsCounters>
+                    <div className={'menu-item-position-counter'}>
+                        {t('variants')}: {menuItem.variantsCount}
+                    </div>
+                    <div className={'menu-item-position-counter'}>
+                        {t('additions')}: {menuItem.additionsCount}
+                    </div>
+                </VariantsAdditionsCounters>
+                <LabelsAllergensCounters>
+                    <div className={'menu-item-position-counter'}>
+                        {t('labels')}: {menuItem.labelsCount}
+                    </div>
+                    <div className={'menu-item-position-counter'}>
+                        {t('allergens')}: {menuItem.allergensCount}
+                    </div>
+                </LabelsAllergensCounters>
+                <div>
+                    <Tooltip content={t('invisibleInMenu')} topOffset={-20}>
+                        {!menuItem.available && <UnavailableIcon/>}
+                    </Tooltip>
                 </div>
                 <div className={'draggable-position-actions'}>
                     <RecordOptionsButton className={'record-context-actions-button'}
