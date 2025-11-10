@@ -1,10 +1,11 @@
 import React from "react";
 import {ReactSVG} from "react-svg";
 import {formatPrice} from "../../../../../../utils/utils";
-import {getTranslation} from "../../../../../../locales/langUtils";
+import {useGetTranslation} from "../../../../../../hooks/useGetTranslation";
 
 export const MenuItemContent = ({menuItem, hasImage}) => {
     const hasPromotion = menuItem.banners?.map(b => b.id).includes('promo');
+    const getTranslation = useGetTranslation();
 
     const renderPrice = () => {
         if (!hasPromotion) {
