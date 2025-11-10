@@ -1,6 +1,5 @@
 import React from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {getTranslation} from "../../../../../locales/langUtils";
 import {setActiveTab, setErrorData} from "../../../../../slices/dishFormSlice";
 import {FormErrorDialog} from "../../../../error/FormErrorDialog";
 import {useTranslation} from "react-i18next";
@@ -9,6 +8,8 @@ import {FormHeader} from "../../shared-components/FormHeader";
 export const MenuItemFormWrapper = ({title, onFormDiscard, onFormSubmit, children}) => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
+    const {restaurant} = useSelector(state => state.dashboard.view);
+    const restaurantLanguage = restaurant?.value.settings.language.toLowerCase();
     const {category} = useSelector(state => state.dishesCategories.view);
     const {isLoading} = useSelector(state => state.dishForm.postDish);
     const {activeTab} = useSelector(state => state.dishForm.form);
@@ -18,7 +19,7 @@ export const MenuItemFormWrapper = ({title, onFormDiscard, onFormSubmit, childre
         return (
             <div className={'text-ellipsis'} style={{maxWidth: '50vw'}}>
                 {title}:&nbsp;&nbsp;
-                <span style={{color: '#6940C6'}}> {getTranslation(category?.name)}</span>
+                <span style={{color: '#6940C6'}}> {category?.name[restaurantLanguage]}</span>
             </div>
         );
     }
