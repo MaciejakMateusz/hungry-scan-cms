@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
+import {getLanguage} from "../locales/langUtils";
 
 export const remove = createAsyncThunk(
     'objectRemoval/remove',
@@ -10,6 +11,7 @@ export const remove = createAsyncThunk(
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept-Language': getLanguage()
             },
             body: JSON.stringify(id),
             credentials: 'include'
