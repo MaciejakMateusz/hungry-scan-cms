@@ -7,6 +7,7 @@ import {
     setErrorData,
     setFridayClosingTime,
     setFridayOpeningTime,
+    setLanguage,
     setMondayClosingTime,
     setMondayOpeningTime,
     setNewRestaurantCreated,
@@ -24,6 +25,7 @@ import {
 } from "../../../../slices/restaurantSlice";
 import {useConfirmationMessage} from "../../../../hooks/useConfirmationMessage";
 import {RestaurantFormWrapper} from "./RestaurantFormWrapper";
+import {getLanguage} from "../../../../locales/langUtils";
 
 export const NewRestaurantForm = () => {
     const {t} = useTranslation();
@@ -32,6 +34,9 @@ export const NewRestaurantForm = () => {
 
     useEffect(() => {
         const fillDefaultOpeningTimes = () => {
+
+            const currentLanguage = getLanguage();
+            dispatch(setLanguage({value: currentLanguage.toUpperCase(), label: t(currentLanguage)}));
 
             const defaultOpeningTime = {
                 value: "10:00:00",
