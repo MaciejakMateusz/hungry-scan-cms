@@ -3,9 +3,6 @@ import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {MenuItemFormTemplate} from "../../form-components/MenuItemFormTemplate";
 import {
-    getAllergens,
-    getBanners,
-    getLabels,
     postDish,
     setCategory,
     setErrorData,
@@ -13,12 +10,12 @@ import {
     setMenuItemCreated
 } from "../../../../../slices/dishFormSlice";
 import {setNewDishFormActive} from "../../../../../slices/dishesCategoriesSlice";
-import {fetchIngredients} from "../../../../../slices/dishAdditionsSlice";
 import {useClearForm} from "../../../../../hooks/useClearForm";
 import {MenuItemFormWrapper} from "./MenuItemFormWrapper";
 import {Variants} from "./variants/Variants";
 import {useTranslatableTransformer} from "../../../../../hooks/useTranslatableTransformer";
 import {useConfirmationMessage} from "../../../../../hooks/useConfirmationMessage";
+import {useFetchMenuItemFormCollections} from "../../../../../hooks/useFetchMenuItemFormCollections";
 
 export const NewMenuItemForm = () => {
     const {t} = useTranslation();
@@ -32,13 +29,11 @@ export const NewMenuItemForm = () => {
         transformDescription: useTranslatableTransformer({obj: null, key: 'description'})
     };
     const renderConfirmation = useConfirmationMessage(setMenuItemCreated);
+    const getFormCollections = useFetchMenuItemFormCollections();
 
     useEffect(() => {
         dispatch(setCategory(category));
-        dispatch(fetchIngredients());
-        dispatch(getAllergens());
-        dispatch(getLabels());
-        dispatch(getBanners());
+        getFormCollections();
     }, [category, dispatch]);
 
     const handleFormDiscard = () => {
