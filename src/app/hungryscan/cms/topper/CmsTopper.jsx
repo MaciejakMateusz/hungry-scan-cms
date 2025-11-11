@@ -91,7 +91,7 @@ export const CmsTopper = () => {
         e.preventDefault();
         const resultAction = await dispatch(remove({id: menu.id, path: 'menus'}));
         if (remove.fulfilled.match(resultAction)) {
-            await getRestaurant()
+            await getRestaurant();
             dispatch(setActiveRemovalType(null));
             dispatch(setActiveMenu(menus[0]));
             dispatch(fetchActiveMenu());
@@ -150,7 +150,7 @@ export const CmsTopper = () => {
                         if (isInEditMode) return;
                         dispatch(setSchedulerActive(true));
                     }}>
-                {t('configureSchedules')}
+                {t('menuSchedules')}
             </button>
         </header>
     );
