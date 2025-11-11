@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Navigate, Outlet, useLocation} from 'react-router-dom';
 import {apiHost} from "../apiData";
 import {LoadingSpinner} from "../app/icons/LoadingSpinner";
+import {getLanguage} from "../locales/langUtils";
 
 export const PrivateRoutes = () => {
     const location = useLocation();
@@ -18,6 +19,7 @@ export const PrivateRoutes = () => {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Accept-Language': getLanguage()
                     },
                     credentials: 'include'
                 });
