@@ -8,18 +8,26 @@ import {useFetchCurrentRestaurant} from "../../../../hooks/useFetchCurrentRestau
 import {fetchActiveMenu} from "../../../../slices/cmsSlice";
 import {FormHeader} from "../shared-components/FormHeader";
 import {FormErrorDialog} from "../../../error/FormErrorDialog";
+import {updateTranslatable} from "../../../../locales/langUtils";
 
 export const Personalization = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const renderConfirmation = useConfirmationMessage(setPersonalizationUpdated);
+    const {restaurant} = useSelector(state => state.dashboard.view);
     const {activeMenu} = useSelector(state => state.globalParams.globalParams);
     const {isLoading, errorData} = useSelector(state => state.personalization.postPersonalization);
+    const {welcomeSlogan} = useSelector(state => state.personalization.form);
     const fetchCurrentRestaurant = useFetchCurrentRestaurant()
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
-        const resultAction = await dispatch(postPersonalization({activeMenu}));
+        const restaurantLanguage = restaurant?.value.settings.language.toLowerCase();
+        const resultAction = await dispatch(postPersonalization(
+            {
+                activeMenu: activeMenu,
+                message: updateTranslatable(activeMenu.value.message, welcomeSlogan, restaurantLanguage)
+            }));
         if (postPersonalization.fulfilled.match(resultAction)) {
             await fetchCurrentRestaurant();
             await dispatch(fetchActiveMenu());
