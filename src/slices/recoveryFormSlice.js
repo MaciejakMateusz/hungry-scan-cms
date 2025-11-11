@@ -1,6 +1,7 @@
 import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
 import {urlParamValue} from "../utils/utils";
+import {getLanguage} from "../locales/langUtils";
 
 export const executeRecoveryFetch = createAsyncThunk(
     'recoveryFetch/executeRecoveryFetch',
@@ -10,7 +11,8 @@ export const executeRecoveryFetch = createAsyncThunk(
             const response = await fetch(`${apiHost}/api/user/confirm-recovery`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Accept-Language': getLanguage()
                 },
                 body: JSON.stringify({
                     password: state.password,
@@ -84,7 +86,8 @@ export const executeRecoveryInitFetch = createAsyncThunk(
             const response = await fetch(`${apiHost}/api/user/recover`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Accept-Language': getLanguage()
                 },
                 body: JSON.stringify({
                     username: state.username
