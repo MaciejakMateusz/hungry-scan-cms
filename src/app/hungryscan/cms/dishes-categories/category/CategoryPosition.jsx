@@ -11,6 +11,7 @@ import {DeleteIconNew} from "../../../../icons/DeleteIconNew";
 import {useDispatch, useSelector} from "react-redux";
 import {useTranslation} from "react-i18next";
 import {ReorderIcon} from "../../../../icons/ReorderIcon";
+import {ContentSizeIndicator} from "../../shared-components/ContentSizeIndicator";
 
 export const CategoryPosition = ({category}) => {
     const {t} = useTranslation();
@@ -38,7 +39,7 @@ export const CategoryPosition = ({category}) => {
                 <span className={'text-ellipsis'} style={{maxWidth: '50vw'}}>
                     {category.name[restaurantLanguage]}
                 </span>
-                ({category.menuItems.length})
+                <ContentSizeIndicator size={category.menuItems.length}/>
                 {renderReorderIcon()}
                 <span className={'clickable-icon'}
                       onClick={() => {
