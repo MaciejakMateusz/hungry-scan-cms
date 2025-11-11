@@ -1,6 +1,6 @@
 import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
-import {updateTranslatable} from "../locales/langUtils";
+import {getLanguage} from "../locales/langUtils";
 
 export const fetchThemeHexes = createAsyncThunk(
     'fetchThemeHexes/fetchThemeHexes',
@@ -9,6 +9,7 @@ export const fetchThemeHexes = createAsyncThunk(
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept-Language': getLanguage()
             },
             credentials: 'include'
         });
@@ -24,7 +25,7 @@ export const fetchThemeHexes = createAsyncThunk(
 
 export const postPersonalization = createAsyncThunk(
     'postPersonalization/postPersonalization',
-    async ({activeMenu}, {getState, rejectWithValue}) => {
+    async ({activeMenu, message}, {getState, rejectWithValue}) => {
         const state = getState();
         const form = state.personalization.form;
         const post = state.personalization.postPersonalization;
@@ -33,14 +34,15 @@ export const postPersonalization = createAsyncThunk(
             return rejectWithValue(post.errorData);
         }
 
-        const response = await fetch(`${apiHost}/api/cms/menus/update`, {
+        const response = await fetch(`${apiHost}/api/cms/menus/personalize`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept-Language': getLanguage()
             },
             body: JSON.stringify({
                 id: activeMenu.value.id,
-                message: updateTranslatable(activeMenu.value.message, form.welcomeSlogan),
+                message: message,
                 theme: form.theme,
                 bannerIconVisible: form.bannerIconVisible,
                 color: activeMenu.value.color,
