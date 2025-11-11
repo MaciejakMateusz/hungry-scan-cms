@@ -1,5 +1,6 @@
 import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
+import {getLanguage} from "../locales/langUtils";
 
 export const executeReactivateFetch = createAsyncThunk(
     'reactivateFetch/executeReactivateFetch',
@@ -9,7 +10,8 @@ export const executeReactivateFetch = createAsyncThunk(
             const response = await fetch(`${apiHost}/api/user/resend-activation`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Accept-Language': getLanguage()
                 },
                 body: JSON.stringify({
                     username: state.username
