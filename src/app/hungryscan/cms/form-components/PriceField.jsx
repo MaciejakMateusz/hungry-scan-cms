@@ -1,22 +1,19 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {useTranslation} from "react-i18next";
 import {formatPrice} from "../../../../utils/utils";
+import {useDispatch} from "react-redux";
 
 export const PriceField = (props) => {
     const {t} = useTranslation();
+    const dispatch = useDispatch();
     const [isFocused, setIsFocused] = useState(false);
-    const [hasError, setHasError] = useState(props.error?.price);
 
     const resetErrorStyles = () => {
-        setHasError(null);
+        dispatch(props.errorSetter({...props.error, [props.id]: null}));
     }
 
-    useEffect(() => {
-        setHasError(props.error?.price && props.value < 1.00)
-    }, [props.error, props.value]);
-
     const handlePriceChange = (e) => {
-        if(e.target.value.length > 5) {
+        if (e.target.value.length > 5) {
             return;
         }
         props.setPrice(e.target.value)
@@ -52,13 +49,13 @@ export const PriceField = (props) => {
                                id={props.id}
                                placeholder={isFocused ? '' : '0.00'}
                                name={'price'}
-                               className={`form-field price ${hasError ? 'error' : ''}`}
+                               className={`form-field price ${props.error?.[props.id] ? 'error' : ''}`}
                                value={props.value}
                                onChange={handlePriceChange}
                                onFocus={() => setIsFocused(true)}
                                onBlur={(e) => handleBlur(e)}
                         />
-                        {hasError && <div className={'validation-msg'}>{props.error?.price}</div>}
+                        {props.error?.[props.id] && <div className={'validation-msg'}>{props.error[props.id]}</div>}
                     </div>
                     <span className={'price-input-currency'}>PLN</span>
                 </span>
