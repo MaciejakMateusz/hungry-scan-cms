@@ -1,6 +1,7 @@
 import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
 import {cleanseAndGroupMenuPlans} from "../utils/schedulerUtils";
+import {getLanguage} from "../locales/langUtils";
 
 export const switchStandard = createAsyncThunk(
     'switchStandard/switchStandard',
@@ -9,6 +10,7 @@ export const switchStandard = createAsyncThunk(
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept-Language': getLanguage()
             },
             credentials: 'include'
         });
@@ -53,6 +55,7 @@ export const updatePlans = createAsyncThunk(
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept-Language': getLanguage()
             },
             body: JSON.stringify(menus),
             credentials: 'include'
@@ -103,6 +106,7 @@ export const updateMenu = createAsyncThunk(
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept-Language': getLanguage()
             },
             body: JSON.stringify(params.menu),
             credentials: 'include'
@@ -147,6 +151,7 @@ export const postMenu = createAsyncThunk(
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept-Language': getLanguage()
             },
             body: JSON.stringify(params.menu),
             credentials: 'include'
@@ -191,6 +196,7 @@ export const fetchMenu = createAsyncThunk(
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept-Language': getLanguage()
             },
             body: JSON.stringify(params.id),
             credentials: 'include'
@@ -237,6 +243,7 @@ export const fetchMenuColors = createAsyncThunk(
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept-Language': getLanguage()
             },
             credentials: 'include'
         });
