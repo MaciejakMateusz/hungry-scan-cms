@@ -13,8 +13,11 @@ export const PersonalizationForm = () => {
     const {activeMenu} = useSelector(state => state.globalParams.globalParams);
 
     useEffect(() => {
-        if (!activeMenu) return;
-        dispatch(setBannerIconVisible(activeMenu.value.bannerIconVisible));
+        const setupMenu = () => {
+            if (!activeMenu) return;
+            dispatch(setBannerIconVisible(activeMenu.value.bannerIconVisible));
+        }
+        setupMenu();
     }, [activeMenu, dispatch]);
 
     return (
