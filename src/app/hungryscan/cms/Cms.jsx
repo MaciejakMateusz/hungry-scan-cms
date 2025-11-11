@@ -3,7 +3,7 @@ import {useTranslation} from "react-i18next";
 import {NavButton} from "../NavButton";
 import {DishesCategories} from "./dishes-categories/DishesCategories";
 import {Additions} from "./additions/Additions";
-import {Translations} from "./translations-new/Translations";
+import {Translations} from "./translations/Translations";
 import {Personalization} from "./personalization/Personalization";
 import {useDispatch, useSelector} from "react-redux";
 import {DecisionDialog} from "./dialog-windows/DecisionDialog";
