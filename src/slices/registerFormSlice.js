@@ -1,5 +1,6 @@
 import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
+import {getLanguage} from "../locales/langUtils";
 
 
 export const executeRegisterFetch = createAsyncThunk(
@@ -10,7 +11,8 @@ export const executeRegisterFetch = createAsyncThunk(
             const response = await fetch(`${apiHost}/api/user/register`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Accept-Language': getLanguage()
                 },
                 body: JSON.stringify({
                     forename: state.forename,
