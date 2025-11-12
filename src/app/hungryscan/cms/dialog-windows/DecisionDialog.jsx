@@ -7,6 +7,14 @@ export const DecisionDialog = (props) => {
     const {t} = useTranslation();
     const {restaurant} = useSelector(state => state.dashboard.view);
     const restaurantLanguage = restaurant?.value.settings.language.toLowerCase();
+    const isNameTranslatable = typeof props.objName !== 'string';
+
+    const renderDialogTitle = () => {
+        if (isNameTranslatable) {
+            return props.objName ? `"` + props.objName[restaurantLanguage] + '"' : '';
+        }
+        return props.objName ? props.objName : '';
+    }
 
     const renderCancelButton = () => {
         if (!props.onCancel) return;
@@ -40,7 +48,7 @@ export const DecisionDialog = (props) => {
             <div className={'overlay'}></div>
             <div className={'decision-dialog'}>
                 <div className={'decision-dialog-content'}>
-                    <p>{props.msg} {props.objName ? `"` + props.objName[restaurantLanguage] + '"' : ''}</p>
+                    <p>{props.msg} {renderDialogTitle()}</p>
                 </div>
                 <div className={'decision-dialog-footer'}>
                     {renderCancelButton()}
