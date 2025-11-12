@@ -133,7 +133,6 @@ export const CmsTopper = () => {
                                      }}
                                      contextWindowActive={contextMenuActive}
                                      contextPositions={contextMenuPositions}
-                                     obj={menu}
                                      contextRef={contextRef}/>
             </div>
             {!schedulerActive &&
