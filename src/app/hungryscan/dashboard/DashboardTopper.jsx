@@ -9,7 +9,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {getUserRestaurants} from "../../../slices/dashboardSlice";
 import {CustomMenuList} from "../cms/form-components/CustomMenuList";
 import {
-    setContextMenuDetailsActive,
     setNewRestaurantFormActive,
     setRemovalActive,
     setRestaurantContextMenuActive,
@@ -33,7 +32,6 @@ export const DashboardTopper = () => {
         newRestaurantFormActive,
         editRestaurantFormActive,
         restaurantContextMenuActive,
-        contextMenuDetailsActive,
         removalActive
     } = useSelector(state => state.restaurant.form);
     const controlDisabled = newRestaurantFormActive || editRestaurantFormActive;
@@ -44,7 +42,6 @@ export const DashboardTopper = () => {
     const removalPending = useSelector(state => state.objRemoval.isLoading);
 
     useOutsideClick(contextRef, () => {
-            dispatch(setContextMenuDetailsActive(false));
             dispatch(setRestaurantContextMenuActive(false));
     }, restaurantContextMenuActive);
 
@@ -86,9 +83,10 @@ export const DashboardTopper = () => {
         <header className={'app-header dashboard'}>
             {removalActive && <DecisionDialog msg={t('confirmRestaurantRemoval')}
                                               objName={restaurant?.value.name}
+                                              objTranslatable={false}
                                               onCancel={() => dispatch(setRemovalActive(false))}
                                               onSubmit={handleRestaurantRemoval}
-                                               isLoading={removalPending}/>}
+                                              isLoading={removalPending}/>}
             <div className={'app-header-select-wrapper'}>
                 <DocumentIcon customColor={"#9746FF"} absolute={true}/>
                 <Select id={'dashboard-restaurant'}
@@ -118,14 +116,12 @@ export const DashboardTopper = () => {
                      onClick={() => {
                          if (controlDisabled) return;
                          dispatch(setRestaurantContextMenuActive(!restaurantContextMenuActive));
-                         dispatch(setContextMenuDetailsActive(false));
                      }}>
                     <ThreeDotsIcon/>
                 </div>
                 {restaurantContextMenuActive &&
                     <ContextMenu positions={contextMenuPositions}
                                  obj={restaurant.value}
-                                 detailsActive={contextMenuDetailsActive}
                                  contextRef={contextRef}/>}
             </div>
         </header>
