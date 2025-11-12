@@ -1,30 +1,30 @@
 import {ContextMenuDetails} from "./ContextMenuDetails";
 
-export const ContextMenu = ({positions, obj, detailsActive, contextRef, windowPosition}) => {
+export const ContextMenu = ({positions, obj, detailsActive, contextRef, windowPosition, detailsWindowPosition}) => {
 
-    const renderPosition = (position) => {
-        if (position.details) {
-            return (
-                <div key={position.id}
-                     className={'context-menu-position properties'}
-                     onMouseOver={position.handler}
-                     onMouseLeave={position.handler}>
-                    {position.icon}{position.name}
-                </div>);
-        }
+    const renderPositions = () => {
         return (
-            <div key={position.id}
-                 className={'context-menu-position'}
-                 onClick={position.handler}>{position.icon}{position.name}
-            </div>);
+            positions.map((position) => {
+                return (
+                    <div key={position.id}>
+                        {position.id === 'details' && <div className={'draggable-position-separator'}></div>}
+                        <div className={'context-menu-position'}
+                             onClick={position.handler}>
+                            {position.icon}<span style={position.id === 'remove' ? {color: '#EC5858'} : {}}>{position.name}</span>
+                        </div>
+                    </div>
+                );
+
+            })
+        );
     }
 
     return (
         <div className={'context-menu'} style={windowPosition} ref={contextRef}>
             <div className={'context-menu-wrapper'}>
-                {positions.map((p) => renderPosition(p))}
+                {renderPositions()}
             </div>
-            {detailsActive && <ContextMenuDetails obj={obj}/>}
+            {detailsActive && <ContextMenuDetails obj={obj} windowPosition={detailsWindowPosition} />}
         </div>
     );
 }
