@@ -1,35 +1,29 @@
-import React from "react";
-import {
-    setActiveRemovalType,
-    setCategory,
-    setCategoryForAction,
-    setEditCategoryFormActive,
-    setNewDishFormActive, setReorderCategoriesDialogActive
-} from "../../../../../slices/dishesCategoriesSlice";
-import {EditIconNew} from "../../../../icons/EditIconNew";
-import {DeleteIconNew} from "../../../../icons/DeleteIconNew";
+import React, {useRef, useState} from "react";
+import {setCategory, setNewDishFormActive} from "../../../../../slices/dishesCategoriesSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {useTranslation} from "react-i18next";
-import {ReorderIcon} from "../../../../icons/ReorderIcon";
 import {ContentSizeIndicator} from "../../shared-components/ContentSizeIndicator";
+import {RecordOptionsButton} from "../../shared-components/RecordOptionsButton";
+import {useCategoryContextPositions} from "../../../../../hooks/useCategoryContextPositions";
+import {useOutsideClick} from "../../../../../hooks/useOutsideClick";
 
 export const CategoryPosition = ({category}) => {
     const {t} = useTranslation();
-    const {menu} = useSelector(state => state.cms.fetchActiveMenu);
     const dispatch = useDispatch();
+    const contextRef = useRef();
+    const {menu} = useSelector(state => state.cms.fetchActiveMenu);
     const {restaurant} = useSelector(state => state.dashboard.view);
     const restaurantLanguage = restaurant?.value.settings.language.toLowerCase();
+    const [contextWindowActive, setContextWindowActive] = useState(false);
+    const [contextDetailsWindowActive, setContextDetailsWindowActive] = useState(false);
+    const categoryContextPositions = useCategoryContextPositions({
+            category, setContextWindowActive, setContextDetailsWindowActive, contextDetailsWindowActive
+        }
+    );
 
-    const renderReorderIcon = () => {
-        if (menu.categories.length === 1) return;
-
-        return (
-            <span className={'clickable-icon'}
-                  onClick={() => dispatch(setReorderCategoriesDialogActive(true))}>
-                <ReorderIcon/>
-            </span>
-        );
-    }
+    useOutsideClick(contextRef, () => {
+        setContextWindowActive(false);
+    }, contextWindowActive);
 
     if (!menu || !menu.categories) return null;
 
@@ -40,21 +34,12 @@ export const CategoryPosition = ({category}) => {
                     {category.name[restaurantLanguage]}
                 </span>
                 <ContentSizeIndicator size={category.menuItems.length}/>
-                {renderReorderIcon()}
-                <span className={'clickable-icon'}
-                      onClick={() => {
-                          dispatch(setCategory(category));
-                          dispatch(setEditCategoryFormActive(true));
-                      }}>
-                    <EditIconNew/>
-                </span>
-                <span className={'clickable-icon'}
-                      onClick={() => {
-                          dispatch(setCategoryForAction(category));
-                          dispatch(setActiveRemovalType('category'));
-                      }}>
-                    <DeleteIconNew/>
-                </span>
+                <RecordOptionsButton className={'record-context-actions-button'}
+                                     onClick={() => setContextWindowActive(!contextWindowActive)}
+                                     contextWindowActive={contextWindowActive}
+                                     contextPositions={categoryContextPositions}
+                                     obj={category}
+                                     contextRef={contextRef}/>
             </div>
             <div className={'new-position-button'} onClick={() => {
                 dispatch(setCategory(category));
