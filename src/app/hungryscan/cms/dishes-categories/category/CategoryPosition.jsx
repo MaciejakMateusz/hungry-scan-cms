@@ -38,7 +38,6 @@ export const CategoryPosition = ({category}) => {
                                      onClick={() => setContextWindowActive(!contextWindowActive)}
                                      contextWindowActive={contextWindowActive}
                                      contextPositions={categoryContextPositions}
-                                     obj={category}
                                      contextRef={contextRef}/>
             </div>
             <div className={'new-position-button'} onClick={() => {
