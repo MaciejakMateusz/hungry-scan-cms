@@ -1,6 +1,6 @@
-import {ContextMenuDetails} from "./ContextMenuDetails";
+import React from "react";
 
-export const ContextMenu = ({positions, obj, detailsActive, contextRef, windowPosition, detailsWindowPosition}) => {
+export const ContextMenu = ({positions, contextRef, windowPosition}) => {
 
     const renderPositions = () => {
         return (
@@ -24,7 +24,6 @@ export const ContextMenu = ({positions, obj, detailsActive, contextRef, windowPo
             <div className={'context-menu-wrapper'}>
                 {renderPositions()}
             </div>
-            {detailsActive && <ContextMenuDetails obj={obj} windowPosition={detailsWindowPosition} />}
         </div>
     );
 }
