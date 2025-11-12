@@ -51,6 +51,10 @@ export const Cms = () => {
     }
 
     useEffect(() => {
+        if (schedulerActive) {
+            dispatch(setIsInEditMode(true));
+            return;
+        }
         dispatch(setIsInEditMode());
     }, [
         dispatch,
