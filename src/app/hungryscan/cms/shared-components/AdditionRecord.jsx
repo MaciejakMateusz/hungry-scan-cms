@@ -27,8 +27,6 @@ export const AdditionRecord = ({ingredient, name, price}) => {
                                              onClick={() => setContextWindowActive(!contextWindowActive)}
                                              contextWindowActive={contextWindowActive}
                                              contextPositions={additionContextPositions}
-                                             obj={ingredient}
-                                             detailsActive={false}
                                              contextRef={contextRef}
                                              windowPosition={{left: '-150px', top: '30px'}}/>
                     </div>
