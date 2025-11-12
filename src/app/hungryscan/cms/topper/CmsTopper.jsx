@@ -9,12 +9,7 @@ import {fetchActiveMenu, setSchedulerActive, switchActiveMenu} from "../../../..
 import {setActiveMenu} from "../../../../slices/globalParamsSlice";
 import {CustomMenuList} from "../form-components/CustomMenuList";
 import {NewMenuFormDialog} from "../menu/NewMenuFormDialog";
-import {
-    setContextMenuActive,
-    setContextMenuDetailsActive, setErrorData,
-    setMenuRemoved,
-    setNewMenuFormActive
-} from "../../../../slices/menuSlice";
+import {setContextMenuActive, setErrorData, setMenuRemoved, setNewMenuFormActive} from "../../../../slices/menuSlice";
 import {useMenuContextPositions} from "../../../../hooks/useMenuContextPositions";
 import {remove} from "../../../../slices/objectRemovalSlice";
 import {setActiveRemovalType} from "../../../../slices/dishesCategoriesSlice";
@@ -39,7 +34,6 @@ export const CmsTopper = () => {
         newMenuFormActive,
         editMenuFormActive,
         contextMenuActive,
-        contextMenuDetailsActive,
         errorData
     } = useSelector(state => state.menu.form);
     const [menus, setMenus] = useState([]);
@@ -47,9 +41,9 @@ export const CmsTopper = () => {
     const renderConfirmation = useConfirmationMessage(setMenuRemoved);
     const getRestaurant = useFetchCurrentRestaurant();
     const removalPending = useSelector(state => state.objRemoval.isLoading);
+    const {schedulerActive} = useSelector(state => state.cms.view);
 
     useOutsideClick(contextRef, () => {
-        dispatch(setContextMenuDetailsActive(false));
         dispatch(setContextMenuActive(false));
     }, contextMenuActive);
 
@@ -136,22 +130,23 @@ export const CmsTopper = () => {
                                      onClick={() => {
                                          if (isInEditMode) return;
                                          dispatch(setContextMenuActive(!contextMenuActive));
-                                         dispatch(setContextMenuDetailsActive(false));
                                      }}
                                      contextWindowActive={contextMenuActive}
                                      contextPositions={contextMenuPositions}
                                      obj={menu}
-                                     detailsActive={contextMenuDetailsActive}
                                      contextRef={contextRef}/>
             </div>
-            <button className={'general-button'}
-                    style={isInEditMode ? {cursor: 'not-allowed', background: '#B5B5B5'} : {}}
-                    onClick={() => {
-                        if (isInEditMode) return;
-                        dispatch(setSchedulerActive(true));
-                    }}>
-                {t('menuSchedules')}
-            </button>
+            {!schedulerActive &&
+                <button className={'general-button'}
+                        style={isInEditMode ? {cursor: 'not-allowed', background: '#B5B5B5'} : {}}
+                        onClick={() => {
+                            if (isInEditMode) return;
+                            dispatch(setSchedulerActive(true));
+                        }}>
+                    {t('menuSchedules')}
+                </button>
+            }
+
         </header>
     );
 }
