@@ -122,11 +122,13 @@ export const CmsTopper = () => {
                                 MenuList: CustomMenuList
                             }}
                             onAdd={() => dispatch(setNewMenuFormActive(true))}
-                            buttonText={t('addMenu')}
+                            buttonText={menus.length >= 10 ? t('maximumMenusCount') : t('addMenu')}
+                            buttonDisabled={menus.length >= 10}
                             selectRef={selectRef}
                     />
                 </div>
                 <RecordOptionsButton className={'options-button'}
+                                     style={isInEditMode ? {cursor: 'not-allowed'} : {}}
                                      onClick={() => {
                                          if (isInEditMode) return;
                                          dispatch(setContextMenuActive(!contextMenuActive));
