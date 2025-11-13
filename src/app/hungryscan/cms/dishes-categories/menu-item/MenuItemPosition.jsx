@@ -11,7 +11,7 @@ import {useOutsideClick} from "../../../../../hooks/useOutsideClick";
 import {useMenuItemContextPositions} from "../../../../../hooks/useMenuItemContextPositions";
 import {useImageExists} from "../../../../../hooks/useImageExists";
 import {
-    Banner,
+    Banner, BannersContainer,
     BannersWrapper,
     DragAndDropWrapper,
     ImageWrapper,
@@ -33,7 +33,9 @@ export const MenuItemPosition = ({id, category, menuItem, filtered}) => {
     const contextRef = useRef();
     const [contextWindowActive, setContextWindowActive] = useState(false);
     const menuItemContextPositions =
-        useMenuItemContextPositions({category, menuItem, setContextWindowActive});
+        useMenuItemContextPositions({
+            category, menuItem, setContextWindowActive
+        });
     const {
         attributes,
         listeners,
@@ -71,14 +73,14 @@ export const MenuItemPosition = ({id, category, menuItem, filtered}) => {
 
     const renderBanners = menuItem => {
         return (
-            <div>
+            <BannersContainer>
                 {menuItem.banners?.filter(banner => banner.id !== 'promo')
                     .map(banner => (
                         <Banner key={banner.id}>
                             {getTranslation(banner.name)}
                         </Banner>
                     ))}
-            </div>
+            </BannersContainer>
         );
     }
 
@@ -137,8 +139,6 @@ export const MenuItemPosition = ({id, category, menuItem, filtered}) => {
                                          onClick={() => setContextWindowActive(!contextWindowActive)}
                                          contextWindowActive={contextWindowActive}
                                          contextPositions={menuItemContextPositions}
-                                         obj={menuItem}
-                                         detailsActive={false}
                                          contextRef={contextRef}
                                          windowPosition={{left: '-150px', top: '30px'}}/>
                 </div>
