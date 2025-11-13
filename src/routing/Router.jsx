@@ -13,6 +13,8 @@ import {App} from "../app/hungryscan/App";
 
 export const Router = () => {
     const {t} = useTranslation();
+    const isBeta = process.env.REACT_APP_IS_BETA !== 'true';
+
     return (
         <BrowserRouter>
             <Routes>
@@ -34,7 +36,7 @@ export const Router = () => {
                     <Route path='/activation-error' element={<Forms activeForm={'activationError'}/>}/>
                     <Route path='/account-activated' element={<Dialogs activeDialog={'accountActivated'}/>}/>
                     <Route path='/sign-in' element={<Forms activeForm={'signIn'}/>}/>
-                    <Route path='/sign-up' element={<Forms activeForm={'signUp'}/>}/>
+                    {isBeta && <Route path='/sign-up' element={<Forms activeForm={'signUp'}/>}/>}
                     <Route path='/password-recovery' element={<Forms activeForm={"forgotPassword"}/>}/>
                     <Route path='/new-password' element={<Forms activeForm={"newPassword"}/>}/>
                     <Route path='/recovery-sent' element={<Dialogs activeDialog={'recoverySent'}/>}/>
