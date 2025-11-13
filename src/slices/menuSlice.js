@@ -289,7 +289,6 @@ export const menuSLice = createSlice(
             newMenuFormActive: false,
             editMenuFormActive: false,
             contextMenuActive: false,
-            contextMenuDetailsActive: false,
             newMenuCreated: false,
             menuUpdated: false,
             menuRemoved: false,
@@ -312,9 +311,6 @@ export const menuSLice = createSlice(
             },
             setContextMenuActive: (state, action) => {
                 state.contextMenuActive = action.payload;
-            },
-            setContextMenuDetailsActive: (state, action) => {
-                state.contextMenuDetailsActive = action.payload;
             },
             setNewMenuCreated: (state, action) => {
                 state.newMenuCreated = action.payload;
@@ -357,7 +353,6 @@ export const {
     setNewMenuFormActive,
     setEditMenuFormActive,
     setContextMenuActive,
-    setContextMenuDetailsActive,
     setNewMenuCreated,
     setMenuUpdated,
     setMenuRemoved,
