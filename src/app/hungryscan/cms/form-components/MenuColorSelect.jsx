@@ -2,8 +2,11 @@ import React, {useRef, useState, useEffect} from "react";
 import {fetchMenuColors} from "../../../../slices/menuSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {useOutsideClick} from "../../../../hooks/useOutsideClick";
+import {ReactSVG} from "react-svg";
+import {useTranslation} from "react-i18next";
 
 export const MenuColorSelect = ({currentColor, handleColorChange, menuId}) => {
+    const {t} = useTranslation();
     const dispatch = useDispatch();
     const [expanded, setExpanded] = useState(false);
     const {menuColors} = useSelector(state => state.menu.fetchMenuColors);
@@ -21,11 +24,16 @@ export const MenuColorSelect = ({currentColor, handleColorChange, menuId}) => {
         const bottomRow = menuColors.filter(color => color.id > 5);
         return (
             <div className={'menu-colors-pallet'}>
-                <div className={'flex-wrapper'}>
-                    {topRow?.map((color) => mapRow(color))}
+                <div className={'menu-colors-pallet-title'}>
+                    {t('chooseColor')}
                 </div>
-                <div className={'flex-wrapper'}>
-                    {bottomRow?.map((color) => mapRow(color))}
+                <div>
+                    <div className={'flex-wrapper'}>
+                        {topRow?.map((color) => mapRow(color))}
+                    </div>
+                    <div className={'flex-wrapper'}>
+                        {bottomRow?.map((color) => mapRow(color))}
+                    </div>
                 </div>
             </div>
         );
@@ -40,7 +48,13 @@ export const MenuColorSelect = ({currentColor, handleColorChange, menuId}) => {
                      handleColorChange(color, menuId);
                      e.stopPropagation();
                      setExpanded(false);
-                 }}/>
+                 }}>
+                {currentColor.hex === color.hex &&
+                    <div className={'menu-color-selected-indicator-box'}>
+                        <ReactSVG src={`${process.env.PUBLIC_URL}/theme/icons/check-mark-small.svg`}/>
+                    </div>
+                }
+            </div>
         );
     }
 
