@@ -1,5 +1,6 @@
 import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
+import {getLanguage} from "../locales/langUtils";
 
 
 export const switchRestaurant = createAsyncThunk(
@@ -11,7 +12,8 @@ export const switchRestaurant = createAsyncThunk(
             const response = await fetch(`${apiHost}/api/user/restaurant`, {
                 method: 'PATCH',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Accept-Language': getLanguage()
                 },
                 body: JSON.stringify(restaurantId),
                 credentials: 'include'
@@ -60,7 +62,6 @@ export const postRestaurant = createAsyncThunk(
         try {
             const state = getState().restaurant.form;
             const rawOperatingHours = state.settings.operatingHours;
-            console.log(rawOperatingHours)
             const operatingHours = {
                 MONDAY: {
                     ...rawOperatingHours.MONDAY,
@@ -101,7 +102,8 @@ export const postRestaurant = createAsyncThunk(
             const response = await fetch(`${apiHost}/api/cms/restaurants/${params.action}`, {
                 method: params.action === 'add' ? 'POST' : 'PATCH',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Accept-Language': getLanguage()
                 },
                 body: JSON.stringify({
                     id: state.id,
@@ -112,7 +114,9 @@ export const postRestaurant = createAsyncThunk(
                     settings: {
                         id: state.settings.id,
                         restaurantId: state.settings.restaurantId,
-                        operatingHours: operatingHours
+                        operatingHours: operatingHours,
+                        language: state.settings.language?.value,
+                        supportedLanguages: state.chosenSupportedLanguages.map(language => language.value)
                     }
                 }),
                 credentials: 'include'
@@ -167,13 +171,17 @@ export const createInitialRestaurant = createAsyncThunk(
             const response = await fetch(`${apiHost}/api/cms/restaurants/create-first`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Accept-Language': getLanguage()
                 },
                 body: JSON.stringify({
                     name: state.name,
                     address: state.address,
                     postalCode: state.postalCode,
-                    city: state.city
+                    city: state.city,
+                    settings: {
+                        language: state.settings.language?.value
+                    }
                 }),
                 credentials: 'include'
             });
@@ -223,7 +231,6 @@ export const formSlice = createSlice(
             newRestaurantFormActive: false,
             editRestaurantFormActive: false,
             restaurantContextMenuActive: false,
-            contextMenuDetailsActive: false,
             newRestaurantCreated: false,
             restaurantUpdated: false,
             restaurantRemoved: false,
@@ -245,8 +252,11 @@ export const formSlice = createSlice(
                     FRIDAY: {startTime: null, endTime: null, available: true},
                     SATURDAY: {startTime: null, endTime: null, available: true},
                     SUNDAY: {startTime: null, endTime: null, available: true}
-                }
+                },
+                language: null,
+                supportedLanguages: []
             },
+            chosenSupportedLanguages: [],
             errorData: null
         },
         reducers: {
@@ -258,9 +268,6 @@ export const formSlice = createSlice(
             },
             setRestaurantContextMenuActive: (state, action) => {
                 state.restaurantContextMenuActive = action.payload;
-            },
-            setContextMenuDetailsActive: (state, action) => {
-                state.contextMenuDetailsActive = action.payload;
             },
             setNewRestaurantCreated: (state, action) => {
                 state.newRestaurantCreated = action.payload;
@@ -361,6 +368,17 @@ export const formSlice = createSlice(
             setSundayAvailable: (state, action) => {
                 state.settings.operatingHours.SUNDAY.available = action.payload;
             },
+            setLanguage: (state, action) => {
+                state.settings.language = action.payload;
+                state.chosenSupportedLanguages = state.chosenSupportedLanguages
+                    ?.filter(language => language.value !== action.payload.value);
+            },
+            setSupportedLanguages: (state, action) => {
+                state.settings.supportedLanguages = action.payload;
+            },
+            setChosenSupportedLanguages: (state, action) => {
+                state.chosenSupportedLanguages = action.payload;
+            },
             setErrorData: (state, action) => {
                 state.errorData = action.payload;
             },
@@ -383,8 +401,11 @@ export const formSlice = createSlice(
                         FRIDAY: {startTime: null, endTime: null, available: true},
                         SATURDAY: {startTime: null, endTime: null, available: true},
                         SUNDAY: {startTime: null, endTime: null, available: true}
-                    }
+                    },
+                    language: null,
+                    supportedLanguages: []
                 };
+                state.chosenSupportedLanguages = [];
             }
         }
     });
@@ -393,7 +414,6 @@ export const {
     setNewRestaurantFormActive,
     setEditRestaurantFormActive,
     setRestaurantContextMenuActive,
-    setContextMenuDetailsActive,
     setNewRestaurantCreated,
     setRestaurantUpdated,
     setRestaurantRemoved,
@@ -427,6 +447,9 @@ export const {
     setSundayOpeningTime,
     setSundayClosingTime,
     setSundayAvailable,
+    setLanguage,
+    setSupportedLanguages,
+    setChosenSupportedLanguages,
     setErrorData,
     clearForm
 } = formSlice.actions;
