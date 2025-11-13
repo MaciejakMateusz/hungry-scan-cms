@@ -1,6 +1,6 @@
-export const ReorderIcon = () => {
+export const ReorderIcon = ({width = '19', height = '18'}) => {
     return (
-        <svg width="19" height="18" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width={width} height={height} viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect x="3.93333" y="1.59984" width="1.46667" height="14.8" rx="0.733333" fill="#9746FF" stroke="#9746FF"
                   strokeWidth="0.133333"/>
             <path
