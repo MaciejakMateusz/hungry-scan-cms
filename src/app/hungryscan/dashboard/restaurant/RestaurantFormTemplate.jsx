@@ -1,21 +1,42 @@
 import React from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {setAddress, setCity, setName, setPostalCode} from "../../../../slices/restaurantSlice";
+import {
+    setAddress,
+    setChosenSupportedLanguages,
+    setCity,
+    setLanguage,
+    setName,
+    setPostalCode
+} from "../../../../slices/restaurantSlice";
 import {NameField} from "../../cms/form-components/NameField";
 import {CustomTextField} from "../../cms/form-components/CustomTextField";
 import {OperatingHoursFieldsSet} from "./OperatingHoursFieldsSet";
 import {useTranslation} from "react-i18next";
+import {CustomSelect} from "../../cms/form-components/CustomSelect";
+import {customSelect} from "../../../../selectStyles";
+import {CustomNoOptionsMessage} from "../../cms/form-components/CustomNoOptionsMessage";
+import {supportedLanguages} from "../../../../i18n";
+import makeAnimated from "react-select/animated";
 
 export const RestaurantFormTemplate = () => {
     const dispatch = useDispatch();
     const {t} = useTranslation();
+    const animatedComponents = makeAnimated();
     const {
         name,
         address,
         postalCode,
-        city
+        city,
+        settings,
+        chosenSupportedLanguages
     } = useSelector(state => state.restaurant.form);
     const {errorData} = useSelector(state => state.restaurant.form);
+    const supported = Object.keys(supportedLanguages);
+    const languageOptions = supported.filter(language => language.toUpperCase() !== settings.language?.value)
+        .map(language => ({
+            value: language.toUpperCase(),
+            label: t(language)
+        }));
 
     return (
         <>
@@ -52,9 +73,32 @@ export const RestaurantFormTemplate = () => {
                                  placeholder={'Wpisz miasto'}
                                  label={'Miasto'}
                 />
+                <CustomSelect id={'language'}
+                              name={'language'}
+                              labelName={t('language')}
+                              isRequired={true}
+                              info={t('restaurantLanguageInfo')}
+                              placeholder={'Wybierz język...'}
+                              value={settings.language}
+                              onChange={(selected) => dispatch(setLanguage(selected))}
+                              options={languageOptions}
+                              styles={customSelect}
+                              components={{NoOptionsMessage: CustomNoOptionsMessage}}/>
+                <CustomSelect id={'supported-languages'}
+                              name={'supportedLanguages'}
+                              labelName={t('supportedLanguages')}
+                              isRequired={true}
+                              closeMenuOnSelect={false}
+                              onChange={(selected) => dispatch(setChosenSupportedLanguages(selected))}
+                              value={chosenSupportedLanguages}
+                              placeholder={t('choose')}
+                              options={languageOptions}
+                              isClearable={true}
+                              isMulti={true}
+                              components={{...animatedComponents, NoOptionsMessage: CustomNoOptionsMessage}}/>
+
             </div>
             <OperatingHoursFieldsSet/>
-            {errorData?.settings && <span className={'form-validation-msg'}>{errorData?.settings}</span>}
         </>
     );
 }
