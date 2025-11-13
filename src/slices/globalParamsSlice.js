@@ -9,6 +9,7 @@ export const globalParamsSlice = createSlice(
             activeRestaurantId: null,
             activeMenu: null,
             activeMenuId: null,
+            activeObjDetails: null,
             currentView: STATS,
             cmsActive: false,
             currentDialog: null,
@@ -25,6 +26,9 @@ export const globalParamsSlice = createSlice(
             },
             setActiveMenuId: (state, action) => {
                 state.activeMenuId = action.payload;
+            },
+            setActiveObjDetails: (state, action) => {
+                state.activeObjDetails = action.payload;
             },
             setCurrentView: (state, action) => {
                 state.currentView = action.payload;
@@ -43,6 +47,7 @@ export const {
     setActiveRestaurantId,
     setActiveMenu,
     setActiveMenuId,
+    setActiveObjDetails,
     setCurrentView,
     setCmsActive,
     setCurrentDialog
