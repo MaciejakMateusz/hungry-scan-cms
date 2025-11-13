@@ -89,7 +89,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--Grey-700);
+    background: var(--Grey-400);
 }
 
 /* ----- DISABLE REACT ERROR OVERLAY ----- */
@@ -1562,34 +1562,50 @@ ul {
 
 .form-field.color {
     position: relative;
-    width: 20px;
-    height: 20px;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
     border-radius: 5px;
     border: 1px solid #EDEFF3;
-    padding-left: 15px;
-    padding-right: 15px;
     cursor: pointer;
+    padding: 0;
 }
 
 .menu-colors-pallet {
     position: absolute;
-    top: 15px;
-    left: 55px;
+    top: 10px;
+    left: 34px;
     z-index: 9999;
     width: fit-content;
     height: fit-content;
     background: #FFF;
     box-sizing: border-box;
-    border: 1px solid #EDEFF3;
-    padding: 8px;
-    border-radius: 5px;
+    padding: 6px;
+}
+
+.menu-colors-pallet-title {
+    font-size: 0.9rem;
+    margin-bottom: 3px;
 }
 
 .menu-color-element {
     width: 25px;
     height: 25px;
     border-radius: 5px;
-    margin: 1px;
+    margin: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu-color-selected-indicator-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.08);
+    border-radius: 5px;
+    width: 17px;
+    height: 17px;
 }
 
 .form-field.file {
@@ -2853,7 +2869,7 @@ ul {
     position: absolute;
     left: 40px;
     top: 40px;
-    padding: 5px 20px 5px 20px;
+    padding: 5px 10px;
     box-sizing: border-box;
     box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.10);
     min-width: 150px;
@@ -2861,15 +2877,11 @@ ul {
     height: fit-content;
     border-radius: 10px;
     background: #FFFFFF;
-}
-
-.context-menu.details {
-    left: 160px;
-    top: 0;
+    font-size: 0.9rem;
 }
 
 .context-menu-position, .context-menu-detail {
-    padding: 7px 0 7px 0;
+    padding: 2px 0;
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -2884,7 +2896,8 @@ ul {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 40px;
+    gap: 100px;
+    font-size: 1rem;
 }
 
 .context-menu-detail-value {
@@ -3028,15 +3041,15 @@ ul {
 }
 
 .custom-menu-list-button {
-    padding: 10px;
+    padding: 7px;
     text-align: center;
     border-top: 1px solid #eee;
     cursor: pointer;
     color: #fff;
     background-color: #9746FF;
     font-weight: 500;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 .form-dialog-header {
@@ -3149,6 +3162,7 @@ ul {
 .scheduler-flex {
     display: flex;
     gap: 15px;
+    height: 87%;
 }
 
 .scheduler-control-panel {
@@ -3157,25 +3171,33 @@ ul {
     background: #FFF;
     padding: 15px;
     box-sizing: border-box;
+    display: grid;
+    grid-template-rows: 85% 15%;
 }
 
 .external-events {
     margin-bottom: 20px;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .external-event-wrapper {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 5px;
 }
 
 .external-event {
-    margin-bottom: 5px;
-    padding: 5px 8px;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    height: 24px;
     border-radius: 5px;
     color: #FFF;
     cursor: grab;
-    width: 50%;
+    width: 83%;
+    font-size: 0.9rem;
 }
 
 .external-event:active {
@@ -3215,6 +3237,45 @@ ul {
 
 .scheduler-button {
     margin-top: 10px;
+}
+
+.fc-event .fc-event-inner {
+
+}
+
+.fc-event-content {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding-right: 18px;
+}
+
+.fc-event-remove {
+    position: absolute;
+    right: 4px;
+    top: 5px;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    line-height: 1;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 120ms ease-in-out;
+    padding: 0 4px;
+}
+
+.fc-event:hover .fc-event-remove {
+    opacity: 1;
+}
+
+.fc-event-remove {
+    pointer-events: auto;
+}
+
+.fc .fc-no-title .fc-event-time::after,
+.fc .fc-no-title .fc-timegrid-event .fc-event-time::after {
+    content: none !important;
 }
 
 /*TOGGLE SWITCH*/
