@@ -4,10 +4,9 @@ import {ContextMenu} from "./ContextMenu";
 
 export const RecordOptionsButton = ({
                                         onClick,
+                                        style,
                                         contextWindowActive,
                                         contextPositions,
-                                        obj,
-                                        detailsActive,
                                         contextRef,
                                         windowPosition,
                                         className,
@@ -16,14 +15,13 @@ export const RecordOptionsButton = ({
     return (
         <div className={'relative-container'}>
             <div className={className}
+                 style={style}
                  tabIndex={-1}
                  onClick={onClick}>
                 <ThreeDotsIcon fill={dotsFill}/>
             </div>
             {contextWindowActive &&
                 <ContextMenu positions={contextPositions}
-                             obj={obj}
-                             detailsActive={detailsActive}
                              contextRef={contextRef}
                              windowPosition={windowPosition}/>}
         </div>
