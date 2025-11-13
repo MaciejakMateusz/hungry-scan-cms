@@ -39,6 +39,12 @@ export const BannersWrapper = styled.div`
     min-width: 68px;
 `;
 
+export const BannersContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+`;
+
 export const VariantsAdditionsCounters = styled.div`
     grid-column: 6;
 `;
@@ -56,5 +62,4 @@ export const Banner = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 5px;
 `
