@@ -20,6 +20,7 @@ import {setCategoryRemoved} from "../../../../slices/categoryFormSlice";
 import {setMenuItemRemoved} from "../../../../slices/dishFormSlice";
 import {SwitchCategoryDialog} from "../dialog-windows/SwitchCategoryDialog";
 import {FormErrorDialog} from "../../../error/FormErrorDialog";
+import {DetailsDialog} from "../dialog-windows/DetailsDialog";
 
 export const DishesCategoriesList = () => {
     const {t} = useTranslation();
