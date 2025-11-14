@@ -2,11 +2,12 @@ import React from "react";
 import {ResponsivePie} from '@nivo/pie'
 import {useTranslation} from "react-i18next";
 import {useSelector} from "react-redux";
-import {getTranslation} from "../../../../../../locales/langUtils";
 import {PieChartLegend} from "./PieChartLegend";
+import {useGetTranslation} from "../../../../../../hooks/useGetTranslation";
 
 export const TopDishesChart = () => {
     const {t} = useTranslation();
+    const getTranslation = useGetTranslation();
     const {data} = useSelector(state => state.statistics.popularItemsStats);
     const fallbackData = [
         {
