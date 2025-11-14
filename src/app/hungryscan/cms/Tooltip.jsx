@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 
-export const Tooltip = ({ children, content }) => {
+export const Tooltip = ({ children, content, topOffset = -40}) => {
     const [isVisible, setIsVisible] = useState(false);
     const [tooltipPosition, setTooltipPosition] = useState({});
 
     const handleMouseEnter = (event) => {
         const rect = event.currentTarget.getBoundingClientRect();
         setTooltipPosition({
-            top: rect.top - 40,
+            top: rect.top + topOffset,
             left: rect.left + rect.width / 2,
         });
         setIsVisible(true);
