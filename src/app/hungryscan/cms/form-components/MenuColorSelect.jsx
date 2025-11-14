@@ -5,7 +5,7 @@ import {useOutsideClick} from "../../../../hooks/useOutsideClick";
 import {ReactSVG} from "react-svg";
 import {useTranslation} from "react-i18next";
 
-export const MenuColorSelect = ({currentColor, handleColorChange, menuId}) => {
+export const MenuColorSelect = ({currentColor, handleColorChange, menu}) => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const [expanded, setExpanded] = useState(false);
@@ -45,7 +45,7 @@ export const MenuColorSelect = ({currentColor, handleColorChange, menuId}) => {
                  className={'menu-color-element'}
                  style={{backgroundColor: color.hex}}
                  onClick={(e) => {
-                     handleColorChange(color, menuId);
+                     handleColorChange(color, menu);
                      e.stopPropagation();
                      setExpanded(false);
                  }}>
