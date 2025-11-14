@@ -3,6 +3,7 @@ import {EditIcon} from "../app/icons/EditIcon";
 import {DeleteIcon} from "../app/icons/DeleteIcon";
 import {useDispatch} from "react-redux";
 import {setAddition, setAdditionDialogActive, setAdditionToRemove, setIsNewAddition} from "../slices/additionsSlice";
+import {setActiveObjDetails} from "../slices/globalParamsSlice";
 
 export const useAdditionContextPositions = ({ingredient, setContextWindowActive}) => {
     const {t} = useTranslation();
@@ -28,5 +29,15 @@ export const useAdditionContextPositions = ({ingredient, setContextWindowActive}
                 dispatch(setAdditionToRemove(ingredient));
                 setContextWindowActive(false)
             }
+        },
+        {
+            id: 'details',
+            name: t('details'),
+            icon: <EditIcon width={'25'} height={'25'}/>,
+            handler: () => {
+                dispatch(setActiveObjDetails(ingredient));
+                setContextWindowActive(false);
+            },
+            details: true
         }];
 }
