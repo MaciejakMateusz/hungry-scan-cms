@@ -1828,7 +1828,6 @@ ul {
     background-color: #FFF;
     padding: 12px;
     width: 25vw;
-    height: 8rem;
     border: 0;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     z-index: 9998;
@@ -1839,6 +1838,7 @@ ul {
 
 .decision-dialog-content {
     display: flex;
+    flex-direction: column;
     padding: 10px;
 }
 
