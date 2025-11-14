@@ -162,7 +162,6 @@ export const mainSelect = {
         ...provided,
         fontSize: '1rem',
         fontWeight: '300',
-        borderRadius: '5px',
         background: state.isSelected ? '#b6b6b6' : null,
         backgroundColor: state.isFocused ? '#f0f0f0' : null,
         color: '#191D25',
@@ -223,6 +222,14 @@ export const mainSelectTime = {
     control: (provided, state) => ({
         ...mainSelect.control(provided, state),
         width: '100px'
+    })
+}
+
+export const mainSelectWhite = {
+    ...mainSelect,
+    control: (provided, state) => ({
+        ...mainSelect.control(provided, state),
+        backgroundColor: '#FFF',
     })
 }
 
