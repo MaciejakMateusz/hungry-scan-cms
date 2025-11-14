@@ -4,13 +4,24 @@ import {TargetTranslationField} from "./TargetTranslationField";
 import {useDispatch, useSelector} from "react-redux";
 import {
     postTranslatables,
-    setSaveSuccess, setSourceDescription, setSourceName, setSourceWelcomeSlogan,
+    setActiveRecord,
+    setActiveRecordId,
+    setSaveSuccess,
+    setSourceDescription,
+    setSourceName,
+    setSourceWelcomeSlogan,
     setTargetDescription,
-    setTargetName, setTargetWelcomeSlogan
+    setTargetName,
+    setTargetWelcomeSlogan
 } from "../../../../../slices/translationsSlice";
-import {getLanguage} from "../../../../../locales/langUtils";
+import {fetchActiveMenu} from "../../../../../slices/cmsSlice";
+import {fetchIngredients} from "../../../../../slices/dishAdditionsSlice";
+import {ButtonsWrapper, DialogContainer, DialogWrapper} from "./TranslationsEditor.style";
+import {LoadingSpinner} from "../../../../icons/LoadingSpinner";
+import {useTranslation} from "react-i18next";
 
 export const TranslationsEditor = ({fetchRecords}) => {
+    const {t} = useTranslation();
     const dispatch = useDispatch();
     const {
         activeRecord,
@@ -21,33 +32,33 @@ export const TranslationsEditor = ({fetchRecords}) => {
         sourceDescription,
         sourceWelcomeSlogan,
     } = useSelector(state => state.translations.view);
-    const currentSystemLanguage = getLanguage();
+    const isPostLoading = useSelector(state => state.translations.postTranslatables.isLoading);
+    const {restaurant} = useSelector(state => state.dashboard.view);
     const {chosenDestinationLanguage} = useSelector(state => state.translations.view);
     const [confirmationTimeoutId, setConfirmationTimeoutId] = useState(null);
-    const [hasDescription, setHasDescription] = useState(false);
-
-    useEffect(() => {
-        if (activeRecord && 'description' in activeRecord) {
-            setHasDescription(true);
-        } else {
-            setHasDescription(false);
-        }
-    }, [activeRecord]);
+    const destinationValue = chosenDestinationLanguage?.value?.toLowerCase();
+    const restaurantLanguage = restaurant?.value.settings.language.toLowerCase();
 
     useEffect(() => {
         if (!activeRecord) return;
-        dispatch(setSourceName(activeRecord.name?.[currentSystemLanguage]?? ''));
-        dispatch(setSourceDescription(activeRecord.description?.[currentSystemLanguage]?? ''));
-        dispatch(setSourceWelcomeSlogan(activeRecord.message?.[currentSystemLanguage]?? ''));
-        dispatch(setTargetName(activeRecord.name?.[chosenDestinationLanguage.value] ?? ''));
-        dispatch(setTargetDescription(activeRecord.description?.[chosenDestinationLanguage.value]?? ''));
-        dispatch(setTargetWelcomeSlogan(activeRecord.message?.[chosenDestinationLanguage.value]?? ''));
-    }, [activeRecord, currentSystemLanguage, chosenDestinationLanguage, dispatch]);
+        dispatch(setSourceName(activeRecord.name?.[restaurantLanguage] ?? ''));
+        dispatch(setSourceDescription(activeRecord.description?.[restaurantLanguage] ?? ''));
+        dispatch(setSourceWelcomeSlogan(activeRecord.message?.[restaurantLanguage] ?? ''));
+        dispatch(setTargetName(activeRecord.name?.[destinationValue] ?? ''));
+        dispatch(setTargetDescription(activeRecord.description?.[destinationValue] ?? ''));
+        dispatch(setTargetWelcomeSlogan(activeRecord.message?.[destinationValue] ?? ''));
+    }, [activeRecord, dispatch, restaurantLanguage, destinationValue]);
+
+    const discardDialog = () => {
+        dispatch(setActiveRecord(null));
+        dispatch(setActiveRecordId(null));
+    }
 
     const handleTranslatablesSubmit = async (e) => {
         e.preventDefault();
-        const resultAction = await dispatch(postTranslatables({targetLanguage: chosenDestinationLanguage.value}));
+        const resultAction = await dispatch(postTranslatables({targetLanguage: destinationValue}));
         if (postTranslatables.fulfilled.match(resultAction)) {
+            discardDialog();
             dispatch(setSaveSuccess(true));
 
             if (confirmationTimeoutId) {
@@ -59,20 +70,21 @@ export const TranslationsEditor = ({fetchRecords}) => {
             }, 2000);
             setConfirmationTimeoutId(newConfirmationTimeoutId);
 
+            await dispatch(fetchActiveMenu());
+            await dispatch(fetchIngredients())
             await fetchRecords(false);
         }
     }
 
     const renderDescriptionTranslatable = () => {
-        if (!activeRecord || !('description' in activeRecord)) return;
+        const restaurantLanguage = restaurant?.value.settings.language.toLowerCase();
+        if (!activeRecord || !('description' in activeRecord) || !activeRecord.description[restaurantLanguage]) return;
         return (
             <>
                 <SourceTranslationField value={sourceDescription}
-                                        type={'description'}
-                                        handleFieldChange={setSourceDescription}/>
+                                        type={'description'}/>
                 <TargetTranslationField
                     value={targetDescription}
-                    renderButton={true}
                     changeHandler={setTargetDescription}
                     type={'description'}/>
             </>
@@ -82,13 +94,11 @@ export const TranslationsEditor = ({fetchRecords}) => {
     const renderNameTranslatable = () => {
         if (!activeRecord || 'message' in activeRecord) return;
         return (
-            <section className={'translations-vertical-split-right'}>
-                <form className={'translation-wrapper'} onSubmit={handleTranslatablesSubmit}>
+            <section>
+                <form className={'translation-wrapper'}>
                     <SourceTranslationField value={sourceName}
-                                            type={'name'}
-                                            handleFieldChange={setSourceName}/>
+                                            type={'name'}/>
                     <TargetTranslationField value={targetName}
-                                            renderButton={!hasDescription}
                                             changeHandler={setTargetName}
                                             type={'name'}/>
                     {renderDescriptionTranslatable()}
@@ -98,15 +108,13 @@ export const TranslationsEditor = ({fetchRecords}) => {
     }
 
     const renderWelcomeSloganTranslatable = () => {
-        if (!activeRecord  || !('message' in activeRecord)) return;
+        if (!activeRecord || !('message' in activeRecord)) return;
         return (
-            <section className={'translations-vertical-split-right'}>
-                <form className={'translation-wrapper'} onSubmit={handleTranslatablesSubmit}>
+            <section>
+                <form className={'translation-wrapper'}>
                     <SourceTranslationField value={sourceWelcomeSlogan}
-                                            type={'welcomeSlogan'}
-                                            handleFieldChange={setSourceWelcomeSlogan}/>
+                                            type={'welcomeSlogan'}/>
                     <TargetTranslationField value={targetWelcomeSlogan}
-                                            renderButton={!hasDescription}
                                             changeHandler={setTargetWelcomeSlogan}
                                             type={'welcomeSlogan'}/>
                 </form>
@@ -114,10 +122,30 @@ export const TranslationsEditor = ({fetchRecords}) => {
         );
     }
 
+    const renderButtons = () => {
+        return (
+            <div className={'dialog-footer'}>
+                <button className={'general-button cancel'}
+                        onClick={discardDialog}>
+                    {t('cancel')}
+                </button>
+                <button className={'general-button'} onClick={handleTranslatablesSubmit}>
+                    {isPostLoading ? <LoadingSpinner buttonMode={true}/> : t('save')}
+                </button>
+            </div>
+        );
+    }
+
     return (
-        <>
-            {renderNameTranslatable()}
-            {renderWelcomeSloganTranslatable()}
-        </>
+        <DialogWrapper>
+            <div className={'overlay'}/>
+            <DialogContainer>
+                {renderNameTranslatable()}
+                {renderWelcomeSloganTranslatable()}
+                <ButtonsWrapper>
+                    {renderButtons()}
+                </ButtonsWrapper>
+            </DialogContainer>
+        </DialogWrapper>
     );
 };
