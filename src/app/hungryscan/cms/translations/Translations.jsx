@@ -1,33 +1,56 @@
 import React, {useEffect} from "react";
-import {Helmet} from "react-helmet";
 import {useTranslation} from "react-i18next";
+import Select from "react-select";
+import {Helmet} from "react-helmet";
 import {useDispatch, useSelector} from "react-redux";
-import {TranslationRecordsHeader} from "./TranslationRecordsHeader";
 import {getCategories} from "../../../../slices/dishesCategoriesSlice";
+import {SuccessMessage} from "../dialog-windows/SuccessMessage";
+import {FormErrorDialog} from "../../../error/FormErrorDialog";
 import {
-    getAllIngredients, getAllMenus,
+    getAllIngredients,
+    getAllMenus,
     getAllVariants,
-    setActiveRecord,
-    setActiveRecordId,
-    setAdditions, setAutoTranslationError,
+    setAdditions,
+    setAutoTranslationError,
+    setChosenGroup,
     setDishesCategories,
-    setErrorData, setMenus, setPostingError,
+    setErrorData,
+    setMenus,
+    setPostingError,
     setVariants
 } from "../../../../slices/translationsSlice";
-import {TranslationsEditor} from "./editor/TranslationsEditor";
-import {SuccessMessage} from "../dialog-windows/SuccessMessage";
 import {TranslationsList} from "./TranslationsList";
-import {TranslationsEditorHeader} from "./editor/TranslationsEditorHeader";
-import {FormErrorDialog} from "../../../error/FormErrorDialog";
+import {mainSelectWhite} from "../../../../selectStyles";
+import {CustomNoOptionsMessage} from "../form-components/CustomNoOptionsMessage";
+import {TargetLanguageSelector} from "./TargetLanguageSelector";
+import {TranslationsEditor} from "./editor/TranslationsEditor";
 
 export const Translations = () => {
     const {t} = useTranslation();
-    const {chosenGroup, saveSuccess} = useSelector(state => state.translations.view);
+    const dispatch = useDispatch();
+    const {chosenGroup, saveSuccess, activeRecord} = useSelector(state => state.translations.view);
     const {autoTranslationError} = useSelector(state => state.translations.autoTranslate);
     const {postingError} = useSelector(state => state.translations.postTranslatables);
-    const dispatch = useDispatch();
+    const options = [
+        {
+            value: 'categoriesMenuItems',
+            label: t('dishesCategories')
+        },
+        {
+            value: 'menuItemsVariants',
+            label: t('menuItemsVariants')
+        },
+        {
+            value: 'additions',
+            label: t('additions')
+        },
+        {
+            value: 'welcomeSlogans',
+            label: t('welcomeSlogans')
+        }
+    ];
 
-    const fetchRecords = async isInitialLoading => {
+    const fetchRecords = async () => {
         const fetchGroupData = async (provider, type) => {
             try {
                 const data = await dispatch(provider());
@@ -40,9 +63,6 @@ export const Translations = () => {
                         dispatch(setAdditions(data.payload));
                     } else if (type === 'welcomeSlogans') {
                         dispatch(setMenus(data.payload));
-                    }
-                    if (isInitialLoading) {
-                        activateFirstRecord(type, data);
                     }
                 } else if (provider.rejected.match(data)) {
                     dispatch(setErrorData(data.payload));
@@ -72,42 +92,46 @@ export const Translations = () => {
         }
     }
 
-    const activateFirstRecord = (type, data) => {
-        dispatch(setActiveRecord(data.payload[0]));
-        setRecordId(data.payload[0], type);
-    }
-
-    const setRecordId = (activeRecord, type) => {
-        if (['categoriesMenuItems', 'menuItemsVariants'].includes(type)) {
-            dispatch(setActiveRecordId('p' + activeRecord?.id));
-            return;
-        }
-        dispatch(setActiveRecordId('c' + activeRecord?.id));
-    }
+    useEffect(() => {
+        fetchRecords();
+    }, [chosenGroup]);
 
     useEffect(() => {
-        fetchRecords(true);
-    }, [chosenGroup]);
+        dispatch(setChosenGroup({
+            value: 'categoriesMenuItems',
+            label: t('dishesCategories')
+        }));
+    }, [dispatch, t]);
+
 
     return (
         <>
             <Helmet>
-                <title>CMS - {t("translations")}</title>
+                <title>CMS - {t('translations')}</title>
             </Helmet>
             {saveSuccess ? <SuccessMessage text={t('saved')}/> : <></>}
             <FormErrorDialog errorData={autoTranslationError} setErrorData={setAutoTranslationError}/>
             <FormErrorDialog errorData={postingError} setErrorData={setPostingError}/>
+            {activeRecord && <TranslationsEditor fetchRecords={fetchRecords}/>}
             <div className={'background'}>
                 <main className={'cms-padded-view-container'}>
-                    <div className={'translations-vertical-split-grid'}>
-                        <TranslationRecordsHeader/>
-                        <section
-                            className={`translations-vertical-split-left ${chosenGroup?.value !== 'dishesCategories' && 'simple'}`}>
-                            <TranslationsList/>
-                        </section>
-                        <TranslationsEditorHeader/>
-                        <TranslationsEditor fetchRecords={fetchRecords}/>
+                    <div className={'functions-header'}>
+                        <div className={'section-heading'}>{t('translations')}</div>
+                        <div className={'flex-wrapper-gapped'}>
+                            <TargetLanguageSelector/>
+                            <Select id={'translation-group'}
+                                    name={'translation-group'}
+                                    value={chosenGroup}
+                                    placeholder={t('choose')}
+                                    options={options}
+                                    defaultValue={options[0]}
+                                    onChange={(selected) => dispatch(setChosenGroup(selected))}
+                                    styles={mainSelectWhite}
+                                    components={{NoOptionsMessage: CustomNoOptionsMessage}}
+                            />
+                        </div>
                     </div>
+                    <TranslationsList/>
                 </main>
             </div>
         </>
