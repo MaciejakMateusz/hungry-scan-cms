@@ -14,7 +14,10 @@ export const CookieConsent = () => {
     });
 
     const setConsentCookie = () => {
-        setCookie(COOKIE_NAME, "yes", { days: 180 });
+        const currentDate = new Date();
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        const expiryDate = currentDate.toUTCString();
+        setCookie(COOKIE_NAME, "yes", expiryDate);
         setIsConsent(true);
     };
 
