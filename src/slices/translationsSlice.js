@@ -4,12 +4,12 @@ import {getLanguage} from "../locales/langUtils";
 
 export const getAutoTranslation = createAsyncThunk(
     'translations/getAutoTranslations',
-    async ({text, targetLanguage}, {rejectWithValue}) => {
-        const sourceLanguage = getLanguage().toUpperCase();
+    async ({text, sourceLanguage, targetLanguage}, {rejectWithValue}) => {
         const response = await fetch(`${apiHost}/api/cms/translatable/translate`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                'Accept-Language': getLanguage()
             },
             body: JSON.stringify({
                 text: [text],
@@ -66,6 +66,7 @@ export const postTranslatables = createAsyncThunk(
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                'Accept-Language': getLanguage()
             },
             body: JSON.stringify(requestBody),
             credentials: 'include'
@@ -151,6 +152,7 @@ export const getAllVariants = createAsyncThunk(
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
+                'Accept-Language': getLanguage()
             },
             credentials: 'include'
         });
@@ -191,6 +193,7 @@ export const getAllIngredients = createAsyncThunk(
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept-Language': getLanguage()
             },
             credentials: 'include'
         });
@@ -231,6 +234,7 @@ export const getAllMenus = createAsyncThunk(
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept-Language': getLanguage()
             },
             credentials: 'include'
         });
