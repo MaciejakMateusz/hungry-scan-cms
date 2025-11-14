@@ -1,7 +1,8 @@
-import React from "react";
+import React, {useState} from "react";
 import {useTranslation} from "react-i18next";
 import {LoadingSpinner} from "../../../icons/LoadingSpinner";
 import {useSelector} from "react-redux";
+import {LogicalToggleField} from "../form-components/LogicalToggleField";
 
 export const DecisionDialog = (props) => {
     const {t} = useTranslation();
@@ -49,7 +50,18 @@ export const DecisionDialog = (props) => {
             <div className={'decision-dialog'}>
                 <div className={'decision-dialog-content'}>
                     <p>{props.msg} {renderDialogTitle()}</p>
+                    {props.logicalToggleHandler &&
+                        <LogicalToggleField value={props.logicalToggleValue}
+                                            id={'logical-toggle'}
+                                            customMessageTrue={t('dontAskAgain')}
+                                            customMessageFalse={t('dontAskAgain')}
+                                            onChange={() => {
+                                                props.logicalToggleHandler(!props.logicalToggleValue);
+                                            }}
+                        />
+                    }
                 </div>
+
                 <div className={'decision-dialog-footer'}>
                     {renderCancelButton()}
                     {renderConfirmButton()}
