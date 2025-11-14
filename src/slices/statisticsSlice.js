@@ -1,5 +1,6 @@
 import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
+import {getLanguage} from "../locales/langUtils";
 
 export const getUsersActivity = createAsyncThunk(
     'getUsersActivity/getUsersActivity',
@@ -8,6 +9,7 @@ export const getUsersActivity = createAsyncThunk(
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept-Language': getLanguage()
             },
             credentials: 'include'
         });
@@ -51,6 +53,7 @@ export const getPopularItemsStats = createAsyncThunk(
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept-Language': getLanguage()
             },
             body: JSON.stringify({
                 menuId: params.menu?.value,
@@ -101,6 +104,7 @@ export const getScanStats = createAsyncThunk(
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept-Language': getLanguage()
             },
             body: JSON.stringify({
                 year: params.year?.value,
