@@ -9,15 +9,17 @@ import {
 } from "../../../../slices/dishesCategoriesSlice";
 import {CustomSelect} from "../form-components/CustomSelect";
 import makeAnimated from "react-select/animated";
-import {getTranslation} from "../../../../locales/langUtils";
 import {LoadingSpinner} from "../../../icons/LoadingSpinner";
 import {useConfirmationMessage} from "../../../../hooks/useConfirmationMessage";
 import {fetchActiveMenu} from "../../../../slices/cmsSlice";
 import {FormErrorDialog} from "../../../error/FormErrorDialog";
+import {CustomNoOptionsMessage} from "../form-components/CustomNoOptionsMessage";
 
 export const SwitchCategoryDialog = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
+    const {restaurant} = useSelector(state => state.dashboard.view);
+    const restaurantLanguage = restaurant?.value.settings.language.toLowerCase();
     const {menu} = useSelector(state => state.cms.fetchActiveMenu);
     const {category: currentCategory, menuItemForAction} =
         useSelector(state => state.dishesCategories.view);
@@ -33,10 +35,10 @@ export const SwitchCategoryDialog = () => {
                 .filter(category => category.id !== currentCategory.id)
                 .map(category => ({
                     value: category,
-                    label: getTranslation(category.name),
+                    label: category?.name[restaurantLanguage],
                 })));
         }
-    }, [currentCategory, menu]);
+    }, [currentCategory, menu, restaurantLanguage]);
 
     const handleDiscard = () => {
         dispatch(setSwitchCategoryDialogActive(false));
@@ -72,7 +74,7 @@ export const SwitchCategoryDialog = () => {
                                   onChange={(selected) => dispatch(setChosenCategory(selected))}
                                   placeholder={t('choose')}
                                   options={categories}
-                                  components={animatedComponents}
+                                  components={{...animatedComponents, NoOptionsMessage: CustomNoOptionsMessage}}
                                   closeMenuOnSelect={true}
                     />
                 </div>
