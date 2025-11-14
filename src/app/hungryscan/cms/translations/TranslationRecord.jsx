@@ -1,41 +1,30 @@
 import React from "react";
-import {getLanguage, getTranslation} from "../../../../locales/langUtils";
-import {TranslationStatus} from "./TranslationStatus";
-import {RightArrowIcon} from "../../../icons/RightArrowIcon";
 import {useSelector} from "react-redux";
+import {TextWrapper} from "../dishes-categories/menu-item/MenuItemPosition.style";
+import {TranslationContainer} from "./TranslationRecord.style";
+import {RightArrowIcon} from "../../../icons/RightArrowIcon";
+import {TranslationStatus} from "./TranslationStatus";
+import {ContentSizeIndicator} from "../shared-components/ContentSizeIndicator";
 
-export const TranslationRecord = ({parent, index, record, setActive}) => {
-    const {activeRecordId, chosenDestinationLanguage} = useSelector(state => state.translations.view);
-    const currentSystemLanguage = getLanguage();
-    const {chosenGroup} = useSelector(state => state.translations.view);
+export const TranslationRecord = ({
+                                      record,
+                                      isParent,
+                                      parentTranslatableKey,
+                                      childrenKey,
+                                      childTranslatableKey,
+                                      setActive}) => {
+    const {menu} = useSelector(state => state.cms.fetchActiveMenu);
+    const {restaurant} = useSelector(state => state.dashboard.view);
+    const restaurantLanguage = restaurant?.value.settings.language.toLowerCase();
+    const {chosenDestinationLanguage} = useSelector(state => state.translations.view);
+    const destinationValue = chosenDestinationLanguage?.value?.toLowerCase();
 
-    const renderLeftColumn = () => {
+    const renderStatusIndicator = () => {
         return (
-            <div className={'translations-records-column left'}>
-                <span className={'translation-record-content'}>
-                    {parent ? index + '. ' : ''}{getTranslation(record.name)}
-                </span>
-            </div>
-        );
-    }
-
-    const renderMiddleColumn = () => {
-        return (
-            <span className={'translations-records-column middle'}>
-                <span className={'translation-record-content'}>
-                    {chosenGroup.value === 'welcomeSlogans' && getTranslation(record.message)}
-                    {record.description && getTranslation(record.description)}
-                </span>
-            </span>
-        );
-    }
-
-    const renderRightColumn = () => {
-        return (
-            <span className={'translations-records-column right'}>
+            <div>
                 {determineTranslationStatus()}
                 <span className={'translation-record-arrow'}><RightArrowIcon/></span>
-            </span>
+            </div>
         );
     }
 
@@ -44,20 +33,23 @@ export const TranslationRecord = ({parent, index, record, setActive}) => {
         let isDescriptionTranslated = false;
         let isFullyTranslated = false;
         if (record.name) {
-            const sourceName = record.name[currentSystemLanguage] ? record.name[currentSystemLanguage].length > 0 : false;
-            const targetName = record.name[chosenDestinationLanguage.value] ? record.name[chosenDestinationLanguage.value].length > 0 : false;
+            const sourceName = record.name[restaurantLanguage] ? record.name[restaurantLanguage].length > 0 : false;
+            const targetName = record.name[destinationValue] ? record.name[destinationValue].length > 0 : false;
             isNameTranslated = sourceName && targetName;
             isFullyTranslated = isNameTranslated;
         }
         if (record.description) {
-            const sourceDescription = record.description[currentSystemLanguage] ? record.description[currentSystemLanguage].length > 0 : false;
-            const targetDescription = record.description[chosenDestinationLanguage.value] ? record.description[chosenDestinationLanguage.value].length > 0 : false;
+            const sourceDescription = record.description[restaurantLanguage] ? record.description[restaurantLanguage].length > 0 : false;
+            const targetDescription = record.description[destinationValue] ? record.description[destinationValue].length > 0 : false;
             isDescriptionTranslated = sourceDescription && targetDescription;
             isFullyTranslated = isNameTranslated && isDescriptionTranslated;
+            if (!sourceDescription && !targetDescription) {
+                isFullyTranslated = isNameTranslated;
+            }
         }
         if (record.message) {
-            const sourceWelcomeSlogan = record.message[currentSystemLanguage] ? record.message[currentSystemLanguage].length > 0 : false;
-            const targetWelcomeSlogan = record.message[chosenDestinationLanguage.value] ? record.message[chosenDestinationLanguage.value].length > 0 : false;
+            const sourceWelcomeSlogan = record.message[restaurantLanguage] ? record.message[restaurantLanguage].length > 0 : false;
+            const targetWelcomeSlogan = record.message[destinationValue] ? record.message[destinationValue].length > 0 : false;
             isFullyTranslated = sourceWelcomeSlogan && targetWelcomeSlogan;
         }
         return (
@@ -65,17 +57,39 @@ export const TranslationRecord = ({parent, index, record, setActive}) => {
         );
     }
 
+
+    if (!menu || !menu.categories) return null;
+
     const renderRecord = () => {
-        const currentRecordId = parent ? 'p' + record.id : 'c' + record.id
-        return (
-            <div
-                className={`translation-record-grid ${parent ? 'parent' : 'child'} ${activeRecordId === currentRecordId && 'active'}`}
-                onClick={setActive}>
-                {renderLeftColumn()}
-                {renderMiddleColumn()}
-                {renderRightColumn()}
-            </div>
-        );
+        if (isParent) {
+            return (
+                <div className={'category-container-header enable-hover'} onClick={setActive}>
+                    <div className={'category-info'}>
+                        <span className={'text-ellipsis'} style={{maxWidth: '50vw'}}>
+                            {record[parentTranslatableKey][restaurantLanguage]}
+                        </span>
+                        {childrenKey && <ContentSizeIndicator size={record[childrenKey].length}/>}
+                    </div>
+                    {renderStatusIndicator()}
+                </div>
+            );
+        } else {
+            return (
+                <TranslationContainer $hasDescription={'description' in record} onClick={setActive}>
+                    <TextWrapper>
+                        <span className={'draggable-position-name'}>
+                            {record[childTranslatableKey][restaurantLanguage]}
+                        </span>
+                        {'description' in record &&
+                            <span className={'draggable-position-description'}>
+                                {record.description[restaurantLanguage]}
+                            </span>
+                        }
+                    </TextWrapper>
+                    {renderStatusIndicator()}
+                </TranslationContainer>
+            );
+        }
     }
 
     return renderRecord();
