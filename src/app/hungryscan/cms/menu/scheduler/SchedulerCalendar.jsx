@@ -2,7 +2,7 @@ import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin, {Draggable} from "@fullcalendar/interaction";
 import {getLanguage} from "../../../../../locales/langUtils";
-import React, {useCallback, useEffect, useMemo} from "react";
+import React, {useCallback, useEffect, useMemo, useRef} from "react";
 import {useSelector} from "react-redux";
 import {generateUUID} from "../../../../../utils/utils";
 import {
@@ -13,9 +13,10 @@ import {
     toLocalISOString
 } from "../../../../../utils/schedulerUtils";
 
-export const SchedulerCalendar = ({menusConfig, setMenusConfig, externalRef, trashRef}) => {
+export const SchedulerCalendar = ({menusConfig, setMenusConfig, externalRef}) => {
     const {restaurant} = useSelector((state) => state.dashboard.view);
     const restaurantSettings = restaurant?.value?.settings;
+    const calendarRef = useRef(null);
 
     const businessHours = useMemo(() => {
         const dayMap = {
@@ -27,7 +28,6 @@ export const SchedulerCalendar = ({menusConfig, setMenusConfig, externalRef, tra
             SATURDAY: 6,
             SUNDAY: 0,
         };
-
         return Object.entries(restaurantSettings?.operatingHours ?? {})
             .flatMap(([dayName, {available, startTime, endTime}]) => {
                 if (!available || !startTime || !endTime) return [];
@@ -77,12 +77,54 @@ export const SchedulerCalendar = ({menusConfig, setMenusConfig, externalRef, tra
         [setMenusConfig]
     );
 
+    const handleEventRemoveClick = useCallback(
+        (e, eventApi) => {
+            e.preventDefault();
+            e.stopPropagation();
+            eventApi.remove();
+            const api = calendarRef.current?.getApi();
+            if (api) syncMenusWithCalendar(api);
+        },
+        [syncMenusWithCalendar]
+    );
+
+    const renderEventContent = useCallback(
+        (arg) => {
+            const { event, timeText } = arg;
+
+            const start = event.start;
+            const end = event.end;
+            const durationMinutes = (end - start) / (1000 * 60);
+
+            const showTitle = durationMinutes > 30;
+            return (
+                <div className="fc-event-inner">
+                    <div className={'fc-event-content'}>
+                        <span className="fc-event-time">{timeText}</span>
+                        {showTitle && <span className="fc-event-title">{arg.event.title}</span>}
+                    </div>
+                    <button className="fc-event-remove"
+                            onClick={(e) => handleEventRemoveClick(e, arg.event)}>
+                        ×
+                    </button>
+                </div>
+            );
+        },
+        [handleEventRemoveClick]
+    );
+
     const handleEventChange = useCallback(
         (info) => {
             syncMenusWithCalendar(info.view.calendar);
         },
         [syncMenusWithCalendar]
     );
+
+    const eventClassNames = useCallback((arg) => {
+        const { start, end } = arg.event;
+        const durationMinutes = (end - start) / 60000;
+        return durationMinutes <= 30 ? ['fc-no-title'] : [];
+    }, []);
 
     useEffect(() => {
         let draggable = new Draggable(externalRef.current, {
@@ -122,20 +164,12 @@ export const SchedulerCalendar = ({menusConfig, setMenusConfig, externalRef, tra
         syncMenusWithCalendar(info.view.calendar);
     }, [setMenusConfig, syncMenusWithCalendar]);
 
-    const handleEventDragStop = useCallback(info => {
-        const {clientX: x, clientY: y} = info.jsEvent;
-        const droppedElem = document.elementFromPoint(x, y);
-
-        if (trashRef.current && trashRef.current.contains(droppedElem)) {
-            info.event.remove();
-            syncMenusWithCalendar(info.view.calendar);
-        }
-    }, [syncMenusWithCalendar, trashRef]);
 
     return (
         <div className={'scheduler-container'}>
             <FullCalendar plugins={[timeGridPlugin, interactionPlugin]}
                           droppable={true}
+                          height={'100%'}
                           initialView={'timeGridWeek'}
                           initialDate={'2020-01-06'}
                           headerToolbar={false}
@@ -152,7 +186,6 @@ export const SchedulerCalendar = ({menusConfig, setMenusConfig, externalRef, tra
                           eventDrop={handleEventChange}
                           eventResize={handleEventChange}
                           eventReceive={handleEventReceive}
-                          eventDragStop={handleEventDragStop}
                           dragRevertDuration={0}
                           eventOverlap={false}
                           selectOverlap={false}
@@ -166,6 +199,8 @@ export const SchedulerCalendar = ({menusConfig, setMenusConfig, externalRef, tra
                           dayHeaderFormat={{
                               weekday: 'long'
                           }}
+                          eventClassNames={eventClassNames}
+                          eventContent={renderEventContent}
             />
         </div>
     );
