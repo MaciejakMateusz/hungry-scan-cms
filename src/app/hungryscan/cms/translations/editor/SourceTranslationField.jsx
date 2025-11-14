@@ -1,12 +1,10 @@
 import React from "react";
 import {useTranslation} from "react-i18next";
-import {getLanguage} from "../../../../../locales/langUtils";
-import {useDispatch} from "react-redux";
+import {useSelector} from "react-redux";
 
-export const SourceTranslationField = ({value, type, handleFieldChange}) => {
+export const SourceTranslationField = ({value, type}) => {
     const {t} = useTranslation();
-    const dispatch = useDispatch();
-    const currentSystemLanguage = getLanguage();
+    const {restaurant} = useSelector(state => state.dashboard.view);
 
     return (
         <div className={'original-translation-box'}>
@@ -15,16 +13,16 @@ export const SourceTranslationField = ({value, type, handleFieldChange}) => {
                     {t('originalText')} - {t(type)}
                 </span>
                 <div className={'language-label'}>
-                    {t(currentSystemLanguage)}
+                    {t(restaurant?.value.settings.language.toLowerCase())}
                 </div>
             </div>
             <div className={'translation-value-content-container'}>
                     <textarea className={'translation-textarea-input'}
                               placeholder={t('typeTranslation')}
                               id={type}
+                              disabled={true}
                               name={type}
                               value={value}
-                              onChange={(e) => dispatch(handleFieldChange(e.target.value))}
                     />
             </div>
         </div>
