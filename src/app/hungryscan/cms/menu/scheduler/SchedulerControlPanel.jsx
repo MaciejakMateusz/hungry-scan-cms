@@ -1,24 +1,20 @@
-import {ReactSVG} from "react-svg";
-import {fetchActiveMenu, setSchedulerActive} from "../../../../../slices/cmsSlice";
-import React, {useCallback} from "react";
+import React, {useCallback, useState} from "react";
 import {useTranslation} from "react-i18next";
-import {useDispatch, useSelector} from "react-redux";
-import {setPlansUpdated, setUpdatingPlansError, updatePlans} from "../../../../../slices/menuSlice";
-import {useConfirmationMessage} from "../../../../../hooks/useConfirmationMessage";
-import {useFetchCurrentRestaurant} from "../../../../../hooks/useFetchCurrentRestaurant";
+import {useSelector} from "react-redux";
 import {fillGapsWithStandard} from "../../../../../utils/schedulerUtils";
 import {MenuColorSelect} from "../../form-components/MenuColorSelect";
-import {LoadingSpinner} from "../../../../icons/LoadingSpinner";
+import {DecisionDialog} from "../../dialog-windows/DecisionDialog";
+import {getCookie, setCookie} from "../../../../../utils/utils";
 
-export const SchedulerControlPanel = ({menusConfig, setMenusConfig, externalRef, trashRef}) => {
+export const SchedulerControlPanel = ({menusConfig, setMenusConfig, externalRef}) => {
     const {t} = useTranslation();
-    const dispatch = useDispatch();
     const {restaurant} = useSelector((state) => state.dashboard.view);
-    const {isLoading} = useSelector((state) => state.menu.updatePlans);
-    const renderConfirmation = useConfirmationMessage(setPlansUpdated);
-    const getRestaurant = useFetchCurrentRestaurant();
+    const menus = restaurant?.value.menus;
+    const [colorConfirmationDialogParams, setColorConfirmationDialogParams] = useState(null);
     const restaurantSettings = restaurant?.value?.settings;
     const operatingHours = restaurantSettings.operatingHours;
+    const [logicalToggleValue, setLogicalToggleValue] = useState(false);
+    const hideColorConfirmation = getCookie('hideColorConfirmation') === 'true';
 
     const clearSchedules = () => {
         setMenusConfig(prevMenus =>
@@ -33,81 +29,74 @@ export const SchedulerControlPanel = ({menusConfig, setMenusConfig, externalRef,
         fillGapsWithStandard(setMenusConfig, operatingHours);
     }, [operatingHours, setMenusConfig]);
 
-    const handleDiscard = () => {
-        dispatch(setSchedulerActive(false));
-        dispatch(setUpdatingPlansError(null));
-    }
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const resultAction = await dispatch(updatePlans({menus: menusConfig}));
-        if (updatePlans.fulfilled.match(resultAction)) {
-            await getRestaurant();
-            await dispatch(fetchActiveMenu());
-            dispatch(setSchedulerActive(false));
-            renderConfirmation();
-        } else {
-            dispatch(setUpdatingPlansError(resultAction?.payload));
+    const handleColorChange = (color, menu, actionConfirmed) => {
+        if (menu.color.id === color.id) return;
+        if (menus.map(menu => menu.color.hex).includes(color.hex) && !actionConfirmed && !hideColorConfirmation) {
+            setColorConfirmationDialogParams({color: color, menu: menu});
+            return;
         }
-    };
-
-    const handleColorChange = (color, menuId) => {
-        let menuToChange = menusConfig.find(menu => menu.id === menuId);
-        const otherMenus = [...menusConfig].filter(menu => menu.id !== menuId);
+        let menuToChange = menusConfig.find(m => m.id === menu.id);
+        const otherMenus = [...menusConfig].filter(m => m.id !== menu.id);
         menuToChange = {
             ...menuToChange,
             color: color
         };
         otherMenus.push(menuToChange);
         otherMenus.sort((a, b) => {
-            return (a.standard === b.standard) ? 0 : a.standard ? -1 : 1;
+            if (a.standard !== b.standard) {
+                return a.standard ? -1 : 1;
+            }
+            return a.name.localeCompare(b.name, 'pl', {sensitivity: 'base'});
         });
         setMenusConfig(otherMenus);
     }
 
+    const handleDialogSubmit = () => {
+        handleColorChange(colorConfirmationDialogParams.color, colorConfirmationDialogParams.menu, true);
+        setColorConfirmationDialogParams(null);
+        const currentDate = new Date();
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        const expiryDate = currentDate.toUTCString();
+        setCookie('hideColorConfirmation', logicalToggleValue.toString(), expiryDate);
+    }
+
     return (
         <div className={'scheduler-control-panel'}>
+            {(colorConfirmationDialogParams && !hideColorConfirmation) &&
+                <DecisionDialog msg={t('confirmColorChange')}
+                                onCancel={() => setColorConfirmationDialogParams(null)}
+                                onSubmit={() => handleDialogSubmit()}
+                                logicalToggleHandler={setLogicalToggleValue}
+                                logicalToggleValue={logicalToggleValue}
+                />
+            }
             <div className={'external-events'} ref={externalRef}>
-                <p>{t('dragToPlan')}</p>
                 {menusConfig?.map(menu => (
                     <div key={menu.id} className={'external-event-wrapper'}>
+                        <MenuColorSelect handleColorChange={handleColorChange}
+                                         currentColor={menu.color}
+                                         menu={menu}/>
                         <div className={'external-event'}
                              style={{background: menu.color.hex}}
                              data-menu-id={menu.id}>
-                            {menu.name}
+                            <span className={'text-ellipsis'}>{menu.name}</span>
                         </div>
-                        <MenuColorSelect handleColorChange={handleColorChange}
-                                         currentColor={menu.color}
-                                         menuId={menu.id}/>
                     </div>
                 ))}
             </div>
 
-            <div className={'scheduler-trash'} ref={trashRef}>
-                <ReactSVG src={`${process.env.PUBLIC_URL}/theme/icons/bin.svg`}/>
+            <div className={'scheduler-utility-buttons'}>
+                <div className={'general-button scheduler-button'}
+                     onClick={clearSchedules}>
+                    {t('clearSchedule')}
+                </div>
+
+                <div className={'general-button scheduler-button'}
+                     onClick={fillWithStandard}>
+                    {t('fillEmptyWithStandard')}
+                </div>
             </div>
 
-            <div className={'general-button scheduler-button'}
-                 onClick={clearSchedules}>
-                {t('clearSchedule')}
-            </div>
-
-            <div className={'general-button scheduler-button'}
-                 onClick={fillWithStandard}>
-                {t('fillEmptyWithStandard')}
-            </div>
-
-            <div className={'scheduler-control-panel-footer'}>
-                <button className={'general-button cancel'}
-                        onClick={handleDiscard}>
-                    {t('cancel')}
-                </button>
-                <form style={{all: 'unset'}} onSubmit={handleSubmit}>
-                    <button type={'submit'} className={'general-button'}>
-                        {isLoading ? <LoadingSpinner buttonMode={true}/> : t('save')}
-                    </button>
-                </form>
-            </div>
         </div>
     );
 }
