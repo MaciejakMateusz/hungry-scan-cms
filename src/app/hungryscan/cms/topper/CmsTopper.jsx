@@ -37,6 +37,7 @@ export const CmsTopper = () => {
         errorData
     } = useSelector(state => state.menu.form);
     const [menus, setMenus] = useState([]);
+    const menusLimit = Number(process.env.REACT_APP_MENUS_LIMIT);
     const contextMenuPositions = useMenuContextPositions();
     const renderConfirmation = useConfirmationMessage(setMenuRemoved);
     const getRestaurant = useFetchCurrentRestaurant();
@@ -122,8 +123,8 @@ export const CmsTopper = () => {
                                 MenuList: CustomMenuList
                             }}
                             onAdd={() => dispatch(setNewMenuFormActive(true))}
-                            buttonText={menus.length >= 10 ? t('maximumMenusCount') : t('addMenu')}
-                            buttonDisabled={menus.length >= 10}
+                            buttonText={menus.length >= menusLimit ? t('maximumMenusCount') : t('addMenu')}
+                            buttonDisabled={menus.length >= menusLimit}
                             selectRef={selectRef}
                     />
                 </div>
