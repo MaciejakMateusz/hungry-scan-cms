@@ -5,7 +5,7 @@ import {getAutoTranslation, setErrorData} from "../../../../../slices/translatio
 import {LoadingSpinner} from "../../../../icons/LoadingSpinner";
 import {TranslationStatus} from "../TranslationStatus";
 
-export const TargetTranslationField = ({value, changeHandler, renderButton, type}) => {
+export const TargetTranslationField = ({value, changeHandler, type}) => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {
@@ -14,8 +14,8 @@ export const TargetTranslationField = ({value, changeHandler, renderButton, type
         sourceWelcomeSlogan
     } = useSelector(state => state.translations.view);
     const {chosenDestinationLanguage} = useSelector(state => state.translations.view);
+    const {restaurant} = useSelector(state => state.dashboard.view);
     const isAutoTranslateLoading = useSelector(state => state.translations.autoTranslate.isLoading);
-    const isPostLoading = useSelector(state => state.translations.postTranslatables.isLoading);
 
     const handleFieldChange = value => {
         dispatch(changeHandler(value));
@@ -30,8 +30,10 @@ export const TargetTranslationField = ({value, changeHandler, renderButton, type
         } else if ('welcomeSlogan' === type) {
             textToTranslate = sourceWelcomeSlogan;
         }
+        const restaurantLanguage = restaurant?.value.settings.language;
         const resultAction = await dispatch(getAutoTranslation({
             text: textToTranslate,
+            sourceLanguage: restaurantLanguage,
             targetLanguage: chosenDestinationLanguage.value
         }));
         if (getAutoTranslation.fulfilled.match(resultAction)) {
@@ -57,7 +59,7 @@ export const TargetTranslationField = ({value, changeHandler, renderButton, type
                         <TranslationStatus translated={value?.length > 0}/>
                     </div>
                     <div className={'language-label'}>
-                        {t(chosenDestinationLanguage.value)}
+                        {t(chosenDestinationLanguage.value.toLowerCase())}
                     </div>
                 </div>
             </div>
@@ -79,11 +81,6 @@ export const TargetTranslationField = ({value, changeHandler, renderButton, type
                             {t('automaticTranslation')}
                     </span>
                 </div>
-                {renderButton &&
-                    <button type={'submit'}
-                            className={'translations-general-button'}>
-                        {isPostLoading ? <LoadingSpinner buttonMode={true}/> : t('save')}
-                    </button>}
             </div>
         </div>
     );
