@@ -23,7 +23,7 @@ export const CustomMenuList = (props) => {
                 </components.MenuList>
             </div>
             <div className={'custom-menu-list-button'}
-                 style={buttonDisabled ? {backgroundColor: 'grey', cursor: 'not-allowed'} : {}}
+                 style={buttonDisabled ? {backgroundColor: 'FFF', cursor: 'not-allowed'} : {}}
                  onClick={handleClick}>
                 {!buttonDisabled && '+'} {buttonText}
             </div>
