@@ -3,7 +3,13 @@ import {useTranslation} from "react-i18next";
 import {setCmsActive, setCurrentView} from "../../../../slices/globalParamsSlice";
 import {DISHES_CATEGORIES, STATS} from "../../../../utils/viewsConstants";
 import {useDispatch, useSelector} from "react-redux";
-import {IndexedText, Switcher, SwitcherPill, Wrapper} from "./AppModeSwitcher.style";
+import {
+    IndexedText,
+    Switcher,
+    SwitcherPill,
+    SwitcherPillInactive,
+    Wrapper
+} from "./AppModeSwitcher.style";
 
 export const AppModeSwitcher = ({hasAccessToDashboard}) => {
     const {t} = useTranslation();
@@ -22,11 +28,17 @@ export const AppModeSwitcher = ({hasAccessToDashboard}) => {
     return (
         <Wrapper>
             <Switcher onClick={() => switchAppMode()}>
+                {cmsActive &&
+                    <SwitcherPillInactive $cmsActive={cmsActive}>
+                        <IndexedText>{t('dashboard')}</IndexedText>
+                    </SwitcherPillInactive>}
                 <SwitcherPill $cmsActive={cmsActive}>
                     <IndexedText>{cmsActive ? 'CMS' : t('dashboard')}</IndexedText>
                 </SwitcherPill>
-                {cmsActive && <IndexedText>{t('dashboard')}</IndexedText>}
-                {!cmsActive && <IndexedText>CMS</IndexedText>}
+                {!cmsActive &&
+                    <SwitcherPillInactive $cmsActive={cmsActive}>
+                        <IndexedText>CMS</IndexedText>
+                    </SwitcherPillInactive>}
             </Switcher>
         </Wrapper>
     );
