@@ -10,16 +10,19 @@ export const Wrapper = styled.div`
 export const Switcher = styled.div`
     position: relative;
     z-index: 10;
-    width: 210px;
+    min-width: 100px;
+    max-width: 210px;
     height: 37px;
     background: #23262D;
     border-radius: 100px;
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     align-items: center;
-    color: var(--Basic-300);
     font-weight: 400;
     line-height: 16px;
     cursor: pointer;
+    padding: 0 5px;
+    box-sizing: border-box;
 `;
 
 export const IndexedText = styled.span`
@@ -27,14 +30,23 @@ export const IndexedText = styled.span`
 `;
 
 export const SwitcherPill = styled.div`
-    position: absolute;
+    grid-column: ${({ $cmsActive }) => ($cmsActive ? "2" : "1")};;
     z-index: 11;
-    width: 100px;
-    height: 27px;
+    padding: 5px 15px;
     background: #8540DD;
+    color: var(--Basic-300);
     border-radius: 100px;
-    left: ${({ $cmsActive }) => ($cmsActive ? "105px" : "5px")};
-    transition: left 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
+
+export const SwitcherPillInactive = styled.div`
+    grid-column: ${({$cmsActive}) => ($cmsActive ? "1" : "2")};;
+    z-index: 11;
+    color: #93939e;
+    padding: 5px 15px;
+    border-radius: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
