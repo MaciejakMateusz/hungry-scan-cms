@@ -22,9 +22,11 @@ export const AppModeSwitcher = ({hasAccessToDashboard}) => {
     return (
         <Wrapper>
             <Switcher onClick={() => switchAppMode()}>
-                <SwitcherPill $cmsActive={cmsActive}/>
-                <IndexedText>{t('dashboard')}</IndexedText>
-                <IndexedText>CMS</IndexedText>
+                <SwitcherPill $cmsActive={cmsActive}>
+                    <IndexedText>{cmsActive ? 'CMS' : t('dashboard')}</IndexedText>
+                </SwitcherPill>
+                {cmsActive && <IndexedText>{t('dashboard')}</IndexedText>}
+                {!cmsActive && <IndexedText>CMS</IndexedText>}
             </Switcher>
         </Wrapper>
     );
