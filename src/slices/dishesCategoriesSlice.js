@@ -300,7 +300,7 @@ export const dishesCategoriesSlice = createSlice(
                 state.activeRemovalType = action.payload;
             },
             setIsInEditMode: (state, action) => {
-                state.isInEditMode = state.newCategoryFormActive || state.editCategoryFormActive || state.newDishFormActive || state.editDishFormActive || action.payload === true;
+                state.isInEditMode = state.newCategoryFormActive || state.editCategoryFormActive || state.newDishFormActive || state.editDishFormActive || action.payload === true || action.payload;
             },
             setCategory: (state, action) => {
                 state.category = action.payload;
