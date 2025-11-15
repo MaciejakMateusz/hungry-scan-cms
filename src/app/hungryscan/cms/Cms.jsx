@@ -13,10 +13,11 @@ import {clearView as clearVariantsView} from "../../../slices/variantsSlice";
 import {clearView as clearAdditionsView} from "../../../slices/additionsSlice";
 import {clearView as clearTranslationsView} from "../../../slices/translationsSlice";
 import {clearForm as clearDishForm} from "../../../slices/dishFormSlice";
+import {clearForm as clearMenuForm} from "../../../slices/menuSlice";
 import {ADDITIONS, DISHES_CATEGORIES, PERSONALIZATION, TRANSLATIONS, USER_PROFILE} from "../../../utils/viewsConstants";
-import {setCurrentDialog, setCurrentView} from "../../../slices/globalParamsSlice";
+import {setCurrentView} from "../../../slices/globalParamsSlice";
 import {CmsTopper} from "./topper/CmsTopper";
-import {fetchActiveMenu} from "../../../slices/cmsSlice";
+import {fetchActiveMenu, setSchedulerActive} from "../../../slices/cmsSlice";
 import {NavPanel} from "../NavPanel";
 import {UserProfile} from "../dashboard/user/UserProfile";
 import {DocumentIcon} from "../../icons/DocumentIcon";
@@ -47,7 +48,8 @@ export const Cms = () => {
         dispatch(clearDishesCategoriesView());
         dispatch(clearVariantsView());
         dispatch(clearAdditionsView());
-        dispatch(clearTranslationsView())
+        dispatch(clearTranslationsView());
+        dispatch(clearMenuForm());
     }
 
     useEffect(() => {
@@ -63,7 +65,8 @@ export const Cms = () => {
         editCategoryFormActive,
         newDishFormActive,
         editDishFormActive,
-        reorderCategoriesDialogActive]);
+        reorderCategoriesDialogActive,
+        currentView]);
 
     useEffect(() => {
         if (!isInEditMode || !categoryForAction || !menuItemForAction || !reorderCategoriesDialogActive) {
@@ -73,7 +76,7 @@ export const Cms = () => {
 
     const switchView = (viewName) => {
         if (isInEditMode) {
-            setSwitchViewDialog(viewName)
+            setSwitchViewDialog(viewName);
         } else if (viewName !== currentView) {
             clearCmsState();
             dispatch(setCurrentView(viewName));
@@ -123,15 +126,18 @@ export const Cms = () => {
 
     return (
         <>
-            {switchViewDialog ?
+            {switchViewDialog &&
                 <DecisionDialog
                     msg={t('confirmViewSwitch')}
                     onCancel={() => setSwitchViewDialog(null)}
                     onSubmit={() => {
-                        setSwitchViewDialog(null);
                         clearCmsState();
-                        dispatch(setCurrentDialog(switchViewDialog));
-                    }}/> : <></>
+                        dispatch(setSchedulerActive(false));
+                        dispatch(setCurrentView(switchViewDialog));
+                        dispatch(setIsInEditMode(false));
+                        setSwitchViewDialog(null);
+                    }}
+                />
             }
             <NavPanel children={navElements}/>
             <div className={'cms-main'}>
