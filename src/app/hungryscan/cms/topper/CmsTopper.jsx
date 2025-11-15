@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
-import {DocumentIcon} from "../../../icons/DocumentIcon";
-import Select from "react-select";
-import {mainSelectIcon} from "../../../../selectStyles";
+import Select, {components} from "react-select";
+import {mainSelectTopper} from "../../../../selectStyles";
 import {CustomNoOptionsMessage} from "../form-components/CustomNoOptionsMessage";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
@@ -20,6 +19,7 @@ import {useFetchCurrentRestaurant} from "../../../../hooks/useFetchCurrentRestau
 import {useOutsideClick} from "../../../../hooks/useOutsideClick";
 import {RecordOptionsButton} from "../shared-components/RecordOptionsButton";
 import {FormErrorDialog} from "../../../error/FormErrorDialog";
+import {ScheduleIcon} from "../../../icons/ScheduleIcon";
 
 export const CmsTopper = () => {
     const {t} = useTranslation();
@@ -71,7 +71,7 @@ export const CmsTopper = () => {
                 }
                 return a.standard ? -1 : 1;
             })
-            .map((m) => ({value: m, label: m.name}));
+            .map((m) => ({value: m, label: m.name, isStandard: m.standard}));
     }, [restaurant])
 
     const switchMenu = async (selected) => {
@@ -94,6 +94,23 @@ export const CmsTopper = () => {
         }
     }
 
+    const CustomOption = (props) => {
+        const {data} = props;
+        return (
+            <components.Option {...props}>
+                <div className={'text-ellipsis'}
+                      style={{maxWidth: data.isStandard ? '73%' : '90%'}}>
+                    {data.label}
+                </div>
+                {data.isStandard &&
+                    <span className={'menu-standard-indicator-option'}>
+                        {t("main")}
+                    </span>
+                }
+            </components.Option>
+        );
+    };
+
     return (
         <header className={'app-header cms'}>
             {newMenuFormActive && <NewMenuFormDialog/>}
@@ -106,7 +123,6 @@ export const CmsTopper = () => {
                                                              isLoading={removalPending}/>}
             <div className={'flex-wrapper'}>
                 <div className={'app-header-select-wrapper'}>
-                    <DocumentIcon customColor={menu?.color?.hex} absolute={true}/>
                     <Select id={'cms-menu'}
                             ref={selectRef}
                             name={'cms-menu'}
@@ -117,16 +133,25 @@ export const CmsTopper = () => {
                             isSearchable={false}
                             defaultValue={menus && menus[0]}
                             onChange={async (selected) => await switchMenu(selected)}
-                            styles={mainSelectIcon}
+                            styles={{
+                                ...mainSelectTopper,
+                                singleValue: (provided) => ({
+                                    ...provided,
+                                    color: '#191D25',
+                                    maxWidth: activeMenu?.value.standard ? '70%' : '90%'
+                                })
+                            }}
                             components={{
                                 NoOptionsMessage: CustomNoOptionsMessage,
-                                MenuList: CustomMenuList
+                                MenuList: CustomMenuList,
+                                Option: CustomOption
                             }}
                             onAdd={() => dispatch(setNewMenuFormActive(true))}
                             buttonText={menus.length >= menusLimit ? t('maximumMenusCount') : t('addMenu')}
                             buttonDisabled={menus.length >= menusLimit}
                             selectRef={selectRef}
                     />
+                    {activeMenu?.value.standard && <div className={'menu-standard-indicator'}>{t('main')}</div>}
                 </div>
                 <RecordOptionsButton className={'options-button'}
                                      style={isInEditMode ? {cursor: 'not-allowed'} : {}}
@@ -139,12 +164,13 @@ export const CmsTopper = () => {
                                      contextRef={contextRef}/>
             </div>
             {!schedulerActive &&
-                <button className={'general-button'}
-                        style={isInEditMode ? {cursor: 'not-allowed', background: '#B5B5B5'} : {}}
+                <button className={'general-button schedules'}
+                        style={isInEditMode ? {cursor: 'not-allowed', color: 'var(--Grey-700)'} : {}}
                         onClick={() => {
                             if (isInEditMode) return;
                             dispatch(setSchedulerActive(true));
                         }}>
+                    <ScheduleIcon fill={isInEditMode && 'var(--Grey-700)'}/>
                     {t('menuSchedules')}
                 </button>
             }
