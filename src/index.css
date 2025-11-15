@@ -112,7 +112,7 @@ iframe {
 .spinner {
     transform: translate(-50%, -50%);
     border: 8px solid rgba(0, 0, 0, 0.1);
-    border-top: 8px solid #6940C6;
+    border-top: 8px solid #8540DD;
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -217,7 +217,7 @@ iframe {
     height: 30px;
     border: none;
     border-radius: 16px;
-    background-color: #6940C6;
+    background-color: #8540DD;
     color: white;
     cursor: pointer;
 }
@@ -272,7 +272,7 @@ a:visited {
 }
 
 a:hover {
-    color: #6940C6;
+    color: #8540DD;
 }
 
 /* Main Page Styles */
@@ -384,7 +384,7 @@ a:hover {
     height: 6px;
     width: 50%;
     border-radius: 100px;
-    background: #9746FF;
+    background: #8540DD;
     transition: all 0.5s ease-in-out;
     transform: translateX(0);
 }
@@ -617,7 +617,7 @@ a:hover {
     width: 100%;
     height: 40px;
     border-radius: 10px;
-    background: #9746FF;
+    background: #8540DD;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -630,7 +630,7 @@ a:hover {
 
 .form-submit-button.register-redirect {
     background: #F5EDFF;
-    color: #9746FF;
+    color: #8540DD;
 }
 
 .form-submit-button.confirmation {
@@ -734,7 +734,7 @@ a:hover {
 .go-login-btn {
     padding: 12px 25px;
     border-radius: 100px;
-    background: #9746FF;
+    background: #8540DD;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -758,7 +758,7 @@ a:hover {
 }
 
 .a-branded {
-    color: #9746FF;
+    color: #8540DD;
 }
 
 /* Main Page Styles END */
@@ -808,7 +808,7 @@ ul {
     grid-column: 1;
     display: grid;
     grid-template-rows: 56px 80px 1fr 10% 15% 5%;
-    background: #1F242D;
+    background: #121620;
     overflow: hidden;
     position: fixed;
     height: 100vh;
@@ -864,7 +864,7 @@ ul {
     background-color: inherit;
     color: #93939E;
     font-weight: 300;
-    font-size: 1rem;
+    font-size: 13px;
     width: 100%;
     padding-left: 40px;
 }
@@ -872,12 +872,12 @@ ul {
 .app-nav-btn:hover {
     cursor: pointer;
     color: #FAFAFA;
-    background-color: #191D25;
+    background-color: #23262D;
 }
 
 .nav-active {
     color: #FAFAFA;
-    background-color: #191D25;
+    background-color: #23262D;
     font-weight: 400;
 }
 
@@ -912,13 +912,12 @@ ul {
 }
 
 .app-nav-restaurant-info-container {
-    display: grid;
-    grid-template-columns: 20% 80%;
-    background: #191D25;
+    display: flex;
+    background: #23262D;
     width: 100%;
     height: 100%;
     border-radius: 10px;
-    padding-right: 16px;
+    padding: 0 16px;
 }
 
 .app-nav-restaurant-info-icon {
@@ -958,7 +957,7 @@ ul {
 .app-nav-footer {
     grid-row: 6;
     font-size: 0.9rem;
-    background: #191D25;
+    background: #23262D;
     width: 100%;
     height: 100%;
     color: #93939E;
@@ -1019,10 +1018,31 @@ ul {
     z-index: 1;
 }
 
+.menu-standard-indicator {
+    position: absolute;
+    top: 6px;
+    right: 34px;
+    padding: 3px 8px;
+    border-radius: 5px;
+    background: #F5EDFF;
+    color: #8540DD;
+}
+
+.menu-standard-indicator-option {
+    position: absolute;
+    top: 9px;
+    right: 28px;
+    padding: 3px 8px;
+    border-radius: 5px;
+    background: #F5EDFF;
+    color: #8540DD;
+    font-size: 11px;
+}
+
 .options-button {
     width: 32px;
     height: 32px;
-    background: #F5F5F5;
+    background: #F6F6F6;
     border-radius: 100px;
     display: flex;
     align-items: center;
@@ -1088,12 +1108,12 @@ ul {
 
 .period-button:hover {
     color: #FFF;
-    background: #9746FF;
+    background: #8540DD;
 }
 
 .period-button.active {
     color: #FFF;
-    background: #9746FF;
+    background: #8540DD;
 }
 
 .statistics-widgets-layout {
@@ -1188,8 +1208,8 @@ ul {
     height: 27px;
     width: fit-content;
     border-radius: 100px;
-    background: #E0F3FF;
-    color: #016DFF;
+    background: #F5EDFF;
+    color: #8540DD;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1200,7 +1220,7 @@ ul {
 
 .qr-img-download-btn:hover {
     background: #d6eefc;
-    color: #016DFF;
+    color: #8540DD;
 }
 
 .qr-placeholder {
@@ -1353,7 +1373,7 @@ ul {
 /* Selected day styling */
 .react-datepicker__day--selected,
 .react-datepicker__day--keyboard-selected {
-    background-color: #6940C6; /* e.g., Bootstrap primary color */
+    background-color: #8540DD; /* e.g., Bootstrap primary color */
     color: #fff;
 }
 
@@ -1363,7 +1383,7 @@ ul {
 }
 
 .datepicker-custom-calendar .react-datepicker__day--selected {
-    background-color: #6940C6;
+    background-color: #8540DD;
     color: #fff;
 }
 
@@ -1406,12 +1426,12 @@ ul {
     height: 30px;
     border: 0;
     border-radius: 100px;
-    background: #6940C6;
+    background: #8540DD;
     color: #FFF;
     font-size: 13px;
     font-weight: 400;
     cursor: pointer;
-    padding: 0 15px;
+    padding: 0 13px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1442,6 +1462,13 @@ ul {
 
 .general-button.submit:disabled:hover {
     background: #3E424C;
+}
+
+.general-button.schedules {
+    background: #F6F6F6;
+    color: #222222;
+    display: flex;
+    gap: 10px;
 }
 
 .manage-buttons-horizontal-pill {
@@ -1602,7 +1629,7 @@ ul {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: rgba(0, 0, 0, 0.08);
+    background: rgba(0, 0, 0, 0.15);
     border-radius: 5px;
     width: 17px;
     height: 17px;
@@ -2103,7 +2130,7 @@ ul {
 /* NEW UI */
 .background {
     background-color: #EDEFF3;
-    font-size: 0.8rem;
+    font-size: 11px;
 }
 
 .dashboard-view-grid {
@@ -2345,7 +2372,7 @@ ul {
 
 .translation-text-label {
     padding: 24px 20px 10px 20px;
-    color: #6940C6;
+    color: #8540DD;
     font-size: 0.8rem;
     font-weight: 400;
 }
@@ -2508,7 +2535,7 @@ ul {
 
 .auto-translation-group {
     cursor: pointer;
-    color: #6940C6;
+    color: #8540DD;
     font-size: 0.8rem;
     font-weight: 400;
     position: relative;
@@ -2520,7 +2547,7 @@ ul {
 
 .translations-general-button {
     border-radius: 100px;
-    background: #6940C6;
+    background: #8540DD;
     padding: 8px 20px;
     border: none;
     color: #FFF;
@@ -2577,7 +2604,7 @@ ul {
     justify-content: space-between;
     align-items: center;
     gap: 10px;
-    margin-bottom: 10px;
+    padding: 5px 0 15px 0;
 }
 
 .flex-wrapper {
@@ -2590,7 +2617,8 @@ ul {
 }
 
 .section-heading {
-    font-size: 1.5rem;
+    font-size: 19px;
+    font-weight: 500;
 }
 
 .flex-centered {
@@ -2602,12 +2630,13 @@ ul {
 .general-button-new {
     height: 30px;
     display: flex;
-    padding: 0 15px;
+    padding: 0 13px;
     justify-content: center;
     align-items: center;
     border-radius: 100px;
     background: #FFF;
     cursor: pointer;
+    font-size: 13px;
 }
 
 .scrollable-wrapper {
@@ -2702,7 +2731,7 @@ ul {
 }
 
 .new-position-button {
-    color: #6940C6;
+    color: #8540DD;
     cursor: pointer;
 }
 
@@ -2833,6 +2862,7 @@ ul {
 .draggable-position-description {
     display: block;
     color: #7D7D7D;
+    font-weight: 300;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -2890,6 +2920,10 @@ ul {
     align-items: center;
     justify-content: flex-start;
     text-wrap: nowrap;
+}
+
+.context-icon-wrapper {
+    padding: 5px 5px 5px 0;
 }
 
 .context-menu-detail {
@@ -3045,11 +3079,13 @@ ul {
     text-align: center;
     border-top: 1px solid #eee;
     cursor: pointer;
-    color: #fff;
-    background-color: #9746FF;
+    color: #707070;
+    background-color: #8540DD;
     font-weight: 500;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
+    margin-left: -1px;
+    margin-right: -1px;
 }
 
 .form-dialog-header {
@@ -3194,7 +3230,7 @@ ul {
     padding-left: 10px;
     height: 24px;
     border-radius: 5px;
-    color: #FFF;
+    color: #222;
     cursor: grab;
     width: 83%;
     font-size: 0.9rem;
@@ -3202,6 +3238,13 @@ ul {
 
 .external-event:active {
     cursor: grabbing;
+}
+
+.external-event-standard-indicator {
+    padding: 3px 8px;
+    border-radius: 5px;
+    background: #F6F6F6;
+    color: var(--Grey-700);
 }
 
 .fc-event-main {
@@ -3248,6 +3291,9 @@ ul {
     flex-direction: column;
     position: relative;
     padding-right: 18px;
+    overflow-y: hidden;
+    max-height: 100%;
+    text-overflow: ellipsis;
 }
 
 .fc-event-remove {
@@ -3276,6 +3322,10 @@ ul {
 .fc .fc-no-title .fc-event-time::after,
 .fc .fc-no-title .fc-timegrid-event .fc-event-time::after {
     content: none !important;
+}
+
+.fc-non-business {
+    background: hsla(0, 0%, 90%, .3) !important;
 }
 
 /*TOGGLE SWITCH*/
