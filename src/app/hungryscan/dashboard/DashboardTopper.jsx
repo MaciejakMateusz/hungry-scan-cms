@@ -1,7 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
-import {DocumentIcon} from "../../icons/DocumentIcon";
 import Select from "react-select";
-import {mainSelectIcon} from "../../../selectStyles";
+import {mainSelectTopper} from "../../../selectStyles";
 import {CustomNoOptionsMessage} from "../cms/form-components/CustomNoOptionsMessage";
 import {ThreeDotsIcon} from "../../icons/ThreeDotsIcon";
 import {useTranslation} from "react-i18next";
@@ -88,7 +87,6 @@ export const DashboardTopper = () => {
                                               onSubmit={handleRestaurantRemoval}
                                               isLoading={removalPending}/>}
             <div className={'app-header-select-wrapper'}>
-                <DocumentIcon customColor={"#9746FF"} absolute={true}/>
                 <Select id={'dashboard-restaurant'}
                         ref={selectRef}
                         name={'dashboard-restaurant'}
@@ -99,7 +97,7 @@ export const DashboardTopper = () => {
                         isSearchable={false}
                         isDisabled={controlDisabled}
                         onChange={(selected) => handleRestaurantSwitch(selected)}
-                        styles={mainSelectIcon}
+                        styles={mainSelectTopper}
                         components={{
                             NoOptionsMessage: CustomNoOptionsMessage,
                             MenuList: CustomMenuList
