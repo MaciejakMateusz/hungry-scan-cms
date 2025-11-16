@@ -57,8 +57,8 @@ export const LabelsAllergensCounters = styled.div`
 export const Banner = styled.div`
     padding: 6px 10px;
     border-radius: 16px;
-    background: #E0F3FF;
-    color: #016DFF;
+    background: #F5EDFF;
+    color: #8540DD;
     display: flex;
     justify-content: center;
     align-items: center;
