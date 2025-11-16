@@ -9,6 +9,7 @@ import {getUserProfile} from "../../slices/userProfileSlice";
 import {setCurrentView} from "../../slices/globalParamsSlice";
 import {DISHES_CATEGORIES, STATS} from "../../utils/viewsConstants";
 import {CookieConsent} from "../main/cookies/CookieConsent";
+import {useWarnOnUnload} from "../../hooks/useWarnOnUnload";
 
 export const App = () => {
     const dispatch = useDispatch();
@@ -16,6 +17,7 @@ export const App = () => {
     const {userData} = useSelector(state => state.userProfile.getUserProfile);
     const hasAccessToDashboard = userData?.roles?.some(role => [2, 3].includes(role.id));
     useInactivityTimeout(getInactivityTimeout);
+    useWarnOnUnload(true);
 
     useEffect(() => {
         dispatch(getUserProfile())
