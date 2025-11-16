@@ -13,6 +13,8 @@ export const globalParamsSlice = createSlice(
             currentView: STATS,
             cmsActive: false,
             currentDialog: null,
+            isInEditMode: false,
+            nextViewName: null
         },
         reducers: {
             setActiveRestaurant: (state, action) => {
@@ -38,6 +40,12 @@ export const globalParamsSlice = createSlice(
             },
             setCurrentDialog: (state, action) => {
                 state.currentDialog = action.payload;
+            },
+            setIsInEditMode: (state, action) => {
+                state.isInEditMode = action.payload;
+            },
+            setNextViewName: (state, action) => {
+                state.nextViewName = action.payload;
             }
         }
     });
@@ -50,7 +58,9 @@ export const {
     setActiveObjDetails,
     setCurrentView,
     setCmsActive,
-    setCurrentDialog
+    setCurrentDialog,
+    setIsInEditMode,
+    setNextViewName
 } = globalParamsSlice.actions;
 
 const globalParamsReducer = combineReducers({
