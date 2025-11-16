@@ -23,9 +23,12 @@ import {
 import {UnavailableIcon} from "../../../../icons/UnavailableIcon";
 import {Tooltip} from "../../Tooltip";
 import {useGetTranslation} from "../../../../../hooks/useGetTranslation";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {setCategory, setDish, setEditDishFormActive} from "../../../../../slices/dishesCategoriesSlice";
+import {setCategoryId} from "../../../../../slices/dishFormSlice";
 
 export const MenuItemPosition = ({id, category, menuItem, filtered}) => {
+    const dispatch = useDispatch();
     const {t} = useTranslation();
     const getTranslation = useGetTranslation();
     const {restaurant} = useSelector(state => state.dashboard.view);
@@ -47,7 +50,8 @@ export const MenuItemPosition = ({id, category, menuItem, filtered}) => {
     const style = {
         transform: CSS.Transform.toString(transform),
         transition,
-        zIndex: isDragging && !filtered ? 800 : 'auto'
+        zIndex: isDragging && !filtered ? 800 : 'auto',
+        cursor: "pointer"
     };
     const hasImage = useImageExists(id);
 
@@ -84,9 +88,21 @@ export const MenuItemPosition = ({id, category, menuItem, filtered}) => {
         );
     }
 
+
+    const handleEdit = async () => {
+        dispatch(setCategory(category));
+        dispatch(setCategoryId(category.id));
+        dispatch(setDish(menuItem));
+        dispatch(setEditDishFormActive(true));
+    };
+
+    const stopClickPropagation = (e) => {
+        e.stopPropagation();
+    };
+
     return (
         <>
-            <div className={'draggable-position-container'} ref={setNodeRef} style={style}>
+            <div className={'draggable-position-container'} ref={setNodeRef} style={style} onClick={handleEdit}>
                 {!filtered ?
                     <DragAndDropWrapper {...listeners} {...attributes}>
                         <DragAndDropIcon/>
@@ -95,7 +111,7 @@ export const MenuItemPosition = ({id, category, menuItem, filtered}) => {
                         <DragAndDropIcon disabled={true}/>
                     </DragAndDropWrapper>
                 }
-                <ImageWrapper>
+                <ImageWrapper onClick={stopClickPropagation}>
                     <InteractiveMenuItemImage src={`${s3BucketUrl}/menuItems/${menuItem.id}.png?t=${menuItem.updated}`}
                                               hasImage={hasImage}/>
                 </ImageWrapper>
@@ -134,7 +150,7 @@ export const MenuItemPosition = ({id, category, menuItem, filtered}) => {
                         {!menuItem.available && <UnavailableIcon/>}
                     </Tooltip>
                 </div>
-                <div className={'draggable-position-actions'}>
+                <div className={'draggable-position-actions'} onClick={stopClickPropagation}>
                     <RecordOptionsButton className={'record-context-actions-button'}
                                          onClick={() => setContextWindowActive(!contextWindowActive)}
                                          contextWindowActive={contextWindowActive}
