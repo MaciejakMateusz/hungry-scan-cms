@@ -32,7 +32,7 @@ export const IndexedText = styled.span`
 export const SwitcherPill = styled.div`
     grid-column: ${({ $cmsActive }) => ($cmsActive ? "2" : "1")};;
     z-index: 11;
-    padding: 5px 15px;
+    padding: 5px 13px;
     background: #8540DD;
     color: var(--Basic-300);
     border-radius: 100px;
@@ -45,7 +45,7 @@ export const SwitcherPillInactive = styled.div`
     grid-column: ${({$cmsActive}) => ($cmsActive ? "1" : "2")};;
     z-index: 11;
     color: #93939e;
-    padding: 5px 15px;
+    padding: 5px 13px;
     border-radius: 100px;
     display: flex;
     align-items: center;
