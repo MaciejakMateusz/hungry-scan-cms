@@ -27,6 +27,12 @@ export const logoutFetchSlice = createSlice(
         name: 'logoutFetch',
         initialState: {
             isLoading: false,
+            logoutActive: false
+        },
+        reducers: {
+            setLogoutActive: (state, action) => {
+                state.logoutActive = action.payload;
+            }
         },
         extraReducers: (builder) => {
             builder.addCase(executeLogoutFetch.pending, state => {
@@ -35,6 +41,7 @@ export const logoutFetchSlice = createSlice(
                 state.isLoading = false;
                 removeCookie('userForename');
                 window.location.href = action.payload.redirectUrl;
+                state.logoutActive = false;
             }).addCase(executeLogoutFetch.rejected, state => {
                 state.isLoading = false;
             })
@@ -120,6 +127,7 @@ export const loginFetchSlice = createSlice(
 
 export const {setUsername, setPassword} = loginFormSlice.actions;
 export const {setErrorData} = loginFetchSlice.actions;
+export const {setLogoutActive} = logoutFetchSlice.actions;
 
 const loginReducer = combineReducers({
     loginForm: loginFormSlice.reducer,
