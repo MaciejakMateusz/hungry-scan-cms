@@ -19,6 +19,7 @@ import {
 } from "../../../../../slices/usersSlice";
 import {UserForm} from "./UserForm";
 import {useGetTranslation} from "../../../../../hooks/useGetTranslation";
+import {setIsInEditMode} from "../../../../../slices/globalParamsSlice";
 
 export const EditUserForm = ({executeFilter}) => {
     const {t} = useTranslation();
@@ -54,6 +55,7 @@ export const EditUserForm = ({executeFilter}) => {
             dispatch(setEditUserFormActive(false));
             dispatch(setUserToUpdate(null));
             dispatch(clearForm());
+            dispatch(setIsInEditMode(false));
             renderConfirmation();
             filteringActive ? executeFilter(filterValue) : dispatch(getUsers());
         } else if (updateUser.rejected.match(resultAction)) {
@@ -65,6 +67,7 @@ export const EditUserForm = ({executeFilter}) => {
         dispatch(setEditUserFormActive(false));
         dispatch(clearForm());
         dispatch(setUpdateUserError(null));
+        dispatch(setIsInEditMode(false));
     }
 
     return (
