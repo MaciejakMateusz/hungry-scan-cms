@@ -107,7 +107,7 @@ export const Additions = () => {
                     <div className={'section-heading'}>{t('additions')}</div>
                     <div className={'flex-wrapper-gapped'}>
                         <div className={'general-button-new'}
-                             onClick={() => dispatch(setAdditionDialogActive(true))}>+ &nbsp;{t('newAddition')}
+                             onClick={() => dispatch(setAdditionDialogActive(true))}>+ {t('newAddition')}
                         </div>
                         <SearchButton filterExpanded={filterExpanded}
                                       onExpand={() => dispatch(setFilterExpanded(!filterExpanded))}
