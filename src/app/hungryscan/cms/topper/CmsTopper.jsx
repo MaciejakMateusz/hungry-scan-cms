@@ -27,9 +27,9 @@ export const CmsTopper = () => {
     const selectRef = useRef();
     const contextRef = useRef();
     const {restaurant} = useSelector(state => state.dashboard.view);
-    const {activeMenu} = useSelector(state => state.globalParams.globalParams)
+    const {activeMenu, isInEditMode} = useSelector(state => state.globalParams.globalParams)
     const {menu} = useSelector(state => state.cms.fetchActiveMenu);
-    const {isInEditMode, activeRemovalType} = useSelector(state => state.dishesCategories.view);
+    const {activeRemovalType} = useSelector(state => state.dishesCategories.view);
     const {
         newMenuFormActive,
         editMenuFormActive,
@@ -170,7 +170,7 @@ export const CmsTopper = () => {
                             if (isInEditMode) return;
                             dispatch(setSchedulerActive(true));
                         }}>
-                    <ScheduleIcon fill={isInEditMode && 'var(--Grey-700)'}/>
+                    <ScheduleIcon isInEditMode={isInEditMode}/>
                     {t('menuSchedules')}
                 </button>
             }
