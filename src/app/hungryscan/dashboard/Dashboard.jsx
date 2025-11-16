@@ -1,7 +1,7 @@
 import React from "react";
 import {NavButton} from "../NavButton";
 import {useDispatch, useSelector} from "react-redux";
-import {setCurrentView} from "../../../slices/globalParamsSlice";
+import {setCurrentView, setIsInEditMode, setNextViewName} from "../../../slices/globalParamsSlice";
 import {StatsIcon} from "../../icons/StatsIcon";
 import {QrCodeIcon} from "../../icons/QrCodeIcon";
 import {UsersIcon} from "../../icons/UsersIcon";
@@ -15,15 +15,21 @@ import {QrCode} from "./qr/QrCode";
 import {useTranslation} from "react-i18next";
 import {UserProfile} from "./user/UserProfile";
 import {Users} from "./users/Users";
+import {useClearDashboardState} from "../../../hooks/useClearDashboardState";
+import {DecisionDialog} from "../cms/dialog-windows/DecisionDialog";
+import {setSchedulerActive} from "../../../slices/cmsSlice";
+import {useSwitchView} from "../../../hooks/useSwitchView";
 
 export const Dashboard = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
-    const {currentView} = useSelector(state => state.globalParams.globalParams);
+    const {currentView, nextViewName} = useSelector(state => state.globalParams.globalParams);
     const {newRestaurantFormActive, editRestaurantFormActive} = useSelector(state => state.restaurant.form);
     const statsHoveredOrActive = currentView === STATS;
     const qrHoveredOrActive = currentView === CODE_QR;
     const usersHoveredOrActive = currentView === USERS;
+    const clearDashboardState = useClearDashboardState();
+    const handleSwitchView = useSwitchView({clearStateHandler: clearDashboardState})
 
     const renderMainView = () => {
         if (newRestaurantFormActive) {
@@ -51,22 +57,35 @@ export const Dashboard = () => {
                    isActive={currentView === STATS}
                    name={t('statistics')}
                    icon={<StatsIcon active={statsHoveredOrActive}/>}
-                   onClick={() => dispatch(setCurrentView(STATS))}/>,
+                   onClick={() => handleSwitchView(STATS)}/>,
         <NavButton key={CODE_QR}
                    isActive={currentView === CODE_QR}
                    name={t('qrCode')}
                    icon={<QrCodeIcon active={qrHoveredOrActive}/>}
-                   onClick={() => dispatch(setCurrentView(CODE_QR))}/>,
+                   onClick={() => handleSwitchView(CODE_QR)}/>,
         <NavButton key={USERS}
                    isActive={currentView === USERS}
                    name={t('users')}
                    icon={<UsersIcon active={usersHoveredOrActive}/>}
-                   onClick={() => dispatch(setCurrentView(USERS))}/>
+                   onClick={() => handleSwitchView(USERS)}/>
     ]
 
     return (
         <>
-            <NavPanel children={navElements}/>
+            {nextViewName &&
+                <DecisionDialog
+                    msg={t('confirmViewSwitch')}
+                    onCancel={() => dispatch(setNextViewName(null))}
+                    onSubmit={() => {
+                        clearDashboardState();
+                        dispatch(setSchedulerActive(false));
+                        dispatch(setCurrentView(nextViewName));
+                        dispatch(setIsInEditMode(false));
+                        dispatch(setNextViewName(null));
+                    }}
+                />
+            }
+            <NavPanel children={navElements} clearStateHandler={clearDashboardState}/>
             <div className={'cms-main'}>
                 <DashboardTopper/>
                 {renderMainView()}
