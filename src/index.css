@@ -813,7 +813,7 @@ ul {
     position: fixed;
     height: 100vh;
     width: 255px;
-    z-index: 9999;
+    z-index: 999;
 }
 
 .app-nav-panel.no-dashboard {
@@ -866,7 +866,7 @@ ul {
     font-weight: 300;
     font-size: 13px;
     width: 100%;
-    padding-left: 40px;
+    padding-left: 33px;
 }
 
 .app-nav-btn:hover {
@@ -878,7 +878,6 @@ ul {
 .nav-active {
     color: #FAFAFA;
     background-color: #23262D;
-    font-weight: 400;
 }
 
 .nav-btn-icon-wrapper {
@@ -909,6 +908,7 @@ ul {
     justify-content: center;
     align-items: center;
     padding: 5px 17px 17px 17px;
+    font-weight: 300;
 }
 
 .app-nav-restaurant-info-container {
@@ -1954,10 +1954,11 @@ ul {
     justify-content: space-between;
     flex: 1 1 50%;
     min-width: 320px;
+    cursor: pointer;
 }
 
 .letter-group-container {
-    margin-top: 46px;
+    margin-top: 20px;
 }
 
 .letter-group-header {
@@ -1967,7 +1968,7 @@ ul {
 
 .letter-group-content {
     display: grid;
-    gap: 20px;
+    gap: 5px;
     grid-template-columns: repeat(2, minmax(320px, 1fr));
 }
 
@@ -1993,7 +1994,7 @@ ul {
     width: 100%;
     display: flex;
     box-sizing: border-box;
-    padding: 0 20px;
+    padding: 0 5px 0 20px;
     justify-content: space-between;
     align-items: center;
 }
@@ -2001,7 +2002,7 @@ ul {
 .addition-price-actions-group {
     display: flex;
     align-items: center;
-    gap: 30px;
+    gap: 10px;
 }
 
 .grid-column-left {
@@ -2653,7 +2654,7 @@ ul {
 
 .category-container-new {
     width: 100%;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
 }
 
 .category-container-new.filtered {
@@ -2671,6 +2672,10 @@ ul {
     font-size: 13px;
 }
 
+.category-container-header.reordering {
+    padding: 0 20px 0 0;
+}
+
 .category-container-header.reordering:hover {
     background: #F9F9F9;
 }
@@ -2683,6 +2688,13 @@ ul {
     display: flex;
     gap: 15px;
     align-items: center;
+    cursor: pointer;
+}
+
+.expandable-container {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
 }
 
 .reordering-dialog {
@@ -2731,8 +2743,9 @@ ul {
 }
 
 .new-position-button {
-    color: #8540DD;
+    color: #222;
     cursor: pointer;
+    text-wrap: nowrap;
 }
 
 .draggable-position-container {
@@ -3079,7 +3092,7 @@ ul {
     text-align: center;
     border-top: 1px solid #eee;
     cursor: pointer;
-    color: #707070;
+    color: #FFF;
     background-color: #8540DD;
     font-weight: 500;
     border-bottom-left-radius: 10px;
@@ -3227,13 +3240,15 @@ ul {
 .external-event {
     display: flex;
     align-items: center;
-    padding-left: 10px;
+    justify-content: space-between;
+    padding: 0 10px;
     height: 24px;
     border-radius: 5px;
     color: #222;
     cursor: grab;
     width: 83%;
     font-size: 0.9rem;
+    box-sizing: border-box;
 }
 
 .external-event:active {
@@ -3241,7 +3256,7 @@ ul {
 }
 
 .external-event-standard-indicator {
-    padding: 3px 8px;
+    padding: 2px 8px;
     border-radius: 5px;
     background: #F6F6F6;
     color: var(--Grey-700);
