@@ -91,7 +91,7 @@ export const DishesCategories = () => {
                         <div className={'section-heading'}>{t('dishesCategories')}</div>
                         <div className={'flex-wrapper-gapped'}>
                             <div className={'general-button-new'}
-                                 onClick={() => dispatch(setNewCategoryFormActive(true))}>+ &nbsp;{t('newCategory')}
+                                 onClick={() => dispatch(setNewCategoryFormActive(true))}>+ {t('newCategory')}
                             </div>
                             <SearchButton filterExpanded={filterExpanded}
                                           onExpand={() => dispatch(setFilterExpanded(!filterExpanded))}
