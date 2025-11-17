@@ -30,7 +30,7 @@ export const QrFrequencyChart = () => {
             "label": t('unique'),
             "periodDifference": 0,
             "value": 1,
-            "color": "#B5B5B5"
+            "color": "#F6F6F6"
         }
     ];
     const totalValue = chartData.reduce((sum, item) => sum + item.value, 0);
@@ -111,7 +111,7 @@ export const QrFrequencyChart = () => {
             innerRadius={0.75}
             cornerRadius={5}
             activeOuterRadiusOffset={8}
-            colors={totalValue === 0 ? ['#B5B5B5'] : ['#016DFF', '#4C97F6']}
+            colors={totalValue === 0 ? ['#F6F6F6'] : ['#016DFF', '#4C97F6']}
             enableArcLinkLabels={false}
             arcLinkLabelsSkipAngle={10}
             arcLinkLabelsTextColor="#333333"
