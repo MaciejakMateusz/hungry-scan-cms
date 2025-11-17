@@ -13,7 +13,7 @@ import {
     toLocalISOString
 } from "../../../../../utils/schedulerUtils";
 
-export const SchedulerCalendar = ({menusConfig, setMenusConfig, externalRef}) => {
+export const SchedulerCalendar = ({menusConfig, setMenusConfig, externalRef, trashRef}) => {
     const {restaurant} = useSelector((state) => state.dashboard.view);
     const restaurantSettings = restaurant?.value?.settings;
     const calendarRef = useRef(null);
@@ -87,6 +87,16 @@ export const SchedulerCalendar = ({menusConfig, setMenusConfig, externalRef}) =>
         },
         [syncMenusWithCalendar]
     );
+
+    const handleEventDragStop = useCallback(info => {
+        const {clientX: x, clientY: y} = info.jsEvent;
+        const droppedElem = document.elementFromPoint(x, y);
+
+        if (trashRef.current && trashRef.current.contains(droppedElem)) {
+            info.event.remove();
+            syncMenusWithCalendar(info.view.calendar);
+        }
+    }, [syncMenusWithCalendar, trashRef]);
 
     const renderEventContent = useCallback(
         (arg) => {
@@ -167,7 +177,8 @@ export const SchedulerCalendar = ({menusConfig, setMenusConfig, externalRef}) =>
 
     return (
         <div className={'scheduler-container'}>
-            <FullCalendar plugins={[timeGridPlugin, interactionPlugin]}
+            <FullCalendar ref={calendarRef}
+                          plugins={[timeGridPlugin, interactionPlugin]}
                           droppable={true}
                           height={'100%'}
                           initialView={'timeGridWeek'}
@@ -186,6 +197,7 @@ export const SchedulerCalendar = ({menusConfig, setMenusConfig, externalRef}) =>
                           eventDrop={handleEventChange}
                           eventResize={handleEventChange}
                           eventReceive={handleEventReceive}
+                          eventDragStop={handleEventDragStop}
                           dragRevertDuration={0}
                           eventOverlap={false}
                           selectOverlap={false}
