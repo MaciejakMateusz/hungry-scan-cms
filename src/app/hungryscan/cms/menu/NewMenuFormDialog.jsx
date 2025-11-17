@@ -17,6 +17,8 @@ import {FormErrorDialog} from "../../../error/FormErrorDialog";
 export const NewMenuFormDialog = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
+    const {restaurant} = useSelector((state) => state.dashboard.view);
+    const menus = restaurant?.value.menus;
     const {menu} = useSelector(state => state.menu.fetchMenu);
     const {menuColors} = useSelector(state => state.menu.fetchMenuColors);
     const {name, color, errorData} = useSelector(state => state.menu.form);
@@ -24,8 +26,16 @@ export const NewMenuFormDialog = () => {
     const renderConfirmation = useConfirmationMessage(setNewMenuCreated);
 
     useEffect(() => {
-        dispatch(setColor(menuColors[8] ?? {id: 9, hex: '#9746FF'}));
-    }, [dispatch, menuColors]);
+        if (!menus || !menuColors) return;
+
+        const usedColorIds = menus
+            .map(menu => menu.color?.id)
+            .filter(Boolean);
+
+        const filteredColors = menuColors.filter(c => !usedColorIds.includes(c.id));
+
+        dispatch(setColor(filteredColors[0] ?? { id: 9, hex: '#152966' }));
+    }, [dispatch, menuColors, menus]);
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
