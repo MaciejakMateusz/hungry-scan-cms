@@ -7,7 +7,7 @@ export const InteractiveMenuItemImage = ({src, hasImage}) => {
     const [isExpanded, setIsExpanded] = useState(false);
 
     const commonProps = {
-        alt: "Menu item preview",
+        alt: "MenuPreview item preview",
         src,
         className: "menu-item-position-image",
         loader: <div className="image-loader"><LoadingSpinner buttonMode={true}/></div>,
