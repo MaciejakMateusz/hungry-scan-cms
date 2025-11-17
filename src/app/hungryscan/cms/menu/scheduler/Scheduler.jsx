@@ -16,6 +16,7 @@ export const Scheduler = () => {
     const {restaurant} = useSelector((state) => state.dashboard.view);
     const {updatingPlansError} = useSelector((state) => state.menu.updatePlans);
     const externalRef = useRef(null);
+    const trashRef = useRef(null);
     const getRestaurant = useFetchCurrentRestaurant();
     const renderConfirmation = useConfirmationMessage(setPlansUpdated);
     const {isLoading} = useSelector((state) => state.menu.updatePlans);
@@ -65,10 +66,12 @@ export const Scheduler = () => {
                 <div className={'scheduler-flex'}>
                     <SchedulerControlPanel menusConfig={menusConfig}
                                            setMenusConfig={setMenusConfig}
-                                           externalRef={externalRef}/>
+                                           externalRef={externalRef}
+                                           trashRef={trashRef}/>
                     <SchedulerCalendar menusConfig={menusConfig}
                                        setMenusConfig={setMenusConfig}
-                                       externalRef={externalRef}/>
+                                       externalRef={externalRef}
+                                       trashRef={trashRef}/>
                 </div>
             </div>
         </div>
