@@ -6,7 +6,7 @@ import {MenuColorSelect} from "../../form-components/MenuColorSelect";
 import {DecisionDialog} from "../../dialog-windows/DecisionDialog";
 import {getCookie, setCookie} from "../../../../../utils/utils";
 
-export const SchedulerControlPanel = ({menusConfig, setMenusConfig, externalRef}) => {
+export const SchedulerControlPanel = ({menusConfig, setMenusConfig, externalRef, trashRef}) => {
     const {t} = useTranslation();
     const {restaurant} = useSelector((state) => state.dashboard.view);
     const menus = restaurant?.value.menus;
@@ -15,6 +15,7 @@ export const SchedulerControlPanel = ({menusConfig, setMenusConfig, externalRef}
     const operatingHours = restaurantSettings.operatingHours;
     const [logicalToggleValue, setLogicalToggleValue] = useState(false);
     const hideColorConfirmation = getCookie('hideColorConfirmation') === 'true';
+    const [hoveredId, setHoveredId] = useState(null);
 
     const clearSchedules = () => {
         setMenusConfig(prevMenus =>
@@ -61,7 +62,7 @@ export const SchedulerControlPanel = ({menusConfig, setMenusConfig, externalRef}
     }
 
     return (
-        <div className={'scheduler-control-panel'}>
+        <div className={'scheduler-control-panel'} ref={trashRef}>
             {(colorConfirmationDialogParams && !hideColorConfirmation) &&
                 <DecisionDialog msg={t('confirmColorChange')}
                                 onCancel={() => setColorConfirmationDialogParams(null)}
@@ -77,9 +78,20 @@ export const SchedulerControlPanel = ({menusConfig, setMenusConfig, externalRef}
                                          currentColor={menu.color}
                                          menu={menu}/>
                         <div className={'external-event'}
-                             style={{background: menu.color.hex}}
+                             onMouseEnter={() => setHoveredId(menu.id)}
+                             onMouseLeave={() => setHoveredId(null)}
+                             style={{
+                                 background: hoveredId === menu.id && `color-mix(in srgb, ${menu.color.hex}, white 80%)`
+                             }}
                              data-menu-id={menu.id}>
-                            <span className={'text-ellipsis'}>{menu.name}</span>
+                            <span className={'text-ellipsis'}
+                                  style={menu.standard ? {maxWidth: '75%'} : {}}>
+                                {menu.name}
+                            </span>
+                            {menu.standard &&
+                                <div className={'external-event-standard-indicator'}>
+                                    {t('main')}
+                                </div>}
                         </div>
                     </div>
                 ))}
