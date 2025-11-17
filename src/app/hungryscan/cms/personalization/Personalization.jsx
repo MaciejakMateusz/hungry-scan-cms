@@ -9,6 +9,7 @@ import {fetchActiveMenu} from "../../../../slices/cmsSlice";
 import {FormHeader} from "../shared-components/FormHeader";
 import {FormErrorDialog} from "../../../error/FormErrorDialog";
 import {updateTranslatable} from "../../../../locales/langUtils";
+import {setPreviewActive} from "../../../../slices/globalParamsSlice";
 
 export const Personalization = () => {
     const {t} = useTranslation();
@@ -44,6 +45,7 @@ export const Personalization = () => {
             <form className={'cms-padded-view-container'}>
                 <FormHeader formHeader={t('personalization')}
                             onFormSubmit={handleFormSubmit}
+                            onPreview={() => dispatch(setPreviewActive(true))}
                             isLoading={isLoading}
                             submitDisabled={errorData}
                 />
