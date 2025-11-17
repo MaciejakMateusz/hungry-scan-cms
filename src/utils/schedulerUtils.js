@@ -68,7 +68,8 @@ export const parseMenusToEvents = menus => {
                     title: menu.name,
                     start: joinDateTime(date, timeRange.startTime),
                     end: joinDateTime(date, timeRange.endTime === '00:00:00' ? '24:00:00' : timeRange.endTime),
-                    color: menu.color.hex,
+                    color: `color-mix(in srgb, ${menu.color.hex}, white 85%)`,
+                    textColor: menu.color.hex,
                     extendedProps: {
                         menuId: menu.id,
                         standard: menu.standard,
@@ -223,6 +224,13 @@ const createDaySegments = operatingHours => {
     return segmentsByDay;
 }
 
+const normalizeEndTime = (startTime, endTime) => {
+    if (endTime === '00:00:00' && startTime !== '00:00:00') {
+        return '24:00:00';
+    }
+    return endTime;
+};
+
 const createDayRanges = (prevMenus) => {
     const rangesByDay = WEEK_DAYS.reduce((acc, day) => {
         acc[day] = [];
@@ -233,13 +241,18 @@ const createDayRanges = (prevMenus) => {
         if (!menu.standard) {
             menu.plan?.forEach(({dayOfWeek, timeRanges}) => {
                 timeRanges.forEach(({startTime, endTime}) => {
-                    rangesByDay[dayOfWeek].push({start: startTime, end: endTime});
+                    const normalizedEnd = normalizeEndTime(startTime, endTime);
+                    rangesByDay[dayOfWeek].push({
+                        start: startTime,
+                        end: normalizedEnd
+                    });
                 });
             });
         }
     });
+
     return rangesByDay;
-}
+};
 
 const computeGapPlans = (rangesByDay, segmentsByDay, standardMenu) => {
     const gapPlans = [];
