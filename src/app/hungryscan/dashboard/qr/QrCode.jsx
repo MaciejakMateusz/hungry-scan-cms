@@ -31,7 +31,7 @@ export const QrCode = () => {
 
     const renderPlaceholderImg =
         (
-            <div class={'qr-img w-border'}>
+            <div className={'qr-img w-border'}>
                 <div className="qr-placeholder">
                     <PlaceholderImgIcon/>
                 </div>
@@ -60,15 +60,15 @@ export const QrCode = () => {
                             />}
                         <div className={'qr-options'}>
                             <div className={'qr-options-wrapper'}>
-                                <div class={'qr-option-button'}
+                                <div className={'qr-option-button'}
                                      onClick={handleGeneration}>
                                     {t('generateNewCode')}
                                 </div>
-                                <div class={'qr-option-button'}
+                                <div className={'qr-option-button'}
                                      onClick={() => window.location.href = `${apiHost}/api/cms/qr/download`}>
                                     {t('download')}
                                 </div>
-                                <div class={'qr-option-button'}
+                                <div className={'qr-option-button'}
                                      onClick={handlePrint}>
                                     {t('print')}
                                 </div>
