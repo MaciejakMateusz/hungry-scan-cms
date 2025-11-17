@@ -9,7 +9,7 @@ export const MenuItemImage = ({menuItem, hasImage}) => {
 
     return (
         <div className={`menu-preview-menu-item-image-container ${!hasImage ? 'no-photo' : ''}`}>
-            <img alt={'Menu position'}
+            <img alt={'MenuPreview position'}
                  className={'menu-preview-menu-item-image'}
                  src={`${s3BucketUrl}/menuItems/${menuItem.id}?t=${menuItem.updated}`}
             />
