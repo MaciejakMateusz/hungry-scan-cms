@@ -8,6 +8,7 @@ export const customSelect = {
         backgroundColor: '#FFF',
         fontStyle: '"Lexend", sans-serif',
         fontSize: '13px',
+        fontWeight: '400',
         color: state.isDisabled ? '#ccc' : '#33353E',
         width: '100%',
         maxWidth: '100%',
@@ -104,10 +105,10 @@ export const mainSelect = {
         cursor: 'pointer',
         borderRadius: '22px',
         border: 'none',
-        backgroundColor: '#F5F5F5',
+        backgroundColor: '#F6F6F6',
         fontStyle: '"Lexend", sans-serif',
         fontSize: '1rem',
-        fontWeight: '300',
+        fontWeight: '400',
         color: state.isDisabled ? '#ccc' : '#191D25',
         width: '240px',
         height: '32px',
@@ -154,15 +155,15 @@ export const mainSelect = {
         ...provided,
         fontSize: '1rem',
         color: '#888',
-        fontWeight: '300',
+        fontWeight: '400',
         fontFamily: '"Lexend", sans-serif',
         textAlign: 'left'
     }),
     option: (provided, state) => ({
         ...provided,
         fontSize: '1rem',
-        fontWeight: '300',
-        background: state.isSelected ? '#b6b6b6' : null,
+        fontWeight: '400',
+        background: state.isSelected ? '#f0f0f0' : null,
         backgroundColor: state.isFocused ? '#f0f0f0' : null,
         color: '#191D25',
         '&:hover': {backgroundColor: '#f0f0f0'}
@@ -190,12 +191,11 @@ export const mainSelect = {
     })
 }
 
-export const mainSelectIcon = {
+export const mainSelectTopper = {
     ...mainSelect,
     control: (provided, state) => ({
         ...mainSelect.control(provided, state),
-        width: '315px',
-        paddingLeft: '35px'
+        width: '315px'
     }),
     menu: (provided) => ({
         ...mainSelect.menu(provided),
@@ -340,11 +340,11 @@ export const chartStyles = {
         cursor: 'pointer',
         borderRadius: '22px',
         border: 'none',
-        backgroundColor: '#E0F3FF',
+        backgroundColor: '#F5EDFF',
         fontStyle: '"Lexend", sans-serif',
         fontSize: '1rem',
         fontWeight: '300',
-        color: state.isDisabled ? '#ccc' : '#016DFF',
+        color: state.isDisabled ? '#ccc' : '#8540DD',
         width: '150px',
         height: '32px',
         minHeight: '32px',
@@ -357,7 +357,7 @@ export const chartStyles = {
     }),
     singleValue: (provided) => ({
         ...provided,
-        color: '#016DFF',
+        color: '#8540DD',
         maxWidth: '90%'
     }),
     dropdownIndicator: (provided, state) => ({
@@ -366,7 +366,7 @@ export const chartStyles = {
         padding: '8px',
         position: 'absolute',
         right: '5px',
-        color: '#016DFF',
+        color: '#8540DD',
         '& svg': {
             width: '15px',
             height: '15px',
@@ -397,7 +397,7 @@ export const chartStyles = {
     noOptionsMessage: (provided) => ({
         ...provided,
         fontSize: '1rem',
-        color: '#016DFF',
+        color: '#8540DD',
         fontWeight: '300',
         fontFamily: '"Lexend", sans-serif',
         textAlign: 'left'
@@ -406,13 +406,13 @@ export const chartStyles = {
         ...provided,
         fontSize: '1rem',
         fontWeight: '300',
-        background: state.isSelected ? '#E0F3FF' : '#FFF',
-        color: '#016DFF',
-        '&:hover': {backgroundColor: '#E0F3FF'}
+        background: state.isSelected ? '#F5EDFF' : '#FFF',
+        color: '#8540DD',
+        '&:hover': {backgroundColor: '#F5EDFF'}
     }),
     placeholder: (provided, state) => ({
         ...provided,
-        color: state.isDisabled ? '#888' : '#016DFF',
+        color: state.isDisabled ? '#888' : '#8540DD',
         fontSize: '1rem',
         fontFamily: '"Lexend", sans-serif',
         fontWeight: '300',
