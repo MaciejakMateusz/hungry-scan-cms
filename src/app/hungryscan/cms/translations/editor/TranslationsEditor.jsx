@@ -19,6 +19,7 @@ import {fetchIngredients} from "../../../../../slices/dishAdditionsSlice";
 import {ButtonsWrapper, DialogContainer, DialogWrapper} from "./TranslationsEditor.style";
 import {LoadingSpinner} from "../../../../icons/LoadingSpinner";
 import {useTranslation} from "react-i18next";
+import {setIsInEditMode} from "../../../../../slices/globalParamsSlice";
 
 export const TranslationsEditor = ({fetchRecords}) => {
     const {t} = useTranslation();
@@ -52,6 +53,7 @@ export const TranslationsEditor = ({fetchRecords}) => {
     const discardDialog = () => {
         dispatch(setActiveRecord(null));
         dispatch(setActiveRecordId(null));
+        dispatch(setIsInEditMode(false));
     }
 
     const handleTranslatablesSubmit = async (e) => {
@@ -73,6 +75,7 @@ export const TranslationsEditor = ({fetchRecords}) => {
             await dispatch(fetchActiveMenu());
             await dispatch(fetchIngredients())
             await fetchRecords(false);
+            dispatch(setIsInEditMode(false));
         }
     }
 
