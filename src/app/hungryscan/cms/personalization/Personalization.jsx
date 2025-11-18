@@ -10,6 +10,7 @@ import {FormHeader} from "../shared-components/FormHeader";
 import {FormErrorDialog} from "../../../error/FormErrorDialog";
 import {updateTranslatable} from "../../../../locales/langUtils";
 import {setPreviewActive} from "../../../../slices/globalParamsSlice";
+import {PreviewPanel} from "../dialog-windows/PreviewPanel";
 
 export const Personalization = () => {
     const {t} = useTranslation();
@@ -18,8 +19,10 @@ export const Personalization = () => {
     const {restaurant} = useSelector(state => state.dashboard.view);
     const {activeMenu} = useSelector(state => state.globalParams.globalParams);
     const {isLoading, errorData} = useSelector(state => state.personalization.postPersonalization);
-    const {welcomeSlogan} = useSelector(state => state.personalization.form);
+    const {welcomeSlogan, theme, bannerIconVisible} = useSelector(state => state.personalization.form);
     const fetchCurrentRestaurant = useFetchCurrentRestaurant()
+    const {previewActive} = useSelector(state => state.globalParams.globalParams);
+    const previewParams = `/true/${welcomeSlogan}/${theme.replace('#', '%23')}/${bannerIconVisible.toString()}`;
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
@@ -40,9 +43,9 @@ export const Personalization = () => {
     }
 
     return (
-        <div className={'background'}>
+        <div className={'background-preview'}>
             <FormErrorDialog errorData={errorData} setErrorData={setErrorData}/>
-            <form className={'cms-padded-view-container'}>
+            <form className={`cms-padded-view-container preview ${previewActive ? 'preview-open' : ''}`}>
                 <FormHeader formHeader={t('personalization')}
                             onFormSubmit={handleFormSubmit}
                             onPreview={() => dispatch(setPreviewActive(true))}
@@ -55,6 +58,7 @@ export const Personalization = () => {
                     </div>
                 </div>
             </form>
+            <PreviewPanel previewParams={previewParams}/>
         </div>
     );
 }
