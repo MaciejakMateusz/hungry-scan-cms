@@ -2134,6 +2134,14 @@ ul {
     font-size: 11px;
 }
 
+.background-preview {
+    background-color: #EDEFF3;
+    font-size: 11px;
+    display: flex;
+    height: 100%;
+    overflow: hidden;
+}
+
 .dashboard-view-grid {
     display: grid;
     grid-template-rows: 72px 1fr;
@@ -2170,6 +2178,16 @@ ul {
     padding: 10px 40px 30px 40px;
     height: calc(100% - 60px);
     overflow: hidden;
+}
+
+.cms-padded-view-container.preview {
+    flex: 0 0 auto;
+    flex-basis: 94%;
+    transition: flex-basis 0.5s ease-in-out;
+}
+
+.cms-padded-view-container.preview.preview-open {
+    flex-basis: calc(100% - 500px);
 }
 
 .cms-view-content {
@@ -3867,6 +3885,11 @@ ul {
     grid-template-columns: 1fr;
     height: 100px;
     padding: 15px 10px;
+}
+
+.iframe-container {
+    width: 100%;
+    height: 100%;
 }
 
 /* END OF MENU PREVIEW */
