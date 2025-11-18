@@ -14,7 +14,7 @@ export const TopDishesChart = () => {
             "id": "zero",
             "label": t('noAvailableData'),
             "value": 1,
-            "color": "#B5B5B5"
+            "color": "#F6F6F6"
         }
     ];
     const totalValue = data?.reduce((sum, item) => sum + item.viewsCount, 0);
@@ -107,7 +107,7 @@ export const TopDishesChart = () => {
             innerRadius={0.75}
             cornerRadius={5}
             activeOuterRadiusOffset={8}
-            colors={totalValue === 0 ? ['#B5B5B5'] : ['#016DFF', '#6EC191', '#FFCE4A', '#FE6663', '#9746FF']}
+            colors={totalValue === 0 ? ['#F6F6F6'] : ['#016DFF', '#6EC191', '#FFCE4A', '#FE6663', '#8540DD']}
             enableArcLinkLabels={false}
             arcLinkLabelsSkipAngle={10}
             arcLinkLabelsTextColor="#333333"
