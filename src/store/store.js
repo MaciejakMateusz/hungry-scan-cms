@@ -22,6 +22,7 @@ import menuReducer from "../slices/menuSlice";
 import personalizationReducer from "../slices/personalizationSlice";
 import userProfileReducer from "../slices/userProfileSlice";
 import usersReducer from "../slices/usersSlice";
+import menuPreviewReducer from "../slices/menuPreviewSlice";
 
 const rootReducer = combineReducers({
     login: loginReducer,
@@ -45,6 +46,7 @@ const rootReducer = combineReducers({
     dashboard: dashboardReducer,
     cms: cmsReducer,
     menu: menuReducer,
+    menuPreview: menuPreviewReducer,
     personalization: personalizationReducer,
     users: usersReducer
 })
