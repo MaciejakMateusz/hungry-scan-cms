@@ -20,7 +20,6 @@ import {TranslationsIcon} from "../../icons/TranslationsIcon";
 import {Scheduler} from "./menu/scheduler/Scheduler";
 import {useSwitchView} from "../../../hooks/useSwitchView";
 import {useClearCmsState} from "../../../hooks/useClearCmsState";
-import {PreviewPanel} from "./dialog-windows/PreviewPanel";
 
 export const Cms = () => {
     const {t} = useTranslation();
@@ -28,8 +27,7 @@ export const Cms = () => {
     const {
         currentView,
         isInEditMode,
-        nextViewName,
-        previewActive
+        nextViewName
     } = useSelector(state => state.globalParams.globalParams);
     const {
         newCategoryFormActive,
@@ -125,7 +123,6 @@ export const Cms = () => {
                     }}
                 />
             }
-            {previewActive && <PreviewPanel/>}
             <NavPanel children={navElements} clearStateHandler={clearCmsState}/>
             <div className={'cms-main'}>
                 <CmsTopper/>
