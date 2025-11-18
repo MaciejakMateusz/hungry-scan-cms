@@ -4,6 +4,7 @@ import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {TranslationContainer} from "./TranslationsList.style";
 import {setActiveRecord, setActiveRecordId} from "../../../../slices/translationsSlice";
+import {setIsInEditMode} from "../../../../slices/globalParamsSlice";
 
 export const TranslationsList = () => {
     const {t} = useTranslation();
@@ -25,6 +26,7 @@ export const TranslationsList = () => {
                                                    setActive={() => {
                                                        dispatch(setActiveRecordId('p' + menuItem.id));
                                                        dispatch(setActiveRecord(menuItem));
+                                                       dispatch(setIsInEditMode(true));
                                                    }}
                                 />
                                 <div className={'draggable-position-separator'}/>
@@ -35,6 +37,7 @@ export const TranslationsList = () => {
                                                            setActive={() => {
                                                                dispatch(setActiveRecordId('c' + variant.id));
                                                                dispatch(setActiveRecord(variant));
+                                                               dispatch(setIsInEditMode(true));
                                                            }}
                                         />
                                         <div className={'draggable-position-separator'}/>
@@ -56,6 +59,7 @@ export const TranslationsList = () => {
                                                    setActive={() => {
                                                        dispatch(setActiveRecordId('p' + category.id));
                                                        dispatch(setActiveRecord(category));
+                                                       dispatch(setIsInEditMode(true));
                                                    }}
                                 />
                                 <div className={'draggable-position-separator'}/>
@@ -66,6 +70,7 @@ export const TranslationsList = () => {
                                                            setActive={() => {
                                                                dispatch(setActiveRecord(menuItem));
                                                                dispatch(setActiveRecordId('c' + menuItem.id));
+                                                               dispatch(setIsInEditMode(true));
                                                            }}
                                         />
                                         <div className={'draggable-position-separator'}/>
@@ -83,8 +88,9 @@ export const TranslationsList = () => {
                                 <TranslationRecord record={addition}
                                                    childTranslatableKey={'name'}
                                                    setActive={() => {
-                                                       dispatch(setActiveRecordId('c' + addition.id))
+                                                       dispatch(setActiveRecordId('c' + addition.id));
                                                        dispatch(setActiveRecord(addition));
+                                                       dispatch(setIsInEditMode(true));
                                                    }}
                                 />
                                 <div className={'draggable-position-separator'}/>
@@ -100,8 +106,9 @@ export const TranslationsList = () => {
                                 <TranslationRecord record={menu}
                                                    childTranslatableKey={'message'}
                                                    setActive={() => {
-                                                       dispatch(setActiveRecordId('c' + menu.id))
+                                                       dispatch(setActiveRecordId('c' + menu.id));
                                                        dispatch(setActiveRecord(menu));
+                                                       dispatch(setIsInEditMode(true));
                                                    }}
                                 />
                                 <div className={'draggable-position-separator'}/>
