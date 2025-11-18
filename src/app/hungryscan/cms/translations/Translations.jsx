@@ -29,6 +29,7 @@ export const Translations = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {chosenGroup, saveSuccess, activeRecord} = useSelector(state => state.translations.view);
+    const {activeMenu} = useSelector(state => state.globalParams.globalParams);
     const {autoTranslationError} = useSelector(state => state.translations.autoTranslate);
     const {postingError} = useSelector(state => state.translations.postTranslatables);
     const options = [
@@ -94,7 +95,7 @@ export const Translations = () => {
 
     useEffect(() => {
         fetchRecords();
-    }, [chosenGroup]);
+    }, [chosenGroup, activeMenu]);
 
     useEffect(() => {
         dispatch(setChosenGroup({
