@@ -1,9 +1,10 @@
 import {useTranslation} from "react-i18next";
 import {EditIcon} from "../app/icons/EditIcon";
-import {DeleteIcon} from "../app/icons/DeleteIcon";
 import {useDispatch} from "react-redux";
 import {setAddition, setAdditionDialogActive, setAdditionToRemove, setIsNewAddition} from "../slices/additionsSlice";
 import {setActiveObjDetails} from "../slices/globalParamsSlice";
+import {TrashIcon} from "../app/icons/TrashIcon";
+import {InfoIcon} from "../app/icons/InfoIcon";
 
 export const useAdditionContextPositions = ({ingredient, setContextWindowActive}) => {
     const {t} = useTranslation();
@@ -13,7 +14,7 @@ export const useAdditionContextPositions = ({ingredient, setContextWindowActive}
         {
             id: 'edit',
             name: t('edit'),
-            icon: <EditIcon width={'25'} height={'25'}/>,
+            icon: <EditIcon/>,
             handler: () => {
                 dispatch(setAddition(ingredient));
                 dispatch(setIsNewAddition(false));
@@ -24,7 +25,7 @@ export const useAdditionContextPositions = ({ingredient, setContextWindowActive}
         {
             id: 'remove',
             name: t('remove'),
-            icon: <DeleteIcon width={'25'} height={'25'}/>,
+            icon: <TrashIcon/>,
             handler: () => {
                 dispatch(setAdditionToRemove(ingredient));
                 setContextWindowActive(false)
@@ -33,7 +34,7 @@ export const useAdditionContextPositions = ({ingredient, setContextWindowActive}
         {
             id: 'details',
             name: t('details'),
-            icon: <EditIcon width={'25'} height={'25'}/>,
+            icon: <InfoIcon/>,
             handler: () => {
                 dispatch(setActiveObjDetails(ingredient));
                 setContextWindowActive(false);
