@@ -1,23 +1,20 @@
 import React from "react";
-import {CloseButton, SidePanel} from "./PreviewPanel.style";
-import {menuAppHost} from "../../../../apiData";
-import Iframe from "react-iframe";
+import {CloseButton, Header, SidePanel} from "./PreviewPanel.style";
 import {useDispatch, useSelector} from "react-redux";
 import {setPreviewActive} from "../../../../slices/globalParamsSlice";
+import {useTranslation} from "react-i18next";
 
-export const PreviewPanel = ({previewParams}) => {
+export const PreviewPanel = ({content}) => {
+    const {t} = useTranslation();
     const dispatch = useDispatch();
     const {previewActive} = useSelector((state) => state.globalParams.globalParams);
 
     return (
         <SidePanel $previewActive={previewActive}>
-            {previewActive &&
-                <>
-                    <CloseButton onClick={() => dispatch(setPreviewActive(false))}>></CloseButton>
-                    <Iframe url={menuAppHost + previewParams}
-                            className={'iframe-container'} styles={{border: 'none'}}/>
-                </>
-            }
+            <Header>
+                <CloseButton onClick={() => dispatch(setPreviewActive(false))}>{t('close')} ></CloseButton>
+            </Header>
+            {previewActive && content}
         </SidePanel>
     );
 }
