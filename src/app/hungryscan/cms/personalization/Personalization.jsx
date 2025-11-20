@@ -11,6 +11,8 @@ import {FormErrorDialog} from "../../../error/FormErrorDialog";
 import {updateTranslatable} from "../../../../locales/langUtils";
 import {setPreviewActive} from "../../../../slices/globalParamsSlice";
 import {PreviewPanel} from "../dialog-windows/PreviewPanel";
+import Iframe from "react-iframe";
+import {menuAppHost} from "../../../../apiData";
 
 export const Personalization = () => {
     const {t} = useTranslation();
@@ -58,7 +60,9 @@ export const Personalization = () => {
                     </div>
                 </div>
             </form>
-            <PreviewPanel previewParams={previewParams}/>
+            <PreviewPanel content={<Iframe url={menuAppHost + previewParams}
+                                           className={'iframe-container'}
+                                           styles={{border: 'none'}}/>}/>
         </div>
     );
 }
