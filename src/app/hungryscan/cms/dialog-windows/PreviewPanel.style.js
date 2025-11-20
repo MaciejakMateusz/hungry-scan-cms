@@ -19,8 +19,14 @@ export const SidePanel = styled.div`
     animation: ${slideIn} 0.5s ease-in-out forwards;
 `;
 
-export const CloseButton = styled.span`
-    cursor: pointer;
-    font-size: 1.5rem;
+export const Header = styled.div`
+    height: 30px;
+    background: #F6F6F6;
+    display: flex;
     padding: 10px;
+    box-sizing: border-box;
+`;
+export const CloseButton = styled.span`
+    font-size: 1rem;
+    cursor: pointer;
 `;
