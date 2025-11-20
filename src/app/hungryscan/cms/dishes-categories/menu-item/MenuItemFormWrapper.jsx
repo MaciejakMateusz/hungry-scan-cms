@@ -4,8 +4,10 @@ import {setActiveTab, setErrorData} from "../../../../../slices/dishFormSlice";
 import {FormErrorDialog} from "../../../../error/FormErrorDialog";
 import {useTranslation} from "react-i18next";
 import {FormHeader} from "../../shared-components/FormHeader";
+import {PreviewPanel} from "../../dialog-windows/PreviewPanel";
+import {setPreviewActive} from "../../../../../slices/globalParamsSlice";
 
-export const MenuItemFormWrapper = ({title, onFormDiscard, onFormSubmit, children}) => {
+export const MenuItemFormWrapper = ({title, onFormDiscard, onFormSubmit, previewContent, children}) => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {restaurant} = useSelector(state => state.dashboard.view);
@@ -14,6 +16,7 @@ export const MenuItemFormWrapper = ({title, onFormDiscard, onFormSubmit, childre
     const {isLoading} = useSelector(state => state.dishForm.postDish);
     const {activeTab} = useSelector(state => state.dishForm.form);
     const {errorData} = useSelector(state => state.dishForm.form);
+    const {previewActive} = useSelector(state => state.globalParams.globalParams);
 
     const FormTitle = () => {
         return (
@@ -25,12 +28,13 @@ export const MenuItemFormWrapper = ({title, onFormDiscard, onFormSubmit, childre
     }
 
     return (
-        <div className={'background'}>
+        <div className={'background-preview'}>
             <FormErrorDialog errorData={errorData} setErrorData={setErrorData}/>
-            <form className={'cms-padded-view-container'}>
+            <form className={`cms-padded-view-container preview ${previewActive ? 'preview-open' : ''}`}>
                 <FormHeader formHeader={<FormTitle/>}
                             onFormSubmit={onFormSubmit}
                             onFormDiscard={onFormDiscard}
+                            onPreview={() => dispatch(setPreviewActive(true))}
                             isLoading={isLoading}
                 />
                 <div className={'menu-item-form-tabs-container'}>
@@ -53,6 +57,7 @@ export const MenuItemFormWrapper = ({title, onFormDiscard, onFormSubmit, childre
                     </div>
                 </div>
             </form>
+            <PreviewPanel content={previewContent}/>
         </div>
     );
 }
