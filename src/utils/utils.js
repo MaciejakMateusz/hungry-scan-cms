@@ -49,7 +49,11 @@ export const urlParamValue = param => {
 }
 
 export const formatPrice = (price, keepDot) => {
-    let formattedPrice = price.toFixed(2);
+    let preparedPrice = price;
+    if (typeof price === 'string') {
+        preparedPrice = Number(price);
+    }
+    let formattedPrice = preparedPrice.toFixed(2);
     if (!keepDot) {
         formattedPrice = formattedPrice.replace('.', ',');
     }
