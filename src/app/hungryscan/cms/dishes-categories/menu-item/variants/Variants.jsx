@@ -44,7 +44,7 @@ export const Variants = () => {
                         dispatch(setIsNewVariant(true));
                         dispatch(setVariantDialogActive(true))
                     }}>
-                        + &nbsp;{t('newVariant')}
+                        + {t('newVariant')}
                     </div>
                 </div>
                 {variants?.length === 0 && <p className={'flex-centered'}>{t('noVariantsInDish')}</p>}
