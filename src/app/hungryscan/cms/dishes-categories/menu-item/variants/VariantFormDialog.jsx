@@ -2,12 +2,12 @@ import React, {useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {setVariantDialogActive} from "../../../../../../slices/variantsSlice";
-import {updateTranslatable, getTranslation, createTranslatable} from "../../../../../../locales/langUtils";
+import {createTranslatable, updateTranslatable} from "../../../../../../locales/langUtils";
 import {NameField} from "../../../form-components/NameField";
 import {PriceField} from "../../../form-components/PriceField";
-import {CustomSelect} from "../../../form-components/CustomSelect";
 import {setVariants} from "../../../../../../slices/dishFormSlice";
 import {generateUUID} from "../../../../../../utils/utils";
+import {LogicalToggleField} from "../../../form-components/LogicalToggleField";
 
 export const VariantFormDialog = ({variants}) => {
     const {t} = useTranslation();
@@ -15,38 +15,41 @@ export const VariantFormDialog = ({variants}) => {
     const {isNewVariant} = useSelector(state => state.variants.view);
     const {variant} = useSelector(state => state.variants.form);
     const {data: menuItem} = useSelector(state => state.dishForm.fetchMenuItem);
+    const {restaurant} = useSelector(state => state.dashboard.view);
+    const restaurantLanguage = restaurant?.value.settings.language.toLowerCase();
     const [name, setName] = useState('');
     const [price, setPrice] = useState(0);
-    const [available, setAvailable] = useState(false);
-    const {errorData} = useSelector(state => state.variants.postVariant);
+    const [available, setAvailable] = useState(true);
     const variantsCopy = variants?.map((variant) => variant);
+    const [isNameBlank, setIsNameBlank] = useState(false);
+    const [isNameTooLong, setIsNameTooLong] = useState(false);
 
     useEffect(() => {
         if (!isNewVariant) {
-            setName(getTranslation(variant.name))
-            setPrice(variant.price.toFixed(2))
-            setAvailable({
-                value: variant.available,
-                label: variant.available ? t('availableVariant') : t('unavailableVariant')
-            });
-        } else {
-            setAvailable({
-                value: true,
-                label: t('availableVariant')
-            });
+            setName((variant.name[restaurantLanguage]));
+            setPrice(variant.price.toFixed(2));
+            setAvailable(variant.available);
         }
-    }, [dispatch, variant, isNewVariant, t]);
+    }, [dispatch, variant, isNewVariant, t, restaurantLanguage]);
 
-    const handleVariantSubmit = e => {
+    const handleVariantSubmit = async e => {
         e.preventDefault();
+
+        const nameBlank = !name || name.trim().length === 0;
+        const nameTooLong = (name ?? '').length > 255;
+
+        setIsNameBlank(nameBlank);
+        setIsNameTooLong(nameTooLong);
+
+        if (nameBlank || nameTooLong) return;
         if (isNewVariant) {
             variantsCopy.push({
                 id: generateUUID(),
                 menuItem: menuItem,
-                name: createTranslatable(name),
+                name: createTranslatable(name, restaurantLanguage),
                 price: Number(price),
                 displayOrder: variants.length + 1,
-                available: available.value
+                available: available
             });
             dispatch(setVariants(variantsCopy));
             dispatch(setVariantDialogActive(false));
@@ -57,9 +60,9 @@ export const VariantFormDialog = ({variants}) => {
             if (v.id === variant.id) {
                 return {
                     ...v,
-                    name: updateTranslatable(variant.name, name),
+                    name: updateTranslatable(variant.name, name, restaurantLanguage),
                     price: Number(price),
-                    available: available.value,
+                    available: available,
                 };
             }
             return v;
@@ -74,6 +77,15 @@ export const VariantFormDialog = ({variants}) => {
         setAvailable(false);
     }
 
+    const getValidationMsg = () => {
+        if (isNameBlank) {
+            return {name: t('constraints.NotBlank')};
+        } else if (isNameTooLong) {
+            return {name: t('constraints.MaxLength')};
+        }
+        return null;
+    }
+
     return (
         <>
             <div className={'overlay'}></div>
@@ -85,23 +97,16 @@ export const VariantFormDialog = ({variants}) => {
                     <NameField id={'variant-name'}
                                value={name}
                                onChange={(e) => setName(e)}
-                               error={errorData}
+                               error={getValidationMsg()}
                     />
-                    <PriceField id={'variant-price'}
+                    <PriceField id={'price'}
                                 value={price}
                                 setPrice={(e) => setPrice(e)}
-                                error={errorData}
                     />
-                    <CustomSelect id={'variant-available'}
-                                  name={'available'}
-                                  labelName={t('availability')}
-                                  value={available}
-                                  onChange={(selected) => setAvailable(selected)}
-                                  options={[
-                                      {value: true, label: t('availableVariant')},
-                                      {value: false, label: t('unavailableVariant')}
-                                  ]}
-                    />
+                    <LogicalToggleField id={'available'}
+                                        name={t('availability')}
+                                        value={available}
+                                        onChange={() => setAvailable(!available)}/>
                 </div>
                 <div className={'dialog-footer'}>
                     <button className={'general-button cancel'} onClick={() => {
@@ -110,7 +115,8 @@ export const VariantFormDialog = ({variants}) => {
                     }}>
                         {t('cancel')}
                     </button>
-                    <button className={'general-button'} onClick={handleVariantSubmit}>
+                    <button className={'general-button'}
+                            onClick={handleVariantSubmit}>
                         {t('save')}
                     </button>
                 </div>
