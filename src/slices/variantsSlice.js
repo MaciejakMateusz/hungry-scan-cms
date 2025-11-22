@@ -1,71 +1,13 @@
 import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
-import {createTranslatable} from "../locales/langUtils";
-
-export const postVariant = createAsyncThunk(
-    'variants/postVariant',
-    async (_, {getState, rejectWithValue}) => {
-        const state = getState().variants.form;
-        const viewState = getState().variants.view;
-        const response = await fetch(`${apiHost}/api/cms/variants/add`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                id: state.id,
-                menuItem: viewState.dish,
-                displayOrder: state.displayOrder.value,
-                name: createTranslatable(state.name),
-                price: state.price,
-                available: state.available.value
-            }),
-            credentials: 'include'
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            return rejectWithValue(errorData);
-        }
-
-        return await response.json();
-    }
-);
-
-export const postVariantSlice = createSlice(
-    {
-        name: 'postVariant',
-        initialState: {
-            isLoading: false,
-            errorData: {},
-        },
-        reducers: {
-            setErrorData: (state, action) => {
-                state.errorData = action.payload;
-            }
-        },
-        extraReducers: (builder) => {
-            builder
-                .addCase(postVariant.pending, state => {
-                    state.isLoading = true;
-                })
-                .addCase(postVariant.fulfilled, state => {
-                    state.isLoading = false;
-                    state.errorData = {};
-                })
-                .addCase(postVariant.rejected, (state, action) => {
-                    state.isLoading = false;
-                    state.errorData = action.payload;
-                })
-        }
-    });
+import {getLanguage} from "../locales/langUtils";
 
 export const fetchVariants = createAsyncThunk(
     'variants/fetchVariants',
     async (credentials, {getState, rejectWithValue}) => {
         let state;
         let dish;
-        if(!credentials.dish) {
+        if (!credentials.dish) {
             state = getState().variants.view;
             dish = state?.dish;
         } else {
@@ -80,6 +22,7 @@ export const fetchVariants = createAsyncThunk(
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                'Accept-Language': getLanguage()
             },
             body: dish.id,
             credentials: 'include'
@@ -100,11 +43,6 @@ export const fetchVariantsSlice = createSlice(
         initialState: {
             isLoading: false,
             variants: null
-        },
-        reducers: {
-            clearVariants: state => {
-                state.variants = null;
-            }
         },
         extraReducers: (builder) => {
             builder
@@ -217,12 +155,6 @@ export const variantFormSlice = createSlice({
 });
 
 export const {
-    setFilteringActive,
-    setFilterValue,
-    setFilteredItems,
-    setFilterExpanded,
-    setCategory,
-    setDish,
     setVariantDialogActive,
     setVariantToRemove,
     setIsNewVariant,
@@ -230,26 +162,17 @@ export const {
 } = variantsSlice.actions;
 
 export const {
-    clearVariants
-} = fetchVariantsSlice.actions;
-
-export const {
-    setId,
     setVariant,
-    setDisplayOrder,
     setName,
-    setPrice,
     setAvailable,
     clearForm
 } = variantFormSlice.actions;
 
-export const {setErrorData} = postVariantSlice.actions;
 
 const variantsReducer = combineReducers({
     view: variantsSlice.reducer,
     fetchVariants: fetchVariantsSlice.reducer,
-    form: variantFormSlice.reducer,
-    postVariant: postVariantSlice.reducer
+    form: variantFormSlice.reducer
 });
 
 export default variantsReducer;
