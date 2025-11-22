@@ -1,6 +1,5 @@
 import React, {useRef, useState} from "react";
 import {DragAndDropIcon} from "../../../../../icons/DragAndDropIcon";
-import {getTranslation} from "../../../../../../locales/langUtils";
 import {formatPrice} from "../../../../../../utils/utils";
 import {useSortable} from "@dnd-kit/sortable";
 import {CSS} from "@dnd-kit/utilities";
@@ -8,9 +7,15 @@ import {useVariantContextPositions} from "../../../../../../hooks/useVariantCont
 import {useOutsideClick} from "../../../../../../hooks/useOutsideClick";
 import {useSelector} from "react-redux";
 import {RecordOptionsButton} from "../../../shared-components/RecordOptionsButton";
+import {Tooltip} from "../../../Tooltip";
+import {UnavailableIcon} from "../../../../../icons/UnavailableIcon";
+import {useTranslation} from "react-i18next";
 
 export const VariantPosition = ({id, variant}) => {
+    const {t} = useTranslation();
     const {variants} = useSelector(state => state.dishForm.form);
+    const {restaurant} = useSelector(state => state.dashboard.view);
+    const restaurantLanguage = restaurant?.value.settings.language.toLowerCase();
     const contextRef = useRef();
     const [contextWindowActive, setContextWindowActive] = useState(false);
     const variantContextPositions =
@@ -44,19 +49,22 @@ export const VariantPosition = ({id, variant}) => {
                 </div>
                 <div className={'draggable-position-text-container'}>
                         <span className={'draggable-position-name'}>
-                            {getTranslation(variant.name)}
+                            {variant.name[restaurantLanguage]}
                         </span>
                 </div>
                 <div className={'draggable-position-price'}>
                     + {formatPrice(variant.price)} zł
+                </div>
+                <div>
+                    <Tooltip content={t('invisibleInMenu')} topOffset={-20}>
+                        {!variant.available && <UnavailableIcon/>}
+                    </Tooltip>
                 </div>
                 <div className={'draggable-position-actions visible'}>
                     <RecordOptionsButton className={'record-context-actions-button'}
                                          onClick={() => setContextWindowActive(!contextWindowActive)}
                                          contextWindowActive={contextWindowActive}
                                          contextPositions={variantContextPositions}
-                                         obj={variant}
-                                         detailsActive={false}
                                          contextRef={contextRef}
                                          windowPosition={{left: '-150px', top: '30px'}}/>
                 </div>
