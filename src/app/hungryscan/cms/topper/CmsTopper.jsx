@@ -20,6 +20,8 @@ import {useOutsideClick} from "../../../../hooks/useOutsideClick";
 import {RecordOptionsButton} from "../shared-components/RecordOptionsButton";
 import {FormErrorDialog} from "../../../error/FormErrorDialog";
 import {ScheduleIcon} from "../../../icons/ScheduleIcon";
+import {BorderedButton} from "../../common/BorderedButton";
+import {CustomOption} from "../form-components/CustomOption";
 
 export const CmsTopper = () => {
     const {t} = useTranslation();
@@ -94,23 +96,6 @@ export const CmsTopper = () => {
         }
     }
 
-    const CustomOption = (props) => {
-        const {data} = props;
-        return (
-            <components.Option {...props}>
-                <div className={'text-ellipsis'}
-                      style={{maxWidth: data.isStandard ? '73%' : '90%'}}>
-                    {data.label}
-                </div>
-                {data.isStandard &&
-                    <span className={'menu-standard-indicator-option'}>
-                        {t("main")}
-                    </span>
-                }
-            </components.Option>
-        );
-    };
-
     return (
         <header className={'app-header cms'}>
             {newMenuFormActive && <NewMenuFormDialog/>}
@@ -120,7 +105,8 @@ export const CmsTopper = () => {
                                                              objName={menu.name}
                                                              onCancel={() => dispatch(setActiveRemovalType(null))}
                                                              onSubmit={handleMenuRemoval}
-                                                             isLoading={removalPending}/>}
+                                                             isLoading={removalPending}
+                                                             isRemoval={true}/>}
             <div className={'flex-wrapper'}>
                 <div className={'app-header-select-wrapper'}>
                     <Select id={'cms-menu'}
@@ -164,15 +150,15 @@ export const CmsTopper = () => {
                                      contextRef={contextRef}/>
             </div>
             {!schedulerActive &&
-                <button className={'general-button schedules'}
-                        style={isInEditMode ? {cursor: 'not-allowed', color: 'var(--Grey-700)'} : {}}
-                        onClick={() => {
-                            if (isInEditMode) return;
-                            dispatch(setSchedulerActive(true));
-                        }}>
-                    <ScheduleIcon isInEditMode={isInEditMode}/>
-                    {t('menuSchedules')}
-                </button>
+                <BorderedButton style={isInEditMode ? {
+                    cursor: 'not-allowed',
+                    color: 'var(--Grey-700)'} : {}}
+                                onClick={() => {
+                                    if (isInEditMode) return;
+                                    dispatch(setSchedulerActive(true));
+                                }}
+                                isBordered={true} text={t('menuSchedules')}
+                                icon={<ScheduleIcon isInEditMode={isInEditMode}/>}/>
             }
 
         </header>
