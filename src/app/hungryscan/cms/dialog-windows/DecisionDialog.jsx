@@ -3,6 +3,8 @@ import {useTranslation} from "react-i18next";
 import {LoadingSpinner} from "../../../icons/LoadingSpinner";
 import {useSelector} from "react-redux";
 import {LogicalToggleField} from "../form-components/LogicalToggleField";
+import {BorderedButton} from "../../common/BorderedButton";
+import {ActionButton} from "../../common/ActionButton";
 
 export const DecisionDialog = (props) => {
     const {t} = useTranslation();
@@ -20,27 +22,25 @@ export const DecisionDialog = (props) => {
     const renderCancelButton = () => {
         if (!props.onCancel) return;
         return (
-            <button onClick={props.onCancel}
-                    className={'general-button cancel'}>
-                {t('cancel')}
-            </button>
+            <BorderedButton onClick={props.onCancel}
+                            text={t('cancel')}
+                            isBordered={true}/>
+
         );
     }
 
     const renderConfirmButton = () => {
         if (props.onCancel) {
+            const buttonText = props.isRemoval ? t('remove') : t('confirm');
             return (
-                <button className={'general-button'}
-                        onClick={props.onSubmit}>
-                    {props.isLoading ? <LoadingSpinner buttonMode={true}/> : t('confirm')}
-                </button>
+                <ActionButton onClick={props.onSubmit}
+                              text={props.isLoading ? <LoadingSpinner buttonMode={true}/> : buttonText}
+                              style={props.isRemoval ? {background: '#EC5858'} : {}}/>
             );
         }
         return (
-            <button className={'general-button'}
-                    onClick={props.onSubmit}>
-                {props.isLoading ? <LoadingSpinner buttonMode={true}/> : 'Ok'}
-            </button>
+            <ActionButton onClick={props.onSubmit}
+                          text={props.isLoading ? <LoadingSpinner buttonMode={true}/> : 'Ok'}/>
         );
     }
 
