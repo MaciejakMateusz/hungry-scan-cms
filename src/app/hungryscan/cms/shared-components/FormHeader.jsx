@@ -1,33 +1,45 @@
 import React from "react";
 import {LoadingSpinner} from "../../../icons/LoadingSpinner";
 import {useTranslation} from "react-i18next";
+import {BorderedButton} from "../../common/BorderedButton";
+import {ActionButton} from "../../common/ActionButton";
+import {PreviewIcon} from "../../../icons/PreviewIcon";
+import {useDispatch, useSelector} from "react-redux";
+import {setPreviewActive} from "../../../../slices/globalParamsSlice";
 
 export const FormHeader = ({
                                formHeader,
                                onFormDiscard,
                                onFormSubmit,
-                               onPreview,
+                               renderPreview,
                                isLoading,
-                               submitDisabled}) => {
+                               submitDisabled,
+                           }) => {
     const {t} = useTranslation();
+    const dispatch = useDispatch();
+    const {previewActive} = useSelector(state => state.globalParams.globalParams);
 
     const renderPreviewButton = () => {
-        if (!onPreview) return;
+        if (!renderPreview) return;
         return (
-            <div className={'general-button cancel'}
-                 onClick={onPreview}>
-                {t('preview')}
-            </div>
+            <BorderedButton isBordered={true}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                dispatch(setPreviewActive(!previewActive));
+                            }}
+                            text={t('preview')}
+                            icon={<PreviewIcon active={previewActive}/>}
+            />
         );
     }
 
     const renderDiscardButton = () => {
         if (!onFormDiscard) return;
         return (
-            <div className={'general-button cancel'}
-                 onClick={onFormDiscard}>
-                {t('cancel')}
-            </div>
+            <BorderedButton isBordered={true}
+                            onClick={onFormDiscard}
+                            text={t('cancel')}
+            />
         );
     }
 
@@ -40,10 +52,9 @@ export const FormHeader = ({
                 <div className={'form-footer'}>
                     {renderPreviewButton()}
                     {renderDiscardButton()}
-                    <div className={`general-button ${submitDisabled && 'disabled'}`}
-                         onClick={onFormSubmit}>
-                        {isLoading ? <LoadingSpinner buttonMode={true}/> : t('save')}
-                    </div>
+                    <ActionButton style={submitDisabled ? {opacity: '0.6', cursor: 'not-allowed'} : {}}
+                                  onClick={onFormSubmit}
+                                  text={isLoading ? <LoadingSpinner buttonMode={true}/> : t('save')}/>
                 </div>
             </div>
         </div>
