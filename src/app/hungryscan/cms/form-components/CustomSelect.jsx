@@ -10,7 +10,7 @@ export const CustomSelect = (props) => {
 
     const errorStyles = {
         control: () => ({
-            border: '2px solid rgba(255, 0, 0, 0.5)',
+            border: '1px solid rgba(255, 0, 0, 0.5)',
             animation: 'shake 0.5s ease-in-out'
         })
     };
@@ -20,7 +20,7 @@ export const CustomSelect = (props) => {
             ...baseStyles,
             control: (provided, state) => ({
                 ...baseStyles.control(provided, state),
-                ...(props.error && !chosenValue ? props.error.categoryId && errorStyles.control(provided) : {})
+                ...(props.error?.[props.id] ? errorStyles.control(provided) : {})
             })
         };
     };
@@ -37,21 +37,27 @@ export const CustomSelect = (props) => {
                     {props.labelName} {props.isRequired && ' *'} {props.isOptional ?
                     <span className={'form-optional'}>{t('optional')}:</span> : ''}
                 </label>
-                <Select id={props.id}
-                        name={props.name}
-                        styles={mergeStyles({...customSelect, ...props.styles}, errorStyles)}
-                        isDisabled={props.isDisabled}
-                        value={chosenValue}
-                        defaultValue={props.defaultValue}
-                        onChange={props.onChange}
-                        placeholder={props.placeholder}
-                        isClearable={props.isClearable}
-                        options={props.options}
-                        components={{ ...(props.components || {})}}
-                        isMulti={props.isMulti}
-                        closeMenuOnSelect={props.closeMenuOnSelect}
-                        menuPlacement={props.menuPlacement}
-                />
+                <div className={'full-width'}>
+                    <Select id={props.id}
+                            name={props.name}
+                            styles={mergeStyles({...customSelect, ...props.styles}, errorStyles)}
+                            isDisabled={props.isDisabled}
+                            value={chosenValue}
+                            defaultValue={props.defaultValue}
+                            onChange={props.onChange}
+                            placeholder={props.placeholder}
+                            isClearable={props.isClearable}
+                            options={props.options}
+                            components={{ ...(props.components || {})}}
+                            isMulti={props.isMulti}
+                            closeMenuOnSelect={props.closeMenuOnSelect}
+                            menuPlacement={props.menuPlacement}
+                    />
+                    {props.error?.[props.id] &&
+                        <div className={'validation-msg'}>
+                            {props.error[props.id]}
+                        </div>}
+                </div>
             </div>
         </div>
     );
