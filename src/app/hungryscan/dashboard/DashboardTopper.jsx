@@ -85,7 +85,8 @@ export const DashboardTopper = () => {
                                               objTranslatable={false}
                                               onCancel={() => dispatch(setRemovalActive(false))}
                                               onSubmit={handleRestaurantRemoval}
-                                              isLoading={removalPending}/>}
+                                              isLoading={removalPending}
+                                              isRemoval={true}/>}
             <div className={'app-header-select-wrapper'}>
                 <Select id={'dashboard-restaurant'}
                         ref={selectRef}
