@@ -6,6 +6,8 @@ import {CustomSelect} from "./CustomSelect";
 import {setChosenAdditions} from "../../../../slices/dishAdditionsSlice";
 import makeAnimated from 'react-select/animated';
 import {useMergeUniqueOptions} from "../../../../hooks/useMergeUniqueOptions";
+import {CustomMultivalueRemove} from "./CustomMultivalueRemove";
+import {CustomOption} from "./CustomOption";
 
 export const AdditionsMultiselect = () => {
     const {t} = useTranslation();
@@ -37,6 +39,10 @@ export const AdditionsMultiselect = () => {
                       isClearable={true}
                       isMulti={true}
                       menuPlacement={'top'}
-                      components={{...animatedComponents, NoOptionsMessage: CustomNoOptionsMessage}}/>
+                      components={{
+                          ...animatedComponents,
+                          NoOptionsMessage: CustomNoOptionsMessage,
+                          MultiValueRemove: CustomMultivalueRemove,
+                          Option: CustomOption}}/>
     );
 }
