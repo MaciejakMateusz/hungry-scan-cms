@@ -101,7 +101,8 @@ export const Additions = () => {
                                 objName={additionToRemove.name}
                                 onSubmit={(e) => handleAdditionRemoval(e, additionToRemove)}
                                 onCancel={() => dispatch(setAdditionToRemove(null))}
-                                isLoading={removalPending}/>}
+                                isLoading={removalPending}
+                                isRemoval={true}/>}
             <div className={'cms-padded-view-container'}>
                 <div className={'functions-header'}>
                     <div className={'section-heading'}>{t('additions')}</div>
