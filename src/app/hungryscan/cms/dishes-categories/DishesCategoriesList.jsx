@@ -77,7 +77,8 @@ export const DishesCategoriesList = () => {
                                objName={objName}
                                onSubmit={handleRemoval}
                                onCancel={discardDeletion}
-                               isLoading={removalPending}/>
+                               isLoading={removalPending}
+                               isRemoval={true}/>
     };
 
     const renderCategories = () => {
