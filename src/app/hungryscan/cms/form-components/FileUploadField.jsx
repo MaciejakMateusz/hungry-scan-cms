@@ -5,6 +5,7 @@ import {setHasImage, setIsImageCleared} from "../../../../slices/dishFormSlice";
 import {InformationTooltip} from "../shared-components/InformationTooltip";
 import {s3BucketUrl} from "../../../../apiData";
 import {InteractiveMenuItemImage} from "../dishes-categories/menu-item/InteractiveMenuItemImage";
+import {CloseIcon} from "../../../icons/CloseIcon";
 
 export const FileUploadField = ({setFile, file}) => {
     const {t} = useTranslation();
@@ -68,8 +69,8 @@ export const FileUploadField = ({setFile, file}) => {
         return (
             <div className={'custom-file-upload label clear'}
                  onClick={clearFileData}>
-                {t('clear')}
-                <span className={'clear-file-icon'}>x</span>
+                <span>{t('clear')}</span>
+                <CloseIcon/>
             </div>
         );
     }
@@ -81,10 +82,10 @@ export const FileUploadField = ({setFile, file}) => {
                     <InformationTooltip text={t('fileFieldTooltip')}/>
                     {t('image')}:
                 </label>
+                {renderImage()}
                 <div className={'custom-file-upload'}>
                     {renderButton()}
                 </div>
-                {renderImage()}
             </div>
         </div>
     );
