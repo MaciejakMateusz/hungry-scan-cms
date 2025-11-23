@@ -20,6 +20,8 @@ import {useTranslatableTransformer} from "../../../../hooks/useTranslatableTrans
 import {LoadingSpinner} from "../../../icons/LoadingSpinner";
 import {useConfirmationMessage} from "../../../../hooks/useConfirmationMessage";
 import {FormErrorDialog} from "../../../error/FormErrorDialog";
+import {BorderedButton} from "../../common/BorderedButton";
+import {ActionButton} from "../../common/ActionButton";
 
 export const AdditionFormDialog = (props) => {
     const {t} = useTranslation();
@@ -94,19 +96,18 @@ export const AdditionFormDialog = (props) => {
                                         onChange={() => dispatch(setAvailable(!available))}/>
                 </div>
                 <div className={'dialog-footer'}>
-                    <button className={'general-button cancel'} onClick={() => {
+                    <BorderedButton onClick={() => {
                         dispatch(setAdditionDialogActive(false));
                         dispatch(clearForm());
                         dispatch(setErrorData({}));
                         dispatch(resetAdditionData());
-                    }}>
-                        {t('cancel')}
-                    </button>
+                    }}
+                                    text={t('cancel')}
+                                    isBordered={true}/>
                     <form style={{all: 'unset'}}
                           onSubmit={(e) => handleFormSubmit(e)}>
-                        <button type="submit" className={'general-button'}>
-                            {isLoading ? <LoadingSpinner buttonMode={true}/> : t('save')}
-                        </button>
+                        <ActionButton type="submit"
+                                      text={isLoading ? <LoadingSpinner buttonMode={true}/> : t('save')}/>
                     </form>
                 </div>
 
