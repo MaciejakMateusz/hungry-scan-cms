@@ -20,10 +20,9 @@ export const InteractiveMenuItemImage = ({src, hasImage}) => {
     }
 
     return (
-        <div
-            className={'menu-item-position-image-container'}
-            onClick={handleExpansion}
-            style={hasImage ? {cursor: isExpanded ? 'zoom-out' : 'zoom-in'} : {}}>
+        <div className={'menu-item-position-image-container'}
+             onClick={handleExpansion}
+             style={hasImage ? {cursor: isExpanded ? 'zoom-out' : 'zoom-in'} : {}}>
             <Img {...commonProps}/>
             {isExpanded && (
                 <Img{...commonProps}
