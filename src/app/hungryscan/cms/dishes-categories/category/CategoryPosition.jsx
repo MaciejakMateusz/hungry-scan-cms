@@ -10,6 +10,7 @@ import {ContentSizeIndicator} from "../../shared-components/ContentSizeIndicator
 import {RecordOptionsButton} from "../../shared-components/RecordOptionsButton";
 import {useCategoryContextPositions} from "../../../../../hooks/useCategoryContextPositions";
 import {useOutsideClick} from "../../../../../hooks/useOutsideClick";
+import {BorderedButton} from "../../../common/BorderedButton";
 
 export const CategoryPosition = ({category, expandHandler, expanded}) => {
     const {t} = useTranslation();
@@ -60,12 +61,12 @@ export const CategoryPosition = ({category, expandHandler, expanded}) => {
                 </div>
             </div>
             <div className={'expandable-container'} onClick={() => expandHandler(!expanded)}/>
-            <div className={'new-position-button'} onClick={() => {
-                dispatch(setCategory(category));
-                dispatch(setNewDishFormActive(true));
-            }}>
-                + {t('newDish')}
-            </div>
+            <BorderedButton text={`+ ${t('newDish')}`}
+                            isBordered={true}
+                            onClick={() => {
+                                dispatch(setCategory(category));
+                                dispatch(setNewDishFormActive(true));
+                            }}/>
         </div>
     );
 }
