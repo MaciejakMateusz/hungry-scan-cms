@@ -91,16 +91,20 @@ export const dashboardSlice = createSlice(
     {
         name: 'view',
         initialState: {
-            restaurant: null
+            restaurant: null,
+            downloadActive: false
         },
         reducers: {
             setRestaurant: (state, action) => {
                 state.restaurant = action.payload;
+            },
+            setDownloadActive: (state, action) => {
+                state.downloadActive = action.payload;
             }
         }
     });
 
-export const {setRestaurant} = dashboardSlice.actions;
+export const {setRestaurant, setDownloadActive} = dashboardSlice.actions;
 
 const dashboardReducer = combineReducers({
     view: dashboardSlice.reducer,
