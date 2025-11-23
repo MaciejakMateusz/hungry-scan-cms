@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
-import Select, {components} from "react-select";
+import Select from "react-select";
 import {mainSelectTopper} from "../../../../selectStyles";
 import {CustomNoOptionsMessage} from "../form-components/CustomNoOptionsMessage";
 import {useTranslation} from "react-i18next";
