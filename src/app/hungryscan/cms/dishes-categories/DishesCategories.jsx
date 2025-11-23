@@ -16,6 +16,7 @@ import {
     setNewCategoryFormActive
 } from "../../../../slices/dishesCategoriesSlice";
 import ErrorBoundary from "../../../error/ErrorBoundary";
+import {BorderedButton} from "../../common/BorderedButton";
 
 export const DishesCategories = () => {
     const {t} = useTranslation();
@@ -90,9 +91,8 @@ export const DishesCategories = () => {
                     <div className={'functions-header'}>
                         <div className={'section-heading'}>{t('dishesCategories')}</div>
                         <div className={'flex-wrapper-gapped'}>
-                            <div className={'general-button-new'}
-                                 onClick={() => dispatch(setNewCategoryFormActive(true))}>+ {t('newCategory')}
-                            </div>
+                            <BorderedButton onClick={() => dispatch(setNewCategoryFormActive(true))}
+                                            text={`+ ${t('newCategory')}`}/>
                             <SearchButton filterExpanded={filterExpanded}
                                           onExpand={() => dispatch(setFilterExpanded(!filterExpanded))}
                                           filterValue={filterValue}
