@@ -36,6 +36,7 @@ import {useImageExists} from "../../../../../hooks/useImageExists";
 import {useConfirmationMessage} from "../../../../../hooks/useConfirmationMessage";
 import {useGetTranslation} from "../../../../../hooks/useGetTranslation";
 import {useFetchMenuItemFormCollections} from "../../../../../hooks/useFetchMenuItemFormCollections";
+import {MenuItemMobilePreview} from "./preview/menu-item-details/MenuItemMobilePreview";
 
 export const EditMenuItemForm = () => {
     const {t} = useTranslation();
@@ -145,7 +146,8 @@ export const EditMenuItemForm = () => {
     return (
         <MenuItemFormWrapper title={t('editingDishInCategory')}
                              onFormSubmit={handleFormSubmit}
-                             onFormDiscard={handleFormDiscard}>
+                             onFormDiscard={handleFormDiscard}
+                             previewContent={<MenuItemMobilePreview image={file}/>}>
             {renderFormView()}
         </MenuItemFormWrapper>
     );
