@@ -4,7 +4,7 @@ import {useTranslation} from "react-i18next";
 import {useSelector} from "react-redux";
 import {translateX} from "../../../../../../utils/translateChartsUtils";
 
-export const LineChart = () => {
+export const  LineChart = () => {
     const {t} = useTranslation();
     const {data} = useSelector(state => state.statistics.scanStats);
     const {period} = useSelector(state => state.statistics.view);
