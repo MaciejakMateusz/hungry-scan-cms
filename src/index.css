@@ -855,8 +855,16 @@ ul {
 .app-nav-header {
     grid-row: 1;
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.nav-header-brand-group {
+    display: flex;
     justify-content: center;
     align-items: center;
+    gap: 10px;
 }
 
 .text-ellipsis {
@@ -868,11 +876,25 @@ ul {
 .profile-name {
     color: #FFF;
     font-size: 1.2rem;
-    margin-right: 20px;
     max-width: 125px;
     overflow: hidden;
     text-overflow: ellipsis;
     text-wrap: nowrap;
+}
+
+.user-profile-logo {
+    background: #8540DD;
+    border-radius: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    color: #FFF;
+    font-weight: 500;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    cursor: pointer;
 }
 
 .profile-icon-wrapper {
@@ -898,7 +920,7 @@ ul {
     font-weight: 300;
     font-size: 13px;
     width: 100%;
-    padding-left: 33px;
+    padding-left: 20px;
 }
 
 .app-nav-btn:hover {
@@ -3190,7 +3212,7 @@ ul {
     grid-template-columns: 1fr max-content;
     grid-template-rows: 100%;
     width: 100%;
-    height: 100%;
+    height: calc(100% - 40px);
 }
 
 .form-footer {
@@ -3230,7 +3252,7 @@ ul {
 .padded-form-fragment {
     grid-column: 1;
     background: #FFF;
-    padding: 30px 50px 0 50px;
+    padding: 30px 50px 15px 50px;
     font-size: 13px;
     overflow-y: auto;
     overflow-x: hidden;
