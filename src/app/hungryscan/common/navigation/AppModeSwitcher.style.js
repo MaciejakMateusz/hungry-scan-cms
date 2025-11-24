@@ -19,6 +19,7 @@ export const Switcher = styled.div`
     grid-template-columns: 1fr 1fr;
     align-items: center;
     font-weight: 400;
+    font-size: 13px;
     line-height: 16px;
     cursor: pointer;
     padding: 0 5px;
