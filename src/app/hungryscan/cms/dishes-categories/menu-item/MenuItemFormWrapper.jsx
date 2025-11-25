@@ -28,13 +28,13 @@ export const MenuItemFormWrapper = ({title, onFormDiscard, onFormSubmit, preview
     }
 
     return (
-        <div className={'background-preview'}>
+        <div className={'background'}>
             <FormErrorDialog errorData={errorData} setErrorData={setErrorData}/>
-            <form className={`cms-padded-view-container preview ${previewActive ? 'preview-open' : ''}`}>
+            <form className={'cms-padded-view-container'}>
                 <FormHeader formHeader={<FormTitle/>}
                             onFormSubmit={onFormSubmit}
                             onFormDiscard={onFormDiscard}
-                            onPreview={() => dispatch(setPreviewActive(true))}
+                            renderPreview={true}
                             isLoading={isLoading}
                 />
                 <div className={'menu-item-form-tabs-container'}>
@@ -49,15 +49,15 @@ export const MenuItemFormWrapper = ({title, onFormDiscard, onFormSubmit, preview
                         {t('variants')}
                     </div>
                 </div>
-                <div className={'form-grid'}>
+                <div className={'form-grid'} style={previewActive ? {gap: '15px'} : {}}>
                     <div className={'padded-form-fragment menu-item'}>
                         <div className={'padded-form-container'}>
                             {children}
                         </div>
                     </div>
+                    <PreviewPanel content={previewContent}/>
                 </div>
             </form>
-            <PreviewPanel content={previewContent}/>
         </div>
     );
 }
