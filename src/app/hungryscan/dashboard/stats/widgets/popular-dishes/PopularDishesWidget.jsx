@@ -52,7 +52,7 @@ export const PopularDishesWidget = () => {
 
     return (
         <div className={'statistic-widget popular-dishes'}>
-            <div className={'widget-mode-selector'}>
+            <div className={'widget-mode-selector'} style={{top: '40px'}}>
                 <Select id={'menu-popular-dishes-selector'}
                         name={'menu-popular-dishes-selector'}
                         value={chosenMenu}
