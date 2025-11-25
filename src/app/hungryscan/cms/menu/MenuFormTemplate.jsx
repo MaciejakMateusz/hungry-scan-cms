@@ -5,6 +5,8 @@ import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {MenuColorField} from "../form-components/MenuColorField";
 import {LoadingSpinner} from "../../../icons/LoadingSpinner";
+import {BorderedButton} from "../../common/BorderedButton";
+import {ActionButton} from "../../common/ActionButton";
 
 export const MenuFormTemplate = ({formHeader, discardHandler, submitHandler, errorData, isLoading}) => {
     const {t} = useTranslation();
@@ -25,13 +27,13 @@ export const MenuFormTemplate = ({formHeader, discardHandler, submitHandler, err
                     <MenuColorField/>
                 </div>
                 <div className={'dialog-footer'}>
-                    <button className={'general-button cancel'} onClick={discardHandler}>
-                        {t('cancel')}
-                    </button>
+                    <BorderedButton onClick={discardHandler}
+                                    text={t('cancel')}
+                                    isBordered={true}/>
                     <form style={{all: 'unset'}} onSubmit={submitHandler}>
-                        <button type="submit" className={'general-button'}>
-                            {isLoading ? <LoadingSpinner buttonMode={true}/> : t('save')}
-                        </button>
+                        <ActionButton type="submit"
+                                      text={isLoading ? <LoadingSpinner buttonMode={true}/> : t('save')}>
+                        </ActionButton>
                     </form>
                 </div>
             </div>
