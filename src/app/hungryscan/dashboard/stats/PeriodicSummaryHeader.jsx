@@ -3,11 +3,14 @@ import {setPeriod} from "../../../../slices/statisticsSlice";
 import {PeriodSelectors} from "./PeriodSelectors";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
+import {useWindowWidth} from "../../../../hooks/useWindowWidth";
 
 export const PeriodicSummaryHeader = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {period} = useSelector(state => state.statistics.view);
+    const width = useWindowWidth();
+    const isWide = width > 1300;
 
     return (
         <header className={'statistics-periodic-summary'}>
