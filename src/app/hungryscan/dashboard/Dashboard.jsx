@@ -70,6 +70,18 @@ export const Dashboard = () => {
                    onClick={() => handleSwitchView(USERS)}/>
     ]
 
+    const navElementsCollapsed = [
+        <div onClick={() => handleSwitchView(STATS)}>
+            <StatsIcon active={statsHoveredOrActive} collapsed={true}/>
+        </div>,
+        <div onClick={() => handleSwitchView(CODE_QR)}>
+            <QrCodeIcon active={qrHoveredOrActive} collapsed={true}/>
+        </div>,
+        <div onClick={() => handleSwitchView(USERS)}>
+            <UsersIcon active={usersHoveredOrActive} collapsed={true}/>
+        </div>
+    ]
+
     return (
         <>
             {nextViewName &&
@@ -85,7 +97,9 @@ export const Dashboard = () => {
                     }}
                 />
             }
-            <NavPanel children={navElements} clearStateHandler={clearDashboardState}/>
+            <NavPanel children={navElements}
+                      childrenCollapsed={navElementsCollapsed}
+                      clearStateHandler={clearDashboardState}/>
             <div className={'cms-main'}>
                 <DashboardTopper/>
                 {renderMainView()}
