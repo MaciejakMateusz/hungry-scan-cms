@@ -15,7 +15,8 @@ export const globalParamsSlice = createSlice(
             currentDialog: null,
             isInEditMode: false,
             nextViewName: null,
-            previewActive: false
+            previewActive: false,
+            navPanelCollapsed: false
         },
         reducers: {
             setActiveRestaurant: (state, action) => {
@@ -50,6 +51,9 @@ export const globalParamsSlice = createSlice(
             },
             setPreviewActive: (state, action) => {
                 state.previewActive = action.payload;
+            },
+            setNavPanelCollapsed: (state, action) => {
+                state.navPanelCollapsed = action.payload;
             }
         }
     });
@@ -65,7 +69,8 @@ export const {
     setCurrentDialog,
     setIsInEditMode,
     setNextViewName,
-    setPreviewActive
+    setPreviewActive,
+    setNavPanelCollapsed
 } = globalParamsSlice.actions;
 
 const globalParamsReducer = combineReducers({
