@@ -175,6 +175,7 @@ export const PeriodSelectors = () => {
                                     popperClassName="datepicker-custom-popper"
                                     maxDate={new Date()}
                                     minDate={restaurantCreation}
+                                    showMonthYearDropdown={false}
                     />
                 );
             default:
