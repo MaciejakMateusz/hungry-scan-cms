@@ -16,6 +16,7 @@ import {Variants} from "./variants/Variants";
 import {useTranslatableTransformer} from "../../../../../hooks/useTranslatableTransformer";
 import {useConfirmationMessage} from "../../../../../hooks/useConfirmationMessage";
 import {useFetchMenuItemFormCollections} from "../../../../../hooks/useFetchMenuItemFormCollections";
+import {MenuItemMobilePreview} from "./preview/menu-item-details/MenuItemMobilePreview";
 
 export const NewMenuItemForm = () => {
     const {t} = useTranslation();
@@ -82,7 +83,8 @@ export const NewMenuItemForm = () => {
     return (
         <MenuItemFormWrapper title={t('addingNewDishToCategory')}
                              onFormDiscard={handleFormDiscard}
-                             onFormSubmit={handleFormSubmit}>
+                             onFormSubmit={handleFormSubmit}
+                             previewContent={<MenuItemMobilePreview image={file}/>}>
             {renderFormView()}
         </MenuItemFormWrapper>
     );
