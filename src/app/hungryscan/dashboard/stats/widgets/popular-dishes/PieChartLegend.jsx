@@ -6,7 +6,7 @@ export const PieChartLegend = ({chartData}) => {
     if (!chartData) return null;
 
     return (
-        <foreignObject x={262} y={60} width={300} height={200}>
+        <foreignObject x={242} y={60} width={300} height={200}>
             <div xmlns="http://www.w3.org/1999/xhtml">
                 <LegendContainer>
                     {chartData.map(d => (
