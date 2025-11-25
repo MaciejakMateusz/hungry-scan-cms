@@ -108,6 +108,21 @@ export const Cms = () => {
                    onClick={() => handleSwitchView(TRANSLATIONS)}/>
     ];
 
+    const navElementsCollapsed = [
+        <div onClick={() => handleSwitchView(DISHES_CATEGORIES)}>
+            <DocumentIcon active={currentView === DISHES_CATEGORIES} collapsed={true}/>
+        </div>,
+        <div onClick={() => handleSwitchView(ADDITIONS)}>
+            <AdditionsIcon active={currentView === ADDITIONS} collapsed={true}/>
+        </div>,
+        <div onClick={() => handleSwitchView(PERSONALIZATION)}>
+            <PersonalizationIcon active={currentView === PERSONALIZATION} collapsed={true}/>
+        </div>,
+        <div onClick={() => handleSwitchView(TRANSLATIONS)}>
+            <TranslationsIcon active={currentView === TRANSLATIONS} collapsed={true}/>
+        </div>,
+    ];
+
     return (
         <>
             {nextViewName &&
@@ -123,7 +138,9 @@ export const Cms = () => {
                     }}
                 />
             }
-            <NavPanel children={navElements} clearStateHandler={clearCmsState}/>
+            <NavPanel children={navElements}
+                      clearStateHandler={clearCmsState}
+                      childrenCollapsed={navElementsCollapsed}/>
             <div className={'cms-main'}>
                 <CmsTopper/>
                 {renderMainView()}
