@@ -9,7 +9,6 @@ import {fetchActiveMenu} from "../../../../slices/cmsSlice";
 import {FormHeader} from "../shared-components/FormHeader";
 import {FormErrorDialog} from "../../../error/FormErrorDialog";
 import {updateTranslatable} from "../../../../locales/langUtils";
-import {setPreviewActive} from "../../../../slices/globalParamsSlice";
 import {PreviewPanel} from "../dialog-windows/PreviewPanel";
 import Iframe from "react-iframe";
 import {menuAppHost} from "../../../../apiData";
@@ -45,24 +44,24 @@ export const Personalization = () => {
     }
 
     return (
-        <div className={'background-preview'}>
+        <div className={'background'}>
             <FormErrorDialog errorData={errorData} setErrorData={setErrorData}/>
-            <form className={`cms-padded-view-container preview ${previewActive ? 'preview-open' : ''}`}>
+            <form className={'cms-padded-view-container'}>
                 <FormHeader formHeader={t('personalization')}
                             onFormSubmit={handleFormSubmit}
-                            onPreview={() => dispatch(setPreviewActive(true))}
                             isLoading={isLoading}
                             submitDisabled={errorData}
+                            renderPreview={true}
                 />
-                <div className={'form-grid'}>
+                <div className={'form-grid'} style={previewActive ? {gap: '15px'} : {}}>
                     <div className={'padded-form-fragment'}>
                         <PersonalizationForm/>
                     </div>
+                    <PreviewPanel content={<Iframe url={menuAppHost + previewParams}
+                                                   className={'iframe-container'}
+                                                   styles={{border: 'none'}}/>}/>
                 </div>
             </form>
-            <PreviewPanel content={<Iframe url={menuAppHost + previewParams}
-                                           className={'iframe-container'}
-                                           styles={{border: 'none'}}/>}/>
         </div>
     );
 }
