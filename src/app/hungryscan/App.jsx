@@ -34,7 +34,7 @@ export const App = () => {
     }
 
     return (
-        <div className={'app-grid'}>
+        <div className={'app-flex'}>
             <GlobalRenderingPlugin/>
             {renderView()}
             <CookieConsent/>
