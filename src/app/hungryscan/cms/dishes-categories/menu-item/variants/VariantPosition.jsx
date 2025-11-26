@@ -57,7 +57,7 @@ export const VariantPosition = ({id, variant}) => {
                 </div>
                 <div>
                     <Tooltip content={t('invisibleInMenu')} topOffset={-20}>
-                        {!variant.available && <UnavailableIcon/>}
+                        {!variant.available && <UnavailableIcon width={'18'} height={'18'}/>}
                     </Tooltip>
                 </div>
                 <div className={'draggable-position-actions visible'}>
