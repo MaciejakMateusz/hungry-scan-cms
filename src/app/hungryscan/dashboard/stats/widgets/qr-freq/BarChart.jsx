@@ -74,7 +74,7 @@ export const BarChart = () => {
     const barChartData = data?.barChart?.map(data => {
         return {
             ...data,
-            x: translateX(period, data.x, t)
+            x: translateX(period.value, data.x, t)
         }
     }) ?? fallbackData;
 
