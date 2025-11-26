@@ -1,9 +1,9 @@
 import React from "react";
 
-export const UsersIcon = ({active}) => {
+export const UsersIcon = ({active, collapsed}) => {
     const color = active ? "#FAFAFA" : "#93939E";
     return (
-        <div className={'nav-btn-icon-wrapper'}>
+        <div className={`nav-btn-icon-wrapper ${collapsed ? 'collapsed' : ''}`}>
             <svg width="16" height="17" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g id="Group 1139">
                     <path id="Vector 30"
