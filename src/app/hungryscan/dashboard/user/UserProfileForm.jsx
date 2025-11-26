@@ -3,6 +3,8 @@ import {GenericField} from "../../common/GenericField";
 import {useDispatch, useSelector} from "react-redux";
 import {useTranslation} from "react-i18next";
 import {
+    setChosenLanguage,
+    setErrorData,
     setForename,
     setNewPassword,
     setPassword,
@@ -10,13 +12,18 @@ import {
     setSurname,
     setUsername
 } from "../../../../slices/userProfileSlice";
-import {FormErrorDialog} from "../../../error/FormErrorDialog";
-import {getTranslation} from "../../../../locales/langUtils";
+import {useGetTranslation} from "../../../../hooks/useGetTranslation";
+import {CustomSelect} from "../../cms/form-components/CustomSelect";
+import {customSelect} from "../../../../selectStyles";
+import {CustomNoOptionsMessage} from "../../cms/form-components/CustomNoOptionsMessage";
+import {supportedLanguages} from "../../../../i18n";
+import {getLanguage} from "../../../../locales/langUtils";
 
 export const UserProfileForm = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {userData} = useSelector(state => state.userProfile.getUserProfile);
+    const {errorData} = useSelector(state => state.userProfile.updateUserProfile);
     const {
         username,
         forename,
@@ -24,8 +31,13 @@ export const UserProfileForm = () => {
         password,
         newPassword,
         repeatedPassword,
-        errorData
+        chosenLanguage
     } = useSelector((state) => state.userProfile.form);
+    const languages = Object.keys(supportedLanguages).map(languageKey => ({
+        value: languageKey,
+        label: t(languageKey)
+    }));
+    const getTranslation = useGetTranslation();
 
     useEffect(() => {
         const fillUserProfile = () => {
@@ -33,20 +45,19 @@ export const UserProfileForm = () => {
             dispatch(setUsername(userData.username));
             dispatch(setForename(userData.forename));
             dispatch(setSurname(userData.surname));
+            const language = getLanguage();
+            dispatch(setChosenLanguage({value: language, label: t(language)}));
         }
         fillUserProfile();
-    }, [dispatch, userData])
+    }, [dispatch, t, userData])
 
     return (
         <>
-            {errorData && <FormErrorDialog error={errorData}
-                                           resetMessage={() => {
-                                           }}/>}
             <div>
                 <div className={'form-group-header'}>
                     {t('userData')}
                 </div>
-                <GenericField id={'profileUsername'}
+                <GenericField id={'username'}
                               type={'text'}
                               name={t('username')}
                               placeholder={t('typeUsername')}
@@ -55,25 +66,28 @@ export const UserProfileForm = () => {
                               required={true}
                               readOnly={true}
                               disabled={true}
-                              error={errorData?.username}
+                              error={errorData}
+                              errorSetter={setErrorData}
                 />
-                <GenericField id={'profileForename'}
+                <GenericField id={'forename'}
                               type={'text'}
                               name={t('forename')}
                               placeholder={t('typeForename')}
                               value={forename}
                               onChange={(e) => dispatch(setForename(e))}
                               required={true}
-                              error={errorData?.forename}
+                              error={errorData}
+                              errorSetter={setErrorData}
                 />
-                <GenericField id={'profileSurname'}
+                <GenericField id={'surname'}
                               type={'text'}
                               name={t('surname')}
                               placeholder={t('typeSurname')}
                               value={surname}
                               onChange={(e) => dispatch(setSurname(e))}
                               required={true}
-                              error={errorData?.surname}
+                              error={errorData}
+                              errorSetter={setErrorData}
                 />
                 <GenericField id={'roles'}
                               type={'text'}
@@ -96,25 +110,45 @@ export const UserProfileForm = () => {
                                   placeholder={t('typeOldPassword')}
                                   value={password}
                                   onChange={(e) => dispatch(setPassword(e))}
-                                  error={errorData?.password}
+                                  error={errorData}
+                                  errorSetter={setErrorData}
                     />
-                    <GenericField id={'new-password'}
+                    <GenericField id={'newPassword'}
                                   type={'password'}
                                   name={t('newPassword')}
                                   placeholder={t('typeNewPasswordField')}
                                   value={newPassword}
                                   onChange={(e) => dispatch(setNewPassword(e))}
-                                  error={errorData?.newPassword}
+                                  error={errorData}
+                                  errorSetter={setErrorData}
                     />
-                    <GenericField id={'repeated-new-password'}
+                    <GenericField id={'repeatedPassword'}
                                   type={'password'}
                                   name={t('repeatPassword')}
                                   placeholder={t('repeatNewPassword')}
                                   value={repeatedPassword}
                                   onChange={(e) => dispatch(setRepeatedPassword(e))}
-                                  error={errorData?.repeatedPassword}
+                                  error={errorData}
+                                  errorSetter={setErrorData}
                     />
                 </div>
+            </div>
+            <div>
+                <div className={'form-group-header'}>
+                    {t('settings')}
+                </div>
+                <CustomSelect id={'language'}
+                              name={'language'}
+                              labelName={t('language')}
+                              isRequired={true}
+                              info={t('systemLanguage')}
+                              placeholder={'Wybierz język...'}
+                              value={chosenLanguage}
+                              onChange={(selected) => dispatch(setChosenLanguage(selected))}
+                              options={languages}
+                              styles={customSelect}
+                              components={{NoOptionsMessage: CustomNoOptionsMessage}}
+                              menuPlacement={'top'}/>
             </div>
         </>
     );
