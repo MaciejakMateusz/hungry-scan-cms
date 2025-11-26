@@ -7,6 +7,7 @@ import {VariantPosition} from "./VariantPosition";
 import {setIsNewVariant, setVariantDialogActive} from "../../../../../../slices/variantsSlice";
 import {useTranslation} from "react-i18next";
 import {VariantFormDialog} from "./VariantFormDialog";
+import {useCustomSensors} from "../../../../../../hooks/useCustomSensors";
 
 export const Variants = () => {
     const dispatch = useDispatch();
@@ -14,6 +15,7 @@ export const Variants = () => {
     const {variants} = useSelector(state => state.dishForm.form);
     const {variantDialogActive} = useSelector(state => state.variants.view);
     const variantIds = variants?.map(variant => variant.id.toString());
+    const sensors = useCustomSensors();
 
     if (!variants) {
         return null;
@@ -48,7 +50,8 @@ export const Variants = () => {
                     </div>
                 </div>
                 {variants?.length === 0 && <p className={'flex-centered'}>{t('noVariantsInDish')}</p>}
-                <DndContext onDragEnd={(event) => handleDragEnd(event)}>
+                <DndContext sensors={sensors}
+                            onDragEnd={(event) => handleDragEnd(event)}>
                     <SortableContext items={variantIds}>
                         {variants.map(variant => (
                             <VariantPosition key={`${variant.id}-${variant.displayOrder}`}
