@@ -1,6 +1,8 @@
 import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {setCookie} from "../utils/utils";
 import {apiHost} from "../apiData";
+import {getLanguage} from "../locales/langUtils";
+import i18n from "i18next";
 
 export const updateUserProfile = createAsyncThunk(
     'updateUserProfile/updateUserProfile',
@@ -10,6 +12,7 @@ export const updateUserProfile = createAsyncThunk(
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept-Language': getLanguage()
             },
             body: JSON.stringify({
                 forename: state.forename,
@@ -69,6 +72,7 @@ export const getUserProfile = createAsyncThunk(
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept-Language': getLanguage()
             },
             credentials: 'include'
         });
@@ -116,6 +120,7 @@ export const userProfileFormSlice = createSlice({
         newPassword: null,
         repeatedPassword: null,
         userProfileUpdated: false,
+        chosenLanguage: null
     },
     reducers: {
         setUsername: (state, action) => {
@@ -139,6 +144,12 @@ export const userProfileFormSlice = createSlice({
         setUserProfileUpdated: (state, action) => {
             state.userProfileUpdated = action.payload;
         },
+        setChosenLanguage: (state, action) => {
+            state.chosenLanguage = action.payload;
+            const language = action.payload.value?.toLowerCase();
+            i18n.changeLanguage(language);
+            document.cookie = `i18next=${language}; path=/`;
+        },
         clearProfileForm: (state) => {
             state.username = null;
             state.surname = null;
@@ -158,6 +169,7 @@ export const {
     setNewPassword,
     setRepeatedPassword,
     setUserProfileUpdated,
+    setChosenLanguage,
     clearProfileForm
 } = userProfileFormSlice.actions
 
