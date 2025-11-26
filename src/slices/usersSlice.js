@@ -1,6 +1,6 @@
 import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiHost} from "../apiData";
-import {getTranslation} from "../locales/langUtils";
+import {getLanguage} from "../locales/langUtils";
 
 export const getOrganizationRestaurants = createAsyncThunk(
     'getOrganizationRestaurants/getOrganizationRestaurants',
@@ -9,6 +9,7 @@ export const getOrganizationRestaurants = createAsyncThunk(
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept-Language': getLanguage()
             },
             credentials: 'include'
         });
@@ -53,6 +54,7 @@ export const getRoles = createAsyncThunk(
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept-Language': getLanguage()
             },
             credentials: 'include'
         });
@@ -72,21 +74,20 @@ export const getRolesSlice = createSlice({
         isLoading: false,
         roles: []
     },
+    reducers: {
+        setRoles: (state, action) => {
+            state.roles = action.payload;
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(getRoles.pending, state => {
                 state.isLoading = true;
             })
-            .addCase(getRoles.fulfilled, (state, action) => {
+            .addCase(getRoles.fulfilled, state => {
                 state.isLoading = false;
-                state.roles = action.payload
-                    .filter(role => !role.name.includes('CUSTOMER'))
-                    .map(role => ({
-                        value: role,
-                        label: getTranslation(role.displayedName)
-                    }));
             })
-            .addCase(getRoles.rejected, (state) => {
+            .addCase(getRoles.rejected, state => {
                 state.isLoading = false;
             })
     }
@@ -100,6 +101,7 @@ export const updateUser = createAsyncThunk(
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept-Language': getLanguage()
             },
             body: JSON.stringify({
                 forename: state.forename,
@@ -129,7 +131,13 @@ export const updateUserSlice = createSlice(
     {
         name: 'updateUser',
         initialState: {
-            isLoading: false
+            isLoading: false,
+            updateUserError: null
+        },
+        reducers: {
+            setUpdateUserError: (state, action) => {
+                state.updateUserError = action.payload;
+            }
         },
         extraReducers: (builder) => {
             builder
@@ -138,9 +146,11 @@ export const updateUserSlice = createSlice(
                 })
                 .addCase(updateUser.fulfilled, state => {
                     state.isLoading = false;
+                    state.updateUserError = null;
                 })
-                .addCase(updateUser.rejected, (state) => {
+                .addCase(updateUser.rejected, (state, action) => {
                     state.isLoading = false;
+                    state.updateUserError = action.payload;
                 })
         }
     });
@@ -153,6 +163,7 @@ export const saveUser = createAsyncThunk(
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept-Language': getLanguage()
             },
             body: JSON.stringify({
                 forename: state.forename,
@@ -182,7 +193,13 @@ export const saveUserSlice = createSlice(
     {
         name: 'saveUser',
         initialState: {
-            isLoading: false
+            isLoading: false,
+            saveUserError: null
+        },
+        reducers: {
+            setSaveUserError: (state, action) => {
+                state.saveUserError = action.payload;
+            }
         },
         extraReducers: (builder) => {
             builder
@@ -191,9 +208,11 @@ export const saveUserSlice = createSlice(
                 })
                 .addCase(saveUser.fulfilled, state => {
                     state.isLoading = false;
+                    state.saveUserError = null;
                 })
-                .addCase(saveUser.rejected, (state) => {
+                .addCase(saveUser.rejected, (state, action) => {
                     state.isLoading = false;
+                    state.saveUserError = action.payload;
                 })
         }
     });
@@ -205,6 +224,7 @@ export const getUsers = createAsyncThunk(
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept-Language': getLanguage()
             },
             credentials: 'include'
         });
@@ -224,6 +244,11 @@ export const getUsersSlice = createSlice({
         errorData: null,
         isLoading: false,
         users: []
+    },
+    reducers: {
+        setUsers: (state, action) => {
+            state.users = action.payload;
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -250,6 +275,7 @@ export const removeUser = createAsyncThunk(
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept-Language': getLanguage()
             },
             body: username,
             credentials: 'include'
@@ -305,7 +331,9 @@ export const usersViewSlice = createSlice({
         userToUpdate: null,
         userCreated: false,
         userUpdated: false,
-        userRemoved: false
+        userRemoved: false,
+        filterExpanded: false,
+        filterValue: ''
     },
     reducers: {
         setNewUserFormActive: (state, action) => {
@@ -328,6 +356,23 @@ export const usersViewSlice = createSlice({
         },
         setUserRemoved: (state, action) => {
             state.userRemoved = action.payload;
+        },
+        setFilterExpanded: (state, action) => {
+            state.filterExpanded = action.payload;
+        },
+        setFilterValue: (state, action) => {
+            state.filterValue = action.payload;
+        },
+        clearView: state => {
+            state.newUserFormActive = false;
+            state.editUserFormActive = false;
+            state.userToRemove = null;
+            state.userToUpdate = null;
+            state.userCreated = false;
+            state.userUpdated = false;
+            state.userRemoved = false;
+            state.filterExpanded = false;
+            state.filterValue = '';
         }
     }
 });
@@ -384,7 +429,10 @@ export const {
     setUserToUpdate,
     setUserCreated,
     setUserUpdated,
-    setUserRemoved
+    setUserRemoved,
+    setFilterExpanded,
+    setFilterValue,
+    clearView
 } = usersViewSlice.actions;
 
 export const {
@@ -399,6 +447,10 @@ export const {
 } = userFormSlice.actions;
 
 export const {setRemovalError} = removeUserSlice.actions;
+export const {setSaveUserError} = saveUserSlice.actions;
+export const {setUpdateUserError} = updateUserSlice.actions;
+export const {setUsers} = getUsersSlice.actions;
+export const {setRoles} = getRolesSlice.actions;
 
 const usersReducer = combineReducers({
     view: usersViewSlice.reducer,
