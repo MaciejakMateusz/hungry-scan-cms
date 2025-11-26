@@ -1,9 +1,9 @@
 import {useTranslation} from "react-i18next";
 import {EditIcon} from "../app/icons/EditIcon";
-import {DeleteIcon} from "../app/icons/DeleteIcon";
 import {useDispatch, useSelector} from "react-redux";
 import {setIsNewVariant, setVariant, setVariantDialogActive, setVariantToRemove} from "../slices/variantsSlice";
 import {setVariants} from "../slices/dishFormSlice";
+import {TrashIcon} from "../app/icons/TrashIcon";
 
 export const useVariantContextPositions = ({variant, setContextWindowActive}) => {
     const {t} = useTranslation();
@@ -21,7 +21,7 @@ export const useVariantContextPositions = ({variant, setContextWindowActive}) =>
         {
             id: 'edit',
             name: t('edit'),
-            icon: <EditIcon width={'25'} height={'25'}/>,
+            icon: <EditIcon/>,
             handler: () => {
                 dispatch(setVariant(variant));
                 dispatch(setIsNewVariant(false));
@@ -32,7 +32,7 @@ export const useVariantContextPositions = ({variant, setContextWindowActive}) =>
         {
             id: 'remove',
             name: t('remove'),
-            icon: <DeleteIcon width={'25'} height={'25'}/>,
+            icon: <TrashIcon/>,
             handler: (e) => handleVariantRemoval(e)
         }];
 }
