@@ -6,7 +6,7 @@ export const UsersTable = styled.table`
 
     td {
         vertical-align: middle;
-        padding: 10px 0;
+        padding: 10px 5px 10px 0;
         font-size: 1rem;
     }
 `;
@@ -26,12 +26,17 @@ export const TableHeadCell = styled.th`
 `;
 
 export const TableRow = styled.tr`
+    cursor: pointer;
     &:hover {
         background: #F9F9F9;
     }
 `;
 
 export const TableData = styled.td`
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-wrap: nowrap;
 `;
 
 export const TableDataActions = styled.td`
@@ -41,9 +46,4 @@ export const TableDataActions = styled.td`
 
 export const Actions = styled.div`
     display: flex;
-`;
-
-export const Action = styled.span`
-    cursor: pointer;
-    padding: 0 7px;
 `;
