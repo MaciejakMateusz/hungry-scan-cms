@@ -26,7 +26,7 @@ export const useVariantContextPositions = ({variant, setContextWindowActive}) =>
                 dispatch(setVariant(variant));
                 dispatch(setIsNewVariant(false));
                 dispatch(setVariantDialogActive(true));
-                setContextWindowActive(false)
+                setContextWindowActive(false);
             }
         },
         {
