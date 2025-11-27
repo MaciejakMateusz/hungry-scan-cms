@@ -27,6 +27,7 @@ export const TableHeadCell = styled.th`
 
 export const TableRow = styled.tr`
     cursor: pointer;
+
     &:hover {
         background: #F9F9F9;
     }
@@ -42,6 +43,14 @@ export const TableData = styled.td`
 export const TableDataActions = styled.td`
     display: flex;
     align-items: center;
+    ${({ $isWide }) => !$isWide && `
+    position: fixed;
+    right: 50px;
+    border: 1px solid var(--Grey-300);
+    border-radius: 100px;
+    width: 28px;
+    height: 28px;
+    `};
 `;
 
 export const Actions = styled.div`
