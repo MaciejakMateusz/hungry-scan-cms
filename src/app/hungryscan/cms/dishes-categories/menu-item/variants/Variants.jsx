@@ -40,26 +40,28 @@ export const Variants = () => {
     return (
         <>
             {variantDialogActive && <VariantFormDialog variants={variants}/>}
-            <div className={'menu-item-form-variants-container'}>
-                <div className={'flex-end-container'}>
-                    <div className={'new-position-button'} onClick={() => {
-                        dispatch(setIsNewVariant(true));
-                        dispatch(setVariantDialogActive(true))
-                    }}>
-                        + {t('newVariant')}
-                    </div>
+            <div className={'flex-end-container'}>
+                <div className={'new-position-button'} onClick={() => {
+                    dispatch(setIsNewVariant(true));
+                    dispatch(setVariantDialogActive(true))
+                }}>
+                    + {t('newVariant')}
                 </div>
-                {variants?.length === 0 && <p className={'flex-centered'}>{t('noVariantsInDish')}</p>}
-                <DndContext sensors={sensors}
-                            onDragEnd={(event) => handleDragEnd(event)}>
-                    <SortableContext items={variantIds}>
-                        {variants.map(variant => (
-                            <VariantPosition key={`${variant.id}-${variant.displayOrder}`}
-                                             id={variant.id.toString()}
-                                             variant={variant}/>
-                        ))}
-                    </SortableContext>
-                </DndContext>
+            </div>
+            <div className={'scrollable-x-wrapper'}>
+                <div className={'menu-item-form-variants-container'}>
+                    {variants?.length === 0 && <p className={'flex-centered'}>{t('noVariantsInDish')}</p>}
+                    <DndContext sensors={sensors}
+                                onDragEnd={(event) => handleDragEnd(event)}>
+                        <SortableContext items={variantIds}>
+                            {variants.map(variant => (
+                                <VariantPosition key={`${variant.id}-${variant.displayOrder}`}
+                                                 id={variant.id.toString()}
+                                                 variant={variant}/>
+                            ))}
+                        </SortableContext>
+                    </DndContext>
+                </div>
             </div>
         </>
     );
