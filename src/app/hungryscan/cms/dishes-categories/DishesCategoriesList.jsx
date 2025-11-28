@@ -89,7 +89,7 @@ export const DishesCategoriesList = () => {
     };
 
     return (
-        <div className={'scrollable-wrapper'}>
+        <div className={'scrollable-y-wrapper'}>
             {filterValue ?
                 <FilteredMenuItems/> :
                 renderCategories()}
