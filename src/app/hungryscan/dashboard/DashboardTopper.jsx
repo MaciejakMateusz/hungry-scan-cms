@@ -45,7 +45,6 @@ export const DashboardTopper = ({children, clearStateHandler}) => {
     const windowWidth = useWindowWidth();
     const isTablet = windowWidth < 1000;
     const [mobileNavActive, setMobileNavActive] = useState(false);
-    const {navPanelCollapsed} = useSelector(state => state.globalParams.globalParams);
 
     useOutsideClick(contextRef, () => {
         dispatch(setRestaurantContextMenuActive(false));
