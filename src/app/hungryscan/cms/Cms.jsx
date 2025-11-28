@@ -142,7 +142,8 @@ export const Cms = () => {
                       clearStateHandler={clearCmsState}
                       childrenCollapsed={navElementsCollapsed}/>
             <div className={'cms-main'}>
-                <CmsTopper/>
+                <CmsTopper children={navElements}
+                           clearStateHandler={clearCmsState}/>
                 {renderMainView()}
             </div>
         </>
