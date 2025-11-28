@@ -5,11 +5,13 @@ import {arrayMove, SortableContext} from "@dnd-kit/sortable";
 import {MenuItemPosition} from "./menu-item/MenuItemPosition";
 import {updateMenuItemsOrder} from "../../../../slices/dishesCategoriesSlice";
 import {useDispatch} from "react-redux";
+import {useCustomSensors} from "../../../../hooks/useCustomSensors";
 
 export const CategoryContent = ({category, localCategories, setLocalCategories}) => {
     const dispatch = useDispatch();
     const menuItemIds = category.menuItems.map(item => item.id.toString());
     const [categoryExpanded, setCategoryExpanded] = useState(true);
+    const sensors = useCustomSensors();
 
     const handleDragEnd = async (event, category) => {
         const {active, over} = event;
@@ -38,19 +40,22 @@ export const CategoryContent = ({category, localCategories, setLocalCategories})
         <div key={category.id} className={'category-container-new'}>
             <CategoryPosition category={category} expandHandler={setCategoryExpanded} expanded={categoryExpanded}/>
             {category.menuItems.length > 0 && <div className={'draggable-position-separator'}/>}
-            {categoryExpanded &&
-                <DndContext onDragEnd={(event) => handleDragEnd(event, category)}>
-                    <SortableContext items={menuItemIds}>
-                        {category.menuItems.map(menuItem => (
-                            <MenuItemPosition key={`${menuItem.id}-${menuItem.displayOrder}`}
-                                              id={menuItem.id.toString()}
-                                              category={category}
-                                              menuItem={menuItem}
-                            />
-                        ))}
-                    </SortableContext>
-                </DndContext>
-            }
+            <div className={'scrollable-x-wrapper'}>
+                {categoryExpanded &&
+                    <DndContext sensors={sensors}
+                                onDragEnd={(event) => handleDragEnd(event, category)}>
+                        <SortableContext items={menuItemIds}>
+                            {category.menuItems.map(menuItem => (
+                                <MenuItemPosition key={`${menuItem.id}-${menuItem.displayOrder}`}
+                                                  id={menuItem.id.toString()}
+                                                  category={category}
+                                                  menuItem={menuItem}
+                                />
+                            ))}
+                        </SortableContext>
+                    </DndContext>
+                }
+            </div>
         </div>
     );
 }
