@@ -122,7 +122,7 @@ export const  LineChart = () => {
         return {
             ...item,
             data: item.data.map(point => ({
-                x: translateX(period, point.x, t),
+                x: translateX(period.value, point.x, t),
                 y: point.y
             }))
         }
