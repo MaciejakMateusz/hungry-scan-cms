@@ -11,6 +11,7 @@ import {RecordOptionsButton} from "../../shared-components/RecordOptionsButton";
 import {useCategoryContextPositions} from "../../../../../hooks/useCategoryContextPositions";
 import {useOutsideClick} from "../../../../../hooks/useOutsideClick";
 import {BorderedButton} from "../../../common/BorderedButton";
+import {useWindowWidth} from "../../../../../hooks/useWindowWidth";
 
 export const CategoryPosition = ({category, expandHandler, expanded}) => {
     const {t} = useTranslation();
@@ -26,6 +27,8 @@ export const CategoryPosition = ({category, expandHandler, expanded}) => {
             category, setContextWindowActive, setContextDetailsWindowActive, contextDetailsWindowActive
         }
     );
+    const windowWidth = useWindowWidth();
+    const isWide = windowWidth > 1300;
 
     useOutsideClick(contextRef, () => {
         setContextWindowActive(false);
@@ -54,7 +57,7 @@ export const CategoryPosition = ({category, expandHandler, expanded}) => {
                 <div onClick={handleStopPropagation}>
                     <RecordOptionsButton className={'record-context-actions-button'}
                                          onClick={() => setContextWindowActive(!contextWindowActive)}
-                                         dotsFill={hovered ? undefined : 'transparent'}
+                                         dotsFill={hovered ? undefined : (isWide ? 'transparent': undefined)}
                                          contextWindowActive={contextWindowActive}
                                          contextPositions={categoryContextPositions}
                                          contextRef={contextRef}/>
