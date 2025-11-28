@@ -150,13 +150,15 @@ export const MenuItemPosition = ({id, category, menuItem, filtered}) => {
                         {!menuItem.available && <UnavailableIcon/>}
                     </Tooltip>
                 </div>
-                <div className={'draggable-position-actions'} onClick={stopClickPropagation}>
-                    <RecordOptionsButton className={'record-context-actions-button'}
-                                         onClick={() => setContextWindowActive(!contextWindowActive)}
-                                         contextWindowActive={contextWindowActive}
-                                         contextPositions={menuItemContextPositions}
-                                         contextRef={contextRef}
-                                         windowPosition={{left: '-150px', top: '30px'}}/>
+                <div className={'draggable-actions-sticky'} onClick={stopClickPropagation}>
+                    <div className={'draggable-position-actions'}
+                         onClick={() => setContextWindowActive(!contextWindowActive)}>
+                        <RecordOptionsButton className={'record-context-actions-button'}
+                                             contextWindowActive={contextWindowActive}
+                                             contextPositions={menuItemContextPositions}
+                                             contextRef={contextRef}
+                                             windowPosition={{left: '-150px', top: '30px'}}/>
+                    </div>
                 </div>
             </div>
             {menuItem.displayOrder !== category?.menuItems.length && <div className={'draggable-position-separator'}/>}
