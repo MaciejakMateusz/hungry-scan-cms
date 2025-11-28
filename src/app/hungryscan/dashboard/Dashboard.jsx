@@ -101,7 +101,8 @@ export const Dashboard = () => {
                       childrenCollapsed={navElementsCollapsed}
                       clearStateHandler={clearDashboardState}/>
             <div className={'cms-main'}>
-                <DashboardTopper/>
+                <DashboardTopper children={navElements}
+                                 clearStateHandler={clearDashboardState}/>
                 {renderMainView()}
             </div>
         </>
