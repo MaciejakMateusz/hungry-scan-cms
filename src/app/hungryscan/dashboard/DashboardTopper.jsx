@@ -20,8 +20,11 @@ import {DecisionDialog} from "../cms/dialog-windows/DecisionDialog";
 import {remove} from "../../../slices/objectRemovalSlice";
 import {useFetchCurrentRestaurant} from "../../../hooks/useFetchCurrentRestaurant";
 import {useOutsideClick} from "../../../hooks/useOutsideClick";
+import {useWindowWidth} from "../../../hooks/useWindowWidth";
+import {NavButtonMobile} from "../NavButtonMobile";
+import {NavPanelMobile} from "../NavPanelMobile";
 
-export const DashboardTopper = () => {
+export const DashboardTopper = ({children, clearStateHandler}) => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const selectRef = useRef();
@@ -39,9 +42,13 @@ export const DashboardTopper = () => {
     const getRestaurant = useFetchCurrentRestaurant();
     const contextRef = useRef();
     const removalPending = useSelector(state => state.objRemoval.isLoading);
+    const windowWidth = useWindowWidth();
+    const isTablet = windowWidth < 1000;
+    const [mobileNavActive, setMobileNavActive] = useState(false);
+    const {navPanelCollapsed} = useSelector(state => state.globalParams.globalParams);
 
     useOutsideClick(contextRef, () => {
-            dispatch(setRestaurantContextMenuActive(false));
+        dispatch(setRestaurantContextMenuActive(false));
     }, restaurantContextMenuActive);
 
     useEffect(() => {
@@ -87,6 +94,10 @@ export const DashboardTopper = () => {
                                               onSubmit={handleRestaurantRemoval}
                                               isLoading={removalPending}
                                               isRemoval={true}/>}
+            {isTablet && <NavButtonMobile onClick={() => setMobileNavActive(!mobileNavActive)}/>}
+            {(mobileNavActive && isTablet) && <NavPanelMobile children={children}
+                                                              clearStateHandler={clearStateHandler}
+                                                              onCollapse={() => setMobileNavActive(!mobileNavActive)}/>}
             <div className={'app-header-select-wrapper'}>
                 <Select id={'dashboard-restaurant'}
                         ref={selectRef}
