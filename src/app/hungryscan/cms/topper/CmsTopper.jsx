@@ -22,8 +22,12 @@ import {FormErrorDialog} from "../../../error/FormErrorDialog";
 import {ScheduleIcon} from "../../../icons/ScheduleIcon";
 import {BorderedButton} from "../../common/BorderedButton";
 import {CustomOption} from "../form-components/CustomOption";
+import {useWindowWidth} from "../../../../hooks/useWindowWidth";
+import {NavButtonMobile} from "../../NavButtonMobile";
+import {NavPanelMobile} from "../../NavPanelMobile";
+import {CustomSingleValue} from "../form-components/CustomSingleValue";
 
-export const CmsTopper = () => {
+export const CmsTopper = ({children, clearStateHandler}) => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const selectRef = useRef();
@@ -45,6 +49,9 @@ export const CmsTopper = () => {
     const getRestaurant = useFetchCurrentRestaurant();
     const removalPending = useSelector(state => state.objRemoval.isLoading);
     const {schedulerActive} = useSelector(state => state.cms.view);
+    const [mobileNavActive, setMobileNavActive] = useState(false);
+    const windowWidth = useWindowWidth();
+    const isTablet = windowWidth < 1000;
 
     useOutsideClick(contextRef, () => {
         dispatch(setContextMenuActive(false));
@@ -108,6 +115,10 @@ export const CmsTopper = () => {
                                                              isLoading={removalPending}
                                                              isRemoval={true}/>}
             <div className={'flex-wrapper'}>
+                {isTablet && <NavButtonMobile onClick={() => setMobileNavActive(!mobileNavActive)}/>}
+                {(mobileNavActive && isTablet) && <NavPanelMobile children={children}
+                                                                  clearStateHandler={clearStateHandler}
+                                                                  onCollapse={() => setMobileNavActive(!mobileNavActive)}/>}
                 <div className={'app-header-select-wrapper'}>
                     <Select id={'cms-menu'}
                             ref={selectRef}
@@ -124,20 +135,22 @@ export const CmsTopper = () => {
                                 singleValue: (provided) => ({
                                     ...provided,
                                     color: '#191D25',
-                                    maxWidth: activeMenu?.value.standard ? '70%' : '90%'
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    padding: '0 20px 0 10px'
                                 })
                             }}
                             components={{
                                 NoOptionsMessage: CustomNoOptionsMessage,
                                 MenuList: CustomMenuList,
-                                Option: CustomOption
+                                Option: CustomOption,
+                                SingleValue: CustomSingleValue
                             }}
                             onAdd={() => dispatch(setNewMenuFormActive(true))}
                             buttonText={menus.length >= menusLimit ? t('maximumMenusCount') : t('addMenu')}
                             buttonDisabled={menus.length >= menusLimit}
                             selectRef={selectRef}
                     />
-                    {activeMenu?.value.standard && <div className={'menu-standard-indicator'}>{t('main')}</div>}
                 </div>
                 <RecordOptionsButton className={'options-button'}
                                      style={isInEditMode ? {cursor: 'not-allowed'} : {}}
@@ -152,12 +165,15 @@ export const CmsTopper = () => {
             {!schedulerActive &&
                 <BorderedButton style={isInEditMode ? {
                     cursor: 'not-allowed',
-                    color: 'var(--Grey-700)'} : {}}
+                    color: 'var(--Grey-700)'
+                } : {}}
                                 onClick={() => {
                                     if (isInEditMode) return;
                                     dispatch(setSchedulerActive(true));
                                 }}
-                                isBordered={true} text={t('menuSchedules')}
+                                isBordered={true}
+                                text={t('menuSchedules')}
+                                isMobile={isTablet}
                                 icon={<ScheduleIcon isInEditMode={isInEditMode}/>}/>
             }
 
