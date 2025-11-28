@@ -30,18 +30,20 @@ export const LogicalToggleField = ({
         <div className={'form-field-wrapper'}>
             <div className={'form-field-container'}>
                 {renderLabel()}
-                <div className="toggle-switch">
-                    <input type="checkbox"
-                           id={id}
-                           name={id}
-                           value={value}
-                           onChange={onChange}
-                           checked={value}/>
-                    <label htmlFor={id} className="toggle-label"></label>
-                </div>
-                <span className={'menu-visibility-msg'}>
+                <div className={'flex-centered'}>
+                    <div className="toggle-switch">
+                        <input type="checkbox"
+                               id={id}
+                               name={id}
+                               value={value}
+                               onChange={onChange}
+                               checked={value}/>
+                        <label htmlFor={id} className="toggle-label"></label>
+                    </div>
+                    <span className={'menu-visibility-msg'}>
                     {renderMessage()}
                 </span>
+                </div>
             </div>
         </div>
     );
