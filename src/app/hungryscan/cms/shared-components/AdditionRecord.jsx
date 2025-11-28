@@ -7,6 +7,7 @@ import {setAddition, setAdditionDialogActive, setIsNewAddition} from "../../../.
 import {UnavailableIcon} from "../../../icons/UnavailableIcon";
 import {Tooltip} from "../Tooltip";
 import {useTranslation} from "react-i18next";
+import {useWindowWidth} from "../../../../hooks/useWindowWidth";
 
 export const AdditionRecord = ({ingredient, name, price}) => {
     const {t} = useTranslation();
@@ -18,6 +19,8 @@ export const AdditionRecord = ({ingredient, name, price}) => {
         useAdditionContextPositions({ingredient, setContextWindowActive});
     const {restaurant} = useSelector(state => state.dashboard.view);
     const restaurantLanguage = restaurant?.value.settings.language.toLowerCase();
+    const windowWidth = useWindowWidth();
+    const isWide = windowWidth > 1300;
 
     useOutsideClick(contextRef, () => {
         setContextWindowActive(false);
@@ -51,7 +54,7 @@ export const AdditionRecord = ({ingredient, name, price}) => {
                         <div onClick={handleStopPropagation}>
                             <RecordOptionsButton className={'record-context-actions-button'}
                                                  onClick={() => setContextWindowActive(!contextWindowActive)}
-                                                 dotsFill={hovered ? undefined : 'transparent'}
+                                                 dotsFill={hovered ? undefined : (isWide ? 'transparent' : undefined)}
                                                  contextWindowActive={contextWindowActive}
                                                  contextPositions={additionContextPositions}
                                                  contextRef={contextRef}
