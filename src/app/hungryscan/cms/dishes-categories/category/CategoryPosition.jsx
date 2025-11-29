@@ -50,7 +50,7 @@ export const CategoryPosition = ({category, expandHandler, expanded}) => {
              onMouseEnter={() => setHovered(true)}
              onMouseLeave={() => setHovered(false)}>
             <div className={'category-info'} onClick={handleEdit}>
-                <span className={'text-ellipsis'} style={{maxWidth: '50vw'}}>
+                <span className={'text-ellipsis'} style={{maxWidth: '30vw'}}>
                     {category.name[restaurantLanguage]}
                 </span>
                 <ContentSizeIndicator size={category.menuItems.length}/>
