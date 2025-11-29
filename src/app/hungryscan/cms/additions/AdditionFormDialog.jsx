@@ -74,43 +74,43 @@ export const AdditionFormDialog = (props) => {
     return (
         <>
             <FormErrorDialog errorData={errorData} setErrorData={setErrorData}/>
-            <div className={'overlay'}></div>
-            <div className={'form-dialog '}>
-                <div className={'variant-form-dialog-content'}>
-                    <h4>
-                        {isNewAddition ? t('createNewAddition') : t('editAddition')}
-                    </h4>
-                    <NameField id={'variant-name'}
-                               value={name}
-                               onChange={(e) => dispatch(setName(e))}
-                               error={errorData}
-                    />
-                    <PriceField id={'price'}
-                                value={price}
-                                setPrice={(e) => dispatch(setPrice(e))}
-                                error={errorData}
-                    />
-                    <LogicalToggleField id={'variant-available'}
-                                        name={t('availability')}
-                                        value={available}
-                                        onChange={() => dispatch(setAvailable(!available))}/>
+            <div className={'overlay'}>
+                <div className={'form-dialog '}>
+                    <div className={'variant-form-dialog-content'}>
+                        <h4>
+                            {isNewAddition ? t('createNewAddition') : t('editAddition')}
+                        </h4>
+                        <NameField id={'variant-name'}
+                                   value={name}
+                                   onChange={(e) => dispatch(setName(e))}
+                                   error={errorData}
+                        />
+                        <PriceField id={'price'}
+                                    value={price}
+                                    setPrice={(e) => dispatch(setPrice(e))}
+                                    error={errorData}
+                        />
+                        <LogicalToggleField id={'variant-available'}
+                                            name={t('availability')}
+                                            value={available}
+                                            onChange={() => dispatch(setAvailable(!available))}/>
+                    </div>
+                    <div className={'dialog-footer'}>
+                        <BorderedButton onClick={() => {
+                            dispatch(setAdditionDialogActive(false));
+                            dispatch(clearForm());
+                            dispatch(setErrorData({}));
+                            dispatch(resetAdditionData());
+                        }}
+                                        text={t('cancel')}
+                                        isBordered={true}/>
+                        <form style={{all: 'unset'}}
+                              onSubmit={(e) => handleFormSubmit(e)}>
+                            <ActionButton type="submit"
+                                          text={isLoading ? <LoadingSpinner buttonMode={true}/> : t('save')}/>
+                        </form>
+                    </div>
                 </div>
-                <div className={'dialog-footer'}>
-                    <BorderedButton onClick={() => {
-                        dispatch(setAdditionDialogActive(false));
-                        dispatch(clearForm());
-                        dispatch(setErrorData({}));
-                        dispatch(resetAdditionData());
-                    }}
-                                    text={t('cancel')}
-                                    isBordered={true}/>
-                    <form style={{all: 'unset'}}
-                          onSubmit={(e) => handleFormSubmit(e)}>
-                        <ActionButton type="submit"
-                                      text={isLoading ? <LoadingSpinner buttonMode={true}/> : t('save')}/>
-                    </form>
-                </div>
-
             </div>
         </>
     );
