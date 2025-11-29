@@ -38,39 +38,40 @@ export const DetailsDialog = () => {
 
     return (
         <>
-            <div className={'overlay'}/>
-            <div className={'form-dialog'} style={{padding: '1rem 2rem 2rem 2rem'}}>
-                <div className={'context-menu-wrapper'}>
-                    <div className={'context-menu-detail'}>
-                        <div>{t('createdAt')}</div>
-                        <div className={'context-menu-detail-value'}>{createdDate ?? '-'}</div>
-                    </div>
-                    <div className={'context-menu-detail'}>
-                        <div>{t('time')}</div>
-                        <div className={'context-menu-detail-value'}>{createdTime ?? '-'}</div>
-                    </div>
-                    <div className={'context-menu-detail'}>
-                        <div>{t('by')}</div>
-                        <div className={'context-menu-detail-value'}>{activeObjDetails?.createdBy ?? '-'}</div>
-                    </div>
+            <div className={'overlay'}>
+                <div className={'form-dialog'} style={{padding: '1rem 2rem 2rem 2rem'}}>
+                    <div className={'context-menu-wrapper'}>
+                        <div className={'context-menu-detail'}>
+                            <div>{t('createdAt')}</div>
+                            <div className={'context-menu-detail-value'}>{createdDate ?? '-'}</div>
+                        </div>
+                        <div className={'context-menu-detail'}>
+                            <div>{t('time')}</div>
+                            <div className={'context-menu-detail-value'}>{createdTime ?? '-'}</div>
+                        </div>
+                        <div className={'context-menu-detail'}>
+                            <div>{t('by')}</div>
+                            <div className={'context-menu-detail-value'}>{activeObjDetails?.createdBy ?? '-'}</div>
+                        </div>
 
-                    <div className={'draggable-position-separator'} style={{margin: '10px 0'}}/>
+                        <div className={'draggable-position-separator'} style={{margin: '10px 0'}}/>
 
-                    <div className={'context-menu-detail'}>
-                        <div>{t('updatedAt')}</div>
-                        <div className={'context-menu-detail-value'}>{modifiedDate ?? '-'}</div>
+                        <div className={'context-menu-detail'}>
+                            <div>{t('updatedAt')}</div>
+                            <div className={'context-menu-detail-value'}>{modifiedDate ?? '-'}</div>
+                        </div>
+                        <div className={'context-menu-detail'}>
+                            <div>{t('time')}</div>
+                            <div className={'context-menu-detail-value'}>{modifiedTime ?? '-'}</div>
+                        </div>
+                        <div className={'context-menu-detail'}>
+                            <div>{t('by')}</div>
+                            <div className={'context-menu-detail-value'}>{activeObjDetails?.modifiedBy ?? '-'}</div>
+                        </div>
                     </div>
-                    <div className={'context-menu-detail'}>
-                        <div>{t('time')}</div>
-                        <div className={'context-menu-detail-value'}>{modifiedTime ?? '-'}</div>
+                    <div className={'decision-dialog-footer'} style={{padding: '0'}}>
+                        {renderCancelButton()}
                     </div>
-                    <div className={'context-menu-detail'}>
-                        <div>{t('by')}</div>
-                        <div className={'context-menu-detail-value'}>{activeObjDetails?.modifiedBy ?? '-'}</div>
-                    </div>
-                </div>
-                <div className={'decision-dialog-footer'} style={{padding: '0'}}>
-                    {renderCancelButton()}
                 </div>
             </div>
         </>
