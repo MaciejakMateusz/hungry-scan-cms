@@ -7,7 +7,7 @@ export const BorderedButton = ({onClick, icon, text, isBordered, isMobile, style
                 style={{
                     ...style,
                     border: isBordered ? '1px solid #EDEFF3' : 'none',
-                    padding: isMobile ? '6px 6px' : '6px 12px'
+                    padding: isMobile ? '6px 6px' : style?.padding
         }}>
             {icon && <span>{icon}</span>}
             {(text && !isMobile) && <span>{text}</span>}
