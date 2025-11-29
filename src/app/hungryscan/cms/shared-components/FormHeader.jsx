@@ -6,6 +6,7 @@ import {ActionButton} from "../../common/ActionButton";
 import {PreviewIcon} from "../../../icons/PreviewIcon";
 import {useDispatch, useSelector} from "react-redux";
 import {setPreviewActive} from "../../../../slices/globalParamsSlice";
+import {useWindowWidth} from "../../../../hooks/useWindowWidth";
 
 export const FormHeader = ({
                                formHeader,
@@ -18,6 +19,8 @@ export const FormHeader = ({
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {previewActive} = useSelector(state => state.globalParams.globalParams);
+    const windowWidth = useWindowWidth();
+    const isWide = windowWidth >= 1000;
 
     const renderPreviewButton = () => {
         if (!renderPreview) return;
@@ -27,7 +30,7 @@ export const FormHeader = ({
                                 e.preventDefault();
                                 dispatch(setPreviewActive(!previewActive));
                             }}
-                            text={t('preview')}
+                            text={isWide && t('preview')}
                             icon={<PreviewIcon active={previewActive}/>}
             />
         );
