@@ -17,12 +17,10 @@ import {setEditCategoryFormActive} from "../../../../../slices/dishesCategoriesS
 import {CategoryForm} from "./CategoryForm";
 import {useTranslatableTransformer} from "../../../../../hooks/useTranslatableTransformer";
 import {useConfirmationMessage} from "../../../../../hooks/useConfirmationMessage";
-import {useGetTranslation} from "../../../../../hooks/useGetTranslation";
 
 export const EditCategoryForm = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
-    const getTranslation = useGetTranslation();
     const {category} = useSelector(state => state.dishesCategories.view);
     const {restaurant} = useSelector(state => state.dashboard.view);
     const {name} = useSelector(state => state.categoryForm.form);
@@ -71,10 +69,7 @@ export const EditCategoryForm = () => {
     const FormHeader = () => {
         return (
             <div className={'text-ellipsis'} style={{maxWidth: '50vw'}}>
-                {t('editCategory')}&nbsp;
-                <span style={{color: '#6940C6'}}>
-                    {getTranslation(category.name)}
-                </span>
+                {t('editCategory')}
             </div>
         );
     }
