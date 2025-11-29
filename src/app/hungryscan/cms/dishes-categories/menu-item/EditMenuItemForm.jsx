@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+ import React, {useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {MenuItemFormTemplate} from "../../form-components/MenuItemFormTemplate";
@@ -144,7 +144,7 @@ export const EditMenuItemForm = () => {
     }
 
     return (
-        <MenuItemFormWrapper title={t('editingDishInCategory')}
+        <MenuItemFormWrapper title={t('editPosition')}
                              onFormSubmit={handleFormSubmit}
                              onFormDiscard={handleFormDiscard}
                              previewContent={<MenuItemMobilePreview image={file}/>}>
