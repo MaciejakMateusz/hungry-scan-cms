@@ -46,25 +46,26 @@ export const DecisionDialog = (props) => {
 
     return (
         <>
-            <div className={'overlay'}></div>
-            <div className={'decision-dialog'}>
-                <div className={'decision-dialog-content'}>
-                    <p>{props.msg} {renderDialogTitle()}</p>
-                    {props.logicalToggleHandler &&
-                        <LogicalToggleField value={props.logicalToggleValue}
-                                            id={'logical-toggle'}
-                                            customMessageTrue={t('dontAskAgain')}
-                                            customMessageFalse={t('dontAskAgain')}
-                                            onChange={() => {
-                                                props.logicalToggleHandler(!props.logicalToggleValue);
-                                            }}
-                        />
-                    }
-                </div>
+            <div className={'overlay'}>
+                <div className={'decision-dialog'}>
+                    <div className={'decision-dialog-content'}>
+                        <p>{props.msg} {renderDialogTitle()}</p>
+                        {props.logicalToggleHandler &&
+                            <LogicalToggleField value={props.logicalToggleValue}
+                                                id={'logical-toggle'}
+                                                customMessageTrue={t('dontAskAgain')}
+                                                customMessageFalse={t('dontAskAgain')}
+                                                onChange={() => {
+                                                    props.logicalToggleHandler(!props.logicalToggleValue);
+                                                }}
+                            />
+                        }
+                    </div>
 
-                <div className={'decision-dialog-footer'}>
-                    {renderCancelButton()}
-                    {renderConfirmButton()}
+                    <div className={'decision-dialog-footer'}>
+                        {renderCancelButton()}
+                        {renderConfirmButton()}
+                    </div>
                 </div>
             </div>
         </>
