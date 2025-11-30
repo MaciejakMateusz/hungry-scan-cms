@@ -77,14 +77,16 @@ export const FileUploadField = ({setFile, file}) => {
 
     return (
         <div className={'form-field-wrapper'}>
-            <div className={'form-field-container'}>
+            <div className={'form-field-container image'}>
                 <label htmlFor={'dish-image'} className={'form-label'}>
                     <InformationTooltip text={t('fileFieldTooltip')}/>
                     {t('image')}:
                 </label>
-                {renderImage()}
-                <div className={'custom-file-upload'}>
-                    {renderButton()}
+                <div className={'flex-centered'}>
+                    {renderImage()}
+                    <div className={'custom-file-upload'}>
+                        {renderButton()}
+                    </div>
                 </div>
             </div>
         </div>
