@@ -5,14 +5,10 @@ import {FormErrorDialog} from "../../../../error/FormErrorDialog";
 import {useTranslation} from "react-i18next";
 import {FormHeader} from "../../shared-components/FormHeader";
 import {PreviewPanel} from "../../dialog-windows/PreviewPanel";
-import {setPreviewActive} from "../../../../../slices/globalParamsSlice";
 
 export const MenuItemFormWrapper = ({title, onFormDiscard, onFormSubmit, previewContent, children}) => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
-    const {restaurant} = useSelector(state => state.dashboard.view);
-    const restaurantLanguage = restaurant?.value.settings.language.toLowerCase();
-    const {category} = useSelector(state => state.dishesCategories.view);
     const {isLoading} = useSelector(state => state.dishForm.postDish);
     const {activeTab} = useSelector(state => state.dishForm.form);
     const {errorData} = useSelector(state => state.dishForm.form);
@@ -21,8 +17,7 @@ export const MenuItemFormWrapper = ({title, onFormDiscard, onFormSubmit, preview
     const FormTitle = () => {
         return (
             <div className={'text-ellipsis'} style={{maxWidth: '50vw'}}>
-                {title}:&nbsp;&nbsp;
-                <span style={{color: '#6940C6'}}> {category?.name[restaurantLanguage]}</span>
+                {title}
             </div>
         );
     }
@@ -50,7 +45,7 @@ export const MenuItemFormWrapper = ({title, onFormDiscard, onFormSubmit, preview
                     </div>
                 </div>
                 <div className={'form-grid'} style={previewActive ? {gap: '15px'} : {}}>
-                    <div className={'padded-form-fragment menu-item'}>
+                    <div className={`padded-form-fragment menu-item ${activeTab === 'variants' ? 'variants' : ''}`}>
                         <div className={'padded-form-container'}>
                             {children}
                         </div>
