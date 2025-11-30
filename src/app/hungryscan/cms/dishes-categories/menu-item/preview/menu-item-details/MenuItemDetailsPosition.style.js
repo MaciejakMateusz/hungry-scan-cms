@@ -23,4 +23,5 @@ export const PositionPrice= styled.span`
     color: var(--Basic-900);
     font-size: 14px;
     font-weight: 400;
+    text-wrap: nowrap;
 `
