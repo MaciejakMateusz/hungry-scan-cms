@@ -11,6 +11,7 @@ import {USER_PROFILE} from "../../utils/viewsConstants";
 import {useSwitchView} from "../../hooks/useSwitchView";
 import {ReactSVG} from "react-svg";
 import {setNavPanelCollapsed} from "../../slices/globalParamsSlice";
+import {useWindowWidth} from "../../hooks/useWindowWidth";
 
 export const NavPanel = ({children, childrenCollapsed, clearStateHandler}) => {
     const {t} = useTranslation();
@@ -22,6 +23,10 @@ export const NavPanel = ({children, childrenCollapsed, clearStateHandler}) => {
     const [isLogoutHovered, setIsLogoutHovered] = useState(false);
     const hasAccessToDashboard = userData?.roles?.some(role => [2, 3].includes(role.id));
     const handleSwitchView = useSwitchView({clearStateHandler: clearStateHandler});
+    const windowWidth = useWindowWidth();
+    const isTablet = windowWidth < 1000;
+
+    if (isTablet) return null;
 
     if (navPanelCollapsed) {
         return (
@@ -81,6 +86,7 @@ export const NavPanel = ({children, childrenCollapsed, clearStateHandler}) => {
                 </div>
             </div>
             <AppModeSwitcher hasAccessToDashboard={hasAccessToDashboard}/>
+
             <div className={'collapse-panel-button'}
                  onClick={() => dispatch(setNavPanelCollapsed(!navPanelCollapsed))}>
                 <ReactSVG src={`${process.env.PUBLIC_URL}/theme/icons/chevron-left.svg`}/>
