@@ -15,26 +15,27 @@ export const MenuFormTemplate = ({formHeader, discardHandler, submitHandler, err
 
     return (
         <>
-            <div className={'overlay'}></div>
-            <div className={'form-dialog '}>
-                <div className={'variant-form-dialog-content'}>
-                    <h4>{formHeader}</h4>
-                    <NameField id={'menu-name'}
-                               value={name}
-                               onChange={(e) => dispatch(setName(e))}
-                               error={errorData}
-                    />
-                    <MenuColorField/>
-                </div>
-                <div className={'dialog-footer'}>
-                    <BorderedButton onClick={discardHandler}
-                                    text={t('cancel')}
-                                    isBordered={true}/>
-                    <form style={{all: 'unset'}} onSubmit={submitHandler}>
-                        <ActionButton type="submit"
-                                      text={isLoading ? <LoadingSpinner buttonMode={true}/> : t('save')}>
-                        </ActionButton>
-                    </form>
+            <div className={'overlay'}>
+                <div className={'form-dialog '}>
+                    <div className={'variant-form-dialog-content'}>
+                        <h4>{formHeader}</h4>
+                        <NameField id={'menu-name'}
+                                   value={name}
+                                   onChange={(e) => dispatch(setName(e))}
+                                   error={errorData}
+                        />
+                        <MenuColorField/>
+                    </div>
+                    <div className={'dialog-footer'}>
+                        <BorderedButton onClick={discardHandler}
+                                        text={t('cancel')}
+                                        isBordered={true}/>
+                        <form style={{all: 'unset'}} onSubmit={submitHandler}>
+                            <ActionButton type="submit"
+                                          text={isLoading ? <LoadingSpinner buttonMode={true}/> : t('save')}>
+                            </ActionButton>
+                        </form>
+                    </div>
                 </div>
             </div>
         </>
