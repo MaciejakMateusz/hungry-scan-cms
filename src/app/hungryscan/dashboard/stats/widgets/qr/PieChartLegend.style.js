@@ -52,7 +52,7 @@ export const RepeatedScanLabel = styled.div`
 export const UniqueValuesWrapper = styled.div`
     grid-column: 3;
     grid-row: 1;
-    font-weight: 600;
+    font-weight: 500;
     display: flex;
     gap: 15px;
 `
@@ -60,7 +60,7 @@ export const UniqueValuesWrapper = styled.div`
 export const RepeatedValuesWrapper = styled.div`
     grid-column: 3;
     grid-row: 2;
-    font-weight: 600;
+    font-weight: 500;
     display: flex;
     gap: 15px;
 `
