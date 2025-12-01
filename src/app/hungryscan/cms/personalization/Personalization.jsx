@@ -53,7 +53,7 @@ export const Personalization = () => {
                             submitDisabled={errorData}
                             renderPreview={true}
                 />
-                <div className={'form-grid'} style={previewActive ? {gap: '15px'} : {}}>
+                <div className={'form-grid personalization'} style={previewActive ? {gap: '15px'} : {}}>
                     <div className={'padded-form-fragment'}>
                         <PersonalizationForm/>
                     </div>
