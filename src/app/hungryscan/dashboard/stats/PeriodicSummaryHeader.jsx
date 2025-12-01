@@ -4,6 +4,11 @@ import {PeriodSelectors} from "./PeriodSelectors";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {useWindowWidth} from "../../../../hooks/useWindowWidth";
+import Select from "react-select";
+import {PeriodModeSelectors} from "./PeriodModeSelectors";
+import {dateStyles} from "../../../../selectStyles";
+import {CustomNoOptionsMessage} from "../../cms/form-components/CustomNoOptionsMessage";
+import {usePeriodModes} from "../../../../hooks/usePeriodModes";
 
 export const PeriodicSummaryHeader = () => {
     const {t} = useTranslation();
@@ -11,27 +16,24 @@ export const PeriodicSummaryHeader = () => {
     const {period} = useSelector(state => state.statistics.view);
     const width = useWindowWidth();
     const isWide = width > 1300;
+    const periodModes = usePeriodModes();
 
     return (
         <header className={'statistics-periodic-summary'}>
             <div className={'period-mode-wrapper'}>
                 <span className={'summary-text'}>{t('summary')}</span>
-                <div className={`period-button ${period === 'year' ? 'active' : ''}`}
-                     onClick={() => dispatch(setPeriod('year'))}>
-                    {t('year')}
-                </div>
-                <div className={`period-button ${period === 'month' ? 'active' : ''}`}
-                     onClick={() => dispatch(setPeriod('month'))}>
-                    {t('month')}
-                </div>
-                <div className={`period-button ${period === 'week' ? 'active' : ''}`}
-                     onClick={() => dispatch(setPeriod('week'))}>
-                    {t('week')}
-                </div>
-                <div className={`period-button ${period === 'day' ? 'active' : ''}`}
-                     onClick={() => dispatch(setPeriod('day'))}>
-                    {t('day')}
-                </div>
+                {isWide && <PeriodModeSelectors/>}
+                {!isWide &&
+                    <Select id={'period-mode'}
+                            name={'period-mode'}
+                            value={period}
+                            placeholder={t('choose')}
+                            options={periodModes}
+                            onChange={(selected) => dispatch(setPeriod(selected))}
+                            styles={dateStyles}
+                            components={{NoOptionsMessage: CustomNoOptionsMessage}}
+                    />
+                }
             </div>
             <div className={'period-picker-wrapper'}>
                 <PeriodSelectors/>
