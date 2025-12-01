@@ -23,7 +23,7 @@ export const PeriodSelectors = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {
-        period,
+        period: periodObject,
         initialYear, chosenYear,
         initialMonth, chosenMonth,
         initialWeek, chosenWeek,
@@ -31,6 +31,7 @@ export const PeriodSelectors = () => {
     } = useSelector(state => state.statistics.view);
     const {restaurant} = useSelector(state => state.dashboard.view);
     const [restaurantCreation, setRestaurantCreation] = useState(new Date());
+    const period = periodObject?.value;
 
     const fetchStatistics = () => {
         if (!period) return;
@@ -85,9 +86,9 @@ export const PeriodSelectors = () => {
                 label: `${DateService.getCurrentWeekNumber()} ${t('week')}`
             },
             chosenDay: new Date().toISOString(),
-            period: 'month'
+            period: {value: 'month', label: t('month')}
         }));
-    }, [restaurant]);
+    }, [dispatch, restaurant, t]);
 
     useEffect(() => {
         if (period === 'month' && chosenYear) {
