@@ -129,102 +129,104 @@ export const  LineChart = () => {
     }) ?? fallbackData;
 
     return (
-        <div className={'qr-frequency-chart-container line'}>
-            <span className={'legend-left-axis-name'}>{t('quantity')}</span>
-            <ResponsiveLine
-                data={lineChartData}
-                colors={['#016DFF', '#4C97F6']}
-                margin={{top: 50, right: 50, bottom: 50, left: 60}}
-                xScale={{type: 'point'}}
-                yScale={{
-                    type: 'linear',
-                    min: 'auto',
-                    max: 'auto',
-                    stacked: true,
-                    reverse: false
-                }}
-                yFormat=" >-.2f"
-                curve="linear"
-                axisTop={null}
-                axisRight={null}
-                axisBottom={{
-                    tickSize: 5,
-                    tickPadding: 5,
-                    tickRotation: 0,
-                    truncateTickAt: 0
-                }}
-                axisLeft={{
-                    tickSize: 5,
-                    tickPadding: 20,
-                    tickValues: 5,
-                    tickRotation: 0,
-                    truncateTickAt: 0
-                }}
-                enableGridX={false}
-                enableGridY={true}
-                gridYValues={5}
-                enablePoints={true}
-                pointSize={6}
-                pointColor={{from: 'color', modifiers: []}}
-                pointBorderColor={{theme: 'background'}}
-                pointLabel="data.y"
-                pointLabelYOffset={-12}
-                crosshairType="x"
-                useMesh={true}
-                legends={[]}
-                theme={{
-                    grid: {
-                        line: {
-                            stroke: '#EFEFEF'
-                        }
-                    },
-                    text: {
-                        fontFamily: 'Lexend, sans-serif'
-                    },
-                    annotations: {
-                        text: {
-                            fontFamily: 'Lexend, sans-serif',
-                        }
-                    },
-                    axis: {
-                        ticks: {
+        <div className={'qr-frequency-chart-wrapper'}>
+            <div className={'qr-frequency-chart-container line'}>
+                <span className={'legend-left-axis-name'}>{t('quantity')}</span>
+                <ResponsiveLine
+                    data={lineChartData}
+                    colors={['#016DFF', '#4C97F6']}
+                    margin={{top: 50, right: 50, bottom: 50, left: 60}}
+                    xScale={{type: 'point'}}
+                    yScale={{
+                        type: 'linear',
+                        min: 'auto',
+                        max: 'auto',
+                        stacked: true,
+                        reverse: false
+                    }}
+                    yFormat=" >-.2f"
+                    curve="linear"
+                    axisTop={null}
+                    axisRight={null}
+                    axisBottom={{
+                        tickSize: 5,
+                        tickPadding: 5,
+                        tickRotation: 0,
+                        truncateTickAt: 0
+                    }}
+                    axisLeft={{
+                        tickSize: 5,
+                        tickPadding: 20,
+                        tickValues: 5,
+                        tickRotation: 0,
+                        truncateTickAt: 0
+                    }}
+                    enableGridX={false}
+                    enableGridY={true}
+                    gridYValues={5}
+                    enablePoints={true}
+                    pointSize={6}
+                    pointColor={{from: 'color', modifiers: []}}
+                    pointBorderColor={{theme: 'background'}}
+                    pointLabel="data.y"
+                    pointLabelYOffset={-12}
+                    crosshairType="x"
+                    useMesh={true}
+                    legends={[]}
+                    theme={{
+                        grid: {
                             line: {
-                                strokeWidth: '0'
-                            },
+                                stroke: '#EFEFEF'
+                            }
+                        },
+                        text: {
+                            fontFamily: 'Lexend, sans-serif'
+                        },
+                        annotations: {
                             text: {
-                                fill: '#93939E'
+                                fontFamily: 'Lexend, sans-serif',
+                            }
+                        },
+                        axis: {
+                            ticks: {
+                                line: {
+                                    strokeWidth: '0'
+                                },
+                                text: {
+                                    fill: '#93939E'
+                                }
+                            }
+                        },
+                        crosshair: {
+                            line: {
+                                stroke: '#93939E',
                             }
                         }
-                    },
-                    crosshair: {
-                        line: {
-                            stroke: '#93939E',
-                        }
-                    }
-                }}
-                enableSlices={'x'}
-                sliceTooltip={({slice}) => {
-                    return (
-                        <div style={{
-                            background: 'white',
-                            border: '1px solid #ccc',
-                            borderRadius: 4,
-                            padding: '8px 12px'
-                        }}>
-                            {slice.points.map(point => (
-                                <div key={point.id} style={{color: point.serieColor}}>
-                                    <strong>
-                                        {point.serieId === 'uniqueScans'
-                                            ? t('unique')
-                                            : t('repeated')
-                                        }: {point.data.y}
-                                    </strong>
-                                </div>
-                            ))}
-                        </div>
-                    )
-                }}
-            />
+                    }}
+                    enableSlices={'x'}
+                    sliceTooltip={({slice}) => {
+                        return (
+                            <div style={{
+                                background: 'white',
+                                border: '1px solid #ccc',
+                                borderRadius: 4,
+                                padding: '8px 12px'
+                            }}>
+                                {slice.points.map(point => (
+                                    <div key={point.id} style={{color: point.serieColor}}>
+                                        <strong>
+                                            {point.serieId === 'uniqueScans'
+                                                ? t('unique')
+                                                : t('repeated')
+                                            }: {point.data.y}
+                                        </strong>
+                                    </div>
+                                ))}
+                            </div>
+                        )
+                    }}
+                />
+            </div>
         </div>
     );
 }
