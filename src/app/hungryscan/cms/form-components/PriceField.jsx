@@ -39,7 +39,7 @@ export const PriceField = (props) => {
 
     return (
         <div className={'form-field-wrapper'}>
-            <div className={'form-field-container'}>
+            <div className={'form-field-container price'}>
                 <label htmlFor={props.id} className="form-label">
                     {props.priceLabel || t('price')} *
                 </label>
