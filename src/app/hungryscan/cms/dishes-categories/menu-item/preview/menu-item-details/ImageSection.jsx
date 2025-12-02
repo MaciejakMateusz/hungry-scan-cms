@@ -1,6 +1,5 @@
 import React, {useEffect, useMemo} from "react";
-import {ImageContainer, ReturnButton} from "./ImageSection.style";
-import {ReactSVG} from "react-svg";
+import {ImageContainer} from "./ImageSection.style";
 
 export const ImageSection = ({image}) => {
     const objectUrl = useMemo(() => image && URL.createObjectURL(image), [image]);
@@ -25,9 +24,6 @@ export const ImageSection = ({image}) => {
 
     return (
         <section>
-            <ReturnButton>
-                <ReactSVG src={`${process.env.PUBLIC_URL}/theme/icons/chevron-left.svg`}/>
-            </ReturnButton>
             {renderImage()}
         </section>
     );
