@@ -12,6 +12,9 @@ import {updateTranslatable} from "../../../../locales/langUtils";
 import {PreviewPanel} from "../dialog-windows/PreviewPanel";
 import Iframe from "react-iframe";
 import {menuAppHost} from "../../../../apiData";
+import {useWindowWidth} from "../../../../hooks/useWindowWidth";
+import {ReturnButton} from "../dishes-categories/menu-item/preview/menu-item-details/ImageSection.style";
+import {setPreviewActive} from "../../../../slices/globalParamsSlice";
 
 export const Personalization = () => {
     const {t} = useTranslation();
@@ -24,6 +27,8 @@ export const Personalization = () => {
     const fetchCurrentRestaurant = useFetchCurrentRestaurant()
     const {previewActive} = useSelector(state => state.globalParams.globalParams);
     const previewParams = `/true/${welcomeSlogan}/${theme.replace('#', '%23')}/${bannerIconVisible.toString()}`;
+    const windowWidth = useWindowWidth();
+    const isMobile = windowWidth <= 1000;
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
@@ -43,6 +48,21 @@ export const Personalization = () => {
         }
     }
 
+    const renderPreviewContent = () => {
+        return (
+            <div className={'relative-container'}>
+                <Iframe url={menuAppHost + previewParams}
+                        className={'iframe-container'}
+                        styles={{border: 'none'}}/>
+                {isMobile &&
+                    <div>
+
+                    </div>
+                }
+            </div>
+        );
+    }
+
     return (
         <div className={'background'}>
             <FormErrorDialog errorData={errorData} setErrorData={setErrorData}/>
@@ -57,9 +77,9 @@ export const Personalization = () => {
                     <div className={'padded-form-fragment'}>
                         <PersonalizationForm/>
                     </div>
-                    <PreviewPanel content={<Iframe url={menuAppHost + previewParams}
-                                                   className={'iframe-container'}
-                                                   styles={{border: 'none'}}/>}/>
+                    <PreviewPanel personalizationMode={true}
+                                  content={renderPreviewContent()}
+                    />
                 </div>
             </form>
         </div>
