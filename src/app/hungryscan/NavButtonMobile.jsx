@@ -1,13 +1,13 @@
 import React from "react";
 import {Button, ButtonContainer} from "./NavButtonMobile.style";
-import {ThreeDotsIcon} from "../icons/ThreeDotsIcon";
+import {BurgerIcon} from "../icons/BurgerIcon";
 
 export const NavButtonMobile = ({onClick}) => {
 
     return (
         <ButtonContainer onClick={onClick}>
             <Button>
-                <ThreeDotsIcon fill={'#FFF'}/>
+                <BurgerIcon fill={'#FFF'}/>
             </Button>
         </ButtonContainer>
     );
