@@ -8,6 +8,11 @@ import {PlaceholderImgIcon} from "../../../icons/PlaceholderImgIcon";
 import {generateBasicQr} from "../../../../slices/qrCodesSlice";
 import {useFetchCurrentRestaurant} from "../../../../hooks/useFetchCurrentRestaurant";
 import {LoadingSpinner} from "../../../icons/LoadingSpinner";
+import {BorderedButton} from "../../common/BorderedButton";
+import {RefreshIcon} from "../../../icons/RefreshIcon";
+import {DownloadIcon} from "../../../icons/DownloadIcon";
+import {PrintIcon} from "../../../icons/PrintIcon";
+import {setDownloadActive} from "../../../../slices/dashboardSlice";
 
 export const QrCode = () => {
     const {t} = useTranslation();
@@ -21,6 +26,12 @@ export const QrCode = () => {
     const handleGeneration = async () => {
         await dispatch(generateBasicQr());
         await fetchCurrentRestaurant();
+    }
+
+    const handleDownload = async () => {
+        await dispatch(setDownloadActive(true));
+        window.location.href = `${apiHost}/api/cms/qr/download`;
+        dispatch(setDownloadActive(false));
     }
 
     const handlePrint = () => {
@@ -60,18 +71,18 @@ export const QrCode = () => {
                             />}
                         <div className={'qr-options'}>
                             <div className={'qr-options-wrapper'}>
-                                <div className={'qr-option-button'}
-                                     onClick={handleGeneration}>
-                                    {t('generateNewCode')}
-                                </div>
-                                <div className={'qr-option-button'}
-                                     onClick={() => window.location.href = `${apiHost}/api/cms/qr/download`}>
-                                    {t('download')}
-                                </div>
-                                <div className={'qr-option-button'}
-                                     onClick={handlePrint}>
-                                    {t('print')}
-                                </div>
+                                <BorderedButton onClick={handleGeneration}
+                                                text={t('generateNewCode')}
+                                                icon={<RefreshIcon/>}
+                                                isBordered={true}/>
+                                <BorderedButton onClick={handleDownload}
+                                                text={t('download')}
+                                                icon={<DownloadIcon/>}
+                                                isBordered={true}/>
+                                <BorderedButton onClick={handlePrint}
+                                                text={t('print')}
+                                                icon={<PrintIcon/>}
+                                                isBordered={true}/>
                             </div>
                         </div>
                     </div>
