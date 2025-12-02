@@ -14,4 +14,8 @@ export const Container = styled.div`
     &::-webkit-scrollbar {
         display: none;
     }
+
+    @media (max-width: 1000px) {
+        padding-bottom: 50px;
+    }
 `
