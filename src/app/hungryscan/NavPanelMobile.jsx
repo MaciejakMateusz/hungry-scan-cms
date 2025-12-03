@@ -1,6 +1,6 @@
 import {NavButton} from "./NavButton";
 import {executeLogoutFetch, setLogoutActive} from "../../slices/loginFormSlice";
-import React, {useState} from "react";
+import React, {useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useTranslation} from "react-i18next";
 import {AppModeSwitcher} from "./common/navigation/AppModeSwitcher";
@@ -10,6 +10,8 @@ import {BrandLogo} from "../icons/BrandLogo";
 import {USER_PROFILE} from "../../utils/viewsConstants";
 import {useSwitchView} from "../../hooks/useSwitchView";
 import {ReactSVG} from "react-svg";
+import {useOutsideClick} from "../../hooks/useOutsideClick";
+import {setMobileNavActive} from "../../slices/globalParamsSlice";
 
 export const NavPanelMobile = ({children, clearStateHandler, onCollapse}) => {
     const {t} = useTranslation();
@@ -17,12 +19,18 @@ export const NavPanelMobile = ({children, clearStateHandler, onCollapse}) => {
     const {restaurant} = useSelector(state => state.dashboard.view);
     const {userData} = useSelector(state => state.userProfile.getUserProfile);
     const {logoutActive} = useSelector(state => state.login.logoutFetch);
+    const {mobileNavActive} = useSelector(state => state.globalParams.globalParams);
     const [isLogoutHovered, setIsLogoutHovered] = useState(false);
     const hasAccessToDashboard = userData?.roles?.some(role => [2, 3].includes(role.id));
     const handleSwitchView = useSwitchView({clearStateHandler: clearStateHandler});
+    const navPanelRef = useRef(null);
+
+    useOutsideClick(navPanelRef, () => {
+        dispatch(setMobileNavActive(false));
+    }, mobileNavActive);
 
     return (
-        <div className={'app-nav-panel-mobile-wrapper'}>
+        <div className={'app-nav-panel-mobile-wrapper'} ref={navPanelRef}>
             <div className={`app-nav-panel ${!hasAccessToDashboard && 'no-dashboard'}`}>
                 {logoutActive &&
                     <DecisionDialog
