@@ -23,11 +23,13 @@ import {useOutsideClick} from "../../../hooks/useOutsideClick";
 import {useWindowWidth} from "../../../hooks/useWindowWidth";
 import {NavButtonMobile} from "../NavButtonMobile";
 import {NavPanelMobile} from "../NavPanelMobile";
+import {setMobileNavActive} from "../../../slices/globalParamsSlice";
 
 export const DashboardTopper = ({children, clearStateHandler}) => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const selectRef = useRef();
+    const {mobileNavActive} = useSelector(state => state.globalParams.globalParams);
     const {restaurants} = useSelector(state => state.dashboard.getRestaurants);
     const {restaurant} = useSelector(state => state.dashboard.view);
     const {
@@ -44,7 +46,6 @@ export const DashboardTopper = ({children, clearStateHandler}) => {
     const removalPending = useSelector(state => state.objRemoval.isLoading);
     const windowWidth = useWindowWidth();
     const isTablet = windowWidth < 1000;
-    const [mobileNavActive, setMobileNavActive] = useState(false);
 
     useOutsideClick(contextRef, () => {
         dispatch(setRestaurantContextMenuActive(false));
@@ -93,10 +94,10 @@ export const DashboardTopper = ({children, clearStateHandler}) => {
                                               onSubmit={handleRestaurantRemoval}
                                               isLoading={removalPending}
                                               isRemoval={true}/>}
-            {isTablet && <NavButtonMobile onClick={() => setMobileNavActive(!mobileNavActive)}/>}
+            {isTablet && <NavButtonMobile onClick={() => dispatch(setMobileNavActive(!mobileNavActive))}/>}
             {(mobileNavActive && isTablet) && <NavPanelMobile children={children}
                                                               clearStateHandler={clearStateHandler}
-                                                              onCollapse={() => setMobileNavActive(!mobileNavActive)}/>}
+                                                              onCollapse={() => dispatch(setMobileNavActive(!mobileNavActive))}/>}
             <div className={'app-header-select-wrapper'}>
                 <Select id={'dashboard-restaurant'}
                         ref={selectRef}
