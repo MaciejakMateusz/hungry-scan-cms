@@ -5,7 +5,7 @@ import {CustomNoOptionsMessage} from "../form-components/CustomNoOptionsMessage"
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchActiveMenu, setSchedulerActive, switchActiveMenu} from "../../../../slices/cmsSlice";
-import {setActiveMenu} from "../../../../slices/globalParamsSlice";
+import {setActiveMenu, setMobileNavActive} from "../../../../slices/globalParamsSlice";
 import {CustomMenuList} from "../form-components/CustomMenuList";
 import {NewMenuFormDialog} from "../menu/NewMenuFormDialog";
 import {setContextMenuActive, setErrorData, setMenuRemoved, setNewMenuFormActive} from "../../../../slices/menuSlice";
@@ -49,7 +49,7 @@ export const CmsTopper = ({children, clearStateHandler}) => {
     const getRestaurant = useFetchCurrentRestaurant();
     const removalPending = useSelector(state => state.objRemoval.isLoading);
     const {schedulerActive} = useSelector(state => state.cms.view);
-    const [mobileNavActive, setMobileNavActive] = useState(false);
+    const {mobileNavActive} = useSelector(state => state.globalParams.globalParams);
     const windowWidth = useWindowWidth();
     const isTablet = windowWidth < 1000;
 
@@ -115,10 +115,10 @@ export const CmsTopper = ({children, clearStateHandler}) => {
                                                              isLoading={removalPending}
                                                              isRemoval={true}/>}
             <div className={'flex-wrapper'}>
-                {isTablet && <NavButtonMobile onClick={() => setMobileNavActive(!mobileNavActive)}/>}
+                {isTablet && <NavButtonMobile onClick={() => dispatch(setMobileNavActive(!mobileNavActive))}/>}
                 {(mobileNavActive && isTablet) && <NavPanelMobile children={children}
                                                                   clearStateHandler={clearStateHandler}
-                                                                  onCollapse={() => setMobileNavActive(!mobileNavActive)}/>}
+                                                                  onCollapse={() => dispatch(setMobileNavActive(!mobileNavActive))}/>}
                 <div className={'app-header-select-wrapper'}>
                     <Select id={'cms-menu'}
                             ref={selectRef}
@@ -137,7 +137,7 @@ export const CmsTopper = ({children, clearStateHandler}) => {
                                     color: '#191D25',
                                     display: 'flex',
                                     alignItems: 'center',
-                                    padding: '0 20px 0 10px'
+                                    padding: '0 10px 0 0'
                                 })
                             }}
                             components={{
