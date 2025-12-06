@@ -12,6 +12,8 @@ import {useCategoryContextPositions} from "../../../../../hooks/useCategoryConte
 import {useOutsideClick} from "../../../../../hooks/useOutsideClick";
 import {BorderedButton} from "../../../common/BorderedButton";
 import {useWindowWidth} from "../../../../../hooks/useWindowWidth";
+import {PlusIcon} from "../../../../icons/PlusIcon";
+import {UnavailableIcon} from "../../../../icons/UnavailableIcon";
 
 export const CategoryPosition = ({category, expandHandler, expanded}) => {
     const {t} = useTranslation();
@@ -29,6 +31,7 @@ export const CategoryPosition = ({category, expandHandler, expanded}) => {
     );
     const windowWidth = useWindowWidth();
     const isWide = windowWidth > 1300;
+    const isMobile = windowWidth <= 1000;
 
     useOutsideClick(contextRef, () => {
         setContextWindowActive(false);
@@ -52,7 +55,9 @@ export const CategoryPosition = ({category, expandHandler, expanded}) => {
             <div className={'category-info'} onClick={handleEdit}>
                 <span className={'text-ellipsis'} style={{maxWidth: '30vw'}}>
                     {category.name[restaurantLanguage]}
+
                 </span>
+                {!category.available && <UnavailableIcon/>}
                 <ContentSizeIndicator size={category.menuItems.length}/>
                 <div onClick={handleStopPropagation}>
                     <RecordOptionsButton className={'record-context-actions-button'}
@@ -64,7 +69,10 @@ export const CategoryPosition = ({category, expandHandler, expanded}) => {
                 </div>
             </div>
             <div className={'expandable-container'} onClick={() => expandHandler(!expanded)}/>
-            <BorderedButton text={`+ ${t('newDish')}`}
+            <BorderedButton text={t('newDish')}
+                            icon={<PlusIcon/>}
+                            isPlus={true}
+                            isMobile={isMobile}
                             isBordered={true}
                             onClick={() => {
                                 dispatch(setCategory(category));
