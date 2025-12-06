@@ -2,7 +2,7 @@ import React from "react";
 import {Button} from "./BorderedButton.style";
 import {LoadingSpinner} from "../../icons/LoadingSpinner";
 
-export const BorderedButton = ({onClick, icon, text, isBordered, isMobile, style, isLoading}) => {
+export const BorderedButton = ({onClick, icon, text, isBordered, isMobile, style, isLoading, isPlus}) => {
 
     const renderContent = () => {
         if (isLoading) {
@@ -17,12 +17,20 @@ export const BorderedButton = ({onClick, icon, text, isBordered, isMobile, style
         );
     }
 
+    const getPadding = () => {
+        if (isPlus && !isMobile) {
+            return '6px 12px 6px 6px';
+        }
+        return isMobile ? '6px 6px' : style?.padding;
+    }
+
     return (
         <Button onClick={onClick}
                 style={{
                     ...style,
                     border: isBordered ? '1px solid #EDEFF3' : 'none',
-                    padding: isMobile ? '6px 6px' : style?.padding
+                    padding: getPadding(),
+                    gap: isPlus ? '1px' : '8px'
                 }}>
             {renderContent()}
         </Button>
