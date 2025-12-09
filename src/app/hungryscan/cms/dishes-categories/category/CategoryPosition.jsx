@@ -14,6 +14,7 @@ import {BorderedButton} from "../../../common/BorderedButton";
 import {useWindowWidth} from "../../../../../hooks/useWindowWidth";
 import {PlusIcon} from "../../../../icons/PlusIcon";
 import {UnavailableIcon} from "../../../../icons/UnavailableIcon";
+import {useCloseOnScroll} from "../../../../../hooks/useCloseOnScroll";
 
 export const CategoryPosition = ({category, expandHandler, expanded}) => {
     const {t} = useTranslation();
@@ -34,6 +35,10 @@ export const CategoryPosition = ({category, expandHandler, expanded}) => {
     const isMobile = windowWidth <= 1000;
 
     useOutsideClick(contextRef, () => {
+        setContextWindowActive(false);
+    }, contextWindowActive);
+
+    useCloseOnScroll(() => {
         setContextWindowActive(false);
     }, contextWindowActive);
 
@@ -62,10 +67,11 @@ export const CategoryPosition = ({category, expandHandler, expanded}) => {
                 <div onClick={handleStopPropagation}>
                     <RecordOptionsButton className={'record-context-actions-button'}
                                          onClick={() => setContextWindowActive(!contextWindowActive)}
-                                         dotsFill={hovered ? undefined : (isWide ? 'transparent': undefined)}
+                                         dotsFill={hovered ? undefined : (isWide ? 'transparent' : undefined)}
                                          contextWindowActive={contextWindowActive}
                                          contextPositions={categoryContextPositions}
-                                         contextRef={contextRef}/>
+                                         contextRef={contextRef}
+                                         correctPosition={isMobile ? {y: 150, x: 140} : {y: 150, x: 180}}/>
                 </div>
             </div>
             <div className={'expandable-container'} onClick={() => expandHandler(!expanded)}/>
