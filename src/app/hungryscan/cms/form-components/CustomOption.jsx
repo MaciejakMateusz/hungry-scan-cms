@@ -1,12 +1,10 @@
 import {components} from "react-select";
 import React from "react";
-import {useTranslation} from "react-i18next";
 import {UnavailableIcon} from "../../../icons/UnavailableIcon";
 import {StarIcon} from "../../../icons/StarIcon";
 
 
 export const CustomOption = (props) => {
-    const {t} = useTranslation();
     const {data} = props;
     return (
         <components.Option {...props}>
