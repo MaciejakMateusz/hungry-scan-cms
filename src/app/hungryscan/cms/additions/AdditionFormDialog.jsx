@@ -77,9 +77,9 @@ export const AdditionFormDialog = (props) => {
             <div className={'overlay'}>
                 <div className={'form-dialog '}>
                     <div className={'variant-form-dialog-content'}>
-                        <h4>
+                        <div className={'form-dialog-title'}>
                             {isNewAddition ? t('createNewAddition') : t('editAddition')}
-                        </h4>
+                        </div>
                         <NameField id={'variant-name'}
                                    value={name}
                                    onChange={(e) => dispatch(setName(e))}
