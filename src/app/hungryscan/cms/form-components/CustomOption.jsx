@@ -2,6 +2,7 @@ import {components} from "react-select";
 import React from "react";
 import {useTranslation} from "react-i18next";
 import {UnavailableIcon} from "../../../icons/UnavailableIcon";
+import {StarIcon} from "../../../icons/StarIcon";
 
 
 export const CustomOption = (props) => {
@@ -15,9 +16,9 @@ export const CustomOption = (props) => {
                     {data.label}
                 </div>
                 {data.isStandard &&
-                    <span className={'menu-standard-indicator-option'}>
-                        {t('main')}
-                    </span>
+                    <div className={'menu-standard-indicator-option icon-only'}>
+                        <StarIcon removeWrapper={true} stroke={'#8540DD'}/>
+                    </div>
                 }
                 {('available' in data.value && !data.value.available) &&
                     <span className={'unavailable-indicator-option'}>
