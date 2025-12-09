@@ -1,11 +1,7 @@
 import React from "react";
-import {NavButton} from "../NavButton";
 import {useDispatch, useSelector} from "react-redux";
-import {setCurrentView, setIsInEditMode, setNextViewName} from "../../../slices/globalParamsSlice";
-import {StatsIcon} from "../../icons/StatsIcon";
-import {QrCodeIcon} from "../../icons/QrCodeIcon";
-import {UsersIcon} from "../../icons/UsersIcon";
-import {CODE_QR, STATS, USER_PROFILE, USERS} from "../../../utils/viewsConstants";
+import {setCmsActive, setCurrentView, setIsInEditMode, setNextViewName} from "../../../slices/globalParamsSlice";
+import {CODE_QR, DISHES_CATEGORIES, STATS, USER_PROFILE, USERS} from "../../../utils/viewsConstants";
 import {Statistics} from "./stats/Statistics";
 import {DashboardTopper} from "./DashboardTopper";
 import {NewRestaurantForm} from "./restaurant/NewRestaurantForm";
@@ -18,18 +14,22 @@ import {Users} from "./users/Users";
 import {useClearDashboardState} from "../../../hooks/useClearDashboardState";
 import {DecisionDialog} from "../cms/dialog-windows/DecisionDialog";
 import {setSchedulerActive} from "../../../slices/cmsSlice";
-import {useSwitchView} from "../../../hooks/useSwitchView";
+import {setScheduleChanged} from "../../../slices/restaurantSlice";
+import {useDashboardNavElements} from "../../../hooks/useDashboardNavElements";
 
 export const Dashboard = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {currentView, nextViewName} = useSelector(state => state.globalParams.globalParams);
-    const {newRestaurantFormActive, editRestaurantFormActive} = useSelector(state => state.restaurant.form);
-    const statsHoveredOrActive = currentView === STATS;
-    const qrHoveredOrActive = currentView === CODE_QR;
-    const usersHoveredOrActive = currentView === USERS;
+    const {
+        newRestaurantFormActive,
+        editRestaurantFormActive,
+        scheduleChanged
+    } = useSelector(state => state.restaurant.form);
     const clearDashboardState = useClearDashboardState();
-    const handleSwitchView = useSwitchView({clearStateHandler: clearDashboardState})
+    const expandedDashboardNavElements = useDashboardNavElements({type: 'expanded'});
+    const collapsedDashboardNavElements = useDashboardNavElements({type: 'collapsed'});
+
 
     const renderMainView = () => {
         if (newRestaurantFormActive) {
@@ -52,36 +52,6 @@ export const Dashboard = () => {
         }
     };
 
-    const navElements = [
-        <NavButton key={STATS}
-                   isActive={currentView === STATS}
-                   name={t('statistics')}
-                   icon={<StatsIcon active={statsHoveredOrActive}/>}
-                   onClick={() => handleSwitchView(STATS)}/>,
-        <NavButton key={CODE_QR}
-                   isActive={currentView === CODE_QR}
-                   name={t('qrCode')}
-                   icon={<QrCodeIcon active={qrHoveredOrActive}/>}
-                   onClick={() => handleSwitchView(CODE_QR)}/>,
-        <NavButton key={USERS}
-                   isActive={currentView === USERS}
-                   name={t('users')}
-                   icon={<UsersIcon active={usersHoveredOrActive}/>}
-                   onClick={() => handleSwitchView(USERS)}/>
-    ]
-
-    const navElementsCollapsed = [
-        <div onClick={() => handleSwitchView(STATS)}>
-            <StatsIcon active={statsHoveredOrActive} collapsed={true}/>
-        </div>,
-        <div onClick={() => handleSwitchView(CODE_QR)}>
-            <QrCodeIcon active={qrHoveredOrActive} collapsed={true}/>
-        </div>,
-        <div onClick={() => handleSwitchView(USERS)}>
-            <UsersIcon active={usersHoveredOrActive} collapsed={true}/>
-        </div>
-    ]
-
     return (
         <>
             {nextViewName &&
@@ -97,11 +67,24 @@ export const Dashboard = () => {
                     }}
                 />
             }
-            <NavPanel children={navElements}
-                      childrenCollapsed={navElementsCollapsed}
+            {scheduleChanged &&
+                <DecisionDialog msg={t('scheduleUpdatedInfo')}
+                                onCancel={() => dispatch(setScheduleChanged(false))}
+                                customCancelMsg={t('understood')}
+                                onCustomAction={() => {
+                                    dispatch(setCmsActive(true));
+                                    dispatch(setCurrentView(DISHES_CATEGORIES));
+                                    dispatch(setSchedulerActive(true));
+                                    dispatch(setScheduleChanged(false));
+                                }}
+                                customActionMsg={t('menuSchedules')}
+                />
+            }
+            <NavPanel children={expandedDashboardNavElements}
+                      childrenCollapsed={collapsedDashboardNavElements}
                       clearStateHandler={clearDashboardState}/>
             <div className={'cms-main'}>
-                <DashboardTopper children={navElements}
+                <DashboardTopper children={expandedDashboardNavElements}
                                  clearStateHandler={clearDashboardState}/>
                 {renderMainView()}
             </div>
