@@ -17,7 +17,6 @@ export const ContextMenu = ({positions, contextRef, coords}) => {
                         </div>
                     </div>
                 );
-
             })
         );
     }
