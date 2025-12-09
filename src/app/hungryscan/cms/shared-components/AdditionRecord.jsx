@@ -8,6 +8,7 @@ import {UnavailableIcon} from "../../../icons/UnavailableIcon";
 import {Tooltip} from "../Tooltip";
 import {useTranslation} from "react-i18next";
 import {useWindowWidth} from "../../../../hooks/useWindowWidth";
+import {useCloseOnScroll} from "../../../../hooks/useCloseOnScroll";
 
 export const AdditionRecord = ({ingredient, name, price}) => {
     const {t} = useTranslation();
@@ -26,6 +27,10 @@ export const AdditionRecord = ({ingredient, name, price}) => {
         setContextWindowActive(false);
     }, contextWindowActive);
 
+    useCloseOnScroll(() => {
+        setContextWindowActive(false);
+    }, contextWindowActive);
+
     const handleStopPropagation = e => {
         e.stopPropagation();
     }
@@ -41,15 +46,15 @@ export const AdditionRecord = ({ingredient, name, price}) => {
                      dispatch(setAdditionDialogActive(true));
                  }}>
                 <div className={'addition-record'}>
-                    <div className={'addition-text-group'}>
-                        <span>{name[restaurantLanguage]}</span>
+                    <div className={'text-ellipsis'} style={{maxWidth: '35vw'}}>
+                        {name[restaurantLanguage]}
+                    </div>
+                    <div className={'addition-price-actions-group'}>
                         {!ingredient.available &&
                             <Tooltip content={t('invisibleInMenu')} topOffset={-20}>
                                 <UnavailableIcon width={'18'} height={'18'}/>
                             </Tooltip>
-                            }
-                    </div>
-                    <div className={'addition-price-actions-group'}>
+                        }
                         <span>+ {price.toFixed(2)} zł</span>
                         <div onClick={handleStopPropagation}>
                             <RecordOptionsButton className={'record-context-actions-button'}
