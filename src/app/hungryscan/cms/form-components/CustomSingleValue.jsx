@@ -13,12 +13,15 @@ export const CustomSingleValue = (props) => {
     const renderStandardLabel = () => {
         if (isMobile) {
             return (
-                <div className={'menu-standard-indicator'} style={{padding: '2px 2px'}}>
-                    {<StarIcon wrapperStyle={{padding: '0'}} stroke={'#8540DD'}/>}
+                <div className={'menu-standard-indicator icon-only'}>
+                    <StarIcon removeWrapper={true} stroke={'#8540DD'}/>
                 </div>
             );
         }
-        return (<div className={'menu-standard-indicator'}>{t('main')}</div>);
+        return (<div className={'menu-standard-indicator'}>
+            <StarIcon removeWrapper={true} stroke={'#8540DD'}/>
+            {t('main')}
+        </div>);
     }
 
     return (
