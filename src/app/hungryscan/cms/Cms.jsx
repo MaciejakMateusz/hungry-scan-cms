@@ -1,6 +1,5 @@
 import React, {useEffect} from "react";
 import {useTranslation} from "react-i18next";
-import {NavButton} from "../NavButton";
 import {DishesCategories} from "./dishes-categories/DishesCategories";
 import {Additions} from "./additions/Additions";
 import {Translations} from "./translations/Translations";
@@ -13,13 +12,9 @@ import {CmsTopper} from "./topper/CmsTopper";
 import {fetchActiveMenu, setSchedulerActive} from "../../../slices/cmsSlice";
 import {NavPanel} from "../NavPanel";
 import {UserProfile} from "../dashboard/user/UserProfile";
-import {DocumentIcon} from "../../icons/DocumentIcon";
-import {AdditionsIcon} from "../../icons/AdditionsIcon";
-import {PersonalizationIcon} from "../../icons/PersonalizationIcon";
-import {TranslationsIcon} from "../../icons/TranslationsIcon";
 import {Scheduler} from "./menu/scheduler/Scheduler";
-import {useSwitchView} from "../../../hooks/useSwitchView";
 import {useClearCmsState} from "../../../hooks/useClearCmsState";
+import {useCmsNavElements} from "../../../hooks/useCmsNavElements";
 
 export const Cms = () => {
     const {t} = useTranslation();
@@ -39,7 +34,8 @@ export const Cms = () => {
     const {schedulerActive} = useSelector(state => state.cms.view);
     const {categoryForAction, menuItemForAction} = useSelector(state => state.dishesCategories.view);
     const clearCmsState = useClearCmsState();
-    const handleSwitchView = useSwitchView({clearStateHandler: clearCmsState});
+    const expandedNavElements = useCmsNavElements({type: 'expanded'});
+    const collapsedNavElements = useCmsNavElements({type: 'collapsed'});
 
     useEffect(() => {
         if (schedulerActive) {
@@ -85,44 +81,6 @@ export const Cms = () => {
         }
     };
 
-    const navElements = [
-        <NavButton key={DISHES_CATEGORIES}
-                   isActive={currentView === DISHES_CATEGORIES}
-                   name={t('dishesCategories')}
-                   icon={<DocumentIcon active={currentView === DISHES_CATEGORIES}/>}
-                   onClick={() => handleSwitchView(DISHES_CATEGORIES)}/>,
-        <NavButton key={ADDITIONS}
-                   isActive={currentView === ADDITIONS}
-                   name={t('additions')}
-                   icon={<AdditionsIcon active={currentView === ADDITIONS}/>}
-                   onClick={() => handleSwitchView(ADDITIONS)}/>,
-        <NavButton key={PERSONALIZATION}
-                   isActive={currentView === PERSONALIZATION}
-                   name={t('personalization')}
-                   icon={<PersonalizationIcon active={currentView === PERSONALIZATION}/>}
-                   onClick={() => handleSwitchView(PERSONALIZATION)}/>,
-        <NavButton key={TRANSLATIONS}
-                   isActive={currentView === TRANSLATIONS}
-                   name={t('translations')}
-                   icon={<TranslationsIcon active={currentView === TRANSLATIONS}/>}
-                   onClick={() => handleSwitchView(TRANSLATIONS)}/>
-    ];
-
-    const navElementsCollapsed = [
-        <div onClick={() => handleSwitchView(DISHES_CATEGORIES)}>
-            <DocumentIcon active={currentView === DISHES_CATEGORIES} collapsed={true}/>
-        </div>,
-        <div onClick={() => handleSwitchView(ADDITIONS)}>
-            <AdditionsIcon active={currentView === ADDITIONS} collapsed={true}/>
-        </div>,
-        <div onClick={() => handleSwitchView(PERSONALIZATION)}>
-            <PersonalizationIcon active={currentView === PERSONALIZATION} collapsed={true}/>
-        </div>,
-        <div onClick={() => handleSwitchView(TRANSLATIONS)}>
-            <TranslationsIcon active={currentView === TRANSLATIONS} collapsed={true}/>
-        </div>,
-    ];
-
     return (
         <>
             {nextViewName &&
@@ -138,11 +96,11 @@ export const Cms = () => {
                     }}
                 />
             }
-            <NavPanel children={navElements}
+            <NavPanel children={expandedNavElements}
                       clearStateHandler={clearCmsState}
-                      childrenCollapsed={navElementsCollapsed}/>
+                      childrenCollapsed={collapsedNavElements}/>
             <div className={'cms-main'}>
-                <CmsTopper children={navElements}
+                <CmsTopper children={expandedNavElements}
                            clearStateHandler={clearCmsState}/>
                 {renderMainView()}
             </div>
