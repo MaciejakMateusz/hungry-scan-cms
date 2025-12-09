@@ -2,6 +2,7 @@ import React from "react";
 import {useTranslation} from "react-i18next";
 import {useSelector} from "react-redux";
 import {IndexedText, Switcher, SwitcherPill, SwitcherPillInactive} from "./AppModeSwitcherCollapsed.style";
+import {Tooltip} from "../../cms/Tooltip";
 
 export const AppModeSwitcherCollapsed = () => {
     const {t} = useTranslation();
@@ -10,17 +11,23 @@ export const AppModeSwitcherCollapsed = () => {
     return (
         <Switcher>
             {cmsActive &&
-                <SwitcherPillInactive $cmsActive={cmsActive}>
-                    <IndexedText>{t('dashboard')?.[0]}</IndexedText>
-                </SwitcherPillInactive>
+                <Tooltip content={t('dashboard')} topOffset={-20}>
+                    <SwitcherPillInactive $cmsActive={cmsActive}>
+                        <IndexedText>{t('dashboard')?.[0]}</IndexedText>
+                    </SwitcherPillInactive>
+                </Tooltip>
             }
-            <SwitcherPill $cmsActive={cmsActive}>
-                <IndexedText>{cmsActive ? 'C' : t('dashboard')?.[0]}</IndexedText>
-            </SwitcherPill>
+            <Tooltip content={cmsActive ? 'CMS' : t('dashboard')} topOffset={-20}>
+                <SwitcherPill $cmsActive={cmsActive}>
+                    <IndexedText>{cmsActive ? 'C' : t('dashboard')?.[0]}</IndexedText>
+                </SwitcherPill>
+            </Tooltip>
             {!cmsActive &&
-                <SwitcherPillInactive $cmsActive={cmsActive}>
-                    <IndexedText>C</IndexedText>
-                </SwitcherPillInactive>
+                <Tooltip content={'CMS'} topOffset={-20}>
+                    <SwitcherPillInactive $cmsActive={cmsActive}>
+                        <IndexedText>C</IndexedText>
+                    </SwitcherPillInactive>
+                </Tooltip>
             }
         </Switcher>
     );
