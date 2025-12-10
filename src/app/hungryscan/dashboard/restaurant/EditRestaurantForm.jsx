@@ -12,7 +12,7 @@ import {
     setFridayAvailable,
     setFridayClosingTime,
     setFridayOpeningTime,
-    setId,
+    setId, setInitialOperatingHours,
     setLanguage,
     setMondayAvailable,
     setMondayClosingTime,
@@ -22,7 +22,7 @@ import {
     setRestaurantUpdated,
     setSaturdayAvailable,
     setSaturdayClosingTime,
-    setSaturdayOpeningTime,
+    setSaturdayOpeningTime, setScheduleChanged,
     setSettingsId,
     setSettingsRestaurantId,
     setSundayAvailable,
@@ -46,6 +46,8 @@ export const EditRestaurantForm = () => {
     const dispatch = useDispatch();
     const {restaurant} = useSelector(state => state.dashboard.view);
     const renderConfirmation = useConfirmationMessage(setRestaurantUpdated);
+    const {initialOperatingHours, settings} = useSelector(state => state.restaurant.form);
+
 
     useEffect(() => {
         const fillForm = () => {
@@ -183,9 +185,11 @@ export const EditRestaurantForm = () => {
                 value: sundayClosingTime,
                 label: sundayClosingTimeLabel
             }));
+
+            dispatch(setInitialOperatingHours(settings.operatingHours));
         }
         fillForm();
-    }, [restaurant, dispatch]);
+    }, [restaurant, dispatch, t]);
 
     const parseOperatingTimeToLabel = time => {
         if (!time) return null;
@@ -200,6 +204,9 @@ export const EditRestaurantForm = () => {
             dispatch(clearForm());
             dispatch(setErrorData(null));
             renderConfirmation();
+            if (JSON.stringify(initialOperatingHours) !== JSON.stringify(settings.operatingHours)) {
+                dispatch(setScheduleChanged(true));
+            }
         } else {
             dispatch(setErrorData(resultAction?.payload));
         }
