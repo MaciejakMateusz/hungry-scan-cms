@@ -69,7 +69,7 @@ export const DetailsDialog = () => {
                             <div className={'context-menu-detail-value'}>{activeObjDetails?.modifiedBy ?? '-'}</div>
                         </div>
                     </div>
-                    <div className={'decision-dialog-footer'} style={{padding: '0'}}>
+                    <div className={'decision-dialog-footer'} style={{padding: '0', alignItems: 'flex-start'}}>
                         {renderCancelButton()}
                     </div>
                 </div>
