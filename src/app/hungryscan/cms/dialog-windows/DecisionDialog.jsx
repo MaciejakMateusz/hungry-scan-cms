@@ -23,13 +23,19 @@ export const DecisionDialog = (props) => {
         if (!props.onCancel) return;
         return (
             <BorderedButton onClick={props.onCancel}
-                            text={t('cancel')}
+                            text={props.customCancelMsg ?? t('cancel')}
                             isBordered={true}/>
 
         );
     }
 
     const renderConfirmButton = () => {
+        if (props.onCustomAction) {
+            return (
+                <ActionButton onClick={props.onCustomAction}
+                              text={props.isLoading ? <LoadingSpinner buttonMode={true}/> : props.customActionMsg}/>
+            );
+        }
         if (props.onCancel) {
             const buttonText = props.isRemoval ? t('remove') : t('confirm');
             return (
