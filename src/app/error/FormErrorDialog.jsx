@@ -1,6 +1,7 @@
 import React from 'react';
 import {useTranslation} from "react-i18next";
 import {useDispatch} from "react-redux";
+import {ActionButton} from "../hungryscan/common/ActionButton";
 
 export const FormErrorDialog = ({errorData, setErrorData}) => {
     const {t} = useTranslation();
@@ -22,7 +23,7 @@ export const FormErrorDialog = ({errorData, setErrorData}) => {
         <div className={'error-dialog-overlay'}>
             <div className={'error-dialog'}>
                 <div className={'error-dialog-title'}>
-                    <h2>{t('formHasErrors')}</h2>
+                    <div>{t('formHasErrors')}</div>
                 </div>
                 <div className={'error-dialog-content'}>
                     <div className={'error-field-wrapper'}>
@@ -32,9 +33,7 @@ export const FormErrorDialog = ({errorData, setErrorData}) => {
                     </div>
                 </div>
                 <div className={'error-dialog-actions'}>
-                    <button onClick={handleClose}>
-                        {t('close')}
-                    </button>
+                    <ActionButton text={t('close')} onClick={handleClose}/>
                 </div>
             </div>
         </div>
