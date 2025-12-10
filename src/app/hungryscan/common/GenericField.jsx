@@ -26,7 +26,7 @@ export const GenericField = (props) => {
                            disabled={props.disabled}
                            value={props.value ?? ''}
                            onChange={(e) => {
-                               props.onChange(e.target.value);
+                               props.onChange(e);
                                resetErrorStyles();
                            }}
                            placeholder={!isFocused ? props.placeholder : ''}
