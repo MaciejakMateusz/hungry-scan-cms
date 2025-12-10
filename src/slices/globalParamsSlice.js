@@ -17,7 +17,8 @@ export const globalParamsSlice = createSlice(
             nextViewName: null,
             previewActive: false,
             navPanelCollapsed: false,
-            mobileNavActive: false
+            mobileNavActive: false,
+            confirmLogout: false
         },
         reducers: {
             setActiveRestaurant: (state, action) => {
@@ -58,6 +59,9 @@ export const globalParamsSlice = createSlice(
             },
             setMobileNavActive: (state, action) => {
                 state.mobileNavActive = action.payload;
+            },
+            setConfirmLogout: (state, action) => {
+                state.confirmLogout = action.payload;
             }
         }
     });
@@ -75,7 +79,8 @@ export const {
     setNextViewName,
     setPreviewActive,
     setNavPanelCollapsed,
-    setMobileNavActive
+    setMobileNavActive,
+    setConfirmLogout
 } = globalParamsSlice.actions;
 
 const globalParamsReducer = combineReducers({
