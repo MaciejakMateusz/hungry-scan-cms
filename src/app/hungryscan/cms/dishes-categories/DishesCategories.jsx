@@ -17,6 +17,8 @@ import {
 } from "../../../../slices/dishesCategoriesSlice";
 import ErrorBoundary from "../../../error/ErrorBoundary";
 import {BorderedButton} from "../../common/BorderedButton";
+import {PlusIcon} from "../../../icons/PlusIcon";
+import {useWindowWidth} from "../../../../hooks/useWindowWidth";
 
 export const DishesCategories = () => {
     const {t} = useTranslation();
@@ -32,6 +34,8 @@ export const DishesCategories = () => {
         editDishFormActive
     } = useSelector(state => state.dishesCategories.view);
     const {menu} = useSelector(state => state.cms.fetchActiveMenu);
+    const windowWidth = useWindowWidth();
+    const isMobile = windowWidth <= 1000;
 
     useEffect(() => {
         if (!filterExpanded && filterValue !== '') {
@@ -92,7 +96,10 @@ export const DishesCategories = () => {
                         <div className={'section-heading'}>{t('dishesCategories')}</div>
                         <div className={'flex-wrapper-gapped'}>
                             <BorderedButton onClick={() => dispatch(setNewCategoryFormActive(true))}
-                                            text={`+ ${t('newCategory')}`}/>
+                                            text={t('newCategory')}
+                                            icon={<PlusIcon/>}
+                                            isMobile={isMobile}
+                                            isPlus={true}/>
                             <SearchButton filterExpanded={filterExpanded}
                                           onExpand={() => dispatch(setFilterExpanded(!filterExpanded))}
                                           filterValue={filterValue}
