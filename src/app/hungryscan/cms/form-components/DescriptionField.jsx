@@ -33,6 +33,7 @@ export const DescriptionField = (props) => {
                             resetErrorStyles();
                         }}
                         placeholder={isFocused ? '' : t('type')}
+                        maxLength={255}
                         onFocus={() => setIsFocused(true)}
                         onBlur={() => setIsFocused(false)}
                     />
