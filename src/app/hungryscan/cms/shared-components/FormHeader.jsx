@@ -21,6 +21,7 @@ export const FormHeader = ({
     const {previewActive} = useSelector(state => state.globalParams.globalParams);
     const windowWidth = useWindowWidth();
     const isWide = windowWidth >= 1000;
+    const isMobile = windowWidth <= 1000;
 
     const renderPreviewButton = () => {
         if (!renderPreview) return;
@@ -31,6 +32,7 @@ export const FormHeader = ({
                                 dispatch(setPreviewActive(!previewActive));
                             }}
                             text={isWide && t('preview')}
+                            isMobile={isMobile}
                             icon={<PreviewIcon active={previewActive}/>}
             />
         );
