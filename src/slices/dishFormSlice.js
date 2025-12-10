@@ -69,6 +69,7 @@ export const postDish = createAsyncThunk(
 
         const res = await fetch(`${apiHost}/api/cms/items/${action}`, {
             method: action === 'add' ? 'POST' : 'PATCH',
+            headers: {'Accept-Language': getLanguage()},
             credentials: 'include',
             body: formData
         });
