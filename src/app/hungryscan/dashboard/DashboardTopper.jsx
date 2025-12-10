@@ -2,7 +2,6 @@ import React, {useEffect, useRef, useState} from "react";
 import Select from "react-select";
 import {mainSelectTopper} from "../../../selectStyles";
 import {CustomNoOptionsMessage} from "../cms/form-components/CustomNoOptionsMessage";
-import {ThreeDotsIcon} from "../../icons/ThreeDotsIcon";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {getUserRestaurants} from "../../../slices/dashboardSlice";
@@ -14,7 +13,6 @@ import {
     setRestaurantRemoved,
     switchRestaurant
 } from "../../../slices/restaurantSlice";
-import {ContextMenu} from "../cms/shared-components/ContextMenu";
 import {useRestaurantContextPositions} from "../../../hooks/useRestaurantContextPositions";
 import {DecisionDialog} from "../cms/dialog-windows/DecisionDialog";
 import {remove} from "../../../slices/objectRemovalSlice";
@@ -24,6 +22,7 @@ import {useWindowWidth} from "../../../hooks/useWindowWidth";
 import {NavButtonMobile} from "../NavButtonMobile";
 import {NavPanelMobile} from "../NavPanelMobile";
 import {setMobileNavActive} from "../../../slices/globalParamsSlice";
+import {RecordOptionsButton} from "../cms/shared-components/RecordOptionsButton";
 
 export const DashboardTopper = ({children, clearStateHandler}) => {
     const {t} = useTranslation();
@@ -119,21 +118,15 @@ export const DashboardTopper = ({children, clearStateHandler}) => {
                         selectRef={selectRef}
                 />
             </div>
-            <div className={'relative-container'}>
-                <div className={'options-button'}
-                     style={controlDisabled ? {cursor: 'not-allowed'} : {}}
-                     tabIndex={-1}
-                     onClick={() => {
-                         if (controlDisabled) return;
-                         dispatch(setRestaurantContextMenuActive(!restaurantContextMenuActive));
-                     }}>
-                    <ThreeDotsIcon/>
-                </div>
-                {restaurantContextMenuActive &&
-                    <ContextMenu positions={contextMenuPositions}
-                                 obj={restaurant.value}
-                                 contextRef={contextRef}/>}
-            </div>
+            <RecordOptionsButton className={'options-button'}
+                                 style={controlDisabled ? {cursor: 'not-allowed'} : {}}
+                                 onClick={() => {
+                                     if (controlDisabled) return;
+                                     dispatch(setRestaurantContextMenuActive(!restaurantContextMenuActive));
+                                 }}
+                                 contextWindowActive={restaurantContextMenuActive}
+                                 contextPositions={contextMenuPositions}
+                                 contextRef={contextRef}/>
         </header>
     );
 }
