@@ -34,6 +34,7 @@ export const NameField = (props) => {
                                    resetErrorStyles()
                                }}
                                placeholder={isFocused ? '' : t('addName')}
+                               maxLength={255}
                                onFocus={() => setIsFocused(true)}
                                onBlur={() => setIsFocused(false)}/>
                         {hasError && <div className={'validation-msg'}>{props.error?.name}</div>}
