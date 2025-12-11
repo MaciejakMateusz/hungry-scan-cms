@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import {AdditionRecord} from "../shared-components/AdditionRecord";
 
 export const LetterGroup = ({letter, ingredients}) => {
