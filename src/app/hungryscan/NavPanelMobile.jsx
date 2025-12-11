@@ -13,7 +13,6 @@ import {ReactSVG} from "react-svg";
 import {useOutsideClick} from "../../hooks/useOutsideClick";
 import {setMobileNavActive} from "../../slices/globalParamsSlice";
 import {AppModeSwitcherWrapper} from "./common/navigation/AppModeSwitcherWrapper";
-import {Tooltip} from "./cms/Tooltip";
 
 export const NavPanelMobile = ({children, clearStateHandler, onCollapse}) => {
     const {t} = useTranslation();
