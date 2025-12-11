@@ -12,13 +12,15 @@ import {useSwitchView} from "../../hooks/useSwitchView";
 import {ReactSVG} from "react-svg";
 import {useOutsideClick} from "../../hooks/useOutsideClick";
 import {setMobileNavActive} from "../../slices/globalParamsSlice";
+import {AppModeSwitcherWrapper} from "./common/navigation/AppModeSwitcherWrapper";
+import {Tooltip} from "./cms/Tooltip";
 
 export const NavPanelMobile = ({children, clearStateHandler, onCollapse}) => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {restaurant} = useSelector(state => state.dashboard.view);
-    const {userData} = useSelector(state => state.userProfile.getUserProfile);
     const {logoutActive} = useSelector(state => state.login.logoutFetch);
+    const {userData} = useSelector(state => state.userProfile.getUserProfile);
     const {mobileNavActive} = useSelector(state => state.globalParams.globalParams);
     const [isLogoutHovered, setIsLogoutHovered] = useState(false);
     const hasAccessToDashboard = userData?.roles?.some(role => [2, 3].includes(role.id));
@@ -52,7 +54,11 @@ export const NavPanelMobile = ({children, clearStateHandler, onCollapse}) => {
                         </div>
                     </div>
                 </div>
-                <AppModeSwitcher hasAccessToDashboard={hasAccessToDashboard}/>
+
+                <AppModeSwitcherWrapper hasAccessToDashboard={hasAccessToDashboard}>
+                    <AppModeSwitcher/>
+                </AppModeSwitcherWrapper>
+
                 <div className={'app-nav-menu'}>
                     <ul className={'app-nav-ul'}>
                         {children}
