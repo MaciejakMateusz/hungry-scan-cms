@@ -26,6 +26,7 @@ import {useGetTranslation} from "../../../../../hooks/useGetTranslation";
 import {useDispatch, useSelector} from "react-redux";
 import {setCategory, setDish, setEditDishFormActive} from "../../../../../slices/dishesCategoriesSlice";
 import {setCategoryId} from "../../../../../slices/dishFormSlice";
+import {useCloseOnScroll} from "../../../../../hooks/useCloseOnScroll";
 
 export const MenuItemPosition = ({id, category, menuItem, filtered}) => {
     const dispatch = useDispatch();
@@ -58,6 +59,11 @@ export const MenuItemPosition = ({id, category, menuItem, filtered}) => {
     useOutsideClick(contextRef, () => {
         setContextWindowActive(false);
     }, contextWindowActive);
+
+    useCloseOnScroll(() => {
+        setContextWindowActive(false);
+    }, contextWindowActive);
+
 
     const renderPrices = menuItem => {
         if (menuItem.promoPrice) {
