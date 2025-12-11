@@ -12,6 +12,9 @@ import {useSwitchView} from "../../hooks/useSwitchView";
 import {ReactSVG} from "react-svg";
 import {setNavPanelCollapsed} from "../../slices/globalParamsSlice";
 import {useWindowWidth} from "../../hooks/useWindowWidth";
+import {AppModeSwitcherCollapsed} from "./common/navigation/AppModeSwitcherCollapsed";
+import {AppModeSwitcherWrapper} from "./common/navigation/AppModeSwitcherWrapper";
+import {Tooltip} from "./cms/Tooltip";
 
 export const NavPanel = ({children, childrenCollapsed, clearStateHandler}) => {
     const {t} = useTranslation();
@@ -39,10 +42,17 @@ export const NavPanel = ({children, childrenCollapsed, clearStateHandler}) => {
                     />
                 }
                 <div className={'flex-centered'}>
-                    <div className={'user-profile-logo'} onClick={() => handleSwitchView(USER_PROFILE)}>
-                        {userData?.forename?.[0].toUpperCase()}
-                    </div>
+                    <Tooltip content={t('userProfile')} topOffset={20}>
+                        <div className={'user-profile-logo'} onClick={() => handleSwitchView(USER_PROFILE)}>
+                            {userData?.forename?.[0].toUpperCase()}
+                        </div>
+                    </Tooltip>
                 </div>
+
+                <AppModeSwitcherWrapper hasAccessToDashboard={hasAccessToDashboard}>
+                    <AppModeSwitcherCollapsed/>
+                </AppModeSwitcherWrapper>
+
                 <div className={'app-nav-menu collapsed'}>
                     <ul className={'app-nav-ul collapsed'}>
                         {childrenCollapsed}
@@ -55,9 +65,11 @@ export const NavPanel = ({children, childrenCollapsed, clearStateHandler}) => {
                 </div>
 
                 <div className={'app-nav-logout-collapsed-container'}>
-                    <LogoutIcon active={isLogoutHovered}
-                                onClick={() => dispatch(setLogoutActive(true))}
-                                collapsed={true}/>
+                    <Tooltip content={t('logout')} topOffset={-20}>
+                        <LogoutIcon active={isLogoutHovered}
+                                    onClick={() => dispatch(setLogoutActive(true))}
+                                    collapsed={true}/>
+                    </Tooltip>
                 </div>
             </div>
         );
@@ -80,12 +92,17 @@ export const NavPanel = ({children, childrenCollapsed, clearStateHandler}) => {
                     </span>
                 </div>
                 <div className={'flex-centered'}>
-                    <div className={'user-profile-logo'} onClick={() => handleSwitchView(USER_PROFILE)}>
-                        {userData?.forename?.[0].toUpperCase()}
-                    </div>
+                    <Tooltip content={t('userProfile')} topOffset={20}>
+                        <div className={'user-profile-logo'} onClick={() => handleSwitchView(USER_PROFILE)}>
+                            {userData?.forename?.[0].toUpperCase()}
+                        </div>
+                    </Tooltip>
                 </div>
             </div>
-            <AppModeSwitcher hasAccessToDashboard={hasAccessToDashboard}/>
+
+            <AppModeSwitcherWrapper hasAccessToDashboard={hasAccessToDashboard}>
+                <AppModeSwitcher/>
+            </AppModeSwitcherWrapper>
 
             <div className={'collapse-panel-button'}
                  onClick={() => dispatch(setNavPanelCollapsed(!navPanelCollapsed))}>
