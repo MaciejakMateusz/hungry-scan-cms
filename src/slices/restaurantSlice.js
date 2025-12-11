@@ -256,6 +256,8 @@ export const formSlice = createSlice(
                 language: null,
                 supportedLanguages: []
             },
+            initialOperatingHours: null,
+            scheduleChanged: false,
             chosenSupportedLanguages: [],
             errorData: null
         },
@@ -368,6 +370,9 @@ export const formSlice = createSlice(
             setSundayAvailable: (state, action) => {
                 state.settings.operatingHours.SUNDAY.available = action.payload;
             },
+            setInitialOperatingHours: (state, action) => {
+                state.initialOperatingHours = action.payload;
+            },
             setLanguage: (state, action) => {
                 state.settings.language = action.payload;
                 state.chosenSupportedLanguages = state.chosenSupportedLanguages
@@ -378,6 +383,9 @@ export const formSlice = createSlice(
             },
             setChosenSupportedLanguages: (state, action) => {
                 state.chosenSupportedLanguages = action.payload;
+            },
+            setScheduleChanged: (state, action) => {
+                state.scheduleChanged = action.payload;
             },
             setErrorData: (state, action) => {
                 state.errorData = action.payload;
@@ -447,6 +455,8 @@ export const {
     setSundayOpeningTime,
     setSundayClosingTime,
     setSundayAvailable,
+    setInitialOperatingHours,
+    setScheduleChanged,
     setLanguage,
     setSupportedLanguages,
     setChosenSupportedLanguages,
