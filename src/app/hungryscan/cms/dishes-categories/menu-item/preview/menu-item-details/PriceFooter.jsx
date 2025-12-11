@@ -6,14 +6,14 @@ import {FixedContainer, PriceLabel, PriceText} from "./PriceFooter.style";
 
 export const PriceFooter = () => {
     const {t} = useTranslation();
-    const {price} = useSelector(state => state.dishForm.form);
+    const {promoPrice, price} = useSelector(state => state.dishForm.form);
     const {activeMenu} = useSelector(state => state.globalParams.globalParams);
 
     return (
         <FixedContainer>
             <PriceLabel style={{background: activeMenu?.value?.theme}}>
                         <PriceText>
-                            {t('price')} &nbsp; &#x2022; &nbsp; {formatPrice(price, true)} zł
+                            {t('price')} &nbsp; &#x2022; &nbsp; {formatPrice(promoPrice ?? price, true)} zł
                         </PriceText>
             </PriceLabel>
         </FixedContainer>
