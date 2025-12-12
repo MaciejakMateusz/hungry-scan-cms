@@ -85,18 +85,33 @@ export const customSelect = {
             }
         }
     }),
-    multiValue: (provided) => ({
-        ...provided,
-        background: '#DCD8ED',
-    }),
+    multiValue: (provided, props) => {
+        const isUnavailable = props?.data?.value?.available === false;
+
+        return {
+            ...provided,
+            background: isUnavailable ? '#FFE7E7' : '#F5EDFF',
+            color: isUnavailable ? '#D80303' : '#8540DD',
+            maxWidth: '200px'
+        };
+    },
     multiValueRemove: (provided) => ({
         ...provided,
-        color: '#6940C6',
-        ':hover': {
-            backgroundColor: '#DCD8ED',
-            color: '#6940C6',
+        color: '#8540DD',
+        '&:hover': {
+            backgroundColor: '#F5EDFF',
+            color: '#8540DD'
         },
-    })
+    }),
+    multiValueLabel: (provided, props) => {
+        const isUnavailable = props?.data?.value?.available === false;
+
+        return {
+            ...provided,
+            color: isUnavailable ? '#D80303' : '#8540DD',
+            maxWidth: '200px'
+        }
+    }
 }
 
 export const mainSelect = {
@@ -104,22 +119,30 @@ export const mainSelect = {
         ...provided,
         cursor: 'pointer',
         borderRadius: '22px',
-        border: 'none',
-        backgroundColor: '#F6F6F6',
+        border: '1px solid #EDEFF3',
+        boxSizing: 'border-box',
+        backgroundColor: '#FFF',
         fontStyle: '"Lexend", sans-serif',
         fontSize: '1rem',
         fontWeight: '400',
         color: state.isDisabled ? '#ccc' : '#191D25',
-        width: '240px',
+        width: 'fit-content',
+        minWidth: '130px',
         height: '32px',
         minHeight: '32px',
         textAlign: 'left',
         paddingLeft: '5px',
+        paddingRight: '10px',
         borderColor: state.isFocused ? 'transparent' : provided.borderColor,
         boxShadow: state.isFocused ? 'none' : provided.boxShadow,
         '&:hover': {
             borderColor: state.isFocused ? 'transparent' : provided['&:hover'].borderColor,
+            border: '1px solid #EDEFF3'
         }
+    }),
+    valueContainer: provided => ({
+        ...provided,
+        overflow: 'visible',
     }),
     singleValue: (provided, state) => ({
         ...provided,
@@ -145,11 +168,16 @@ export const mainSelect = {
         ...provided,
         display: 'none'
     }),
+    indicatorsContainer: (provided) => ({
+        ...provided,
+        padding: '5px'
+    }),
     menu: (provided) => ({
         ...provided,
         borderRadius: '5px',
         minHeight: '32px',
-        width: '100%'
+        width: '100%',
+        zIndex: 900,
     }),
     noOptionsMessage: (provided) => ({
         ...provided,
@@ -193,12 +221,9 @@ export const mainSelect = {
 
 export const mainSelectTopper = {
     ...mainSelect,
-    control: (provided, state) => ({
-        ...mainSelect.control(provided, state),
-        width: '315px'
-    }),
-    menu: (provided) => ({
+    menu: provided => ({
         ...mainSelect.menu(provided),
+        minWidth: '200px',
         borderBottomLeftRadius: '20px',
         borderBottomRightRadius: '20px'
     }),
@@ -229,192 +254,27 @@ export const mainSelectWhite = {
     ...mainSelect,
     control: (provided, state) => ({
         ...mainSelect.control(provided, state),
-        backgroundColor: '#FFF',
-    })
+        backgroundColor: '#FFF'
+    }),
+    singleValue: provided => ({
+        ...provided,
+        maxWidth: '100%'
+    }),
 }
 
 export const dateStyles = {
+    ...mainSelect,
     control: (provided, state) => ({
-        ...provided,
-        cursor: 'pointer',
-        borderRadius: '22px',
-        border: 'none',
-        backgroundColor: '#FFF',
-        fontStyle: '"Lexend", sans-serif',
-        fontSize: '1rem',
-        fontWeight: '300',
-        color: state.isDisabled ? '#ccc' : '#1F242D',
-        width: '150px',
-        height: '32px',
-        minHeight: '32px',
-        textAlign: 'left',
-        marginLeft: '10px',
-        borderColor: state.isFocused ? 'transparent' : provided.borderColor,
-        boxShadow: state.isFocused ? 'none' : provided.boxShadow,
-        '&:hover': {
-            borderColor: state.isFocused ? 'transparent' : provided['&:hover'].borderColor,
-        }
-    }),
-    singleValue: (provided) => ({
-        ...provided,
-        color: '#191D25',
-        maxWidth: '90%'
-    }),
-    dropdownIndicator: (provided, state) => ({
-        ...provided,
-        display: state.isDisabled ? 'none' : provided.display,
-        padding: '8px',
-        position: 'absolute',
-        right: '5px',
-        color: '#3E424C',
-        '& svg': {
-            width: '15px',
-            height: '15px',
-            '&:hover': {
-                color: '#000',
-            }
-        }
-    }),
-    indicatorSeparator: (provided) => ({
-        ...provided,
-        display: 'none'
-    }),
-    menu: (provided) => ({
-        ...provided,
-        borderRadius: '20px',
-        padding: '12px 2px',
-        minHeight: '32px',
-        width: '150px',
-        marginLeft: '10px',
-    }),
-    menuList: (provided) => ({
-        ...provided,
-        '&::-webkit-scrollbar': {
-            display: 'none'
-        },
-        'msOverflowStyle': 'none',
-        'scrollbarWidth': 'none'
-    }),
-    noOptionsMessage: (provided) => ({
-        ...provided,
-        fontSize: '1rem',
-        color: '#888',
-        fontWeight: '300',
-        fontFamily: '"Lexend", sans-serif',
-        textAlign: 'left'
-    }),
-    option: (provided, state) => ({
-        ...provided,
-        fontSize: '1rem',
-        fontWeight: '300',
-        background: state.isSelected ? '#f0f0f0' : '#FFF',
-        color: '#191D25',
-        '&:hover': {backgroundColor: '#f0f0f0'}
-    }),
-    placeholder: (provided, state) => ({
-        ...provided,
-        color: state.isDisabled ? '#888' : '#3E424C',
-        fontSize: '1rem',
-        fontFamily: '"Lexend", sans-serif',
-        fontWeight: '300',
-    }),
-    clearIndicator: (provided) => ({
-        ...provided,
-        position: 'absolute',
-        cursor: 'pointer',
-        right: '25px',
-        '& svg': {
-            width: '16px',
-            height: '16px',
-            color: '#888',
-            '&:hover': {
-                color: '#000',
-            }
-        }
+        ...mainSelect.control(provided, state),
+        width: '130px'
     })
 }
 
 export const chartStyles = {
+    ...mainSelect,
     control: (provided, state) => ({
-        ...provided,
-        cursor: 'pointer',
-        borderRadius: '22px',
-        border: 'none',
-        backgroundColor: '#F5EDFF',
-        fontStyle: '"Lexend", sans-serif',
-        fontSize: '1rem',
-        fontWeight: '300',
-        color: state.isDisabled ? '#ccc' : '#8540DD',
-        width: '150px',
-        height: '32px',
-        minHeight: '32px',
-        textAlign: 'left',
-        borderColor: state.isFocused ? 'transparent' : provided.borderColor,
-        boxShadow: state.isFocused ? 'none' : provided.boxShadow,
-        '&:hover': {
-            borderColor: state.isFocused ? 'transparent' : provided['&:hover'].borderColor,
-        }
-    }),
-    singleValue: (provided) => ({
-        ...provided,
-        color: '#8540DD',
-        maxWidth: '90%'
-    }),
-    dropdownIndicator: (provided, state) => ({
-        ...provided,
-        display: state.isDisabled ? 'none' : provided.display,
-        padding: '8px',
-        position: 'absolute',
-        right: '5px',
-        color: '#8540DD',
-        '& svg': {
-            width: '15px',
-            height: '15px',
-            '&:hover': {
-                color: '#016DFF',
-            }
-        }
-    }),
-    indicatorSeparator: (provided) => ({
-        ...provided,
-        display: 'none'
-    }),
-    menu: (provided) => ({
-        ...provided,
-        borderRadius: '20px',
-        minHeight: '32px',
-        width: '150px',
-        padding: '12px 2px',
-    }),
-    menuList: (provided) => ({
-        ...provided,
-        '&::-webkit-scrollbar': {
-            display: 'none'
-        },
-        msOverflowStyle: 'none',
-        scrollbarWidth: 'none'
-    }),
-    noOptionsMessage: (provided) => ({
-        ...provided,
-        fontSize: '1rem',
-        color: '#8540DD',
-        fontWeight: '300',
-        fontFamily: '"Lexend", sans-serif',
-        textAlign: 'left'
-    }),
-    option: (provided, state) => ({
-        ...provided,
-        fontSize: '1rem',
-        fontWeight: '300',
-        background: state.isSelected ? '#F5EDFF' : '#FFF',
-        color: '#8540DD',
-        '&:hover': {backgroundColor: '#F5EDFF'}
-    }),
-    placeholder: (provided, state) => ({
-        ...provided,
-        color: state.isDisabled ? '#888' : '#8540DD',
-        fontSize: '1rem',
-        fontFamily: '"Lexend", sans-serif',
-        fontWeight: '300',
+        ...mainSelect.control(provided, state),
+        width: '175px',
+        paddingRight: '10px'
     })
 }
