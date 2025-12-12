@@ -40,6 +40,7 @@ import {
 } from "../../../../slices/restaurantSlice";
 import {useConfirmationMessage} from "../../../../hooks/useConfirmationMessage";
 import {RestaurantFormWrapper} from "./RestaurantFormWrapper";
+import {setIsInEditMode} from "../../../../slices/globalParamsSlice";
 
 export const EditRestaurantForm = () => {
     const {t} = useTranslation();
@@ -188,6 +189,7 @@ export const EditRestaurantForm = () => {
 
             dispatch(setInitialOperatingHours(settings.operatingHours));
         }
+        dispatch(setIsInEditMode(true));
         fillForm();
     }, [restaurant, dispatch, t]);
 
@@ -207,6 +209,7 @@ export const EditRestaurantForm = () => {
             if (JSON.stringify(initialOperatingHours) !== JSON.stringify(settings.operatingHours)) {
                 dispatch(setScheduleChanged(true));
             }
+            dispatch(setIsInEditMode(false));
         } else {
             dispatch(setErrorData(resultAction?.payload));
         }
@@ -216,6 +219,7 @@ export const EditRestaurantForm = () => {
         dispatch(clearForm());
         dispatch(setEditRestaurantFormActive(false));
         dispatch(setErrorData(null));
+        dispatch(setIsInEditMode(false));
     }
 
     return (
