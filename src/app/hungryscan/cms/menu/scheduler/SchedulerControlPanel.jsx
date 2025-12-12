@@ -5,6 +5,9 @@ import {fillGapsWithStandard} from "../../../../../utils/schedulerUtils";
 import {MenuColorSelect} from "../../form-components/MenuColorSelect";
 import {DecisionDialog} from "../../dialog-windows/DecisionDialog";
 import {getCookie, setCookie} from "../../../../../utils/utils";
+import {BorderedButton} from "../../../common/BorderedButton";
+import {StarIcon} from "../../../../icons/StarIcon";
+import {TrashIcon} from "../../../../icons/TrashIcon";
 
 export const SchedulerControlPanel = ({menusConfig, setMenusConfig, externalRef, trashRef}) => {
     const {t} = useTranslation();
@@ -80,6 +83,8 @@ export const SchedulerControlPanel = ({menusConfig, setMenusConfig, externalRef,
                         <div className={'external-event'}
                              onMouseEnter={() => setHoveredId(menu.id)}
                              onMouseLeave={() => setHoveredId(null)}
+                             onTouchStart={() => setHoveredId(menu.id)}
+                             onTouchEnd={() => setHoveredId(null)}
                              style={{
                                  background: hoveredId === menu.id && `color-mix(in srgb, ${menu.color.hex}, white 80%)`
                              }}
@@ -89,8 +94,9 @@ export const SchedulerControlPanel = ({menusConfig, setMenusConfig, externalRef,
                                 {menu.name}
                             </span>
                             {menu.standard &&
-                                <div className={'external-event-standard-indicator'}>
-                                    {t('main')}
+                                <div className={'standard-indicator-box'}>
+                                    <StarIcon removeWrapper={true} stroke={'#8540DD'}/>
+                                    <span>{t('main')}</span>
                                 </div>}
                         </div>
                     </div>
@@ -98,15 +104,14 @@ export const SchedulerControlPanel = ({menusConfig, setMenusConfig, externalRef,
             </div>
 
             <div className={'scheduler-utility-buttons'}>
-                <div className={'general-button scheduler-button'}
-                     onClick={clearSchedules}>
-                    {t('clearSchedule')}
-                </div>
-
-                <div className={'general-button scheduler-button'}
-                     onClick={fillWithStandard}>
-                    {t('fillEmptyWithStandard')}
-                </div>
+                <BorderedButton onClick={clearSchedules}
+                                text={t('clearSchedule')}
+                                icon={<TrashIcon removeWrapper={true} fill={'#222'}/>}
+                                isBordered={true}/>
+                <BorderedButton onClick={fillWithStandard}
+                                text={t('fillEmptyWithMain')}
+                                icon={<div className={'standard-indicator-box icon-only'}><StarIcon removeWrapper={true} stroke={'#8540DD'}/></div>}
+                                isBordered={true}/>
             </div>
 
         </div>
