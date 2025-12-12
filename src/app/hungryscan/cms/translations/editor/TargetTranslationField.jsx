@@ -2,8 +2,8 @@ import React from "react";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {getAutoTranslation, setErrorData} from "../../../../../slices/translationsSlice";
-import {LoadingSpinner} from "../../../../icons/LoadingSpinner";
-import {TranslationStatus} from "../TranslationStatus";
+import {AiIcon} from "../../../../icons/AiIcon";
+import {BorderedButton} from "../../../common/BorderedButton";
 
 export const TargetTranslationField = ({value, changeHandler, type}) => {
     const {t} = useTranslation();
@@ -15,13 +15,13 @@ export const TargetTranslationField = ({value, changeHandler, type}) => {
     } = useSelector(state => state.translations.view);
     const {chosenDestinationLanguage} = useSelector(state => state.translations.view);
     const {restaurant} = useSelector(state => state.dashboard.view);
-    const isAutoTranslateLoading = useSelector(state => state.translations.autoTranslate.isLoading);
 
     const handleFieldChange = value => {
         dispatch(changeHandler(value));
     }
 
-    const handleFieldTranslation = async () => {
+    const handleFieldTranslation = async (e) => {
+        e.preventDefault();
         let textToTranslate;
         if ('name' === type) {
             textToTranslate = sourceName;
@@ -46,23 +46,6 @@ export const TargetTranslationField = ({value, changeHandler, type}) => {
 
     return (
         <div className={'translate-to-box'}>
-            <div className={'translate-to-header'}>
-                <span className={'translation-text-label'}>
-                    {t('translation')}
-                </span>
-                {isAutoTranslateLoading &&
-                    <div className={'absolute-spinner-container'}>
-                        <LoadingSpinner buttonMode={true} customStyle={{width: '0.6rem', height: '0.6rem'}}/>
-                    </div>}
-                <div className={'translation-status-label-group'}>
-                    <div className={'translate-to-translation-status'}>
-                        <TranslationStatus translated={value?.length > 0}/>
-                    </div>
-                    <div className={'language-label'}>
-                        {t(chosenDestinationLanguage.value.toLowerCase())}
-                    </div>
-                </div>
-            </div>
             <div className={'translation-value-content-container'}>
                     <textarea className={'translation-textarea-input'}
                               placeholder={t('typeTranslation')}
@@ -73,14 +56,10 @@ export const TargetTranslationField = ({value, changeHandler, type}) => {
                     />
             </div>
             <div className={'translate-to-footer'}>
-                <div className={'auto-translation-group'} onClick={handleFieldTranslation}>
-                    <span className={'translate-icon'}>
-                        #<sub>A</sub>
-                    </span>
-                    <span className={'automatic-translation-text'}>
-                            {t('automaticTranslation')}
-                    </span>
-                </div>
+                <BorderedButton text={t('automaticTranslation')}
+                                icon={<AiIcon/>}
+                                isBordered={true}
+                                onClick={handleFieldTranslation}/>
             </div>
         </div>
     );
