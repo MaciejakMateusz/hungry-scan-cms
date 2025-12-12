@@ -64,29 +64,30 @@ export const SwitchCategoryDialog = () => {
     return (
         <>
             <FormErrorDialog errorData={switchingError} setErrorData={setSwitchingError}/>
-            <div className={'overlay'}></div>
-            <div className={'decision-dialog'}>
-                <div className={'decision-dialog-content'}>
-                    <CustomSelect id={'categories'}
-                                  name={'categories'}
-                                  labelName={t('movePositionToCategory')}
-                                  value={chosenCategory}
-                                  onChange={(selected) => dispatch(setChosenCategory(selected))}
-                                  placeholder={t('choose')}
-                                  options={categories}
-                                  components={{...animatedComponents, NoOptionsMessage: CustomNoOptionsMessage}}
-                                  closeMenuOnSelect={true}
-                    />
-                </div>
-                <div className={'decision-dialog-footer'}>
-                    <button onClick={handleDiscard} className={'general-button cancel'}>
-                        {t('cancel')}
-                    </button>
-                    <form onSubmit={handleSubmit} style={{all: 'unset'}}>
-                        <button type="submit" className={'general-button'}>
-                            {isLoading ? <LoadingSpinner buttonMode={true}/> : t('save')}
+            <div className={'overlay'}>
+                <div className={'decision-dialog'}>
+                    <div className={'decision-dialog-content'}>
+                        <CustomSelect id={'categories'}
+                                      name={'categories'}
+                                      labelName={t('movePositionToCategory')}
+                                      value={chosenCategory}
+                                      onChange={(selected) => dispatch(setChosenCategory(selected))}
+                                      placeholder={t('choose')}
+                                      options={categories}
+                                      components={{...animatedComponents, NoOptionsMessage: CustomNoOptionsMessage}}
+                                      closeMenuOnSelect={true}
+                        />
+                    </div>
+                    <div className={'decision-dialog-footer'}>
+                        <button onClick={handleDiscard} className={'general-button cancel'}>
+                            {t('cancel')}
                         </button>
-                    </form>
+                        <form onSubmit={handleSubmit} style={{all: 'unset'}}>
+                            <button type="submit" className={'general-button'}>
+                                {isLoading ? <LoadingSpinner buttonMode={true}/> : t('save')}
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </>
