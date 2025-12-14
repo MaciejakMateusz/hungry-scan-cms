@@ -6,7 +6,12 @@ import {Translations} from "./translations/Translations";
 import {Personalization} from "./personalization/Personalization";
 import {useDispatch, useSelector} from "react-redux";
 import {DecisionDialog} from "./dialog-windows/DecisionDialog";
-import {setCurrentView, setIsInEditMode, setNextViewName} from "../../../slices/globalParamsSlice"
+import {
+    setCurrentView,
+    setCmsInEditMode,
+    setNextViewName,
+    setCmsActive
+} from "../../../slices/globalParamsSlice"
 import {ADDITIONS, DISHES_CATEGORIES, PERSONALIZATION, TRANSLATIONS, USER_PROFILE} from "../../../utils/viewsConstants";
 import {CmsTopper} from "./topper/CmsTopper";
 import {fetchActiveMenu, setSchedulerActive} from "../../../slices/cmsSlice";
@@ -21,7 +26,7 @@ export const Cms = () => {
     const dispatch = useDispatch();
     const {
         currentView,
-        isInEditMode,
+        isCmsInEditMode,
         nextViewName
     } = useSelector(state => state.globalParams.globalParams);
     const {
@@ -39,10 +44,10 @@ export const Cms = () => {
 
     useEffect(() => {
         if (schedulerActive) {
-            dispatch(setIsInEditMode(true));
+            dispatch(setCmsInEditMode(true));
             return;
         }
-        dispatch(setIsInEditMode(
+        dispatch(setCmsInEditMode(
             newCategoryFormActive ||
             editCategoryFormActive ||
             newDishFormActive ||
@@ -58,10 +63,10 @@ export const Cms = () => {
         currentView]);
 
     useEffect(() => {
-        if (!isInEditMode || !categoryForAction || !menuItemForAction || !reorderCategoriesDialogActive) {
+        if (!isCmsInEditMode || !categoryForAction || !menuItemForAction || !reorderCategoriesDialogActive) {
             dispatch(fetchActiveMenu());
         }
-    }, [dispatch, isInEditMode, categoryForAction, menuItemForAction, reorderCategoriesDialogActive]);
+    }, [dispatch, isCmsInEditMode, categoryForAction, menuItemForAction, reorderCategoriesDialogActive]);
 
     const renderMainView = () => {
         if (schedulerActive) return (<Scheduler/>);
@@ -91,8 +96,10 @@ export const Cms = () => {
                         clearCmsState();
                         dispatch(setSchedulerActive(false));
                         dispatch(setCurrentView(nextViewName));
-                        dispatch(setIsInEditMode(false));
+                        dispatch(setCmsInEditMode(false));
                         dispatch(setNextViewName(null));
+                        const viewPrefix = nextViewName.split('/')[0];
+                        dispatch(setCmsActive(viewPrefix === 'cms'));
                     }}
                 />
             }
