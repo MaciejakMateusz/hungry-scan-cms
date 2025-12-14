@@ -33,7 +33,7 @@ export const CmsTopper = ({children, clearStateHandler}) => {
     const selectRef = useRef();
     const contextRef = useRef();
     const {restaurant} = useSelector(state => state.dashboard.view);
-    const {activeMenu, isInEditMode} = useSelector(state => state.globalParams.globalParams)
+    const {activeMenu, isCmsInEditMode} = useSelector(state => state.globalParams.globalParams)
     const {menu} = useSelector(state => state.cms.fetchActiveMenu);
     const {activeRemovalType} = useSelector(state => state.dishesCategories.view);
     const {
@@ -47,7 +47,8 @@ export const CmsTopper = ({children, clearStateHandler}) => {
     const contextMenuPositions = useMenuContextPositions();
     const renderConfirmation = useConfirmationMessage(setMenuRemoved);
     const getRestaurant = useFetchCurrentRestaurant();
-    const removalPending = useSelector(state => state.objRemoval.isLoading);
+    const menuRemovalPending = useSelector(state => state.objRemoval.isLoading);
+    const menuDuplicationPending = useSelector(state => state.cms.duplicateMenu.isLoading);
     const {schedulerActive} = useSelector(state => state.cms.view);
     const {mobileNavActive} = useSelector(state => state.globalParams.globalParams);
     const windowWidth = useWindowWidth();
@@ -112,7 +113,7 @@ export const CmsTopper = ({children, clearStateHandler}) => {
                                                              objName={menu.name}
                                                              onCancel={() => dispatch(setActiveRemovalType(null))}
                                                              onSubmit={handleMenuRemoval}
-                                                             isLoading={removalPending}
+                                                             isLoading={menuRemovalPending}
                                                              isRemoval={true}/>}
             <div className={'flex-wrapper'}>
                 {isTablet && <NavButtonMobile onClick={() => dispatch(setMobileNavActive(!mobileNavActive))}/>}
@@ -126,7 +127,7 @@ export const CmsTopper = ({children, clearStateHandler}) => {
                             value={activeMenu}
                             placeholder={t('choose')}
                             options={menus}
-                            isDisabled={isInEditMode}
+                            isDisabled={isCmsInEditMode}
                             isSearchable={false}
                             defaultValue={menus && menus[0]}
                             onChange={async (selected) => await switchMenu(selected)}
@@ -153,30 +154,30 @@ export const CmsTopper = ({children, clearStateHandler}) => {
                     />
                 </div>
                 <RecordOptionsButton className={'options-button'}
-                                     style={isInEditMode ? {cursor: 'not-allowed'} : {}}
+                                     style={isCmsInEditMode ? {cursor: 'not-allowed'} : {}}
                                      onClick={() => {
-                                         if (isInEditMode) return;
+                                         if (isCmsInEditMode) return;
                                          dispatch(setContextMenuActive(!contextMenuActive));
                                      }}
                                      contextWindowActive={contextMenuActive}
                                      contextPositions={contextMenuPositions}
-                                     contextRef={contextRef}/>
+                                     contextRef={contextRef}
+                                     isLoading={menuDuplicationPending}/>
             </div>
             {!schedulerActive &&
-                <BorderedButton style={isInEditMode ? {
+                <BorderedButton style={isCmsInEditMode ? {
                     cursor: 'not-allowed',
                     color: 'var(--Grey-700)'
                 } : {}}
                                 onClick={() => {
-                                    if (isInEditMode) return;
+                                    if (isCmsInEditMode) return;
                                     dispatch(setSchedulerActive(true));
                                 }}
                                 isBordered={true}
                                 text={t('menuSchedules')}
                                 isMobile={isTablet}
-                                icon={<ScheduleIcon isInEditMode={isInEditMode}/>}/>
+                                icon={<ScheduleIcon isInEditMode={isCmsInEditMode}/>}/>
             }
-
         </header>
     );
 }
