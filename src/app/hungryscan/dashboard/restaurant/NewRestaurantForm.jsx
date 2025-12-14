@@ -26,7 +26,7 @@ import {
 import {useConfirmationMessage} from "../../../../hooks/useConfirmationMessage";
 import {RestaurantFormWrapper} from "./RestaurantFormWrapper";
 import {getLanguage} from "../../../../locales/langUtils";
-import {setIsInEditMode} from "../../../../slices/globalParamsSlice";
+import {setDashboardInEditMode} from "../../../../slices/globalParamsSlice";
 
 export const NewRestaurantForm = () => {
     const {t} = useTranslation();
@@ -69,7 +69,7 @@ export const NewRestaurantForm = () => {
             dispatch(setSundayOpeningTime(defaultOpeningTime));
             dispatch(setSundayClosingTime(defaultClosingTime));
         }
-        dispatch(setIsInEditMode(true));
+        dispatch(setDashboardInEditMode(true));
         fillDefaultOpeningTimes();
     }, [dispatch]);
 
@@ -81,7 +81,7 @@ export const NewRestaurantForm = () => {
             dispatch(clearForm());
             dispatch(setErrorData(null));
             renderConfirmation();
-            dispatch(setIsInEditMode(false));
+            dispatch(setDashboardInEditMode(false));
         } else {
             dispatch(setErrorData(resultAction?.payload));
         }
@@ -91,7 +91,7 @@ export const NewRestaurantForm = () => {
         dispatch(clearForm());
         dispatch(setNewRestaurantFormActive(false));
         dispatch(setErrorData(null));
-        dispatch(setIsInEditMode(false));
+        dispatch(setDashboardInEditMode(false));
     }
 
     return (
