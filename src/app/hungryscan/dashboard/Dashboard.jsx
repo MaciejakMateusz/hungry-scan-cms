@@ -1,6 +1,6 @@
 import React from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {setCmsActive, setCurrentView, setIsInEditMode, setNextViewName} from "../../../slices/globalParamsSlice";
+import {setCmsActive, setCurrentView, setDashboardInEditMode, setNextViewName} from "../../../slices/globalParamsSlice";
 import {CODE_QR, DISHES_CATEGORIES, STATS, USER_PROFILE, USERS} from "../../../utils/viewsConstants";
 import {Statistics} from "./stats/Statistics";
 import {DashboardTopper} from "./DashboardTopper";
@@ -62,8 +62,10 @@ export const Dashboard = () => {
                         clearDashboardState();
                         dispatch(setSchedulerActive(false));
                         dispatch(setCurrentView(nextViewName));
-                        dispatch(setIsInEditMode(false));
+                        dispatch(setDashboardInEditMode(false));
                         dispatch(setNextViewName(null));
+                        const viewPrefix = nextViewName.split('/')[0];
+                        dispatch(setCmsActive(viewPrefix === 'cms'));
                     }}
                 />
             }
