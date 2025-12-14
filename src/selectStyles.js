@@ -95,14 +95,18 @@ export const customSelect = {
             maxWidth: '200px'
         };
     },
-    multiValueRemove: (provided) => ({
-        ...provided,
-        color: '#8540DD',
-        '&:hover': {
-            backgroundColor: '#F5EDFF',
-            color: '#8540DD'
-        },
-    }),
+    multiValueRemove: (provided, props) => {
+        const isUnavailable = props?.data?.value?.available === false;
+
+        return {
+            ...provided,
+            color: '#8540DD',
+            '&:hover': {
+                background: isUnavailable ? '#FFE7E7' : '#F5EDFF',
+                color: isUnavailable ? '#D80303' : '#8540DD'
+            }
+        }
+    },
     multiValueLabel: (provided, props) => {
         const isUnavailable = props?.data?.value?.available === false;
 
@@ -223,22 +227,8 @@ export const mainSelectTopper = {
     ...mainSelect,
     menu: provided => ({
         ...mainSelect.menu(provided),
-        minWidth: '200px',
         borderBottomLeftRadius: '20px',
         borderBottomRightRadius: '20px'
-    }),
-}
-
-export const mainSelectChipless = {
-    ...mainSelect,
-    multiValue: () => ({
-        display: 'none'
-    }),
-    multiValueLabel: () => ({
-        display: 'none'
-    }),
-    multiValueRemove: () => ({
-        display: 'none'
     }),
 }
 
