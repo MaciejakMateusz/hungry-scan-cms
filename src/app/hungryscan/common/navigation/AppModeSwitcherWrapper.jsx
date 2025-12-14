@@ -1,19 +1,26 @@
 import React from "react";
-import {setCmsActive, setCurrentView, setMobileNavActive} from "../../../../slices/globalParamsSlice";
+import {setCmsActive, setMobileNavActive} from "../../../../slices/globalParamsSlice";
 import {DISHES_CATEGORIES, STATS} from "../../../../utils/viewsConstants";
 import {useDispatch, useSelector} from "react-redux";
 import {Wrapper} from "./AppModeSwitcher.style";
+import {useSwitchView} from "../../../../hooks/useSwitchView";
+import {useClearCmsState} from "../../../../hooks/useClearCmsState";
+import {useClearDashboardState} from "../../../../hooks/useClearDashboardState";
 
 export const AppModeSwitcherWrapper = ({hasAccessToDashboard, children}) => {
     const dispatch = useDispatch();
-    const {cmsActive} = useSelector(state => state.globalParams.globalParams);
+    const {cmsActive, currentView} = useSelector(state => state.globalParams.globalParams);
+    const viewPrefix = currentView?.split('/')[0];
+    const clearCmsState = useClearCmsState();
+    const clearDashboardState = useClearDashboardState();
+    const clearStateHandler = viewPrefix === 'dashboard' ? clearDashboardState : clearCmsState;
+    const handleSwitchView = useSwitchView({clearStateHandler: clearStateHandler});
 
     const switchAppMode = () => {
-        dispatch(setCmsActive(!cmsActive));
+        // dispatch(setCmsActive(!cmsActive));
         dispatch(setMobileNavActive(false));
-        !cmsActive ?
-            dispatch(setCurrentView(DISHES_CATEGORIES)) :
-            dispatch(setCurrentView(STATS));
+        const destinationView = !cmsActive ? DISHES_CATEGORIES : STATS;
+        handleSwitchView(destinationView);
     }
 
     if (!hasAccessToDashboard) return;
