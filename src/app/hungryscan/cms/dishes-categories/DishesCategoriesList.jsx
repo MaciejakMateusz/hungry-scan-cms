@@ -16,6 +16,7 @@ import {setMenuItemRemoved} from "../../../../slices/dishFormSlice";
 import {SwitchCategoryDialog} from "../dialog-windows/SwitchCategoryDialog";
 import {FormErrorDialog} from "../../../error/FormErrorDialog";
 import {CategoryContent} from "./CategoryContent";
+import {LoadingSpinner} from "../../../icons/LoadingSpinner";
 
 export const DishesCategoriesList = () => {
     const {t} = useTranslation();
@@ -29,6 +30,7 @@ export const DishesCategoriesList = () => {
         activeRemovalType
     } = useSelector(state => state.dishesCategories.view);
     const {menu} = useSelector(state => state.cms.fetchActiveMenu);
+    const {isMenuLoading} = useSelector(state => state.cms.fetchActiveMenu.isLoading);
     const [localCategories, setLocalCategories] = useState([]);
     const {isLoading: removalPending, removalError} = useSelector(state => state.objRemoval);
     const confirmCategoryRemoval = useConfirmationMessage(setCategoryRemoved);
@@ -82,11 +84,19 @@ export const DishesCategoriesList = () => {
     };
 
     const renderCategories = () => {
+        if (menu?.categories.length === 0) {
+            return (<p className={'text-center'}>{t('noCategoriesCreated')}</p>);
+        }
+
         return localCategories?.map(category => <CategoryContent key={category.id}
-                                                                 category={category}
-                                                                 localCategories={localCategories}
-                                                                 setLocalCategories={setLocalCategories}/>);
+                                                                category={category}
+                                                                localCategories={localCategories}
+                                                                setLocalCategories={setLocalCategories}/>);
     };
+
+    if (isMenuLoading) {
+        return (<LoadingSpinner/>);
+    }
 
     return (
         <div className={'scrollable-y-wrapper'}>
