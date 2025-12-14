@@ -13,7 +13,8 @@ export const globalParamsSlice = createSlice(
             currentView: STATS,
             cmsActive: false,
             currentDialog: null,
-            isInEditMode: false,
+            isCmsInEditMode: false,
+            isDashboardInEditMode: false,
             nextViewName: null,
             previewActive: false,
             navPanelCollapsed: false,
@@ -45,8 +46,11 @@ export const globalParamsSlice = createSlice(
             setCurrentDialog: (state, action) => {
                 state.currentDialog = action.payload;
             },
-            setIsInEditMode: (state, action) => {
-                state.isInEditMode = action.payload;
+            setCmsInEditMode: (state, action) => {
+                state.isCmsInEditMode = action.payload;
+            },
+            setDashboardInEditMode: (state, action) => {
+                state.isDashboardInEditMode = action.payload;
             },
             setNextViewName: (state, action) => {
                 state.nextViewName = action.payload;
@@ -75,7 +79,8 @@ export const {
     setCurrentView,
     setCmsActive,
     setCurrentDialog,
-    setIsInEditMode,
+    setCmsInEditMode,
+    setDashboardInEditMode,
     setNextViewName,
     setPreviewActive,
     setNavPanelCollapsed,
