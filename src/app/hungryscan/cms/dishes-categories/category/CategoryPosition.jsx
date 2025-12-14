@@ -15,6 +15,7 @@ import {useWindowWidth} from "../../../../../hooks/useWindowWidth";
 import {PlusIcon} from "../../../../icons/PlusIcon";
 import {UnavailableIcon} from "../../../../icons/UnavailableIcon";
 import {useCloseOnScroll} from "../../../../../hooks/useCloseOnScroll";
+import {Tooltip} from "../../Tooltip";
 
 export const CategoryPosition = ({category, expandHandler, expanded}) => {
     const {t} = useTranslation();
@@ -62,7 +63,10 @@ export const CategoryPosition = ({category, expandHandler, expanded}) => {
                     {category.name[restaurantLanguage]}
 
                 </span>
-                {!category.available && <UnavailableIcon/>}
+                {!category.available &&
+                    <Tooltip content={t('invisibleInMenu')} topOffset={-20}>
+                        <UnavailableIcon/>
+                    </Tooltip>}
                 <ContentSizeIndicator size={category.menuItems.length}/>
                 <div onClick={handleStopPropagation}>
                     <RecordOptionsButton className={'record-context-actions-button'}
