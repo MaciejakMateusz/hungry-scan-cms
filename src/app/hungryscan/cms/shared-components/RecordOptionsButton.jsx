@@ -1,6 +1,7 @@
 import React, {useLayoutEffect, useRef, useState} from "react";
 import {ThreeDotsIcon} from "../../../icons/ThreeDotsIcon";
 import {ContextMenu} from "./ContextMenu";
+import {LoadingSpinner} from "../../../icons/LoadingSpinner";
 
 export const RecordOptionsButton = ({
                                         onClick,
@@ -10,7 +11,8 @@ export const RecordOptionsButton = ({
                                         contextRef,
                                         className,
                                         correctPosition = {y: 0, x: 140},
-                                        dotsFill
+                                        dotsFill,
+                                        isLoading
                                     }) => {
     const buttonRef = useRef(null);
     const [coords, setCoords] = useState(null);
@@ -29,19 +31,18 @@ export const RecordOptionsButton = ({
     }, [contextWindowActive]);
 
     const handleClick = (e) => {
+        if (isLoading) return;
         onClick?.(e);
     };
 
     return (
         <div className="relative-container">
-            <div
-                ref={buttonRef}
-                className={className}
-                style={style}
-                tabIndex={-1}
-                onClick={handleClick}
-            >
-                <ThreeDotsIcon fill={dotsFill} />
+            <div ref={buttonRef}
+                 className={className}
+                 style={style}
+                 tabIndex={-1}
+                 onClick={handleClick}>
+                {isLoading ? <LoadingSpinner buttonMode={true}/> : <ThreeDotsIcon fill={dotsFill}/>}
             </div>
 
             {contextWindowActive && (
