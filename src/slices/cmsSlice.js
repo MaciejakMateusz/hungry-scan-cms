@@ -3,7 +3,7 @@ import {apiHost} from "../apiData";
 import {getLanguage} from "../locales/langUtils";
 
 export const duplicateMenu = createAsyncThunk(
-    'fetchActiveMenu/fetchActiveMenu',
+    'duplicateMenu/duplicateMenu',
     async (_, {rejectWithValue}) => {
         const response = await fetch(`${apiHost}/api/cms/menus/duplicate`, {
             method: 'PATCH',
@@ -28,7 +28,7 @@ export const duplicateMenu = createAsyncThunk(
 );
 
 export const duplicateMenuSlice = createSlice({
-    name: 'fetchActiveMenu',
+    name: 'duplicateMenu',
     initialState: {
         isLoading: false,
         errorData: null,
