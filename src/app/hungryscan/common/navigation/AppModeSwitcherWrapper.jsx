@@ -1,5 +1,5 @@
 import React from "react";
-import {setCmsActive, setMobileNavActive} from "../../../../slices/globalParamsSlice";
+import {setMobileNavActive} from "../../../../slices/globalParamsSlice";
 import {DISHES_CATEGORIES, STATS} from "../../../../utils/viewsConstants";
 import {useDispatch, useSelector} from "react-redux";
 import {Wrapper} from "./AppModeSwitcher.style";
@@ -17,7 +17,6 @@ export const AppModeSwitcherWrapper = ({hasAccessToDashboard, children}) => {
     const handleSwitchView = useSwitchView({clearStateHandler: clearStateHandler});
 
     const switchAppMode = () => {
-        // dispatch(setCmsActive(!cmsActive));
         dispatch(setMobileNavActive(false));
         const destinationView = !cmsActive ? DISHES_CATEGORIES : STATS;
         handleSwitchView(destinationView);
