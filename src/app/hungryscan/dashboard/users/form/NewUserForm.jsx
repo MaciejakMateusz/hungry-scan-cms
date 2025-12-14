@@ -12,7 +12,7 @@ import {
     setUserCreated
 } from "../../../../../slices/usersSlice";
 import {UserForm} from "./UserForm";
-import {setIsInEditMode} from "../../../../../slices/globalParamsSlice";
+import {setDashboardInEditMode} from "../../../../../slices/globalParamsSlice";
 
 export const NewUserForm = ({executeFilter}) => {
     const {t} = useTranslation();
@@ -26,7 +26,7 @@ export const NewUserForm = ({executeFilter}) => {
         if (saveUser.fulfilled.match(resultAction)) {
             dispatch(setNewUserFormActive(false));
             dispatch(clearForm());
-            dispatch(setIsInEditMode(false));
+            dispatch(setDashboardInEditMode(false));
             renderConfirmation();
             filteringActive ? executeFilter(filterValue) : dispatch(getUsers());
         } else if (saveUser.rejected.match(resultAction)) {
@@ -38,7 +38,7 @@ export const NewUserForm = ({executeFilter}) => {
         dispatch(setNewUserFormActive(false));
         dispatch(clearForm());
         dispatch(setSaveUserError(null));
-        dispatch(setIsInEditMode(false));
+        dispatch(setDashboardInEditMode(false));
     }
 
     return (
