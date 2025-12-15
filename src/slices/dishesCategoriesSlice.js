@@ -253,7 +253,7 @@ export const dishesCategoriesSlice = createSlice(
             activeRemovalType: null,
             category: {},
             dish: {},
-            categories: []
+            categories: null
         },
         reducers: {
             setFilteringActive: (state, action) => {
@@ -321,7 +321,7 @@ export const dishesCategoriesSlice = createSlice(
                 state.activeRemovalType = null;
                 state.category = {};
                 state.dish = {};
-                state.categories = [];
+                state.categories = null;
             }
         }
     });
