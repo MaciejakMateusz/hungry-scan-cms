@@ -3,12 +3,14 @@ import {CategoryPosition} from "./category/CategoryPosition";
 import {DndContext} from "@dnd-kit/core";
 import {arrayMove, SortableContext} from "@dnd-kit/sortable";
 import {MenuItemPosition} from "./menu-item/MenuItemPosition";
-import {updateMenuItemsOrder} from "../../../../slices/dishesCategoriesSlice";
-import {useDispatch} from "react-redux";
+import {setCategories, updateMenuItemsOrder} from "../../../../slices/dishesCategoriesSlice";
+import {useDispatch, useSelector} from "react-redux";
 import {useCustomSensors} from "../../../../hooks/useCustomSensors";
+import {fetchActiveMenu} from "../../../../slices/cmsSlice";
 
-export const CategoryContent = ({category, localCategories, setLocalCategories}) => {
+export const CategoryContent = ({category}) => {
     const dispatch = useDispatch();
+    const {categories} = useSelector(state => state.dishesCategories.view);
     const menuItemIds = category.menuItems.map(item => item.id.toString());
     const [categoryExpanded, setCategoryExpanded] = useState(true);
     const sensors = useCustomSensors();
@@ -26,14 +28,15 @@ export const CategoryContent = ({category, localCategories, setLocalCategories})
             displayOrder: index + 1,
         }));
 
-        const newLocalCategories = localCategories.map(c => {
+        const newLocalCategories = categories?.map(c => {
             if (c.id === category.id) {
                 return {...c, menuItems: newMenuItems};
             }
             return c;
         });
-        setLocalCategories(newLocalCategories);
+        dispatch(setCategories(newLocalCategories));
         await dispatch(updateMenuItemsOrder({menuItems: newMenuItems}));
+        await dispatch(fetchActiveMenu());
     };
 
     return (
