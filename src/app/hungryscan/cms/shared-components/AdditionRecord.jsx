@@ -63,7 +63,7 @@ export const AdditionRecord = ({ingredient, name, price}) => {
                                                  contextWindowActive={contextWindowActive}
                                                  contextPositions={additionContextPositions}
                                                  contextRef={contextRef}
-                                                 windowPosition={{left: '-150px', top: '30px'}}/>
+                                                 correctPosition={{y: 130, x: 150}}/>
                         </div>
                     </div>
                 </div>
