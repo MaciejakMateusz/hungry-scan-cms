@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {DecisionDialog} from "../dialog-windows/DecisionDialog";
 import {FilteredMenuItems} from "./FilteredMenuItems";
 import {remove, setRemovalError} from "../../../../slices/objectRemovalSlice";
 import {
-    setActiveRemovalType,
+    setActiveRemovalType, setCategories,
     setCategoryForAction,
     setMenuItemForAction
 } from "../../../../slices/dishesCategoriesSlice";
@@ -22,6 +22,7 @@ export const DishesCategoriesList = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {
+        categories,
         categoryForAction,
         reorderCategoriesDialogActive,
         switchCategoryDialogActive,
@@ -31,16 +32,15 @@ export const DishesCategoriesList = () => {
     } = useSelector(state => state.dishesCategories.view);
     const {menu} = useSelector(state => state.cms.fetchActiveMenu);
     const {isMenuLoading} = useSelector(state => state.cms.fetchActiveMenu.isLoading);
-    const [localCategories, setLocalCategories] = useState([]);
     const {isLoading: removalPending, removalError} = useSelector(state => state.objRemoval);
     const confirmCategoryRemoval = useConfirmationMessage(setCategoryRemoved);
     const confirmMenuItemRemoval = useConfirmationMessage(setMenuItemRemoved);
 
     useEffect(() => {
         if (menu?.categories) {
-            setLocalCategories(menu.categories);
+            dispatch(setCategories(menu.categories));
         }
-    }, [menu]);
+    }, [dispatch, menu]);
 
     const handleRemoval = async (e) => {
         e.preventDefault();
@@ -88,10 +88,7 @@ export const DishesCategoriesList = () => {
             return (<p className={'text-center'}>{t('noCategoriesCreated')}</p>);
         }
 
-        return localCategories?.map(category => <CategoryContent key={category.id}
-                                                                category={category}
-                                                                localCategories={localCategories}
-                                                                setLocalCategories={setLocalCategories}/>);
+        return categories?.map(category => <CategoryContent key={category.id} category={category}/>);
     };
 
     if (isMenuLoading) {
