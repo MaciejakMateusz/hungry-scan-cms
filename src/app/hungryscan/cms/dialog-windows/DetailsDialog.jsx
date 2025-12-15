@@ -25,9 +25,17 @@ export const DetailsDialog = () => {
         }
     }, [activeObjDetails?.created, activeObjDetails?.updated]);
 
+    const clearDialogState = () => {
+        setCreatedDate(null);
+        setCreatedTime(null);
+        setModifiedDate(null);
+        setModifiedTime(null);
+        dispatch(setActiveObjDetails(null));
+    }
+
     const renderCancelButton = () => {
         return (
-            <button onClick={() => dispatch(setActiveObjDetails(null))}
+            <button onClick={clearDialogState}
                     className={'general-button'}>
                 {t('close')}
             </button>
