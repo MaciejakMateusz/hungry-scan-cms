@@ -244,7 +244,6 @@ iframe {
 
 .error-dialog {
     padding: 20px;
-    width: 300px;
     max-width: 520px;
     background-color: #FFF;
     margin: 10px;
@@ -3063,6 +3062,7 @@ ul {
     grid-template-columns: 40px 250px auto auto 50px;
     height: 60px;
     min-width: 531px;
+    cursor: pointer;
 }
 
 .draggable-actions-sticky {
@@ -3812,7 +3812,7 @@ ul {
 }
 
 .banner-icon {
-    margin-right: 3px;
+    margin-right: 5px;
 }
 
 /* END OF MENU ITEM DETAILS */
