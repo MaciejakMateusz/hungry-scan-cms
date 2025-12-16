@@ -19,7 +19,6 @@ export const FixedContainer = styled.div`
 
 export const PriceLabel = styled.div`
     display: inline-flex;
-    padding: 11px 0;
     justify-content: center;
     align-items: center;
     gap: 10px;
@@ -27,7 +26,8 @@ export const PriceLabel = styled.div`
     background: var(--Default-Theme);
     position: absolute;
     bottom: 20px;
-    width: 90%;
+    width: 91%;
+    padding: 10px 0;
 `
 
 export const PriceText = styled.span`
