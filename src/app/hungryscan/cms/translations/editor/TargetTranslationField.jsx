@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {getAutoTranslation, setErrorData} from "../../../../../slices/translationsSlice";
 import {AiIcon} from "../../../../icons/AiIcon";
 import {BorderedButton} from "../../../common/BorderedButton";
+import {Tooltip} from "../../Tooltip";
 
 export const TargetTranslationField = ({value, changeHandler, type}) => {
     const {t} = useTranslation();
@@ -15,6 +16,7 @@ export const TargetTranslationField = ({value, changeHandler, type}) => {
     } = useSelector(state => state.translations.view);
     const {chosenDestinationLanguage} = useSelector(state => state.translations.view);
     const {restaurant} = useSelector(state => state.dashboard.view);
+    const isBeta = process.env.REACT_APP_IS_BETA === 'true';
 
     const handleFieldChange = value => {
         dispatch(changeHandler(value));
@@ -22,6 +24,7 @@ export const TargetTranslationField = ({value, changeHandler, type}) => {
 
     const handleFieldTranslation = async (e) => {
         e.preventDefault();
+        if (isBeta) return;
         let textToTranslate;
         if ('name' === type) {
             textToTranslate = sourceName;
@@ -56,10 +59,13 @@ export const TargetTranslationField = ({value, changeHandler, type}) => {
                     />
             </div>
             <div className={'translate-to-footer'}>
-                <BorderedButton text={t('automaticTranslation')}
-                                icon={<AiIcon/>}
-                                isBordered={true}
-                                onClick={handleFieldTranslation}/>
+                <Tooltip content={isBeta ? t('unavailableInBeta') : ''} topOffset={-20}>
+                    <BorderedButton text={t('automaticTranslation')}
+                                    icon={<AiIcon/>}
+                                    style={isBeta ? {cursor: 'not-allowed'} : {}}
+                                    isBordered={true}
+                                    onClick={handleFieldTranslation}/>
+                </Tooltip>
             </div>
         </div>
     );
