@@ -16,10 +16,12 @@ import {
 } from "../../../../../slices/translationsSlice";
 import {fetchActiveMenu} from "../../../../../slices/cmsSlice";
 import {fetchIngredients} from "../../../../../slices/dishAdditionsSlice";
-import {ButtonsWrapper, DialogContainer, DialogWrapper} from "./TranslationsEditor.style";
+import {ButtonsWrapper, DialogContainer, ScrollableWrapper} from "./TranslationsEditor.style";
 import {LoadingSpinner} from "../../../../icons/LoadingSpinner";
 import {useTranslation} from "react-i18next";
-import {setIsInEditMode} from "../../../../../slices/globalParamsSlice";
+import {setCmsInEditMode} from "../../../../../slices/globalParamsSlice";
+import {BorderedButton} from "../../../common/BorderedButton";
+import {ActionButton} from "../../../common/ActionButton";
 
 export const TranslationsEditor = ({fetchRecords}) => {
     const {t} = useTranslation();
@@ -53,7 +55,7 @@ export const TranslationsEditor = ({fetchRecords}) => {
     const discardDialog = () => {
         dispatch(setActiveRecord(null));
         dispatch(setActiveRecordId(null));
-        dispatch(setIsInEditMode(false));
+        dispatch(setCmsInEditMode(false));
     }
 
     const handleTranslatablesSubmit = async (e) => {
@@ -75,7 +77,7 @@ export const TranslationsEditor = ({fetchRecords}) => {
             await dispatch(fetchActiveMenu());
             await dispatch(fetchIngredients())
             await fetchRecords(false);
-            dispatch(setIsInEditMode(false));
+            dispatch(setCmsInEditMode(false));
         }
     }
 
@@ -84,12 +86,15 @@ export const TranslationsEditor = ({fetchRecords}) => {
         if (!activeRecord || !('description' in activeRecord) || !activeRecord.description[restaurantLanguage]) return;
         return (
             <>
-                <SourceTranslationField value={sourceDescription}
-                                        type={'description'}/>
-                <TargetTranslationField
-                    value={targetDescription}
-                    changeHandler={setTargetDescription}
-                    type={'description'}/>
+                <div className={'translation-fields-separator'}/>
+                <div className={'translation-fields-wrapper'}>
+                    <SourceTranslationField value={sourceDescription}
+                                            type={'description'}/>
+                    <TargetTranslationField
+                        value={targetDescription}
+                        changeHandler={setTargetDescription}
+                        type={'description'}/>
+                </div>
             </>
         );
     };
@@ -99,11 +104,13 @@ export const TranslationsEditor = ({fetchRecords}) => {
         return (
             <section>
                 <form className={'translation-wrapper'}>
-                    <SourceTranslationField value={sourceName}
-                                            type={'name'}/>
-                    <TargetTranslationField value={targetName}
-                                            changeHandler={setTargetName}
-                                            type={'name'}/>
+                    <div className={'translation-fields-wrapper'}>
+                        <SourceTranslationField value={sourceName}
+                                                type={'name'}/>
+                        <TargetTranslationField value={targetName}
+                                                changeHandler={setTargetName}
+                                                type={'name'}/>
+                    </div>
                     {renderDescriptionTranslatable()}
                 </form>
             </section>
@@ -128,27 +135,24 @@ export const TranslationsEditor = ({fetchRecords}) => {
     const renderButtons = () => {
         return (
             <div className={'dialog-footer'}>
-                <button className={'general-button cancel'}
-                        onClick={discardDialog}>
-                    {t('cancel')}
-                </button>
-                <button className={'general-button'} onClick={handleTranslatablesSubmit}>
-                    {isPostLoading ? <LoadingSpinner buttonMode={true}/> : t('save')}
-                </button>
+                <BorderedButton onClick={discardDialog} text={t('cancel')} isBordered={true}/>
+                <ActionButton onClick={handleTranslatablesSubmit}
+                              text={isPostLoading ? <LoadingSpinner buttonMode={true}/> : t('save')}/>
             </div>
         );
     }
 
     return (
-        <DialogWrapper>
-            <div className={'overlay'}/>
+        <div className={'overlay'}>
             <DialogContainer>
-                {renderNameTranslatable()}
-                {renderWelcomeSloganTranslatable()}
-                <ButtonsWrapper>
-                    {renderButtons()}
-                </ButtonsWrapper>
+                <ScrollableWrapper>
+                    {renderNameTranslatable()}
+                    {renderWelcomeSloganTranslatable()}
+                    <ButtonsWrapper>
+                        {renderButtons()}
+                    </ButtonsWrapper>
+                </ScrollableWrapper>
             </DialogContainer>
-        </DialogWrapper>
+        </div>
     );
 };
