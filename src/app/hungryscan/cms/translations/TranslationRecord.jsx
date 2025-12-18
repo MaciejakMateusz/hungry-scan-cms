@@ -1,7 +1,6 @@
 import React from "react";
 import {useSelector} from "react-redux";
-import {TextWrapper} from "../dishes-categories/menu-item/MenuItemPosition.style";
-import {TranslationContainer} from "./TranslationRecord.style";
+import {TextWrapper, TranslationContainer} from "./TranslationRecord.style";
 import {RightArrowIcon} from "../../../icons/RightArrowIcon";
 import {TranslationStatus} from "./TranslationStatus";
 import {ContentSizeIndicator} from "../shared-components/ContentSizeIndicator";
@@ -21,7 +20,7 @@ export const TranslationRecord = ({
 
     const renderStatusIndicator = () => {
         return (
-            <div>
+            <div className={'translation-status-sticky-box'}>
                 {determineTranslationStatus()}
                 <span className={'translation-record-arrow'}><RightArrowIcon/></span>
             </div>
