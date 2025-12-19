@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const TranslationContainer = styled.div`
     width: 100%;
-    margin-bottom: ${({ $hasParent }) => ($hasParent ? "20px" : "1px")};
-
+    margin-bottom: ${({ $hasParent }) => ($hasParent ? '20px' : '1px')};
+    overflow-x: ${({ $hasParent }) => ($hasParent ? 'auto' : 'hidden')};
     cursor: pointer;
 `
