@@ -4,7 +4,7 @@ import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {TranslationContainer} from "./TranslationsList.style";
 import {setActiveRecord, setActiveRecordId} from "../../../../slices/translationsSlice";
-import {setIsInEditMode} from "../../../../slices/globalParamsSlice";
+import {setCmsInEditMode} from "../../../../slices/globalParamsSlice";
 
 export const TranslationsList = () => {
     const {t} = useTranslation();
@@ -26,7 +26,7 @@ export const TranslationsList = () => {
                                                    setActive={() => {
                                                        dispatch(setActiveRecordId('p' + menuItem.id));
                                                        dispatch(setActiveRecord(menuItem));
-                                                       dispatch(setIsInEditMode(true));
+                                                       dispatch(setCmsInEditMode(true));
                                                    }}
                                 />
                                 <div className={'draggable-position-separator'}/>
@@ -37,14 +37,14 @@ export const TranslationsList = () => {
                                                            setActive={() => {
                                                                dispatch(setActiveRecordId('c' + variant.id));
                                                                dispatch(setActiveRecord(variant));
-                                                               dispatch(setIsInEditMode(true));
+                                                               dispatch(setCmsInEditMode(true));
                                                            }}
                                         />
                                         <div className={'draggable-position-separator'}/>
                                     </div>
                                 ))}
                             </TranslationContainer>
-                        )) : <p className={'flex-centered'}>{t('noRecordsFound')}</p>}
+                        )) : <p className={'text-center'}>{t('noRecordsFound')}</p>}
                     </>
                 );
             case 'categoriesMenuItems':
@@ -59,7 +59,7 @@ export const TranslationsList = () => {
                                                    setActive={() => {
                                                        dispatch(setActiveRecordId('p' + category.id));
                                                        dispatch(setActiveRecord(category));
-                                                       dispatch(setIsInEditMode(true));
+                                                       dispatch(setCmsInEditMode(true));
                                                    }}
                                 />
                                 <div className={'draggable-position-separator'}/>
@@ -70,14 +70,14 @@ export const TranslationsList = () => {
                                                            setActive={() => {
                                                                dispatch(setActiveRecord(menuItem));
                                                                dispatch(setActiveRecordId('c' + menuItem.id));
-                                                               dispatch(setIsInEditMode(true));
+                                                               dispatch(setCmsInEditMode(true));
                                                            }}
                                         />
                                         <div className={'draggable-position-separator'}/>
                                     </div>
                                 ))}
                             </TranslationContainer>
-                        )) : t('noRecordsFound')}
+                        )) : <p className={'text-center'}>{t('noRecordsFound')}</p>}
                     </>
                 );
             case 'additions':
@@ -90,12 +90,12 @@ export const TranslationsList = () => {
                                                    setActive={() => {
                                                        dispatch(setActiveRecordId('c' + addition.id));
                                                        dispatch(setActiveRecord(addition));
-                                                       dispatch(setIsInEditMode(true));
+                                                       dispatch(setCmsInEditMode(true));
                                                    }}
                                 />
                                 <div className={'draggable-position-separator'}/>
                             </TranslationContainer>
-                        )) : t('noRecordsFound')}
+                        )) : <p className={'text-center'}>{t('noRecordsFound')}</p>}
                     </>
                 );
             case 'welcomeSlogans':
@@ -108,16 +108,16 @@ export const TranslationsList = () => {
                                                    setActive={() => {
                                                        dispatch(setActiveRecordId('c' + menu.id));
                                                        dispatch(setActiveRecord(menu));
-                                                       dispatch(setIsInEditMode(true));
+                                                       dispatch(setCmsInEditMode(true));
                                                    }}
                                 />
                                 <div className={'draggable-position-separator'}/>
                             </TranslationContainer>
-                        )) : t('noRecordsFound')}
+                        )) : <p className={'text-center'}>{t('noRecordsFound')}</p>}
                     </>
                 );
             default:
-                return (<p>{t('noRecordsFound')}</p>);
+                return (<p className={'text-center'}>{t('noRecordsFound')}</p>);
         }
     }
 
