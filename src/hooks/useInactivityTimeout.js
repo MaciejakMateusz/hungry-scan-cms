@@ -1,6 +1,6 @@
 import {useEffect, useState, useRef} from 'react';
 import {useDispatch} from 'react-redux';
-import {executeLogoutFetch} from "../slices/loginFormSlice";
+import {executeLogoutFetch, setLogoutActive} from "../slices/loginFormSlice";
 import {getInactivityTimeout} from "../utils/utils";
 
 export const useInactivityTimeout = (timeout) => {
@@ -14,6 +14,7 @@ export const useInactivityTimeout = (timeout) => {
     };
 
     const handleInactivityLogout = () => {
+        dispatch(setLogoutActive(true));
         setIsActive(false);
         dispatch(executeLogoutFetch());
     };
