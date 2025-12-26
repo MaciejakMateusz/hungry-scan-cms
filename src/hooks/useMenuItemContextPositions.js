@@ -1,42 +1,31 @@
 import {useTranslation} from "react-i18next";
 import {EditIcon} from "../app/icons/EditIcon";
-import {DeleteIcon} from "../app/icons/DeleteIcon";
 import {useDispatch} from "react-redux";
 import {
-    getCategory,
     setActiveRemovalType,
     setCategory,
     setDish,
     setEditDishFormActive,
-    setMenuItemForAction, setSwitchCategoryDialogActive
+    setMenuItemForAction,
+    setSwitchCategoryDialogActive
 } from "../slices/dishesCategoriesSlice";
 import {setCategoryId} from "../slices/dishFormSlice";
+import {setActiveObjDetails} from "../slices/globalParamsSlice";
+import {TrashIcon} from "../app/icons/TrashIcon";
+import {InfoIcon} from "../app/icons/InfoIcon";
+import {MoveIcon} from "../app/icons/MoveIcon";
 
-export const useMenuItemContextPositions = ({category, menuItem, setContextWindowActive}) => {
+export const useMenuItemContextPositions = ({
+                                                category,
+                                                menuItem,
+                                                setContextWindowActive
+                                            }) => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
 
-    const getCategoryData = async id => {
-        const resultAction = await dispatch(getCategory({id}));
-        if (getCategory.fulfilled.match(resultAction)) {
-            return resultAction.payload.categoryFormDTO;
-        }
-        return null;
-    };
-
-    const prepareCategoryData = async () => {
-        if (category) {
-            dispatch(setCategory(category));
-            dispatch(setCategoryId(category.id));
-        } else {
-            const categoryData = await getCategoryData(menuItem.category.id);
-            dispatch(setCategory(categoryData));
-            dispatch(setCategoryId(categoryData.id));
-        }
-    }
-
     const handleEditClick = async () => {
-        await prepareCategoryData();
+        dispatch(setCategory(category));
+        dispatch(setCategoryId(category.id));
         dispatch(setDish(menuItem));
         dispatch(setEditDishFormActive(true));
         setContextWindowActive(false);
@@ -46,16 +35,17 @@ export const useMenuItemContextPositions = ({category, menuItem, setContextWindo
         {
             id: 'edit',
             name: t('edit'),
-            icon: <EditIcon width={'25'} height={'25'}/>,
+            icon: <EditIcon/>,
             handler: () => handleEditClick()
         },
         {
             id: 'switchCategory',
             name: t('switchCategory'),
-            icon: <EditIcon width={'25'} height={'25'}/>,
+            icon: <MoveIcon/>,
             handler: async () => {
                 await dispatch(setMenuItemForAction(menuItem))
-                await prepareCategoryData()
+                dispatch(setCategory(category));
+                dispatch(setCategoryId(category.id));
                 dispatch(setSwitchCategoryDialogActive(true));
                 setContextWindowActive(false);
             }
@@ -63,11 +53,21 @@ export const useMenuItemContextPositions = ({category, menuItem, setContextWindo
         {
             id: 'remove',
             name: t('remove'),
-            icon: <DeleteIcon width={'25'} height={'25'}/>,
+            icon: <TrashIcon/>,
             handler: () => {
                 dispatch(setMenuItemForAction(menuItem));
                 dispatch(setActiveRemovalType('dish'));
                 setContextWindowActive(false);
             }
+        },
+        {
+            id: 'details',
+            name: t('details'),
+            icon: <InfoIcon/>,
+            handler: () => {
+                dispatch(setActiveObjDetails(menuItem));
+                setContextWindowActive(false);
+            },
+            details: true
         }];
 }
