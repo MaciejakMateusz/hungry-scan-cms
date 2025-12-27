@@ -1,24 +1,21 @@
 import {useTranslation} from "react-i18next";
 import {EditIcon} from "../app/icons/EditIcon";
-import {DeleteIcon} from "../app/icons/DeleteIcon";
 import {useDispatch, useSelector} from "react-redux";
-import {
-    setContextMenuDetailsActive,
-    setEditRestaurantFormActive,
-    setRemovalActive,
-    setRestaurantContextMenuActive
-} from "../slices/restaurantSlice";
+import {setEditRestaurantFormActive, setRemovalActive, setRestaurantContextMenuActive} from "../slices/restaurantSlice";
+import {setActiveObjDetails} from "../slices/globalParamsSlice";
+import {TrashIcon} from "../app/icons/TrashIcon";
+import {InfoIcon} from "../app/icons/InfoIcon";
 
 export const useRestaurantContextPositions = () => {
     const {t} = useTranslation();
-    const {contextMenuDetailsActive} = useSelector(state => state.restaurant.form);
     const {restaurants} = useSelector(state => state.dashboard.getRestaurants);
+    const {restaurant} = useSelector(state => state.dashboard.view);
     const dispatch = useDispatch();
     const rawPositions = [
         {
             id: 'edit',
             name: t('edit'),
-            icon: <EditIcon width={'25'} height={'25'}/>,
+            icon: <EditIcon/>,
             handler: () => {
                 dispatch(setEditRestaurantFormActive(true));
                 dispatch(setRestaurantContextMenuActive(false));
@@ -27,7 +24,7 @@ export const useRestaurantContextPositions = () => {
         {
             id: 'remove',
             name: t('remove'),
-            icon: <DeleteIcon width={'25'} height={'25'}/>,
+            icon: <TrashIcon/>,
             handler: () => {
                 dispatch(setRemovalActive(true));
                 dispatch(setRestaurantContextMenuActive(false));
@@ -36,8 +33,11 @@ export const useRestaurantContextPositions = () => {
         {
             id: 'details',
             name: t('details'),
-            icon: <EditIcon width={'25'} height={'25'}/>,
-            handler: () => dispatch(setContextMenuDetailsActive(!contextMenuDetailsActive)),
+            icon: <InfoIcon/>,
+            handler: () => {
+                dispatch(setActiveObjDetails(restaurant?.value));
+                dispatch(setRestaurantContextMenuActive(false));
+            },
             details: true
         }];
 
