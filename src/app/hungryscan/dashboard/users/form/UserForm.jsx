@@ -3,23 +3,37 @@ import {useDispatch, useSelector} from "react-redux";
 import {FormErrorDialog} from "../../../../error/FormErrorDialog";
 import {
     getOrganizationRestaurants,
-    getRoles,
+    getRoles, setRoles,
     setSaveUserError,
     setUpdateUserError
 } from "../../../../../slices/usersSlice";
 import {UserFormTemplate} from "./UserFormTemplate";
 import {FormHeader} from "../../../cms/shared-components/FormHeader";
+import {useGetTranslation} from "../../../../../hooks/useGetTranslation";
 
 export const UserForm = ({formHeader, onFormDiscard, onFormSubmit}) => {
     const dispatch = useDispatch();
-    const {isLoading} = useSelector(state => state.users.saveUser);
+    const {isLoading: savePending} = useSelector(state => state.users.saveUser);
     const {saveUserError} = useSelector(state => state.users.saveUser);
-    const {updateUserError} = useSelector(state => state.users.updateUser);
+    const {updateUserError, isLoading: updatePending} = useSelector(state => state.users.updateUser);
+    const getTranslation = useGetTranslation();
+    const isLoading = savePending || updatePending;
 
     useEffect(() => {
-        dispatch(getRoles());
+        const fetchRoles = async () => {
+            const rolesAction = await dispatch(getRoles());
+            if (getRoles.fulfilled.match(rolesAction)) {
+                dispatch(setRoles(rolesAction.payload
+                    .filter(role => !role.name.includes('CUSTOMER'))
+                    .map(role => ({
+                        value: role,
+                        label: getTranslation(role.displayedName)
+                    }))));
+            }
+        }
+        fetchRoles();
         dispatch(getOrganizationRestaurants());
-    }, [dispatch]);
+    }, [dispatch, getTranslation]);
 
     return (
         <div className={'background'}>
