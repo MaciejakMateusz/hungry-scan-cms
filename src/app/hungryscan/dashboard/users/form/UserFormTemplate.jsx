@@ -13,6 +13,8 @@ import {
 import {CustomSelect} from "../../../cms/form-components/CustomSelect";
 import makeAnimated from "react-select/animated";
 import {LogicalToggleField} from "../../../cms/form-components/LogicalToggleField";
+import {CustomNoOptionsMessage} from "../../../cms/form-components/CustomNoOptionsMessage";
+import {useMergeUniqueOptions} from "../../../../../hooks/useMergeUniqueOptions";
 
 
 export const UserFormTemplate = () => {
@@ -31,6 +33,8 @@ export const UserFormTemplate = () => {
     const {restaurants} = useSelector(state => state.users.getRestaurants);
     const {roles} = useSelector(state => state.users.getRoles);
     const animatedComponents = makeAnimated();
+    const mergedRoles = useMergeUniqueOptions({chosenOptions: chosenRoles, options: roles});
+    const mergedRestaurants = useMergeUniqueOptions({chosenOptions: chosenRestaurants, options: restaurants});
 
     return (
         <>
@@ -39,11 +43,11 @@ export const UserFormTemplate = () => {
                           name={t('login')}
                           placeholder={t('typeUsername')}
                           value={username}
-                          onChange={(e) => dispatch(setUsername(e))}
+                          onChange={(e) => dispatch(setUsername(e.target.value))}
                           required={true}
                           readOnly={editUserFormActive}
                           disabled={editUserFormActive}
-                          error={errorData?.username}
+                          error={errorData}
                           tooltip={t('usernameTooltip')}
             />
             <GenericField id={'forename'}
@@ -51,20 +55,20 @@ export const UserFormTemplate = () => {
                           name={t('forename')}
                           placeholder={t('typeForename')}
                           value={forename}
-                          onChange={(e) => dispatch(setForename(e))}
+                          onChange={(e) => dispatch(setForename(e.target.value))}
                           required={true}
-                          error={errorData?.forename}
+                          error={errorData}
             />
             <GenericField id={'surname'}
                           type={'text'}
                           name={t('surname')}
                           placeholder={t('typeSurname')}
                           value={surname}
-                          onChange={(e) => dispatch(setSurname(e))}
+                          onChange={(e) => dispatch(setSurname(e.target.value))}
                           required={true}
-                          error={errorData?.surname}
+                          error={errorData}
             />
-            <CustomSelect id={'user-restaurants'}
+            <CustomSelect id={'restaurants'}
                           name={'restaurants'}
                           labelName={t('restaurants')}
                           value={chosenRestaurants}
@@ -72,12 +76,12 @@ export const UserFormTemplate = () => {
                           placeholder={t('choose')}
                           isClearable={true}
                           isMulti={true}
-                          options={restaurants}
-                          components={animatedComponents}
-                          closeMenuOnSelect={true}
+                          options={mergedRestaurants}
+                          components={{...animatedComponents, NoOptionsMessage: CustomNoOptionsMessage}}
                           isRequired={true}
+                          error={errorData}
             />
-            <CustomSelect id={'user-roles'}
+            <CustomSelect id={'roles'}
                           name={'roles'}
                           labelName={t('roles')}
                           value={chosenRoles}
@@ -85,10 +89,11 @@ export const UserFormTemplate = () => {
                           placeholder={t('choose')}
                           isClearable={true}
                           isMulti={true}
-                          options={roles}
-                          components={animatedComponents}
+                          options={mergedRoles}
+                          components={{...animatedComponents, NoOptionsMessage: CustomNoOptionsMessage}}
                           closeMenuOnSelect={false}
                           isRequired={true}
+                          error={errorData}
             />
             <LogicalToggleField id={'active'}
                                 name={t('active')}
