@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {useConfirmationMessage} from "../../../../hooks/useConfirmationMessage";
@@ -12,14 +12,15 @@ import {
 import {DecisionDialog} from "../../cms/dialog-windows/DecisionDialog";
 import {executeLogoutFetch} from "../../../../slices/loginFormSlice";
 import {FormErrorDialog} from "../../../error/FormErrorDialog";
+import {setConfirmLogout} from "../../../../slices/globalParamsSlice";
 
 export const UserProfile = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const renderConfirmation = useConfirmationMessage(setUserProfileUpdated);
     const {password, newPassword, repeatedPassword} = useSelector(state => state.userProfile.form);
+    const {confirmLogout} = useSelector(state => state.globalParams.globalParams);
     const {errorData} = useSelector(state => state.userProfile.updateUserProfile);
-    const [confirmLogout, setConfirmLogout] = useState(false);
     const hasChangedPassword = password && newPassword && repeatedPassword;
     const logoutPending = useSelector(state => state.login.logoutFetch.isLoading);
 
@@ -28,7 +29,7 @@ export const UserProfile = () => {
         const resultAction = await dispatch(updateUserProfile());
         if (updateUserProfile.fulfilled.match(resultAction)) {
             await dispatch(getUserProfile());
-            hasChangedPassword ? setConfirmLogout(true) : renderConfirmation();
+            hasChangedPassword ? dispatch(setConfirmLogout(true)) : renderConfirmation();
         }
     }
 
