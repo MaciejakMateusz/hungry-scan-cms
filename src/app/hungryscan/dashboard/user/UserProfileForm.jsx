@@ -49,7 +49,7 @@ export const UserProfileForm = () => {
             dispatch(setChosenLanguage({value: language, label: t(language)}));
         }
         fillUserProfile();
-    }, [dispatch, t, userData])
+    }, [dispatch, userData])
 
     return (
         <>
@@ -62,7 +62,7 @@ export const UserProfileForm = () => {
                               name={t('username')}
                               placeholder={t('typeUsername')}
                               value={username}
-                              onChange={(e) => dispatch(setUsername(e))}
+                              onChange={(e) => dispatch(setUsername(e.target.value))}
                               required={true}
                               readOnly={true}
                               disabled={true}
@@ -74,7 +74,7 @@ export const UserProfileForm = () => {
                               name={t('forename')}
                               placeholder={t('typeForename')}
                               value={forename}
-                              onChange={(e) => dispatch(setForename(e))}
+                              onChange={(e) => dispatch(setForename(e.target.value))}
                               required={true}
                               error={errorData}
                               errorSetter={setErrorData}
@@ -84,7 +84,7 @@ export const UserProfileForm = () => {
                               name={t('surname')}
                               placeholder={t('typeSurname')}
                               value={surname}
-                              onChange={(e) => dispatch(setSurname(e))}
+                              onChange={(e) => dispatch(setSurname(e.target.value))}
                               required={true}
                               error={errorData}
                               errorSetter={setErrorData}
@@ -109,7 +109,7 @@ export const UserProfileForm = () => {
                                   name={t('oldPassword')}
                                   placeholder={t('typeOldPassword')}
                                   value={password}
-                                  onChange={(e) => dispatch(setPassword(e))}
+                                  onChange={(e) => dispatch(setPassword(e.target.value))}
                                   error={errorData}
                                   errorSetter={setErrorData}
                     />
@@ -118,7 +118,7 @@ export const UserProfileForm = () => {
                                   name={t('newPassword')}
                                   placeholder={t('typeNewPasswordField')}
                                   value={newPassword}
-                                  onChange={(e) => dispatch(setNewPassword(e))}
+                                  onChange={(e) => dispatch(setNewPassword(e.target.value))}
                                   error={errorData}
                                   errorSetter={setErrorData}
                     />
@@ -127,7 +127,7 @@ export const UserProfileForm = () => {
                                   name={t('repeatPassword')}
                                   placeholder={t('repeatNewPassword')}
                                   value={repeatedPassword}
-                                  onChange={(e) => dispatch(setRepeatedPassword(e))}
+                                  onChange={(e) => dispatch(setRepeatedPassword(e.target.value))}
                                   error={errorData}
                                   errorSetter={setErrorData}
                     />
