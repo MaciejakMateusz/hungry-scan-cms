@@ -24,6 +24,7 @@ export const UsersActivity = () => {
     const dispatch = useDispatch();
     const getTranslation = useGetTranslation();
     const {isLoading, data} = useSelector(state => state.statistics.usersActivity);
+    const isBeta = process.env.REACT_APP_IS_BETA === 'true';
 
     useEffect(() => {
         dispatch(getUsersActivity());
@@ -94,9 +95,9 @@ export const UsersActivity = () => {
         <>
             <WidgetHeader>{t('lastActivities')}</WidgetHeader>
             <Container>
+                {isBeta && <p className={'text-center'} style={{minHeight: '100px'}}>{t('unavailableInBeta')}</p>}
                 {isLoading && <LoadingSpinner/>}
-                {data
-                    ?.slice()
+                {!isBeta && data?.slice()
                     .sort((a, b) => new Date(b.lastSeenAt) - new Date(a.lastSeenAt))
                     .map((user, index) => (
                         <React.Fragment key={user.username}>
