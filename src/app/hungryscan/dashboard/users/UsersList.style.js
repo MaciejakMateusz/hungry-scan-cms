@@ -27,7 +27,7 @@ export const TableHeadCell = styled.th`
 
 export const TableRow = styled.tr`
     cursor: pointer;
-
+    height: 52px;
     &:hover {
         background: #F9F9F9;
     }
@@ -41,17 +41,25 @@ export const TableData = styled.td`
 `;
 
 export const TableDataActions = styled.td`
+    ${({ $isWide }) => !$isWide && `
+    position: sticky;
+    right: 1px;
+    `};
+`
+
+export const ActionsWrapper = styled.div`
     display: flex;
     align-items: center;
+    justify-content: center;
     ${({ $isWide }) => !$isWide && `
-    position: fixed;
-    right: 50px;
-    border: 1px solid var(--Grey-300);
+    border: 1px solid #EDEFF3;
+    background: #FFF;
     border-radius: 100px;
     width: 28px;
     height: 28px;
     `};
 `;
+
 
 export const Actions = styled.div`
     display: flex;
