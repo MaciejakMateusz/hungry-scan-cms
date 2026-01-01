@@ -1,9 +1,15 @@
 import {useDispatch, useSelector} from "react-redux";
-import {setCurrentView, setNextViewName} from "../slices/globalParamsSlice";
+import {setCmsActive, setCurrentView, setMobileNavActive, setNextViewName} from "../slices/globalParamsSlice";
 
 export const useSwitchView = ({clearStateHandler}) => {
     const dispatch = useDispatch();
-    const {isInEditMode, currentView} = useSelector(state => state.globalParams.globalParams);
+    const {
+        isCmsInEditMode,
+        isDashboardInEditMode,
+        currentView
+    } = useSelector(state => state.globalParams.globalParams);
+    const viewPrefix = currentView?.split('/')[0];
+    const isInEditMode = viewPrefix === 'dashboard' ? isDashboardInEditMode : isCmsInEditMode;
 
     return viewName => {
         if (isInEditMode) {
@@ -11,6 +17,9 @@ export const useSwitchView = ({clearStateHandler}) => {
         } else if (viewName !== currentView) {
             clearStateHandler();
             dispatch(setCurrentView(viewName));
+            dispatch(setMobileNavActive(false));
+            const viewPrefix = viewName.split('/')[0];
+            dispatch(setCmsActive(viewPrefix === 'cms'));
         }
     };
 }
