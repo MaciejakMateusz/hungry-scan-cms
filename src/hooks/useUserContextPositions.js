@@ -1,7 +1,7 @@
 import {useTranslation} from "react-i18next";
 import {EditIcon} from "../app/icons/EditIcon";
 import {useDispatch} from "react-redux";
-import {setActiveObjDetails, setIsInEditMode} from "../slices/globalParamsSlice";
+import {setActiveObjDetails, setDashboardInEditMode} from "../slices/globalParamsSlice";
 import {TrashIcon} from "../app/icons/TrashIcon";
 import {InfoIcon} from "../app/icons/InfoIcon";
 import {setEditUserFormActive, setUserToRemove, setUserToUpdate} from "../slices/usersSlice";
@@ -13,7 +13,7 @@ export const useUserContextPositions = ({user, setContextWindowActive}) => {
     const handleEditClick = async () => {
         dispatch(setUserToUpdate(user));
         dispatch(setEditUserFormActive(true));
-        dispatch(setIsInEditMode(true));
+        dispatch(setDashboardInEditMode(true));
         setContextWindowActive(false);
     };
 
