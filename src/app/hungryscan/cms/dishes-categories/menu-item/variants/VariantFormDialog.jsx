@@ -88,37 +88,38 @@ export const VariantFormDialog = ({variants}) => {
 
     return (
         <>
-            <div className={'overlay'}></div>
-            <div className={'form-dialog'}>
-                <div className={'variant-form-dialog-content'}>
-                    <h4>
-                        {isNewVariant ? t('createNewVariantForDish') : t('editVariant')}
-                    </h4>
-                    <NameField id={'variant-name'}
-                               value={name}
-                               onChange={(e) => setName(e)}
-                               error={getValidationMsg()}
-                    />
-                    <PriceField id={'price'}
-                                value={price}
-                                setPrice={(e) => setPrice(e)}
-                    />
-                    <LogicalToggleField id={'available'}
-                                        name={t('availability')}
-                                        value={available}
-                                        onChange={() => setAvailable(!available)}/>
-                </div>
-                <div className={'dialog-footer'}>
-                    <button className={'general-button cancel'} onClick={() => {
-                        clearFormState()
-                        dispatch(setVariantDialogActive(false));
-                    }}>
-                        {t('cancel')}
-                    </button>
-                    <button className={'general-button'}
-                            onClick={handleVariantSubmit}>
-                        {t('save')}
-                    </button>
+            <div className={'overlay'}>
+                <div className={'form-dialog'}>
+                    <div className={'variant-form-dialog-content'}>
+                        <div className={'form-dialog-title'}>
+                            {isNewVariant ? t('createNewVariantForDish') : t('editVariant')}
+                        </div>
+                        <NameField id={'variant-name'}
+                                   value={name}
+                                   onChange={(e) => setName(e)}
+                                   error={getValidationMsg()}
+                        />
+                        <PriceField id={'price'}
+                                    value={price}
+                                    setPrice={(e) => setPrice(e)}
+                        />
+                        <LogicalToggleField id={'available'}
+                                            name={t('availability')}
+                                            value={available}
+                                            onChange={() => setAvailable(!available)}/>
+                    </div>
+                    <div className={'dialog-footer'}>
+                        <button className={'general-button cancel'} onClick={() => {
+                            clearFormState()
+                            dispatch(setVariantDialogActive(false));
+                        }}>
+                            {t('cancel')}
+                        </button>
+                        <button className={'general-button'}
+                                onClick={handleVariantSubmit}>
+                            {t('save')}
+                        </button>
+                    </div>
                 </div>
             </div>
         </>
