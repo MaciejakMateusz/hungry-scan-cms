@@ -11,6 +11,7 @@ import {Tooltip} from "../../../Tooltip";
 import {UnavailableIcon} from "../../../../../icons/UnavailableIcon";
 import {useTranslation} from "react-i18next";
 import {setIsNewVariant, setVariant, setVariantDialogActive} from "../../../../../../slices/variantsSlice";
+import {useCloseOnScroll} from "../../../../../../hooks/useCloseOnScroll";
 
 export const VariantPosition = ({id, variant}) => {
     const {t} = useTranslation();
@@ -37,6 +38,10 @@ export const VariantPosition = ({id, variant}) => {
     };
 
     useOutsideClick(contextRef, () => {
+        setContextWindowActive(false);
+    }, contextWindowActive);
+
+    useCloseOnScroll(() => {
         setContextWindowActive(false);
     }, contextWindowActive);
 
