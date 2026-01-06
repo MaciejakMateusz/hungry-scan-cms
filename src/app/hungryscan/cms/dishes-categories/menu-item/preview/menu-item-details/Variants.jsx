@@ -8,7 +8,7 @@ import {DefinitionText, PositionsWrapper} from "./Variants.style";
 
 export const Variants = () => {
     const {t} = useTranslation();
-    const {variants, price} = useSelector(state => state.dishForm.form);
+    const {variants, price, promoPrice} = useSelector(state => state.dishForm.form);
     const preparedVariants = variants
         ?.filter(v => v.available)
         .sort((a, b) => a.displayOrder - b.displayOrder);
@@ -24,7 +24,7 @@ export const Variants = () => {
             <PositionsWrapper>
                 {preparedVariants.map(variant => (
                     <MenuItemDetailsPosition name={getTranslation(variant.name)}
-                                             price={`${formatPrice(variant.price + Number(price))} zł`}
+                                             price={`${formatPrice(variant.price + Number(promoPrice ?? price))} zł`}
                                              key={variant.id}
                     />
                 ))}
