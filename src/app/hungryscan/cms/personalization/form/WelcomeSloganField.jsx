@@ -51,6 +51,7 @@ export const WelcomeSloganField = () => {
                            dispatch(setWelcomeSlogan(e.target.value));
                        }}
                        placeholder={isFocused ? '' : t('addSlogan')}
+                       maxLength={255}
                        onFocus={() => setIsFocused(true)}
                        onBlur={() => setIsFocused(false)}/>
                 {isBlankMessage && <div className={'validation-msg'}>{isBlankMessage}</div>}
