@@ -17,7 +17,7 @@ RUN rm /etc/nginx/conf.d/default.conf
 
 COPY --from=builder /app/build /usr/share/nginx/html
 
-COPY default.conf.template /etc/nginx/templates/default.conf.template
+COPY nginx.conf /etc/nginx/templates/default.conf.template
 
 CMD ["nginx", "-g", "daemon off;"]
 
