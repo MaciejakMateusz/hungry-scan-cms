@@ -3,7 +3,18 @@ FROM node:18-alpine AS builder
 WORKDIR /app
 
 ARG REACT_APP_CORE_HOST
+ARG REACT_APP_MENU_HOST
+ARG REACT_APP_S3_BUCKET
+ARG REACT_APP_FALLBACK_LANGUAGE
+ARG REACT_APP_MENUS_LIMIT
+ARG REACT_APP_IS_BETA
+
 ENV REACT_APP_CORE_HOST=$REACT_APP_CORE_HOST
+ENV REACT_APP_MENU_HOST=$REACT_APP_MENU_HOST
+ENV REACT_APP_S3_BUCKET=$REACT_APP_S3_BUCKET
+ENV REACT_APP_FALLBACK_LANGUAGE=$REACT_APP_FALLBACK_LANGUAGE
+ENV REACT_APP_MENUS_LIMIT=$REACT_APP_MENUS_LIMIT
+ENV REACT_APP_IS_BETA=$REACT_APP_IS_BETA
 
 COPY package*.json ./
 RUN npm install
@@ -15,7 +26,7 @@ FROM nginx:stable-alpine
 
 RUN rm /etc/nginx/conf.d/default.conf
 
-COPY --from=builder /app/dist /usr/share/nginx/html
+COPY --from=builder /app/build /usr/share/nginx/html
 
 COPY nginx.conf /etc/nginx/templates/default.conf.template
 
