@@ -115,12 +115,11 @@ export const Personalization = () => {
         <div className={'background'}>
             <FormErrorDialog errorData={errorData} setErrorData={setErrorData}/>
             <form className={'cms-padded-view-container'}>
-                <FormHeader
-                    formHeader={t('personalization')}
-                    onFormSubmit={handleFormSubmit}
-                    isLoading={isLoading}
-                    submitDisabled={!!errorData}
-                    renderPreview={true}
+                <FormHeader formHeader={t('personalization')}
+                            onFormSubmit={handleFormSubmit}
+                            isLoading={isLoading}
+                            submitDisabled={!!errorData}
+                            renderPreview={true}
                 />
                 <div
                     className={'form-grid personalization'}
