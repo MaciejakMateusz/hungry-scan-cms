@@ -14,19 +14,11 @@ export const MenuItemFormWrapper = ({title, onFormDiscard, onFormSubmit, preview
     const {errorData} = useSelector(state => state.dishForm.form);
     const {previewActive} = useSelector(state => state.globalParams.globalParams);
 
-    const FormTitle = () => {
-        return (
-            <div className={'text-ellipsis'} style={{maxWidth: '50vw'}}>
-                {title}
-            </div>
-        );
-    }
-
     return (
         <div className={'background'}>
             <FormErrorDialog errorData={errorData} setErrorData={setErrorData}/>
             <form className={'cms-padded-view-container'}>
-                <FormHeader formHeader={<FormTitle/>}
+                <FormHeader formHeader={title}
                             onFormSubmit={onFormSubmit}
                             onFormDiscard={onFormDiscard}
                             renderPreview={true}
