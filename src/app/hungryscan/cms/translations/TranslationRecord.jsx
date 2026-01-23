@@ -62,7 +62,9 @@ export const TranslationRecord = ({
     const renderRecord = () => {
         if (isParent) {
             return (
-                <div className={'category-container-header enable-hover'} onClick={setActive}>
+                <div className={'category-container-header enable-hover'}
+                     style={{minWidth: '450px'}}
+                     onClick={setActive}>
                     <div className={'category-info'}>
                         <span className={'text-ellipsis'} style={{maxWidth: '50vw'}}>
                             {record[parentTranslatableKey][restaurantLanguage]}
