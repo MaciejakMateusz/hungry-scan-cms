@@ -94,6 +94,13 @@ export const LoginForm = () => {
                 </button>
                 {renderMessage()}
             </form>
+            {isBeta && (
+                <div className={'pass-reminder'}>
+                        <span className={'pass-reminder-link'}>
+                            <a href={'/password-recovery'}>{t('loginProblems')}</a>
+                        </span>
+                </div>
+            )}
             {!isBeta && (
                 <>
                     <div className={'login-else'}>
