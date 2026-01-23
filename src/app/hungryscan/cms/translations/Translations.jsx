@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
 import Select from "react-select";
 import {Helmet} from "react-helmet";
@@ -30,6 +30,7 @@ export const Translations = () => {
     const dispatch = useDispatch();
     const {chosenGroup, saveSuccess, activeRecord} = useSelector(state => state.translations.view);
     const {activeMenu} = useSelector(state => state.globalParams.globalParams);
+    const [isGroupDataLoading, setIsGroupDataLoading] = useState(false);
     const {autoTranslationError} = useSelector(state => state.translations.autoTranslate);
     const {postingError} = useSelector(state => state.translations.postTranslatables);
     const options = [
@@ -53,6 +54,7 @@ export const Translations = () => {
 
     const fetchRecords = async () => {
         const fetchGroupData = async (provider, type) => {
+            setIsGroupDataLoading(true);
             try {
                 const data = await dispatch(provider());
                 if (provider.fulfilled.match(data)) {
@@ -68,8 +70,10 @@ export const Translations = () => {
                 } else if (provider.rejected.match(data)) {
                     dispatch(setErrorData(data.payload));
                 }
+                setIsGroupDataLoading(false);
                 return data.payload
             } catch (error) {
+                setIsGroupDataLoading(false);
                 console.error("Error fetching data:", error);
                 dispatch(setErrorData(error));
             }
@@ -132,7 +136,7 @@ export const Translations = () => {
                             />
                         </div>
                     </div>
-                    <TranslationsList/>
+                    <TranslationsList isDataLoading={isGroupDataLoading}/>
                 </main>
             </div>
         </>
