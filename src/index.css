@@ -2965,7 +2965,6 @@ ul {
     justify-content: space-between;
     padding: 0 20px;
     font-size: 13px;
-    min-width: 450px;
 }
 
 .category-container-header.reordering {
