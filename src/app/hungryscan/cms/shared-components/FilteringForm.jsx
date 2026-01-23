@@ -6,6 +6,7 @@ export const FilteringForm = (props) => {
     return (
         <form className={'search-button-form'} onSubmit={props.searchSubmit}>
             <input type={'text'}
+                   ref={props.inputRef}
                    className={'search-button-input'}
                    autoComplete={'off'}
                    placeholder={t('search')}
