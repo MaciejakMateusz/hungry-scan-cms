@@ -5,14 +5,16 @@ import {useDispatch, useSelector} from "react-redux";
 import {TranslationContainer} from "./TranslationsList.style";
 import {setActiveRecord, setActiveRecordId} from "../../../../slices/translationsSlice";
 import {setCmsInEditMode} from "../../../../slices/globalParamsSlice";
+import {LoadingSpinner} from "../../../icons/LoadingSpinner";
 
-export const TranslationsList = () => {
+export const TranslationsList = ({isDataLoading}) => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {dishesCategories, variants, additions, menus} = useSelector(state => state.translations.view);
     const {chosenGroup} = useSelector(state => state.translations.view);
 
     const renderRecords = () => {
+        if (isDataLoading) return <LoadingSpinner/>
         switch (chosenGroup?.value) {
             case 'menuItemsVariants':
                 return (
