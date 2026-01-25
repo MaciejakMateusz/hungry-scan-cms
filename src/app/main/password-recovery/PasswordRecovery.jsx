@@ -46,8 +46,7 @@ export const PasswordRecovery = () => {
                                value={username}
                                error={errorData?.username}
                                hasError={checkUsername}
-                               changeHandler={(e) => dispatch(setUsername(e.target.value))}
-                               customWrapper={'short'}/>
+                               changeHandler={(e) => dispatch(setUsername(e.target.value))}/>
                     <button className={'form-submit-button short'}
                             onClick={handleRecoveryInit}>
                         {isLoading ? <LoadingSpinner buttonMode={true}/> : t('send')}
