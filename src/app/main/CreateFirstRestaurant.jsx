@@ -17,6 +17,7 @@ import {mainSelect} from "../../selectStyles";
 import {CustomNoOptionsMessage} from "../hungryscan/cms/form-components/CustomNoOptionsMessage";
 import {supportedLanguages} from "../../i18n";
 import {getLanguage} from "../../locales/langUtils";
+import {useRenderErrors} from "../../hooks/useRenderErrors";
 
 export const CreateFirstRestaurant = () => {
     const dispatch = useDispatch();
@@ -34,8 +35,7 @@ export const CreateFirstRestaurant = () => {
     const checkAddress = errorData?.address && address.length === 0;
     const checkPostalCode = errorData?.postalCode && postalCode.length === 0;
     const checkCity = errorData?.city && city.length === 0;
-    const is500Error = errorData?.status >= 500 && errorData?.status < 600;
-    const is400Error = errorData?.status >= 400 && errorData?.status < 500;
+    const errorNode = useRenderErrors(errorData);
     const supported = Object.keys(supportedLanguages);
     const destinationOptions = supported.map(language => ({value: language.toUpperCase(), label: t(language)}));
 
@@ -106,8 +106,7 @@ export const CreateFirstRestaurant = () => {
                         <button className={'form-submit-button'} onClick={handleInitialRestaurantCreation}>
                             {isLoading ? <LoadingSpinner buttonMode={true}/> : t('create')}
                         </button>
-                        {is500Error && <p className={'form-validation-msg'}>{t('internalServerError')}</p>}
-                        {is400Error && <p className={'form-validation-msg'}>{t('clientServerError')}</p>}
+                        {errorNode}
                     </form>
                     <span className={'change-restaurant-data-info '}>
                         {t('changeRestaurantDataInfo')}
