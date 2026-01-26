@@ -3566,12 +3566,13 @@ ul {
 
 .scheduler-control-panel {
     position: relative;
+    display: grid;
+    grid-template-rows: 1fr auto;
     min-width: 300px;
     max-width: 320px;
     background: #FFF;
     padding: 15px;
     box-sizing: border-box;
-    display: grid;
     margin-right: 15px;
 }
 
