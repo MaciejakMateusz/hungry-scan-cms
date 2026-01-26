@@ -21,25 +21,6 @@ export const PasswordRecovery = () => {
         dispatch(executeRecoveryInitFetch());
     };
 
-    const renderOtherErrors = () => {
-        if(!errorData) {
-            return (<></>);
-        }
-        if(is500Error) {
-            return (
-                <div className={'login-validation-msg'}>
-                    <span>{t('internalServerError')}</span>
-                </div>
-            );
-        } else if (is400Error) {
-            return (
-                <div className={'login-validation-msg'}>
-                    <span>{t('clientServerError')}</span>
-                </div>
-            );
-        }
-    }
-
     return (
         <div className={'main-page-dialog'}>
             <BackPurpleIcon onClick={() => window.location.href = '/sign-in'}/>
@@ -58,7 +39,16 @@ export const PasswordRecovery = () => {
                             onClick={handleRecoveryInit}>
                         {isLoading ? <LoadingSpinner buttonMode={true}/> : t('send')}
                     </button>
-                    {renderOtherErrors()}
+                    {is500Error &&
+                        <div className={'login-validation-msg'}>
+                            <span>{t('internalServerError')}</span>
+                        </div>
+                    }
+                    {is400Error &&
+                        <div className={'login-validation-msg'}>
+                            <span>{t('clientServerError')}</span>
+                        </div>
+                    }
                 </form>
             </section>
         </div>
