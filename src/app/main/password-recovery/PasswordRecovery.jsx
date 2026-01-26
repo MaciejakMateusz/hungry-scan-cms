@@ -13,6 +13,8 @@ export const PasswordRecovery = () => {
     const {username} = useSelector(state => state.recovery.recoveryInitForm);
     const {isLoading, errorData} = useSelector(state => state.recovery.recoveryInitFetch);
     const checkUsername = validateUsername(errorData, username ,t);
+    const is500Error = errorData?.status >= 500 && errorData?.status < 600;
+    const is400Error = errorData?.status >= 400 && errorData?.status < 500;
 
     const handleRecoveryInit = (e) => {
         e.preventDefault();
@@ -23,12 +25,17 @@ export const PasswordRecovery = () => {
         if(!errorData) {
             return (<></>);
         }
-        if(errorData.status === 500) {
+        if(is500Error) {
             return (
                 <div className={'login-validation-msg'}>
-                    <span>{t('somethingWentWrong')}</span>
+                    <span>{t('internalServerError')}</span>
                 </div>
-
+            );
+        } else if (is400Error) {
+            return (
+                <div className={'login-validation-msg'}>
+                    <span>{t('clientServerError')}</span>
+                </div>
             );
         }
     }
