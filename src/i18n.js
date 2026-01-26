@@ -23,7 +23,7 @@ i18n
     .use(initReactI18next)
     .init({
         resources: supportedLanguages,
-        fallbackLng: process.env.REACT_APP_FALLBACK_LANGUAGE || 'en',
+        fallbackLng: 'pl',
         supportedLngs: Object.keys(supportedLanguages),
         detection: {
             order: ['cookie', 'localStorage', 'navigator', 'htmlTag', 'path', 'subdomain'],

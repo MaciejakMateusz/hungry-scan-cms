@@ -10,6 +10,7 @@ import {setCurrentView} from "../../slices/globalParamsSlice";
 import {DISHES_CATEGORIES, STATS} from "../../utils/viewsConstants";
 import {CookieConsent} from "../main/cookies/CookieConsent";
 import {useWarnOnUnload} from "../../hooks/useWarnOnUnload";
+import i18n from "i18next";
 
 export const App = () => {
     const dispatch = useDispatch();
@@ -25,6 +26,14 @@ export const App = () => {
             hasAccessToDashboard ? dispatch(setCurrentView(STATS)) : dispatch(setCurrentView(DISHES_CATEGORIES));
         }
     }, [dispatch, hasAccessToDashboard]);
+
+    useEffect(() => {
+        const savedLang =
+            localStorage.getItem('i18nextLng') ||
+            document.cookie.includes('i18next=');
+
+        if (!savedLang) i18n.changeLanguage('pl');
+    }, []);
 
     const renderView = () => {
         if (hasAccessToDashboard !== undefined && hasAccessToDashboard === false) {
