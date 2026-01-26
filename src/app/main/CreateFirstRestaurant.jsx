@@ -34,7 +34,8 @@ export const CreateFirstRestaurant = () => {
     const checkAddress = errorData?.address && address.length === 0;
     const checkPostalCode = errorData?.postalCode && postalCode.length === 0;
     const checkCity = errorData?.city && city.length === 0;
-    const is500Error = errorData?.status === 500
+    const is500Error = errorData?.status >= 500 && errorData?.status < 600;
+    const is400Error = errorData?.status >= 400 && errorData?.status < 500;
     const supported = Object.keys(supportedLanguages);
     const destinationOptions = supported.map(language => ({value: language.toUpperCase(), label: t(language)}));
 
@@ -106,6 +107,7 @@ export const CreateFirstRestaurant = () => {
                             {isLoading ? <LoadingSpinner buttonMode={true}/> : t('create')}
                         </button>
                         {is500Error && <p className={'form-validation-msg'}>{t('internalServerError')}</p>}
+                        {is400Error && <p className={'form-validation-msg'}>{t('clientServerError')}</p>}
                     </form>
                     <span className={'change-restaurant-data-info '}>
                         {t('changeRestaurantDataInfo')}
