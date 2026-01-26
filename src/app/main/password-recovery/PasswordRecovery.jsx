@@ -6,15 +6,15 @@ import {executeRecoveryInitFetch, setUsername} from "../../../slices/recoveryFor
 import {LoadingSpinner} from "../../icons/LoadingSpinner";
 import {validateUsername} from "../../../utils/usernameValidator";
 import {BackPurpleIcon} from "../../icons/BackPurpleIcon";
+import {useRenderErrors} from "../../../hooks/useRenderErrors";
 
 export const PasswordRecovery = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {username} = useSelector(state => state.recovery.recoveryInitForm);
     const {isLoading, errorData} = useSelector(state => state.recovery.recoveryInitFetch);
-    const checkUsername = validateUsername(errorData, username ,t);
-    const is500Error = errorData?.status >= 500 && errorData?.status < 600;
-    const is400Error = errorData?.status >= 400 && errorData?.status < 500;
+    const checkUsername = validateUsername(errorData, username, t);
+    const errorNode = useRenderErrors(errorData);
 
     const handleRecoveryInit = (e) => {
         e.preventDefault();
@@ -39,16 +39,7 @@ export const PasswordRecovery = () => {
                             onClick={handleRecoveryInit}>
                         {isLoading ? <LoadingSpinner buttonMode={true}/> : t('send')}
                     </button>
-                    {is500Error &&
-                        <div className={'login-validation-msg'}>
-                            <span>{t('internalServerError')}</span>
-                        </div>
-                    }
-                    {is400Error &&
-                        <div className={'login-validation-msg'}>
-                            <span>{t('clientServerError')}</span>
-                        </div>
-                    }
+                    {errorNode}
                 </form>
             </section>
         </div>
