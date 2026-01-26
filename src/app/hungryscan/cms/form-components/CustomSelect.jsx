@@ -52,6 +52,8 @@ export const CustomSelect = (props) => {
                             isMulti={props.isMulti}
                             closeMenuOnSelect={props.closeMenuOnSelect}
                             menuPlacement={props.menuPlacement}
+                            isSearchable={props.isSearchable}
+                            blurInputOnSelect={false}
                     />
                     {props.error?.[props.id] &&
                         <div className={'validation-msg'}>
