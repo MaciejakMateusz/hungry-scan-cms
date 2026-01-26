@@ -32,12 +32,12 @@ export const BannersMultiselect = () => {
                       placeholder={t('choose')}
                       isClearable={true}
                       isMulti={true}
+                      closeMenuOnSelect={false}
                       options={mergedOptions}
                       components={{
                           ...animatedComponents,
                           NoOptionsMessage: CustomNoOptionsMessage,
                           MultiValueRemove: CustomMultivalueRemove}}
-                      closeMenuOnSelect={false}
         />
     );
 }
