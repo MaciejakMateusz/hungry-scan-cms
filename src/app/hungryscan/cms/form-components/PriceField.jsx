@@ -37,6 +37,13 @@ export const PriceField = (props) => {
         }
     };
 
+    const handleFocus = () => {
+        setIsFocused(true);
+        if (props.value === '0.00') {
+            props.setPrice('');
+        }
+    }
+
     return (
         <div className={'form-field-wrapper'}>
             <div className={'form-field-container price'}>
@@ -52,7 +59,7 @@ export const PriceField = (props) => {
                                className={`form-field price ${props.error?.[props.id] ? 'error' : ''}`}
                                value={props.value}
                                onChange={handlePriceChange}
-                               onFocus={() => setIsFocused(true)}
+                               onFocus={handleFocus}
                                onBlur={(e) => handleBlur(e)}
                         />
                         {props.error?.[props.id] && <div className={'validation-msg'}>{props.error[props.id]}</div>}
