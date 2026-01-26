@@ -1,6 +1,6 @@
 import {useTranslation} from "react-i18next";
 import {EditIcon} from "../app/icons/EditIcon";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {
     setActiveRemovalType,
     setCategory, setCategoryForAction,
@@ -15,6 +15,8 @@ import {ReorderIcon} from "../app/icons/ReorderIcon";
 export const useCategoryContextPositions = ({category, setContextWindowActive}) => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
+    const {menu} = useSelector(state => state.cms.fetchActiveMenu);
+    const categoriesCount = menu?.categories?.length;
 
     const handleEditClick = async () => {
         dispatch(setCategory(category));
@@ -22,7 +24,7 @@ export const useCategoryContextPositions = ({category, setContextWindowActive}) 
         setContextWindowActive(false);
     };
 
-    return [
+    const positions = [
         {
             id: 'edit',
             name: t('edit'),
@@ -58,4 +60,6 @@ export const useCategoryContextPositions = ({category, setContextWindowActive}) 
             },
             details: true
         }];
+
+    return categoriesCount === 1 ? positions.filter(p => p.id !== 'reorderCategories') : positions;
 }
