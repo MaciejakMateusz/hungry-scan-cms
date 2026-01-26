@@ -26,7 +26,7 @@ i18n
         fallbackLng: 'pl',
         supportedLngs: Object.keys(supportedLanguages),
         detection: {
-            order: ['navigator', 'htmlTag', 'cookie', 'localStorage', 'path', 'subdomain'],
+            order: ['cookie', 'navigator', 'htmlTag', 'localStorage', 'path', 'subdomain'],
             caches: ['cookie', 'localStorage']
         },
         interpolation: {
