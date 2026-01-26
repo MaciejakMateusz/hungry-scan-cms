@@ -150,6 +150,7 @@
   "error": "Fehler",
   "errorOccurred": "Ein Fehler ist aufgetreten",
   "internalServerError": "Interner Serverfehler, kontaktiere den Administrator.",
+  "clientServerError": "Ein Fehler ist aufgetreten, wenden Sie sich an den Administrator.",
   "close": "Schließen",
   "errorSummary": "Details",
   "noCreatedIngr": "Keine erstellten Zutaten",

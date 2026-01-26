@@ -150,6 +150,7 @@
   "error": "Erreur",
   "errorOccurred": "Une erreur s'est produite",
   "internalServerError": "Erreur interne du serveur, contactez l'administrateur.",
+  "clientServerError": "Une erreur s'est produite, contactez l'administrateur.",
   "close": "Fermer",
   "errorSummary": "Détails",
   "noCreatedIngr": "Aucun ingrédient créé",

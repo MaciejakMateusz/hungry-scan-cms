@@ -148,6 +148,7 @@
   "error": "Błąd",
   "errorOccurred": "Wystąpił błąd",
   "internalServerError": "Wewnętrzny błąd serwera, skontaktuj się z administratorem.",
+  "clientServerError": "Wystąpił błąd, skontaktuj się z administratorem.",
   "close": "Zamknij",
   "errorSummary": "Szczegóły",
   "noCreatedIngr": "Brak utworzonych dodatków",
