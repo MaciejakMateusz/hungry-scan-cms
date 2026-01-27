@@ -10,8 +10,9 @@ export const Additions = () => {
     const {t} = useTranslation();
     const {chosenAdditions} = useSelector(state => state.dishAdditions.fetchIngredients);
     const getTranslation = useGetTranslation();
+    const filteredAdditions = chosenAdditions?.filter(addition => addition.value.available);
 
-    if (chosenAdditions.length === 0) {
+    if (filteredAdditions.length === 0) {
         return null;
     }
 
@@ -22,9 +23,7 @@ export const Additions = () => {
                 <OptionalText> ({t('optional')}):</OptionalText>
             </DefinitionText>
             <PositionsWrapper>
-                {chosenAdditions
-                    ?.filter(addition => addition.value.available)
-                    .map(addition => (
+                {filteredAdditions.map(addition => (
                     <MenuItemDetailsPosition name={getTranslation(addition.value.name)}
                                              price={`+${formatPrice(addition.value.price)} zł`}
                                              key={addition.value.id}
