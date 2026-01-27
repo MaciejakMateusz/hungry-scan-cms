@@ -427,7 +427,7 @@
   "confirmLogout": "Czy na pewno chcesz się wylogować?",
   "canContain": "Może zawierać:",
   "to": "na",
-  "scheduleUpdatedInfo": "Godziny otwarcia zostały zmienione, harmonogram menu został dostosowany - sprawdź czy nie potrzeba go dostosować.",
+  "scheduleUpdatedInfo": "Godziny otwarcia zostały zmienione, harmonogram menu został automtycznie zmodyfikowany - sprawdź czy nie potrzeba go dostosować.",
   "understood": "Rozumiem",
   "preview.errorTitle": "Podgląd nie jest teraz dostępny",
   "preview.errorDescription": "Jeśli nie widzisz tutaj podglądu, wyłącz Tarcze Brave lub dowolny bloker reklam dla tej strony i odśwież.",
