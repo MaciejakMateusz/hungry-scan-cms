@@ -23,7 +23,7 @@ export const WelcomeSloganField = () => {
 
     useEffect(() => {
         const isBlank = welcomeSlogan === '' || welcomeSlogan === null;
-        const isTooLong = welcomeSlogan.length > 255;
+        const isTooLong = welcomeSlogan?.length > 255;
         setIsBlankMessage(isBlank ? t('constraints.NotBlank') : null);
         setIsTooLongMessage(isTooLong ? t('constraints.MaxLength') : null);
         if (isBlankMessage) {
