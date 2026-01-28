@@ -20,12 +20,13 @@ import {filter} from "../../../../slices/filteringSlice";
 import {SearchButton} from "../dishes-categories/SearchButton";
 import {LetterGroup} from "./LetterGroup";
 import {useConfirmationMessage} from "../../../../hooks/useConfirmationMessage";
+import {fallbackLng} from "../../../../apiData";
 
 export const Additions = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {restaurant} = useSelector(state => state.dashboard.view);
-    const restaurantLanguage = restaurant?.value.settings.language.toLowerCase();
+    const restaurantLanguage = restaurant?.value?.settings?.language?.toLowerCase() ?? fallbackLng;
     const {
         filterValue,
         filterExpanded,
@@ -40,7 +41,7 @@ export const Additions = () => {
     const removalPending = useSelector(state => state.objRemoval.isLoading);
     const confirmAdditionRemoval = useConfirmationMessage(setAdditionRemoved);
     const letters = [...new Set(ingredients?.map((ingredient) =>
-        ingredient.name[restaurantLanguage].toUpperCase()[0]
+        ingredient.name[restaurantLanguage]?.toUpperCase()?.[0]
     ))];
 
     useEffect(() => {
@@ -56,7 +57,7 @@ export const Additions = () => {
 
     const filterIngredientsByLetter = (letter) => {
         return ingredients.filter((ingredient) =>
-            ingredient.name[restaurantLanguage].toUpperCase()[0] === letter);
+            ingredient.name[restaurantLanguage]?.toUpperCase()?.[0] === letter);
     }
 
     const handleAdditionRemoval = async (e, ingredient) => {
