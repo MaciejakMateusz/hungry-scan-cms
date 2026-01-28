@@ -96,7 +96,7 @@ export const CreateFirstRestaurant = () => {
                                       name={'language'}
                                       labelName={t('language')}
                                       isRequired={true}
-                                      info={t('restaurantLanguageInfo')}
+                                      info={t('restaurantLanguageInfoNew')}
                                       placeholder={'Wybierz język...'}
                                       value={settings.language}
                                       onChange={(selected) => dispatch(setLanguage(selected))}
