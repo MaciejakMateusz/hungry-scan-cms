@@ -28,8 +28,10 @@ export const RestaurantFormTemplate = () => {
         postalCode,
         city,
         settings,
-        chosenSupportedLanguages
+        chosenSupportedLanguages,
+        editRestaurantFormActive
     } = useSelector(state => state.restaurant.form);
+
     const {errorData} = useSelector(state => state.restaurant.form);
     const supported = Object.keys(supportedLanguages);
     const languageOptions = supported.filter(language => language.toUpperCase() !== settings.language?.value)
@@ -77,12 +79,15 @@ export const RestaurantFormTemplate = () => {
                               name={'language'}
                               labelName={t('language')}
                               isRequired={true}
-                              info={t('restaurantLanguageInfo')}
+                              info={editRestaurantFormActive ?
+                                  t('restaurantLanguageInfoEdit') :
+                                  t('restaurantLanguageInfoNew')}
                               placeholder={'Wybierz język...'}
                               value={settings.language}
                               onChange={(selected) => dispatch(setLanguage(selected))}
                               options={languageOptions}
                               styles={customSelect}
+                              isDisabled={editRestaurantFormActive}
                               components={{NoOptionsMessage: CustomNoOptionsMessage}}/>
                 <CustomSelect id={'supported-languages'}
                               name={'supportedLanguages'}
