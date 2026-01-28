@@ -8,6 +8,7 @@ import translation_de from './locales/de/translation_de.json';
 import translation_fr from './locales/fr/translation_fr.json';
 import translation_es from './locales/es/translation_es.json';
 import translation_uk from './locales/uk/translation_uk.json';
+import {fallbackLng} from "./apiData";
 
 export const supportedLanguages = {
     pl: {translation: translation_pl},
@@ -23,7 +24,7 @@ i18n
     .use(initReactI18next)
     .init({
         resources: supportedLanguages,
-        fallbackLng: 'pl',
+        fallbackLng: fallbackLng,
         supportedLngs: Object.keys(supportedLanguages),
         detection: {
             order: ['cookie', 'navigator', 'htmlTag', 'localStorage', 'path', 'subdomain'],
