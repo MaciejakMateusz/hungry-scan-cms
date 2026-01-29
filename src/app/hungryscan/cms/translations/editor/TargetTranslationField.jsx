@@ -55,6 +55,7 @@ export const TargetTranslationField = ({value, changeHandler, type}) => {
                               id={type}
                               name={type}
                               value={value}
+                              maxLength={255}
                               onChange={(e) => handleFieldChange(e.target.value)}
                     />
             </div>
