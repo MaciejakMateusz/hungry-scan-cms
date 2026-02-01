@@ -98,6 +98,7 @@ export const VariantFormDialog = ({variants}) => {
                                    value={name}
                                    onChange={(e) => setName(e)}
                                    error={getValidationMsg()}
+                                   maxLength={100}
                         />
                         <PriceField id={'price'}
                                     value={price}
