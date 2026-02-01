@@ -82,7 +82,7 @@ export const RestaurantFormTemplate = () => {
                               info={editRestaurantFormActive ?
                                   t('restaurantLanguageInfoEdit') :
                                   t('restaurantLanguageInfoNew')}
-                              placeholder={'Wybierz język...'}
+                              placeholder={t('chooseLanguage')}
                               value={settings.language}
                               onChange={(selected) => dispatch(setLanguage(selected))}
                               options={languageOptions}
