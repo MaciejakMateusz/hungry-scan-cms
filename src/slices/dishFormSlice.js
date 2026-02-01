@@ -306,7 +306,7 @@ export const dishFormSlice = createSlice({
         banners: [],
         variants: [],
         price: formatPrice(0, true),
-        promoPrice: formatPrice(0, true),
+        promoPrice: null,
         additionalIngredients: [],
         available: true,
         displayOrder: 0,
@@ -394,7 +394,7 @@ export const dishFormSlice = createSlice({
             state.category = null;
             state.variants = [];
             state.price = formatPrice(0, true);
-            state.promoPrice = formatPrice(0, true);
+            state.promoPrice = null;
             state.file = {};
             state.chosenLabels = [];
             state.chosenAllergens = [];
