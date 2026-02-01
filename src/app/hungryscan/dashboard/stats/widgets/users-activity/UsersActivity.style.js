@@ -57,8 +57,7 @@ export const BottomRow = styled.div`
 `
 
 export const SignedIndicator = styled.div`
-    width: 9px;
-    height: 9px;
+    padding: 4px;
     background: #6EC191;
     border-radius: 100px;
     margin-right: 5px;

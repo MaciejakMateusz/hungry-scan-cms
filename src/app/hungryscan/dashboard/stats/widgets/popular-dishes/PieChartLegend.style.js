@@ -19,8 +19,7 @@ export const IconLabelWrapper = styled.div`
 `
 
 export const Icon = styled.div`
-    width: 9px;
-    height: 9px;
+    padding: 4px;
     background: ${({ $color }) => $color};
     border-radius: 100px;
 `

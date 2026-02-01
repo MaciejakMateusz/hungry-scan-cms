@@ -17,8 +17,7 @@ export const UniqueScanIconContainer = styled.div`
 `
 
 export const UniqueScanIcon = styled.div`
-    width: 9px;
-    height: 9px;
+    padding: 4px;
     background: #016DFF;
     border-radius: 100px;
 `
@@ -31,8 +30,7 @@ export const RepeatedScanIconContainer = styled.div`
 `
 
 export const RepeatedScanIcon = styled.div`
-    width: 9px;
-    height: 9px;
+    padding: 4px;
     background: #4C97F6;
     border-radius: 100px;
 `
