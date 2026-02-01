@@ -55,7 +55,7 @@ export const DecisionDialog = (props) => {
             <div className={'overlay'}>
                 <div className={'decision-dialog'}>
                     <div className={'decision-dialog-content'}>
-                        <p>{props.msg} {renderDialogTitle()}</p>
+                        <p className={'three-line-text-ellipsis'} >{props.msg} {renderDialogTitle()}</p>
                         {props.logicalToggleHandler &&
                             <LogicalToggleField value={props.logicalToggleValue}
                                                 id={'logical-toggle'}
