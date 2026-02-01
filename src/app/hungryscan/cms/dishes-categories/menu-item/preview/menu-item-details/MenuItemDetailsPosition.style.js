@@ -17,6 +17,14 @@ export const PositionText = styled.span`
     color: var(--Basic-900);
     font-size: 14px;
     font-weight: 300;
+    width: 100%;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-height: 1.3;
+    max-height: calc(1.3em * 3);
+    margin-right: 10px;
 `
 
 export const PositionPrice= styled.span`
