@@ -84,6 +84,7 @@ export const AdditionFormDialog = (props) => {
                                    value={name}
                                    onChange={(e) => dispatch(setName(e))}
                                    error={errorData}
+                                   maxLength={100}
                         />
                         <PriceField id={'price'}
                                     value={price}
