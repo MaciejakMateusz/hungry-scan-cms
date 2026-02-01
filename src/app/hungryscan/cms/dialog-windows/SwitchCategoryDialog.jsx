@@ -14,6 +14,7 @@ import {useConfirmationMessage} from "../../../../hooks/useConfirmationMessage";
 import {fetchActiveMenu} from "../../../../slices/cmsSlice";
 import {FormErrorDialog} from "../../../error/FormErrorDialog";
 import {CustomNoOptionsMessage} from "../form-components/CustomNoOptionsMessage";
+import {BorderedButton} from "../../common/BorderedButton";
 
 export const SwitchCategoryDialog = () => {
     const {t} = useTranslation();
@@ -79,9 +80,9 @@ export const SwitchCategoryDialog = () => {
                         />
                     </div>
                     <div className={'decision-dialog-footer'}>
-                        <button onClick={handleDiscard} className={'general-button cancel'}>
-                            {t('cancel')}
-                        </button>
+                        <BorderedButton onClick={handleDiscard}
+                                        text={t('cancel')}
+                                        isBordered={true}/>
                         <form onSubmit={handleSubmit} style={{all: 'unset'}}>
                             <button type="submit" className={'general-button'}>
                                 {isLoading ? <LoadingSpinner buttonMode={true}/> : t('save')}
