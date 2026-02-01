@@ -434,6 +434,7 @@
   "preview.errorDescription2": "If the problem persists, our preview server may be temporarily unavailable.",
   "noPositionsFound": "No positions found",
   "unavailableInBeta": "Unavailable in current version",
+  "chooseLanguage": "Choose language...",
 
   "constraints.NotBlank": "Field cannot be blank",
   "constraints.ForenameSurname": "Field should contain minimum 2 letters and no special characters",

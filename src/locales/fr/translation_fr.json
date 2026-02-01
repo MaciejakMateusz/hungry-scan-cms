@@ -434,6 +434,7 @@
   "preview.errorDescription2": "Si le problème persiste, notre serveur d'aperçu peut être temporairement indisponible.",
   "noPositionsFound": "Aucune position trouvée",
   "unavailableInBeta": "Indisponible dans la version actuelle",
+  "chooseLanguage": "Choisir une langue...",
 
   "constraints.NotBlank": "Le champ ne peut pas être vide",
   "constraints.ForenameSurname": "Le champ doit contenir au minimum 2 lettres et aucun caractère spécial",

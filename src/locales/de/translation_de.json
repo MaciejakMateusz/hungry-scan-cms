@@ -434,6 +434,7 @@
   "preview.errorDescription2": "Wenn das Problem weiterhin besteht, ist unser Vorschau-Server möglicherweise vorübergehend nicht verfügbar.",
   "noPositionsFound": "Keine Positionen gefunden",
   "unavailableInBeta": "In der aktuellen Version nicht verfügbar",
+  "chooseLanguage": "Sprache auswählen...",
 
   "constraints.NotBlank": "Feld darf nicht leer sein",
   "constraints.ForenameSurname": "Das Feld sollte mindestens 2 Buchstaben enthalten und keine Sonderzeichen",

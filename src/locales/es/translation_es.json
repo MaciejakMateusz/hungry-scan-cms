@@ -434,6 +434,8 @@
   "preview.errorDescription2": "Si el problema persiste, nuestro servidor de vista previa puede no estar disponible temporalmente.",
   "noPositionsFound": "No se encontraron posiciones",
   "unavailableInBeta": "No disponible en la versión actual",
+  "chooseLanguage": "Elegir idioma...",
+
   "constraints.NotBlank": "El campo no puede estar vacío",
   "constraints.ForenameSurname": "El campo debe contener al menos 2 letras y no debe incluir caracteres especiales",
   "constraints.MaxLength": "El contenido debe ser más corto que 255 caracteres"
