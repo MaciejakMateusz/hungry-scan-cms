@@ -20,7 +20,7 @@ import {supportedLanguages} from "../../../../i18n";
 import {getLanguage} from "../../../../locales/langUtils";
 
 export const UserProfileForm = () => {
-    const {t} = useTranslation();
+    const {t, i18n} = useTranslation();
     const dispatch = useDispatch();
     const {userData} = useSelector(state => state.userProfile.getUserProfile);
     const {errorData} = useSelector(state => state.userProfile.updateUserProfile);
@@ -50,6 +50,15 @@ export const UserProfileForm = () => {
         }
         fillUserProfile();
     }, [dispatch, userData])
+
+    useEffect(() => {
+        if (!chosenLanguage?.value) return;
+
+        dispatch(setChosenLanguage({
+            value: chosenLanguage.value,
+            label: t(chosenLanguage.value),
+        }));
+    }, [i18n.language, chosenLanguage?.value, dispatch]);
 
     return (
         <>
@@ -142,7 +151,7 @@ export const UserProfileForm = () => {
                               labelName={t('language')}
                               isRequired={true}
                               info={t('systemLanguage')}
-                              placeholder={'Wybierz język...'}
+                              placeholder={t('chooseLanguage')}
                               value={chosenLanguage}
                               onChange={(selected) => dispatch(setChosenLanguage(selected))}
                               options={languages}
