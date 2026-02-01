@@ -938,6 +938,16 @@ ul {
     text-wrap: nowrap;
 }
 
+.three-line-text-ellipsis {
+    line-height: 1.2;
+    max-height: calc(1.2em * 3);
+    overflow: clip;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow-wrap: anywhere;
+}
+
 .profile-name {
     color: #FFF;
     font-size: 1.2rem;
@@ -3026,6 +3036,7 @@ ul {
     grid-row: 3;
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     margin-top: 10px;
     gap: 10px;
     padding-right: 15px;
