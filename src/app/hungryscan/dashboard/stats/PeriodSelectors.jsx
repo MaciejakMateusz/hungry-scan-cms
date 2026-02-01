@@ -26,8 +26,7 @@ export const PeriodSelectors = () => {
         period: periodObject,
         initialYear, chosenYear,
         initialMonth, chosenMonth,
-        initialWeek, chosenWeek,
-        chosenDay
+        chosenWeek, chosenDay
     } = useSelector(state => state.statistics.view);
     const {restaurant} = useSelector(state => state.dashboard.view);
     const [restaurantCreation, setRestaurantCreation] = useState(new Date());
@@ -58,8 +57,7 @@ export const PeriodSelectors = () => {
             ) {
                 fetchStatistics();
             }
-        }, 150),
-        [period, chosenYear, chosenMonth, chosenWeek, chosenDay]
+        }, 150), [period, chosenYear, chosenMonth, chosenWeek, chosenDay]
     );
 
     useEffect(() => {
@@ -91,16 +89,18 @@ export const PeriodSelectors = () => {
     }, [dispatch, restaurant, t]);
 
     useEffect(() => {
-        if (period === 'month' && chosenYear) {
-            const validMonthOptions =
-                DateService.getMonthsCollection(restaurantCreation, chosenYear, t);
-            dispatch(setChosenMonth(validMonthOptions[0]));
-        } else if (period === 'week' && chosenYear) {
-            const validWeekOptions =
-                DateService.getWeeksCollection(restaurantCreation, chosenYear, t);
-            dispatch(setChosenWeek(validWeekOptions[0]));
+        if (period !== 'week' || !chosenYear) return;
+
+        const options = DateService.getWeeksCollection(restaurantCreation, chosenYear, t);
+        const currentWeek = DateService.getCurrentWeekNumber();
+
+        const currentWeekOption = options.find(o => o.value === currentWeek);
+        const chosenStillValid = chosenWeek && options.some(o => o.value === chosenWeek.value);
+
+        if (!chosenStillValid) {
+            dispatch(setChosenWeek(currentWeekOption ?? options[0]));
         }
-    }, [period, chosenYear]);
+    }, [period, chosenYear, restaurantCreation, t, chosenWeek, dispatch]);
 
     const renderPeriodSelector = () => {
         switch (period) {
@@ -149,7 +149,6 @@ export const PeriodSelectors = () => {
                                 value={chosenWeek}
                                 placeholder={t('choose')}
                                 options={DateService.getWeeksCollection(restaurantCreation, chosenYear, t)}
-                                defaultValue={initialWeek}
                                 onChange={(selected) => dispatch(setChosenWeek(selected))}
                                 styles={dateStyles}
                                 components={{NoOptionsMessage: CustomNoOptionsMessage}}
