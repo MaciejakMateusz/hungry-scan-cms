@@ -7,7 +7,7 @@ import {useImageExists} from "../../../../../../hooks/useImageExists";
 
 export const MenuItemPosition = ({menuItem}) => {
     const {t} = useTranslation();
-    const hasImage = useImageExists(menuItem.id);
+    const hasImage = useImageExists(menuItem);
     const banners = menuItem.banners?.filter(banner => banner.id !== 'promo');
 
     return (
