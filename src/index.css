@@ -3185,8 +3185,10 @@ ul {
 .menu-item-position-image.is-expanded {
     position: fixed;
     z-index: 9999;
-    height: 80vh;
-    width: 80vh;
+    width: 70vmin;
+    height: 70vmin;
+    max-width: 90vw;
+    max-height: 90vh;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
