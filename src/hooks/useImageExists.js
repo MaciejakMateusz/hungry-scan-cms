@@ -7,7 +7,7 @@ export const useImageExists = id => {
     useEffect(() => {
         setExists(null);
         let cancelled = false;
-        const url = `${s3BucketUrl}/menuItems/${id}.png?cb=${Date.now()}`;
+        const url = `${s3BucketUrl}/menuItems/${id}.png`;
         const img = new Image();
         img.onload = () => {
             if (!cancelled) setExists(img.naturalWidth > 0);
