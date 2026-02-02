@@ -21,7 +21,7 @@ export const QrCode = () => {
     const restaurantData = restaurant?.value;
     const fetchCurrentRestaurant = useFetchCurrentRestaurant();
     const {isLoading} = useSelector(state => state.qrCodes.generateBasicQr);
-    const qrFileName = `${restaurantData?.id}/${restaurantData?.qrVersion}.png?t=${restaurantData?.updated}`;
+    const qrFileName = `${restaurantData?.id}/${restaurantData?.qrVersion}.png?cb=${restaurantData?.updated}`;
 
     const handleGeneration = async () => {
         await dispatch(generateBasicQr());
