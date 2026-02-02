@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {MenuItemFormTemplate} from "../../form-components/MenuItemFormTemplate";
 import {
     fetchMenuItem,
-    postDish,
+    postDish, setActiveTab,
     setAvailable,
     setCategory,
     setCategoryId,
@@ -111,11 +111,14 @@ export const EditMenuItemForm = () => {
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         dispatch(setErrorMessage(null));
+
         const isNameBlank = !name || name.trim().length === 0;
         if (isNameBlank) {
             dispatch(setErrorData({name: t('constraints.NotBlank')}));
+            dispatch(setActiveTab('information'));
             return;
         }
+
         const dishAction = await dispatch(postDish({
             action: 'update',
             file: file,
@@ -129,6 +132,7 @@ export const EditMenuItemForm = () => {
         } else if (postDish.rejected.match(dishAction)) {
             dispatch(setErrorData(dishAction.payload));
             dispatch(setErrorMessage(dishAction.payload));
+            dispatch(setActiveTab('information'));
         }
     };
 
