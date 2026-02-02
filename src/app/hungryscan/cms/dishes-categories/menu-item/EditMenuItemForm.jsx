@@ -50,7 +50,7 @@ export const EditMenuItemForm = () => {
     const {data} = useSelector(state => state.dishForm.fetchMenuItem);
     const item = data?.menuItemFormDTO;
     const [file, setFile] = useState(null);
-    const imageExists = useImageExists(dish?.id ?? 0);
+    const imageExists = useImageExists(dish);
     const translatableTransformers = {
         transformName: useTranslatableTransformer({obj: dish, key: 'name'}),
         transformDescription: useTranslatableTransformer({obj: dish, key: 'description'})
