@@ -54,7 +54,7 @@ export const MenuItemPosition = ({id, category, menuItem, filtered}) => {
         zIndex: isDragging && !filtered ? 800 : 'auto',
         cursor: "pointer"
     };
-    const hasImage = useImageExists(id);
+    const hasImage = useImageExists(menuItem);
 
     useOutsideClick(contextRef, () => {
         setContextWindowActive(false);
