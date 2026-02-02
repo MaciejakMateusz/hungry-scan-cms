@@ -3,7 +3,7 @@ import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {MenuItemFormTemplate} from "../../form-components/MenuItemFormTemplate";
 import {
-    postDish,
+    postDish, setActiveTab,
     setCategory,
     setErrorData,
     setErrorMessage,
@@ -50,6 +50,7 @@ export const NewMenuItemForm = () => {
         const isNameBlank = !name || name.trim().length === 0;
         if (isNameBlank) {
             dispatch(setErrorData({name: t('constraints.NotBlank')}));
+            dispatch(setActiveTab('information'));
             return;
         }
 
@@ -66,6 +67,7 @@ export const NewMenuItemForm = () => {
         } else if (postDish.rejected.match(dishAction)) {
             dispatch(setErrorData(dishAction.payload));
             dispatch(setErrorMessage(dishAction.payload));
+            dispatch(setActiveTab('information'));
         }
     };
 
