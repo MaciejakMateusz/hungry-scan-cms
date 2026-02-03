@@ -33,6 +33,7 @@ export const BannersMultiselect = () => {
                       isClearable={true}
                       isMulti={true}
                       closeMenuOnSelect={false}
+                      isSearchable={false}
                       options={mergedOptions}
                       components={{
                           ...animatedComponents,
