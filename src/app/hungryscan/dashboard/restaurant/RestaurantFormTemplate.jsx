@@ -86,6 +86,7 @@ export const RestaurantFormTemplate = () => {
                               value={settings.language}
                               onChange={(selected) => dispatch(setLanguage(selected))}
                               options={languageOptions}
+                              isSearchable={false}
                               styles={customSelect}
                               isDisabled={editRestaurantFormActive}
                               components={{NoOptionsMessage: CustomNoOptionsMessage}}/>
@@ -98,6 +99,7 @@ export const RestaurantFormTemplate = () => {
                               value={chosenSupportedLanguages}
                               placeholder={t('choose')}
                               options={languageOptions}
+                              isSearchable={false}
                               isClearable={true}
                               isMulti={true}
                               components={{...animatedComponents, NoOptionsMessage: CustomNoOptionsMessage}}/>

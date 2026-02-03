@@ -37,7 +37,7 @@ export const AdditionsMultiselect = () => {
                       placeholder={t('choose')}
                       options={mergedOptions}
                       isClearable={true}
-                      isSearchable={chosenAdditions?.length > 8}
+                      isSearchable={mergedOptions?.length > 8}
                       isMulti={true}
                       menuPlacement={'top'}
                       components={{

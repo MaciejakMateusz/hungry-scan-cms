@@ -75,6 +75,7 @@ export const SwitchCategoryDialog = () => {
                                       onChange={(selected) => dispatch(setChosenCategory(selected))}
                                       placeholder={t('choose')}
                                       options={categories}
+                                      isSearchable={categories?.length > 8}
                                       components={{...animatedComponents, NoOptionsMessage: CustomNoOptionsMessage}}
                                       closeMenuOnSelect={true}
                         />
