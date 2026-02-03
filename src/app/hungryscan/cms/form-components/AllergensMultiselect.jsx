@@ -25,6 +25,7 @@ export const AllergensMultiselect = () => {
                       placeholder={t('choose')}
                       options={mergedOptions}
                       isClearable={true}
+                      isSearchable={false}
                       isMulti={true}
                       menuPlacement={'top'}
                       components={{
