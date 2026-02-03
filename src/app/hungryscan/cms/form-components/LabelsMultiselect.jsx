@@ -26,6 +26,7 @@ export const LabelsMultiselect = () => {
                       placeholder={t('choose')}
                       options={mergedOptions}
                       isClearable={true}
+                      isSearchable={false}
                       isMulti={true}
                       components={{
                           ...animatedComponents,
