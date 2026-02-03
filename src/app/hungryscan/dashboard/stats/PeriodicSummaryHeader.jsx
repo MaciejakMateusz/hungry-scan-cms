@@ -29,6 +29,7 @@ export const PeriodicSummaryHeader = () => {
                             value={period}
                             placeholder={t('choose')}
                             options={periodModes}
+                            isSearchable={false}
                             onChange={(selected) => dispatch(setPeriod(selected))}
                             styles={dateStyles}
                             components={{NoOptionsMessage: CustomNoOptionsMessage}}

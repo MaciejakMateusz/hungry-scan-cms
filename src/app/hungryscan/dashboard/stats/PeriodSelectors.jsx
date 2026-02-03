@@ -114,6 +114,7 @@ export const PeriodSelectors = () => {
                             defaultValue={initialYear}
                             onChange={(selected) => dispatch(setChosenYear(selected))}
                             styles={dateStyles}
+                            isSearchable={false}
                             components={{NoOptionsMessage: CustomNoOptionsMessage}}
                     />
                 );
@@ -127,6 +128,7 @@ export const PeriodSelectors = () => {
                                 options={DateService.getMonthsCollection(restaurantCreation, chosenYear, t)}
                                 onChange={(selected) => dispatch(setChosenMonth(selected))}
                                 styles={dateStyles}
+                                isSearchable={false}
                                 components={{NoOptionsMessage: CustomNoOptionsMessage}}
                         />
                         <Select id={'period-year-month'}
@@ -137,6 +139,7 @@ export const PeriodSelectors = () => {
                                 defaultValue={initialYear}
                                 onChange={(selected) => dispatch(setChosenYear(selected))}
                                 styles={dateStyles}
+                                isSearchable={false}
                                 components={{NoOptionsMessage: CustomNoOptionsMessage}}
                         />
                     </>
@@ -151,6 +154,7 @@ export const PeriodSelectors = () => {
                                 options={DateService.getWeeksCollection(restaurantCreation, chosenYear, t)}
                                 onChange={(selected) => dispatch(setChosenWeek(selected))}
                                 styles={dateStyles}
+                                isSearchable={false}
                                 components={{NoOptionsMessage: CustomNoOptionsMessage}}
                         />
                         <Select id={'period-year-week'}
@@ -161,6 +165,7 @@ export const PeriodSelectors = () => {
                                 defaultValue={initialYear}
                                 onChange={(selected) => dispatch(setChosenYear(selected))}
                                 styles={dateStyles}
+                                isSearchable={false}
                                 components={{NoOptionsMessage: CustomNoOptionsMessage}}
                         />
                     </>
@@ -188,6 +193,7 @@ export const PeriodSelectors = () => {
                             defaultValue={initialMonth}
                             onChange={(selected) => dispatch(setChosenMonth(selected))}
                             styles={dateStyles}
+                            isSearchable={false}
                             components={{NoOptionsMessage: CustomNoOptionsMessage}}
                     />
                 );
