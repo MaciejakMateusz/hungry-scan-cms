@@ -25,7 +25,12 @@ export const Icon = styled.div`
 `
 
 export const Label = styled.div`
-
+    line-height: 1.2;
+    max-height: 1.2em;
+    overflow: clip;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
 `
 
 export const Value = styled.div`
