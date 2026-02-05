@@ -205,7 +205,9 @@ export const BarChart = () => {
                                            border: '1px solid #ccc',
                                            borderRadius: 4
                                        }}>
-                                       <strong>{id === 'repeatedScans' ? t('repeated') : t('unique')}: {value}</strong>
+                                       <span style={{fontWeight: '500'}}>
+                                           {id === 'repeatedScans' ? t('repeated') : t('unique')}: {value}
+                                       </span>
                                    </div>
                                )}
                 />
