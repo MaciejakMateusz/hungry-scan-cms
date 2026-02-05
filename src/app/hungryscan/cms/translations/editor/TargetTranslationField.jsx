@@ -16,7 +16,7 @@ export const TargetTranslationField = ({value, changeHandler, type}) => {
     } = useSelector(state => state.translations.view);
     const {chosenDestinationLanguage} = useSelector(state => state.translations.view);
     const {restaurant} = useSelector(state => state.dashboard.view);
-    const isBeta = process.env.REACT_APP_IS_BETA === 'true';
+    const isBeta = String(process.env.REACT_APP_IS_BETA).toLowerCase() === 'true';
 
     const handleFieldChange = value => {
         dispatch(changeHandler(value));
