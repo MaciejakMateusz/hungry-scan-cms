@@ -5,6 +5,7 @@ import {useSelector} from "react-redux";
 import {PieChartLegend} from "./PieChartLegend";
 import {useWindowWidth} from "../../../../../../hooks/useWindowWidth";
 import {ChartContainer, MobileChartWrapper, TooltipContainer} from "./QrFrequencyChart.style";
+import {capitalizeFirst} from "../../../../../../utils/utils";
 
 export const QrFrequencyChart = () => {
     const {t} = useTranslation();
@@ -108,14 +109,14 @@ export const QrFrequencyChart = () => {
         return (
             <TooltipContainer>
                 <div>
-                    <span>{datum.data?.label}</span>
+                    <span style={{fontWeight: '500'}}>{datum.data?.label}</span>
                     <br/>
                     <span>
                         {t('percent')}: {percent}%
                     </span>
                     <br/>
                     <span>
-                        {t('views')}: {datum.data?.number}
+                        {capitalizeFirst(t('scans'))}: {datum.data?.value}
                     </span>
                 </div>
             </TooltipContainer>
@@ -140,41 +141,40 @@ export const QrFrequencyChart = () => {
 
     const margins = isMobile
         ? {top: 24, right: 24, bottom: 24, left: 24}
-        : {top: 35, right: 300, bottom: 35, left: 30};
+        : {top: 35, right: 290, bottom: 70, left: 40};
 
     return (
         <ChartContainer style={{maxWidth: isMobile ? 'unset' : '470px',}}>
             <div style={{width: '100%', height: isMobile ? 180 : 280}}>
-                <ResponsivePie
-                    data={totalValue === 0 ? zeroedChart : chartData}
-                    margin={margins}
-                    sortByValue={true}
-                    innerRadius={0.75}
-                    cornerRadius={5}
-                    activeOuterRadiusOffset={8}
-                    colors={
-                        totalValue === 0
-                            ? ['#F6F6F6']
-                            : ['#016DFF', '#4C97F6']
-                    }
-                    enableArcLinkLabels={false}
-                    arcLinkLabelsSkipAngle={10}
-                    arcLinkLabelsTextColor='#333333'
-                    arcLinkLabelsThickness={2}
-                    arcLinkLabelsColor={{from: 'color'}}
-                    enableArcLabels={false}
-                    arcLabelsRadiusOffset={0.45}
-                    arcLabelsSkipAngle={4}
-                    arcLabelsTextColor={{
-                        from: 'color',
-                        modifiers: [['darker', 2]],
-                    }}
-                    motionConfig='wobbly'
-                    transitionMode='startAngle'
-                    startAngle={-120}
-                    endAngle={90}
-                    layers={isMobile ? mobileLayers : desktopLayers}
-                    tooltip={({datum}) => <Tooltip datum={datum}/>}
+                <ResponsivePie data={totalValue === 0 ? zeroedChart : chartData}
+                               margin={margins}
+                               sortByValue={true}
+                               innerRadius={0.75}
+                               cornerRadius={5}
+                               activeOuterRadiusOffset={8}
+                               colors={
+                                   totalValue === 0
+                                       ? ['#F6F6F6']
+                                       : ['#016DFF', '#4C97F6']
+                               }
+                               enableArcLinkLabels={false}
+                               arcLinkLabelsSkipAngle={10}
+                               arcLinkLabelsTextColor='#333333'
+                               arcLinkLabelsThickness={2}
+                               arcLinkLabelsColor={{from: 'color'}}
+                               enableArcLabels={false}
+                               arcLabelsRadiusOffset={0.45}
+                               arcLabelsSkipAngle={4}
+                               arcLabelsTextColor={{
+                                   from: 'color',
+                                   modifiers: [['darker', 2]],
+                               }}
+                               motionConfig='wobbly'
+                               transitionMode='startAngle'
+                               startAngle={-120}
+                               endAngle={90}
+                               layers={isMobile ? mobileLayers : desktopLayers}
+                               tooltip={({datum}) => <Tooltip datum={datum}/>}
                 />
             </div>
 
