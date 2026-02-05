@@ -214,12 +214,12 @@ export const  LineChart = () => {
                             }}>
                                 {slice.points.map(point => (
                                     <div key={point.id} style={{color: point.serieColor}}>
-                                        <strong>
+                                        <span style={{fontWeight: '500'}}>
                                             {point.serieId === 'uniqueScans'
                                                 ? t('unique')
                                                 : t('repeated')
                                             }: {point.data.y}
-                                        </strong>
+                                        </span>
                                     </div>
                                 ))}
                             </div>
