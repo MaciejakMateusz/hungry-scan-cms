@@ -9,7 +9,7 @@ export const NavMenu = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const {userData} = useSelector(state => state.userProfile.getUserProfile);
-    const isBeta = process.env.REACT_APP_IS_BETA === 'true';
+    const isBeta = String(process.env.REACT_APP_IS_BETA) === 'true';
 
     useEffect(() => {
         dispatch(getUserProfile());
