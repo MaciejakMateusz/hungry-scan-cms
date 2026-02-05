@@ -35,13 +35,13 @@ export const Users = () => {
     const {removalError} = useSelector(state => state.users.removeUser);
     const windowWidth = useWindowWidth();
     const isMobile = windowWidth <= 1000;
-    const isBeta = process.env.REACT_APP_IS_BETA === 'true';
+    const isBeta = String(process.env.REACT_APP_IS_BETA).toLowerCase() === 'true';
 
     useEffect(() => {
-        dispatch(getUsers());
+        if(!isBeta) dispatch(getUsers());
         dispatch(clearForm());
         dispatch(clearProfileForm());
-    }, [dispatch]);
+    }, [dispatch, isBeta]);
 
     useEffect(() => {
         if (!filterExpanded && filterValue !== '') {
