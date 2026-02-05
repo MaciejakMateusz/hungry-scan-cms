@@ -13,7 +13,7 @@ import {App} from "../app/hungryscan/App";
 
 export const Router = () => {
     const {t} = useTranslation();
-    const isBeta = process.env.REACT_APP_IS_BETA === 'true';
+    const isBeta = String(process.env.REACT_APP_IS_BETA) === 'true';
 
     const renderNonBetaAnonymousRoutes = () => {
         if (isBeta) return;
