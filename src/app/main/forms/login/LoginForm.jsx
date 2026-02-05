@@ -13,10 +13,12 @@ export const LoginForm = () => {
     const {username, password} = useSelector((state) => state.login.loginForm);
     const {notAuthorized, isLoading, errorData} = useSelector((state) => state.login.loginFetch);
     const [isLoggedOut, setIsLoggedOut] = useState(false);
-    const isBeta = process.env.REACT_APP_IS_BETA === 'true';
+    const [isInactive, setIsInactive] = useState(false);
+    const isBeta = String(process.env.REACT_APP_IS_BETA).toLowerCase() === 'true';
 
     useEffect(() => {
-        setIsLoggedOut(Boolean(urlParamValue("logout")))
+        setIsLoggedOut(Boolean(urlParamValue("logout")));
+        setIsInactive(Boolean(urlParamValue("inactive")));
     }, []);
 
     const togglePasswordVisibility = () => {
@@ -35,7 +37,9 @@ export const LoginForm = () => {
         } else if (errorData?.message === 'accountInactive') {
             return validationFail(t('userIsInactive'))
         } else if (isLoggedOut) {
-            return logoutSuccess();
+            return logoutSuccess(t('logoutSuccess'));
+        } else if (isInactive) {
+            return logoutSuccess(t('inactivityLogoutSuccess'));
         } else if (notAuthorized) {
             return validationFail(t('invalidCredentials'));
         } else if (errorData?.error) {
@@ -63,10 +67,10 @@ export const LoginForm = () => {
         );
     }
 
-    const logoutSuccess = () => {
+    const logoutSuccess = message => {
         return (
             <p className={'logout-success-msg'}>
-                {t('logoutSuccess')}
+                {message}
             </p>
         );
     }
