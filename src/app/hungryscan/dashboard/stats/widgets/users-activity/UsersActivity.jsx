@@ -24,17 +24,30 @@ export const UsersActivity = () => {
     const dispatch = useDispatch();
     const getTranslation = useGetTranslation();
     const {isLoading, data} = useSelector(state => state.statistics.usersActivity);
-    const isBeta = process.env.REACT_APP_IS_BETA === 'true';
+    const isBeta = String(process.env.REACT_APP_IS_BETA).toLowerCase() === 'true';
 
     useEffect(() => {
-        dispatch(getUsersActivity());
-    }, [dispatch]);
+        if (!isBeta) dispatch(getUsersActivity());
+    }, [dispatch, isBeta]);
+
+    if (isBeta) {
+        return (
+            <>
+                <WidgetHeader style={{paddingTop: '30px'}}>{t("lastActivities")}</WidgetHeader>
+                <Container>
+                    <p className="text-center" style={{ minHeight: "100px" }}>
+                        {t("unavailableInBeta")}
+                    </p>
+                </Container>
+            </>
+        );
+    }
 
     if (data?.length === 0) return (
         <>
-            <WidgetHeader>{t('lastActivities')}</WidgetHeader>
+            <WidgetHeader style={{paddingTop: '30px'}}>{t('lastActivities')}</WidgetHeader>
             <Container>
-                <span>{t('noOtherUsersInOrganization')}</span>
+                <span className={'flex-centered'} style={{fontSize: '13px'}}>{t('noOtherUsersInOrganization')}</span>
             </Container>
         </>
     );
@@ -95,9 +108,8 @@ export const UsersActivity = () => {
         <>
             <WidgetHeader>{t('lastActivities')}</WidgetHeader>
             <Container>
-                {isBeta && <p className={'text-center'} style={{minHeight: '100px'}}>{t('unavailableInBeta')}</p>}
                 {isLoading && <LoadingSpinner/>}
-                {!isBeta && data?.slice()
+                {data?.slice()
                     .sort((a, b) => new Date(b.lastSeenAt) - new Date(a.lastSeenAt))
                     .map((user, index) => (
                         <React.Fragment key={user.username}>
