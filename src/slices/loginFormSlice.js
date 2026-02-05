@@ -5,9 +5,10 @@ import {getLanguage} from "../locales/langUtils";
 
 export const executeLogoutFetch = createAsyncThunk(
     'loginFetch/executeLogoutFetch',
-    async () => {
-        const response = await fetch(`${apiHost}/api/user/logout`, {
-            method: 'POST',
+    async ({isInactive = false}, _) => {
+        const endpointSuffix = isInactive ? 'inactivity-logout' : 'logout';
+        const response = await fetch(`${apiHost}/api/user/${endpointSuffix}`, {
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept-Language': getLanguage()
