@@ -37,7 +37,7 @@ export const NavPanelMobile = ({children, clearStateHandler, onCollapse}) => {
                     <DecisionDialog
                         msg={t('confirmLogout')}
                         onCancel={() => dispatch(setLogoutActive(false))}
-                        onSubmit={() => dispatch(executeLogoutFetch())}
+                        onSubmit={() => dispatch(executeLogoutFetch({isInactive: false}))}
                     />
                 }
                 <div className={'app-nav-header'}>
