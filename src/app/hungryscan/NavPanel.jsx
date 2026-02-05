@@ -38,7 +38,7 @@ export const NavPanel = ({children, childrenCollapsed, clearStateHandler}) => {
                     <DecisionDialog
                         msg={t('confirmLogout')}
                         onCancel={() => dispatch(setLogoutActive(false))}
-                        onSubmit={() => dispatch(executeLogoutFetch())}
+                        onSubmit={() => dispatch(executeLogoutFetch({isInactive: false}))}
                     />
                 }
                 <div className={'flex-centered'}>
@@ -81,7 +81,7 @@ export const NavPanel = ({children, childrenCollapsed, clearStateHandler}) => {
                 <DecisionDialog
                     msg={t('confirmLogout')}
                     onCancel={() => dispatch(setLogoutActive(false))}
-                    onSubmit={() => dispatch(executeLogoutFetch())}
+                    onSubmit={() => dispatch(executeLogoutFetch({isInactive: false}))}
                 />
             }
             <div className={'app-nav-header'}>
