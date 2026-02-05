@@ -66,6 +66,7 @@
   "invalidCredentials": "Correo electrónico o contraseña inválidos, inténtalo de nuevo",
   "logout": "Cerrar sesión",
   "logoutSuccess": "Sesión cerrada correctamente",
+  "inactivityLogoutSuccess": "Sesión cerrada por inactividad",
   "loginProblems": "¿Problemas para iniciar sesión?",
   "recoverPassword": "¿Olvidaste tu contraseña?",
   "welcomeToHC": "Bienvenido a HungryScan",

@@ -66,6 +66,7 @@
   "invalidCredentials": "Invalid email or password, try again",
   "logout": "Log out",
   "logoutSuccess": "Logged out successfully",
+  "inactivityLogoutSuccess": "Logged out due to inactivity",
   "loginProblems": "Sign in issues?",
   "recoverPassword": "Forgot password?",
   "welcomeToHC": "Welcome to HungryScan",

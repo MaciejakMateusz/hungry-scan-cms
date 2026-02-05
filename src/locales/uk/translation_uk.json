@@ -66,6 +66,7 @@
   "invalidCredentials": "Невірна електронна пошта або пароль, спробуйте ще раз",
   "logout": "Вийти",
   "logoutSuccess": "Вихід виконано успішно",
+  "inactivityLogoutSuccess": "Ви вийшли з системи через бездіяльність",
   "loginProblems": "Проблеми зі входом?",
   "recoverPassword": "Забули пароль?",
   "welcomeToHC": "Ласкаво просимо до HungryScan",

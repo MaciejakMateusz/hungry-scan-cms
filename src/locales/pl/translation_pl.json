@@ -64,6 +64,7 @@
   "invalidCredentials": "Niepoprawny email lub hasło, spróbuj ponownie",
   "logout": "Wyloguj się",
   "logoutSuccess": "Wylogowano pomyślnie",
+  "inactivityLogoutSuccess": "Wylogowano z powodu braku aktywności",
   "loginProblems": "Problemy z logowaniem?",
   "recoverPassword": "Zapomniałeś hasła?",
   "welcomeToHC": "Witaj w systemie HungryScan",

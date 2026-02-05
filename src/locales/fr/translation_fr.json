@@ -66,6 +66,7 @@
   "invalidCredentials": "E-mail ou mot de passe invalide, réessayez",
   "logout": "Se déconnecter",
   "logoutSuccess": "Déconnexion réussie",
+  "inactivityLogoutSuccess": "Déconnecté en raison d’inactivité",
   "loginProblems": "Des problèmes de connexion ?",
   "recoverPassword": "Mot de passe oublié ?",
   "welcomeToHC": "Bienvenue sur HungryScan",
