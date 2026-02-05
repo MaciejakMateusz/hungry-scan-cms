@@ -6,6 +6,7 @@ import {PieChartLegend} from "./PieChartLegend";
 import {useGetTranslation} from "../../../../../../hooks/useGetTranslation";
 import {useWindowWidth} from "../../../../../../hooks/useWindowWidth";
 import {PopularDishesMenuSelector} from "./PopularDishesMenuSelector";
+import {capitalizeFirst} from "../../../../../../utils/utils";
 
 export const TopDishesChart = () => {
     const {t} = useTranslation();
@@ -100,15 +101,14 @@ export const TopDishesChart = () => {
     const Tooltip = ({datum}) => {
         if (totalValue === 0) return null;
         return (
-            <div
-                style={{
-                    background: 'white',
-                    padding: '8px 12px',
-                    border: '1px solid #ccc',
-                    borderRadius: 4,
-                }}>
+            <div style={{
+                background: 'white',
+                padding: '8px 12px',
+                border: '1px solid #ccc',
+                borderRadius: 4,
+            }}>
                 <div>
-                    <span>
+                    <span style={{fontWeight: '500'}}>
                         {datum.data?.label}
                         <br/>
                     </span>
@@ -116,7 +116,7 @@ export const TopDishesChart = () => {
                         {t('percent')}: {datum.data?.value}%<br/>
                     </span>
                     <span>
-                        {t('views')}: {datum.data?.number}
+                        {capitalizeFirst(t('views'))}: {datum.data?.number}
                         <br/>
                     </span>
                 </div>
