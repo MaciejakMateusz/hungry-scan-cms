@@ -258,6 +258,8 @@
   "numberScans": "Ilość zeskanowań",
   "allScans": "Wszystkie skanowania",
   "scans": "skanowań",
+  "uniqueScansMetricInfo": "Wskazuje różnicę pomiędzy ilością unikalnych skanowań względem poprzedniego okresu",
+  "repeatedScansMetricInfo": "Wskazuje różnicę pomiędzy ilością powtórzonych skanowań względem poprzedniego okresu",
   "relatedTo": "względem",
   "previousPeriod": "poprzedniego okresu",
   "scanFrequency": "Częstotliwość skanowania",

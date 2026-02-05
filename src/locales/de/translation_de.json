@@ -260,6 +260,8 @@
   "numberScans": "Anzahl der Scans",
   "allScans": "Alle Scans",
   "scans": "Scans",
+  "uniqueScansMetricInfo": "Zeigt die Differenz der Anzahl eindeutiger Scans im Vergleich zum vorherigen Zeitraum an.",
+  "repeatedScansMetricInfo": "Zeigt die Differenz der Anzahl wiederholter Scans im Vergleich zum vorherigen Zeitraum an.",
   "relatedTo": "im Vergleich zu",
   "previousPeriod": "vorheriger Zeitraum",
   "scanFrequency": "Scan-Häufigkeit",

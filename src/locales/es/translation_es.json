@@ -260,6 +260,8 @@
   "numberScans": "Número de escaneos",
   "allScans": "Todos los escaneos",
   "scans": "escaneos",
+  "uniqueScansMetricInfo": "Indica la diferencia en la cantidad de escaneos únicos en comparación con el período anterior.",
+  "repeatedScansMetricInfo": "Indica la diferencia en la cantidad de escaneos repetidos en comparación con el período anterior.",
   "relatedTo": "en relación con",
   "previousPeriod": "período anterior",
   "scanFrequency": "Frecuencia de escaneo",
