@@ -16,7 +16,7 @@ export const useInactivityTimeout = (timeout) => {
     const handleInactivityLogout = () => {
         dispatch(setLogoutActive(true));
         setIsActive(false);
-        dispatch(executeLogoutFetch());
+        dispatch(executeLogoutFetch({isInactive: true}));
     };
 
     useEffect(() => {
