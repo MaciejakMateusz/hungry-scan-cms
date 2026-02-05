@@ -69,3 +69,5 @@ const replacer = c => {
     const v = c === 'x' ? r : (r & 0x3 | 0x8);
     return v.toString(16);
 }
+
+export const capitalizeFirst = (s = "") => s ? s[0].toUpperCase() + s.slice(1) : s
