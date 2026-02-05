@@ -37,7 +37,7 @@ export const UserProfile = () => {
         <div className={'background'}>
             {confirmLogout &&
                 <DecisionDialog msg={t('userProfileUpdatedWithPassword')}
-                                onSubmit={() => dispatch(executeLogoutFetch())}
+                                onSubmit={() => dispatch(executeLogoutFetch({isInactive: false}))}
                                 isLoading={logoutPending}
                 />}
             <FormErrorDialog errorData={errorData} setErrorData={setErrorData}/>
