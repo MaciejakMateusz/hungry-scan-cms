@@ -2,7 +2,7 @@ import React from "react";
 import {Icon, IconLabelWrapper, Label, LegendContainer, Value, Position} from "./PieChartLegend.style";
 import {useWindowWidth} from "../../../../../../hooks/useWindowWidth";
 
-export const PieChartLegend = ({ chartData }) => {
+export const PieChartLegend = ({chartData}) => {
     const windowWidth = useWindowWidth();
     const isMobile = windowWidth <= 730;
 
@@ -17,7 +17,7 @@ export const PieChartLegend = ({ chartData }) => {
             {chartData.map((d) => (
                 <Position key={d.id}>
                     <IconLabelWrapper>
-                        <Icon $color={d.color} />
+                        <Icon $color={d.color}/>
                         <Label>{d.label}</Label>
                     </IconLabelWrapper>
                     <Value>{d.number}</Value>
