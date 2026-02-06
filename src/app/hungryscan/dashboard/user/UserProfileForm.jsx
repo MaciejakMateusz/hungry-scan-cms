@@ -150,6 +150,7 @@ export const UserProfileForm = () => {
                               name={'language'}
                               labelName={t('language')}
                               isRequired={true}
+                              isSearchable={false}
                               info={t('systemLanguage')}
                               placeholder={t('chooseLanguage')}
                               value={chosenLanguage}
