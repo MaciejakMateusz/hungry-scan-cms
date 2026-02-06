@@ -15,11 +15,11 @@ export const AppModeSwitcher = () => {
                 </SwitcherPillInactive>
             }
             <SwitcherPill $cmsActive={cmsActive}>
-                <IndexedText>{cmsActive ? 'CMS' : t('dashboard')}</IndexedText>
+                <IndexedText>{cmsActive ? t('menu') : t('dashboard')}</IndexedText>
             </SwitcherPill>
             {!cmsActive &&
                 <SwitcherPillInactive $cmsActive={cmsActive}>
-                    <IndexedText>CMS</IndexedText>
+                    <IndexedText>{t('menu')}</IndexedText>
                 </SwitcherPillInactive>
             }
         </Switcher>
