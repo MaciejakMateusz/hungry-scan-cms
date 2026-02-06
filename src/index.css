@@ -891,7 +891,7 @@ ul {
 .app-nav-panel {
     position: relative;
     display: grid;
-    grid-template-rows: 56px 80px 1fr 10% 15% 5%;
+    grid-template-rows: 56px 80px 1fr 10% auto 5%;
     background: #121620;
     overflow-x: visible;
     width: 255px;
@@ -1087,7 +1087,7 @@ ul {
     width: 100%;
     height: 100%;
     border-radius: 10px;
-    padding: 0 16px;
+    padding: 5px 16px;
 }
 
 .app-nav-restaurant-info-icon {
@@ -1103,9 +1103,14 @@ ul {
     display: block;
     margin-bottom: 8px;
     max-width: 170px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    text-wrap: nowrap;
+
+    line-height: 1.2;
+    max-height: calc(1.2em * 2);
+    overflow: clip;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow-wrap: anywhere;
 }
 
 .restaurant-info-address {
@@ -1113,9 +1118,13 @@ ul {
     font-size: 1rem;
     display: block;
     max-width: 170px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    text-wrap: nowrap;
+    line-height: 1.2;
+    max-height: calc(1.2em * 2);
+    overflow: clip;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow-wrap: anywhere;
 }
 
 .app-nav-restaurant-info {
