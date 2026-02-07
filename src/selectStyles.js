@@ -132,11 +132,12 @@ export const mainSelect = {
         color: state.isDisabled ? '#ccc' : '#191D25',
         width: 'fit-content',
         minWidth: '130px',
+        maxWidth: '600px',
         height: '32px',
         minHeight: '32px',
         textAlign: 'left',
         paddingLeft: '5px',
-        paddingRight: '10px',
+        paddingRight: '15px',
         borderColor: state.isFocused ? 'transparent' : provided.borderColor,
         boxShadow: state.isFocused ? 'none' : provided.boxShadow,
         '&:hover': {
@@ -146,12 +147,12 @@ export const mainSelect = {
     }),
     valueContainer: provided => ({
         ...provided,
-        overflow: 'visible',
+        overflow: 'visible'
     }),
     singleValue: (provided, state) => ({
         ...provided,
         color: state.isDisabled ? '#888' : '#191D25',
-        maxWidth: '90%'
+        maxWidth: '100%'
     }),
     dropdownIndicator: (provided, state) => ({
         ...provided,
@@ -232,6 +233,21 @@ export const mainSelectTopper = {
     }),
 }
 
+export const mainSelectMenuTopper = {
+    ...mainSelectTopper,
+    singleValue: (provided) => ({
+        ...provided,
+        color: '#191D25',
+        display: 'flex',
+        alignItems: 'center',
+        padding: '0 10px 0 0'
+    }),
+    control: (provided, state) => ({
+        ...mainSelectTopper.control(provided, state),
+        paddingRight: '10px'
+    })
+}
+
 export const mainSelectTime = {
     ...mainSelect,
     control: (provided, state) => ({
@@ -256,7 +272,7 @@ export const dateStyles = {
     ...mainSelect,
     control: (provided, state) => ({
         ...mainSelect.control(provided, state),
-        width: '130px'
+        minWidth: '20px'
     })
 }
 
@@ -264,7 +280,8 @@ export const chartStyles = {
     ...mainSelect,
     control: (provided, state) => ({
         ...mainSelect.control(provided, state),
-        width: '175px',
-        paddingRight: '10px'
+        minWidth: '20px',
+        maxWidth: '175px',
+        paddingRight: '15px'
     })
 }
