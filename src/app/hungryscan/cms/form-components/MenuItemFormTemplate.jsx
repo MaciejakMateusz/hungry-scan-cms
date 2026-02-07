@@ -38,6 +38,7 @@ export const MenuItemFormTemplate = ({setFile, file}) => {
             <NameField id={'category-name'}
                        value={name}
                        onChange={(e) => dispatch(setName(e))}
+                       maxLength={255}
                        error={errorData}
             />
             <DescriptionField value={description}
