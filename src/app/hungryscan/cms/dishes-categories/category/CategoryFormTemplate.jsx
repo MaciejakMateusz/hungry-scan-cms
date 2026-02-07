@@ -15,6 +15,7 @@ export const CategoryFormTemplate = () => {
             <NameField id={"category-name"}
                        value={name}
                        onChange={(e) => dispatch(setName(e))}
+                       maxLength={255}
                        error={errorData}/>
             <LogicalToggleField id={'available'}
                                 name={t('availability')}
