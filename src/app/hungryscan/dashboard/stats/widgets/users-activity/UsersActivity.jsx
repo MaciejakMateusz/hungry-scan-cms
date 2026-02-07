@@ -30,24 +30,13 @@ export const UsersActivity = () => {
         if (!isBeta) dispatch(getUsersActivity());
     }, [dispatch, isBeta]);
 
-    if (isBeta) {
-        return (
-            <>
-                <WidgetHeader style={{paddingTop: '30px'}}>{t("lastActivities")}</WidgetHeader>
-                <Container>
-                    <p className="text-center" style={{ minHeight: "100px" }}>
-                        {t("unavailableInBeta")}
-                    </p>
-                </Container>
-            </>
-        );
-    }
-
-    if (data?.length === 0) return (
+    if (isBeta || data?.length === 0) return (
         <>
             <WidgetHeader style={{paddingTop: '30px'}}>{t('lastActivities')}</WidgetHeader>
             <Container>
-                <span className={'flex-centered'} style={{fontSize: '13px'}}>{t('noOtherUsersInOrganization')}</span>
+                <span className={'flex-centered'} style={{fontSize: '13px', fontWeight: '300'}}>
+                    {isBeta ? t("unavailableInBeta") : t('noOtherUsersInOrganization')}
+                </span>
             </Container>
         </>
     );
