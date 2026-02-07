@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
 import Select from "react-select";
-import {mainSelectTopper} from "../../../../selectStyles";
+import {mainSelectMenuTopper, mainSelectTopper} from "../../../../selectStyles";
 import {CustomNoOptionsMessage} from "../form-components/CustomNoOptionsMessage";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
@@ -131,16 +131,7 @@ export const CmsTopper = ({children, clearStateHandler}) => {
                             isSearchable={false}
                             defaultValue={menus && menus[0]}
                             onChange={async (selected) => await switchMenu(selected)}
-                            styles={{
-                                ...mainSelectTopper,
-                                singleValue: (provided) => ({
-                                    ...provided,
-                                    color: '#191D25',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    padding: '0 10px 0 0'
-                                })
-                            }}
+                            styles={mainSelectMenuTopper}
                             components={{
                                 NoOptionsMessage: CustomNoOptionsMessage,
                                 MenuList: CustomMenuList,
