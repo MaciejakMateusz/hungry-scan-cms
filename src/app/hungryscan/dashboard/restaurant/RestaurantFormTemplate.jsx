@@ -49,6 +49,7 @@ export const RestaurantFormTemplate = () => {
                 <NameField id={'restaurant-name'}
                            value={name}
                            onChange={(e) => dispatch(setName(e))}
+                           maxLength={100}
                            error={errorData}
                 />
                 <CustomTextField id={'restaurant-address'}
