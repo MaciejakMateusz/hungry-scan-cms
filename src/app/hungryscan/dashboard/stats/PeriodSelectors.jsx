@@ -175,9 +175,9 @@ export const PeriodSelectors = () => {
                                     onChange={(date) => dispatch(setChosenDay(date.toISOString()))}
                                     locale={getLanguage() === 'pl' ? 'pl' : 'en'}
                                     dateFormat="d MMMM yyyy"
-                                    className="datepicker-custom-input"
-                                    calendarClassName="datepicker-custom-calendar"
-                                    popperClassName="datepicker-custom-popper"
+                                    className={'datepicker-custom-input'}
+                                    calendarClassName={'datepicker-custom-calendar'}
+                                    popperClassName={'datepicker-custom-popper'}
                                     maxDate={new Date()}
                                     minDate={restaurantCreation}
                                     showMonthYearDropdown={false}
