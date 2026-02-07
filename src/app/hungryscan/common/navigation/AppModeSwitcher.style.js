@@ -40,6 +40,7 @@ export const SwitcherPill = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    min-width: 0;
 `;
 
 export const SwitcherPillInactive = styled.div`
@@ -51,4 +52,5 @@ export const SwitcherPillInactive = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    min-width: 0;
 `;

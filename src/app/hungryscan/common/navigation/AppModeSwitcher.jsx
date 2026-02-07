@@ -1,7 +1,8 @@
 import React from "react";
 import {useTranslation} from "react-i18next";
 import {useSelector} from "react-redux";
-import {IndexedText, Switcher, SwitcherPill, SwitcherPillInactive} from "./AppModeSwitcher.style";
+import {Switcher, SwitcherPill, SwitcherPillInactive} from "./AppModeSwitcher.style";
+import {IndexedText} from "./IndexedText";
 
 export const AppModeSwitcher = () => {
     const {t} = useTranslation();
