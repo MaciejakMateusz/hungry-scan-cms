@@ -22,6 +22,7 @@ export const MenuFormTemplate = ({formHeader, discardHandler, submitHandler, err
                         <NameField id={'menu-name'}
                                    value={name}
                                    onChange={(e) => dispatch(setName(e))}
+                                   maxLength={100}
                                    error={errorData}
                         />
                         <MenuColorField/>
