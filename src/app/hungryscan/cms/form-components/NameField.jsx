@@ -6,14 +6,15 @@ export const NameField = (props) => {
     const {t} = useTranslation();
     const [isFocused, setIsFocused] = useState(false);
     const [hasError, setHasError] = useState(props.error?.name);
+    const {maxLength = 255} = props;
 
     const resetErrorStyles = () => {
         setHasError(null);
     }
 
     useEffect(() => {
-        setHasError(props.error?.name && (!props.value || props.value.length > 255))
-    }, [props.error, props.value]);
+        setHasError(props.error?.name && (!props.value || props.value.length > maxLength))
+    }, [maxLength, props.error, props.value]);
 
     return (
         <>
@@ -34,7 +35,7 @@ export const NameField = (props) => {
                                    resetErrorStyles()
                                }}
                                placeholder={isFocused ? '' : t('addName')}
-                               maxLength={props.maxLength ?? 255}
+                               maxLength={maxLength}
                                onFocus={() => setIsFocused(true)}
                                onBlur={() => setIsFocused(false)}/>
                         {hasError && <div className={'validation-msg'}>{props.error?.name}</div>}
